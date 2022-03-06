@@ -1,38 +1,20 @@
-# About
+# ec0Lint
 
-ESLint is an open source JavaScript linting utility originally created by Nicholas C. Zakas in June 2013. Code [linting][] is a type of static analysis that is frequently used to find problematic patterns or code that doesn't adhere to certain style guidelines. There are code linters for most programming languages, and compilers sometimes incorporate linting into the compilation process.
+[Website](TBD) |
+[Configuring](https://eslint.org/docs/user-guide/configuring) |
+[Rules](https://eslint.org/docs/rules/) |
+[Contributing](TBD) |
 
-JavaScript, being a dynamic and loosely-typed language, is especially prone to developer error. Without the benefit of a compilation process, JavaScript code is typically executed in order to find syntax or other errors. Linting tools like ESLint allow developers to discover problems with their JavaScript code without executing it.
+ec0lint is a static code analysis tool that provides the users with useful hints on how to reduce the digital footprint of their webpages during the development process. Applying code changes suggested by ec0lint will make result with webpages that emit less carbon per visit, load quicker and are more space- efficient. The tool is open-source and community-driven.
 
-The primary reason ESLint was created was to allow developers to create their own linting rules. ESLint is designed to have all rules completely pluggable. The default rules are written just like any plugin rules would be. They can all follow the same pattern, both for the rules themselves as well as tests. While ESLint will ship with some built-in rules to make it useful from the start, you'll be able to dynamically load rules at any point in time.
+## Our goal
 
-ESLint is written using Node.js to provide a fast runtime environment and easy installation via [npm][].
+An average webpage with 10 000 views monthly emits 4.6 g CO2 with every view. It sums up to 553 kg annually. Thanks to following good practices such as [Sustainable Web Design](https://sustainablewebdesign.org/) and code optimization the emissions may be reduced from 4.6 g to 0.2 g emitting only 24 kg CO2 annually. It means that 529 kg (96%!) CO2 could be saved, which is as much as charging 65 000 smartphones.
 
-[linting]: https://en.wikipedia.org/wiki/Lint_(software)
-[npm]: https://npmjs.org/
+ec0lint is a tool that can help with that. By static code analysis, it provides improvements to the code and highlights the impact it will have on carbon emissions, loading speed and size. Those improvements can range from decreasing the size and number of images, videos or animations, including a lighter library or an open-source library, changing the font type, font size or background colors.
 
-## Philosophy
+The tool is customized and each rule applied during the analysis can be adjusted, or treated as hints rather than errors. This flexibility allows the developers to reach their goals without interruptions from ec0lint, at the same time drawing attention to possible improvements.
 
-Everything is pluggable:
+Thank you!
 
-* Rule API is used both by bundled and custom rules
-* Formatter API is used both by bundled and custom formatters
-* Additional rules and formatters can be specified at runtime
-* Rules and formatters don't have to be bundled to be used
-
-Every rule:
-
-* Is standalone
-* Can be turned off or on (nothing can be deemed "too important to turn off")
-* Can be set to a warning or error individually
-
-Additionally:
-
-* Rules are "agenda free" - ESLint does not promote any particular coding style
-* Any bundled rules are generalizable
-
-The project:
-
-* Values documentation and clear communication
-* Is as transparent as possible
-* Believes in the importance of testing
+We are open to collaboration on improving ec0lint, and we are very grateful for all contributions and feedback on the tool. Thank you for helping us make the web greener!  
