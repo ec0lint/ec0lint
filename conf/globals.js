@@ -1,3 +1,4 @@
+// TODO validare
 /**
  * @fileoverview Globals for ecmaVersion/sourceType
  * @author Nicholas C. Zakas

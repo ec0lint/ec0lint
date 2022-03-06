@@ -1,3 +1,4 @@
+// TODO recommended rules
 /**
  * @fileoverview Configuration applied when a user configuration extends from
  * eslint:recommended.
