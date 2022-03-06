@@ -1,8 +1,8 @@
 {
-  "name": "eslint",
-  "version": "8.10.0",
-  "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
-  "description": "An AST-based pattern checker for JavaScript.",
+  "name": "ec0lint",
+  "version": "0.0.3",
+  "author": "Malwina Kubas <malwina.kubas@gmail.com>",
+  "description": "Make your website greener!",
   "bin": {
     "eslint": "./bin/eslint.js"
   },
@@ -42,10 +42,9 @@
     "lib",
     "messages"
   ],
-  "repository": "eslint/eslint",
-  "funding": "https://opencollective.com/eslint",
-  "homepage": "https://eslint.org",
-  "bugs": "https://github.com/eslint/eslint/issues/",
+  "repository": "ec0lint/ec0lint",
+  "homepage": "TBD",
+  "bugs": "https://github.com/ec0lint/ec0lint/issues/",
   "dependencies": {
     "@eslint/eslintrc": "^1.2.0",
     "@humanwhocodes/config-array": "^0.9.2",
