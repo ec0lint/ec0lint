@@ -1,10 +1,8 @@
 <!--
-    Thank you, you're making the world a better place!
+    Thank you, together we're making the world a better place!
 -->
 
-#### Checklist
-
-What is the purpose of this pull request?
+#### Pull Request purpose
 
 [ ] Documentation update
 [ ] Bug fix
@@ -14,6 +12,10 @@ What is the purpose of this pull request?
 [ ] Add a CLI option
 [ ] Add something to the core
 [ ] Other, please explain:
+
+<!--
+    To merge PR, 2 approvals of stale contributors are needed
+-->
 
 #### Overview of changes
 
