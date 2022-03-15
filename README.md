@@ -9,6 +9,8 @@
 
 ec0lint is a static code analysis tool that provides the users with useful hints on how to reduce the digital footprint of their webpages during the development process. Applying code changes suggested by ec0lint will make result with webpages that emit less carbon per visit, load quicker and are more space- efficient. The tool is open-source and community-driven.
 
+How to contribute - refer to [ESLint docs](https://eslint.org/docs/developer-guide/contributing/)
+
 ## Our goal
 
 An average webpage with 10 000 views monthly emits 4.6 g CO2 with every view. It sums up to 553 kg annually. Thanks to following good practices such as [Sustainable Web Design](https://sustainablewebdesign.org/) and code optimization the emissions may be reduced from 4.6 g to 0.2 g emitting only 24 kg CO2 annually. It means that 529 kg (96%!) CO2 could be saved, which is as much as charging 65 000 smartphones.
