@@ -13,8 +13,12 @@
 [ ] Add something to the core
 [ ] Other, please explain:
 
+#### Checklist
+
+[ ] Update CHANGELOG.md
+
 <!--
-    To merge PR, 2 approvals of stale contributors are needed
+    To merge PR, at least 2 approvals of stale contributors are needed
 -->
 
 #### Overview of changes
