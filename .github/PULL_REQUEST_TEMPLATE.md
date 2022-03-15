@@ -16,6 +16,7 @@
 #### Checklist
 
 [ ] Update CHANGELOG.md
+[ ] (if rule) Docs added (/docs/rules/<rule_name>)
 
 <!--
     To merge PR, at least 2 approvals of stale contributors are needed
