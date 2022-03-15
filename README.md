@@ -1,6 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/ec0lint.svg)](https://www.npmjs.com/package/ec0lint)
 
-# ec0Lint
+# ec0lint
 
 [Website](TBD) |
 [Configuring](https://eslint.org/docs/user-guide/configuring) |
