@@ -3,13 +3,13 @@
 # ec0lint
 
 [Website](TBD) |
-[Configuring](https://eslint.org/docs/user-guide/configuring) |
-[Rules](https://eslint.org/docs/rules/) |
+[Configuring](TBD) |
+[Rules](TBD) |
 [Contributing](TBD) |
 
 ec0lint is a static code analysis tool that provides the users with useful hints on how to reduce the digital footprint of their webpages during the development process. Applying code changes suggested by ec0lint will make result with webpages that emit less carbon per visit, load quicker and are more space- efficient. The tool is open-source and community-driven.
 
-How to contribute - refer to [ESLint docs](https://eslint.org/docs/developer-guide/contributing/)
+How to start contributing - refer to [ESLint Developer Guide](https://eslint.org/docs/developer-guide/contributing/)
 
 ## Our goal
 
