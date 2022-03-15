@@ -1,7 +1,7 @@
-# ESLint Documentation
+# ec0lint Documentation
 
-## [User Guide](user-guide)
+<!-- ## [User Guide](user-guide) TBD --> 
 
-## [Developer Guide](developer-guide)
+## [Rules Documentation](rules)
 
-## [Maintainer Guide](maintainer-guide)
+## [Developer Guide](https://eslint.org/docs/developer-guide/) <- ESLint
