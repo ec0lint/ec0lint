@@ -95,7 +95,7 @@
     },
     "root-true": {
         "parent": {
-            ".eslintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"always\"],\n        \"quotes\": [2, \"single\"]\n    },\n    \"extends\": [\n        \"eslint-config-test\"\n    ]\n}\n",
+            ".eslintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"always\"],\n        \"quotes\": [2, \"single\"]\n    },\n    \"extends\": [\n        \"ec0lint-config-test\"\n    ]\n}\n",
             "root": {
                 ".eslintrc": "{\n    \"root\": true,\n    \"rules\": {\n        \"semi\": [2, \"never\"]\n    }\n}\n",
                 "wrong-semi.js": "var str = 'quotes'\n"

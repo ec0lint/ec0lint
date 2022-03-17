@@ -1,6 +1,6 @@
 {
     "rules": "bad_configurations",
     "extends": [
-        "eslint-config-test"
+        "ec0lint-config-test"
     ]
 }

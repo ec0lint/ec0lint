@@ -109,7 +109,7 @@ function onFatalError(error) {
     console.error(`
 Oops! Something went wrong! :(
 
-ESLint: ${version}
+ec0int: ${version}
 
 ${message}`);
 }

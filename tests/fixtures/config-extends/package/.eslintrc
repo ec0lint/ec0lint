@@ -1,5 +1,5 @@
 {
-    "extends": "eslint-config-foo",
+    "extends": "ec0lint-config-foo",
 
     "rules": {
         "quotes": [2, "double"],

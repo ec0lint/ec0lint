@@ -4046,7 +4046,7 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "node_modules/eslint-config-foo/index.js": "module.exports = {noInlineConfig: true}",
+                        "node_modules/ec0lint-config-foo/index.js": "module.exports = {noInlineConfig: true}",
                         "test.js": "/* globals foo */",
                         ".eslintrc.yml": "extends: foo"
                     }
@@ -4060,7 +4060,7 @@ describe("CLIEngine", () => {
                 const messages = results[0].messages;
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.eslintrc.yml » eslint-config-foo).");
+                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.eslintrc.yml » ec0lint-config-foo).");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
@@ -4157,13 +4157,13 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         overrides: [{ files: ["*test*"], extends: "two" }]
                     })}`,
-                    "node_modules/eslint-config-two/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
                         overrides: [{ files: ["*.js"], extends: "three" }]
                     })}`,
-                    "node_modules/eslint-config-three/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-three/index.js": `module.exports = ${JSON.stringify({
                         rules: { "no-console": "error" }
                     })}`,
                     "test.js": "console.log('hello')",
@@ -5917,7 +5917,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "foo.js"
                     })}`,
                     ".eslintrc.json": JSON.stringify({
@@ -5961,7 +5961,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "/foo.js"
                     })}`,
                     ".eslintrc.json": JSON.stringify({
@@ -6006,7 +6006,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "*.js"
                     })}`,
                     ".eslintrc.json": JSON.stringify({
@@ -6257,7 +6257,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-config-foo/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-foo/index.js": `module.exports = ${JSON.stringify({
                         overrides: [
                             {
                                 files: "foo/**/*.txt"
@@ -6581,13 +6581,13 @@ describe("CLIEngine", () => {
                 cwd: `${root}${++uid}`,
                 files: {
                     "node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-one/node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/node_modules/eslint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         extends: ["two"],
                         plugins: ["foo"]
                     })}`,
-                    "node_modules/eslint-config-two/node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-two/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-two/node_modules/eslint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
                         plugins: ["foo"]
                     })}`,
                     ".eslintrc.json": JSON.stringify({
@@ -6613,12 +6613,12 @@ describe("CLIEngine", () => {
                 cwd: `${root}${++uid}`,
                 files: {
                     "node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-one/node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-one/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-one/node_modules/eslint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         plugins: ["foo"]
                     })}`,
-                    "node_modules/eslint-config-two/node_modules/eslint-plugin-foo/index.js": "",
-                    "node_modules/eslint-config-two/index.js": `module.exports = ${JSON.stringify({
+                    "node_modules/ec0lint-config-two/node_modules/eslint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
                         plugins: ["foo"]
                     })}`,
                     ".eslintrc.json": JSON.stringify({

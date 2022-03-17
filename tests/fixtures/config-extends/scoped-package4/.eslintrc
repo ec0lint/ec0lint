@@ -1,5 +1,5 @@
 {
-    "extends": "@scope/eslint-config",
+    "extends": "@scope/ec0lint-config",
 
     "rules": {
         "quotes": [2, "double"],

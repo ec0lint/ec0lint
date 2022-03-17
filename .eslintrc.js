@@ -47,7 +47,7 @@ module.exports = {
         "internal-rules"
     ],
     extends: [
-        "eslint",
+        "ec0lint",
         "plugin:eslint-plugin/recommended"
     ],
     parserOptions: {
