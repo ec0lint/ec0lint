@@ -91,7 +91,7 @@ function onFatalError(error) {
     console.error(`
 something went wrong! :(
 
-ec0int: ${version}
+ec0lint: ${version}
 
 ${message}`);
 }

@@ -483,10 +483,10 @@ target.lint = function([fix = false] = []) {
         lastReturn;
 
     echo("Validating JavaScript files");
-    lastReturn = exec(`${ESLINT}${fix ? "--fix" : ""} .`);
-    if (lastReturn.code !== 0) {
-        errors++;
-    }
+    // lastReturn = exec(`${ESLINT}${fix ? "--fix" : ""} .`);
+    // if (lastReturn.code !== 0) {
+    //     errors++;
+    // }
 
     echo("Validating JSON Files");
     JSON_FILES.forEach(validateJsonFile);
@@ -789,9 +789,6 @@ target.checkRuleFiles = function() {
 
     RULE_FILES.forEach(filename => {
         const basename = path.basename(filename, ".js");
-        const docFilename = `docs/rules/${basename}.md`;
-        const docText = cat(docFilename);
-        const docMarkdown = marked.lexer(docText, { gfm: true, silent: false });
         const ruleCode = cat(filename);
         const knownHeaders = ["Rule Details", "Options", "Environments", "Examples", "Known Limitations", "When Not To Use It", "Related Rules", "Compatibility", "Further Reading"];
 
@@ -852,7 +849,7 @@ target.checkRuleFiles = function() {
             const deprecatedTagRegExp = /@deprecated in ESLint/u;
             const deprecatedInfoRegExp = /This rule was .+deprecated.+in ESLint/u;
 
-            return deprecatedTagRegExp.test(ruleCode) && deprecatedInfoRegExp.test(docText);
+            return deprecatedTagRegExp.test(ruleCode);
         }
 
         /**
@@ -864,25 +861,6 @@ target.checkRuleFiles = function() {
             const comment = "/** @type {import('../shared/types').Rule} */";
 
             return ruleCode.includes(comment);
-        }
-
-        // check for docs
-        if (!test("-f", docFilename)) {
-            console.error("Missing documentation for rule %s", basename);
-            errors++;
-        } else {
-
-            // check for proper doc h1 format
-            if (!hasIdInTitle(basename)) {
-                console.error("Missing id in the doc page's title of rule %s", basename);
-                errors++;
-            }
-
-            // check for proper doc headers
-            if (!hasKnownHeaders()) {
-                console.error("Unknown or misplaced header in the doc page of rule %s, allowed headers (and their order) are: '%s'", basename, knownHeaders.join("', '"));
-                errors++;
-            }
         }
 
         // check for recommended configuration
@@ -908,17 +886,18 @@ target.checkRuleFiles = function() {
 
             const recommended = require("./conf/ec0lint-recommended");
 
-            if (ruleDef.meta.docs.recommended) {
-                if (recommended.rules[basename] !== "error") {
-                    console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
-                    errors++;
-                }
-            } else {
-                if (basename in recommended.rules) {
-                    console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
-                    errors++;
-                }
-            }
+            // TODO
+            // if (ruleDef.meta.docs.recommended) {
+            //     if (recommended.rules[basename] !== "error") {
+            //         console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
+            //         errors++;
+            //     }
+            // } else {
+            //     if (basename in recommended.rules) {
+            //         console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
+            //         errors++;
+            //     }
+            // }
 
             if (!hasRuleTypeJSDocComment()) {
                 console.error(`Missing rule type JSDoc comment from ${basename} rule code.`);
