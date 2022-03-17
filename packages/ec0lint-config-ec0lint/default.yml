@@ -11,4 +11,5 @@ settings:
             something: "something"
 
 rules:
-    array-bracket-spacing: "error"
+    axios-calls: "error"
+    font-format: "error"
