@@ -22,24 +22,6 @@ if (process.argv.includes("--debug")) {
 //------------------------------------------------------------------------------
 
 /**
- * Read data from stdin til the end.
- *
- * Note: See
- * - https://github.com/nodejs/node/blob/master/doc/api/process.md#processstdin
- * - https://github.com/nodejs/node/blob/master/doc/api/process.md#a-note-on-process-io
- * - https://lists.gnu.org/archive/html/bug-gnu-emacs/2016-01/msg00419.html
- * - https://github.com/nodejs/node/issues/7439 (historical)
- *
- * On Windows using `fs.readFileSync(STDIN_FILE_DESCRIPTOR, "utf8")` seems
- * to read 4096 bytes before blocking and never drains to read further data.
- *
- * The investigation on the Emacs thread indicates:
- *
- * > Emacs on MS-Windows uses pipes to communicate with subprocesses; a
- * > pipe on Windows has a 4K buffer. So as soon as Emacs writes more than
- * > 4096 bytes to the pipe, the pipe becomes full, and Emacs then waits for
- * > the subprocess to read its end of the pipe, at which time Emacs will
- * > write the rest of the stuff.
  * @returns {Promise<string>} The read text.
  */
 function readStdin() {
@@ -107,7 +89,7 @@ function onFatalError(error) {
     const message = getErrorMessage(error);
 
     console.error(`
-Oops! Something went wrong! :(
+something went wrong! :(
 
 ec0int: ${version}
 
@@ -125,12 +107,11 @@ ${message}`);
     // Call the config initializer if `--init` is present.
     if (process.argv.includes("--init")) {
 
-        // `eslint --init` has been moved to `@eslint/create-config`
-        console.warn("You can also run this command directly using 'npm init @eslint/config'.");
+        console.warn("You can also run this command directly using 'npm init @ec0lint/config'.");
 
         const spawn = require("cross-spawn");
 
-        spawn.sync("npm", ["init", "@eslint/config"], { encoding: "utf8", stdio: "inherit" });
+        spawn.sync("npm", ["init", "@ec0lint/config"], { encoding: "utf8", stdio: "inherit" });
         return;
     }
 
