@@ -376,7 +376,7 @@ describe("Validator", () => {
             });
 
             it("should not throw if override extends", () => {
-                validator.validate({ overrides: [{ files: "*", extends: "eslint-recommended" }] }, "tests", ruleMapper);
+                validator.validate({ overrides: [{ files: "*", extends: "ec0lint-recommended" }] }, "tests", ruleMapper);
             });
 
             it("should throw if override tries to set root", () => {

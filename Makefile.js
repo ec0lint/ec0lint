@@ -427,7 +427,7 @@ function getFormatterResults() {
         },
         cli = new CLIEngine({
             useEslintrc: false,
-            baseConfig: { extends: "eslint:recommended" },
+            baseConfig: { extends: "ec0lint:recommended" },
             rules
         }),
         codeString = [
@@ -636,7 +636,7 @@ target.gensite = function(prereleaseVersion) {
     const { Linter } = require(".");
     const rules = new Linter().getRules();
 
-    const RECOMMENDED_TEXT = "\n\n(recommended) The `\"extends\": \"eslint:recommended\"` property in a configuration file enables this rule.";
+    const RECOMMENDED_TEXT = "\n\n(recommended) The `\"extends\": \"ec0lint:recommended\"` property in a configuration file enables this rule.";
     const FIXABLE_TEXT = "\n\n(fixable) The `--fix` option on the [command line](../user-guide/command-line-interface#fixing-problems) can automatically fix some of the problems reported by this rule.";
     const HAS_SUGGESTIONS_TEXT = "\n\n(hasSuggestions) Some problems reported by this rule are manually fixable by editor [suggestions](../developer-guide/working-with-rules#providing-suggestions).";
 
@@ -906,17 +906,16 @@ target.checkRuleFiles = function() {
                 errors++;
             }
 
-            // check eslint:recommended
-            const recommended = require("./conf/eslint-recommended");
+            const recommended = require("./conf/ec0lint-recommended");
 
             if (ruleDef.meta.docs.recommended) {
                 if (recommended.rules[basename] !== "error") {
-                    console.error(`Missing rule from eslint:recommended (./conf/eslint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
+                    console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
                     errors++;
                 }
             } else {
                 if (basename in recommended.rules) {
-                    console.error(`Extra rule in eslint:recommended (./conf/eslint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
+                    console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
                     errors++;
                 }
             }

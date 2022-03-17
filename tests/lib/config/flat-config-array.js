@@ -12,7 +12,7 @@
 const { FlatConfigArray } = require("../../../lib/config/flat-config-array");
 const assert = require("chai").assert;
 const allConfig = require("../../../conf/ec0lint-all");
-const recommendedConfig = require("../../../conf/eslint-recommended");
+const recommendedConfig = require("../../../conf/ec0lint-recommended");
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -181,26 +181,6 @@ describe("FlatConfigArray", () => {
 
         assert.notStrictEqual(base[0].languageOptions, config.languageOptions);
         assert.notStrictEqual(base[0].languageOptions.parserOptions, config.languageOptions.parserOptions, "parserOptions should be new object");
-    });
-
-    describe("Special configs", () => {
-        it("eslint:recommended is replaced with an actual config", async () => {
-            const configs = new FlatConfigArray(["eslint:recommended"], { basePath: __dirname });
-
-            await configs.normalize();
-            const config = configs.getConfig("foo.js");
-
-            assert.deepStrictEqual(config.rules, normalizeRuleConfig(recommendedConfig.rules));
-        });
-
-        it("eslint:all is replaced with an actual config", async () => {
-            const configs = new FlatConfigArray(["eslint:all"], { basePath: __dirname });
-
-            await configs.normalize();
-            const config = configs.getConfig("foo.js");
-
-            assert.deepStrictEqual(config.rules, normalizeRuleConfig(allConfig.rules));
-        });
     });
 
     describe("Config Properties", () => {

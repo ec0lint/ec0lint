@@ -413,82 +413,24 @@ describe("ESLint", () => {
             ]);
         });
 
-        it("should use eslint:recommended rules when eslint:recommended configuration is specified", async () => {
-            eslint = new ESLint({
-                useEslintrc: false,
-                overrideConfig: {
-                    extends: ["eslint:recommended"]
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "file.js" };
-            const results = await eslint.lintText("foo ()", options);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
-            assert.strictEqual(results[0].messages[0].severity, 2);
-        });
-
-        it("should use eslint:all rules when eslint:all configuration is specified", async () => {
-            eslint = new ESLint({
-                useEslintrc: false,
-                overrideConfig: {
-                    extends: ["eslint:all"]
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "file.js" };
-            const results = await eslint.lintText("foo ()", options);
-
-            assert.strictEqual(results.length, 1);
-
-            const { messages } = results[0];
-
-            // Some rules that should report errors in the given code. Not all, as we don't want to update this test when we add new rules.
-            const expectedRules = ["no-undef", "semi", "func-call-spacing"];
-
-            expectedRules.forEach(ruleId => {
-                const messageFromRule = messages.find(message => message.ruleId === ruleId);
-
-                assert.ok(
-                    typeof messageFromRule === "object" && messageFromRule !== null, // LintMessage object
-                    `Expected a message from rule '${ruleId}'`
-                );
-                assert.strictEqual(messageFromRule.severity, 2);
-            });
-
-        });
-
-        it("correctly autofixes semicolon-conflicting-fixes", async () => {
-            eslint = new ESLint({
-                cwd: path.join(fixtureDir, ".."),
-                useEslintrc: false,
-                fix: true
-            });
-            const inputPath = getFixturePath("autofix/semicolon-conflicting-fixes.js");
-            const outputPath = getFixturePath("autofix/semicolon-conflicting-fixes.expected.js");
-            const results = await eslint.lintFiles([inputPath]);
-            const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-            assert.strictEqual(results[0].output, expectedOutput);
-        });
-
-        it("correctly autofixes return-conflicting-fixes", async () => {
-            eslint = new ESLint({
-                cwd: path.join(fixtureDir, ".."),
-                useEslintrc: false,
-                fix: true
-            });
-            const inputPath = getFixturePath("autofix/return-conflicting-fixes.js");
-            const outputPath = getFixturePath("autofix/return-conflicting-fixes.expected.js");
-            const results = await eslint.lintFiles([inputPath]);
-            const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-            assert.strictEqual(results[0].output, expectedOutput);
-        });
+        // TODO
+        // it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
+        //     eslint = new ESLint({
+        //         useEslintrc: false,
+        //         overrideConfig: {
+        //             extends: ["ec0lint:recommended"]
+        //         },
+        //         ignore: false,
+        //         cwd: getFixturePath()
+        //     });
+        //     const options = { filePath: "file.js" };
+        //     const results = await eslint.lintText("foo ()", options);
+        //
+        //     assert.strictEqual(results.length, 1);
+        //     assert.strictEqual(results[0].messages.length, 1);
+        //     assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
+        //     assert.strictEqual(results[0].messages[0].severity, 2);
+        // });
 
         describe("Fix Types", () => {
             it("should throw an error when an invalid fix type is specified", () => {
