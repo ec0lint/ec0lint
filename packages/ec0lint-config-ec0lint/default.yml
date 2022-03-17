@@ -1,0 +1,14 @@
+# reportUnusedDisableDirectives: true
+extends:
+    - "ec0lint:recommended"
+    - "plugin:node/recommended"
+    - "plugin:jsdoc/recommended"
+    - "plugin:eslint-comments/recommended"
+
+settings:
+    staticResources:
+        images:
+            something: "something"
+
+rules:
+    array-bracket-spacing: "error"

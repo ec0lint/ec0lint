@@ -1,8 +1,8 @@
 {
-  "name": "eslint-config-eslint",
-  "version": "7.0.0",
-  "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
-  "description": "Default ESLint configuration for ESLint projects.",
+  "name": "ec0lint-config-ec0lint",
+  "version": "0.0.1",
+  "author": "Malwina Kubas @malwinq",
+  "description": "Default ec0lint configuration for ec0lint projects",
   "scripts": {
     "test": "node ./index.js",
     "prepublish": "npm test"
@@ -15,18 +15,19 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/eslint/eslint"
+    "url": "https://github.com/ec0lint/ec0lint"
   },
-  "homepage": "https://eslint.org",
-  "bugs": "https://github.com/eslint/eslint/issues/",
+  "homepage": "TBD",
+  "bugs": "https://github.com/ec0lint/ec0lint/issues/",
   "peerDependencies": {
     "eslint-plugin-eslint-comments": ">=3.2.0",
     "eslint-plugin-jsdoc": ">=36.0.6",
     "eslint-plugin-node": ">=11.1.0"
   },
   "keywords": [
-    "eslintconfig",
-    "eslint-config",
+    "ec0lint",
+    "ec0lintconfig",
+    "ec0lint-config",
     "eslint"
   ],
   "license": "MIT",
