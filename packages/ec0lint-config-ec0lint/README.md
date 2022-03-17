@@ -1,8 +1,6 @@
-[![npm version][npm-image]][npm-url]
-
 # ec0lint configuration
 
-[Website](TBD) | [Configuring](https://eslint.org/docs/user-guide/configuring) | [Rules](TBD)
+[Website](TBD) | [Configuring (from ESLint)](https://eslint.org/docs/user-guide/configuring) | [Rules](TBD)
 
 Contains the ec0lint configuration used for projects maintained by the ec0lint team.
 
@@ -26,4 +24,4 @@ In your `.ec0lintrc` file, add:
 }
 ```
 
-[npm-url]: https://www.npmjs.com/package/ec0lint-config-ec0lint
+[npm](https://www.npmjs.com/package/ec0lint-config-ec0lint)
