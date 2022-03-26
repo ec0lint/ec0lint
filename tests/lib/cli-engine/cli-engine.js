@@ -1004,7 +1004,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 ignore: false,
                 rulePaths: [getFixturePath("rules", "wrong")],
-                configFile: getFixturePath("rules", "eslint.json")
+                configFile: getFixturePath("rules", "ec0lint.json")
             });
 
 

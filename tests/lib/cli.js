@@ -518,7 +518,7 @@ describe("cli", () => {
     describe("when loading a custom rule", () => {
         it("should return an error when rule isn't found", async () => {
             const rulesPath = getFixturePath("rules", "wrong");
-            const configPath = getFixturePath("rules", "eslint.json");
+            const configPath = getFixturePath("rules", "ec0lint.json");
             const filePath = getFixturePath("rules", "test", "test-custom-rule.js");
             const code = `--rulesdir ${rulesPath} --config ${configPath} --no-ignore ${filePath}`;
 
@@ -531,7 +531,7 @@ describe("cli", () => {
 
         it("should return a warning when rule is matched", async () => {
             const rulesPath = getFixturePath("rules");
-            const configPath = getFixturePath("rules", "eslint.json");
+            const configPath = getFixturePath("rules", "ec0lint.json");
             const filePath = getFixturePath("rules", "test", "test-custom-rule.js");
             const code = `--rulesdir ${rulesPath} --config ${configPath} --no-ignore ${filePath}`;
 

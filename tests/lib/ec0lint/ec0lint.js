@@ -1469,7 +1469,7 @@ describe("ESLint", () => {
             eslint = new ESLint({
                 ignore: false,
                 rulePaths: [getFixturePath("rules", "wrong")],
-                overrideConfigFile: getFixturePath("rules", "eslint.json")
+                overrideConfigFile: getFixturePath("rules", "ec0lint.json")
             });
 
 
@@ -1483,7 +1483,7 @@ describe("ESLint", () => {
                 ignore: false,
                 useEslintrc: false,
                 rulePaths: [getFixturePath("rules/")],
-                overrideConfigFile: getFixturePath("rules", "eslint.json")
+                overrideConfigFile: getFixturePath("rules", "ec0lint.json")
             });
             const filePath = fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"));
             const results = await eslint.lintFiles([filePath]);
@@ -1502,7 +1502,7 @@ describe("ESLint", () => {
                 ignore: false,
                 cwd,
                 rulePaths: ["./"],
-                overrideConfigFile: "eslint.json"
+                overrideConfigFile: "ec0lint.json"
             });
             const filePath = fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"));
             const results = await eslint.lintFiles([filePath]);
