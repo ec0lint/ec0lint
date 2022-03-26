@@ -1,6 +1,6 @@
 {
   "name": "ec0lint",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "author": "Malwina Kubas @malwinq",
   "description": "Make your website greener!",
   "bin": {
@@ -31,7 +31,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": "ec0lint --fix",
+    "*.js": "ec0lint",
     "*.md": "markdownlint"
   },
   "files": [
