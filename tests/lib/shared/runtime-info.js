@@ -46,8 +46,8 @@ function setupSpawnSyncStubReturnVals(stub, returnVals) {
 // Tests
 //------------------------------------------------------------------------------
 
-const LOCAL_ESLINT_BIN_PATH = "/Users/username/code/project/node_modules/eslint/bin/eslint.js";
-const GLOBAL_ESLINT_BIN_PATH = "/usr/local/bin/npm/node_modules/eslint/bin/eslint.js";
+const LOCAL_ESLINT_BIN_PATH = "/Users/username/code/project/node_modules/ec0lint/bin/ec0lint.js";
+const GLOBAL_ESLINT_BIN_PATH = "/usr/local/bin/npm/node_modules/ec0lint/bin/ec0lint.js";
 const NPM_BIN_PATH = "/usr/local/bin/npm";
 
 describe("RuntimeInfo", () => {

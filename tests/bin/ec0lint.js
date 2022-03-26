@@ -1,5 +1,5 @@
 /**
- * @fileoverview Integration tests for the eslint.js executable.
+ * @fileoverview Integration tests for the ec0lint.js executable.
  * @author Teddy Katz
  */
 
@@ -18,7 +18,7 @@ const path = require("path");
 // Data
 //------------------------------------------------------------------------------
 
-const EXECUTABLE_PATH = path.resolve(path.join(__dirname, "../../bin/eslint.js"));
+const EXECUTABLE_PATH = path.resolve(path.join(__dirname, "../../bin/ec0lint.js"));
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -64,7 +64,7 @@ function getOutput(runningProcess) {
 // Tests
 //------------------------------------------------------------------------------
 
-describe("bin/eslint.js", () => {
+describe("bin/ec0lint.js", () => {
     const forkedProcesses = new Set();
 
     /**
@@ -204,9 +204,9 @@ describe("bin/eslint.js", () => {
     });
 
     describe("running on files", () => {
-        it("has exit code 0 if no linting errors occur", () => assertExitCode(runESLint(["bin/eslint.js"]), 0));
-        it("has exit code 0 if a linting warning is reported", () => assertExitCode(runESLint(["bin/eslint.js", "--env", "es2021", "--no-ec0lintrc", "--rule", "semi: [1, never]"]), 0));
-        it("has exit code 1 if a linting error is reported", () => assertExitCode(runESLint(["bin/eslint.js", "--env", "es2021", "--no-ec0lintrc", "--rule", "semi: [2, never]"]), 1));
+        it("has exit code 0 if no linting errors occur", () => assertExitCode(runESLint(["bin/ec0lint.js"]), 0));
+        it("has exit code 0 if a linting warning is reported", () => assertExitCode(runESLint(["bin/ec0lint.js", "--env", "es2021", "--no-ec0lintrc", "--rule", "semi: [1, never]"]), 0));
+        it("has exit code 1 if a linting error is reported", () => assertExitCode(runESLint(["bin/ec0lint.js", "--env", "es2021", "--no-ec0lintrc", "--rule", "semi: [2, never]"]), 1));
         it("has exit code 1 if a syntax error is thrown", () => assertExitCode(runESLint(["README.md"]), 1));
     });
 

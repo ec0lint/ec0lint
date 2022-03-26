@@ -16,7 +16,7 @@
 
 const assert = require("chai").assert,
     stdAssert = require("assert"),
-    { ESLint } = require("../../lib/eslint"),
+    { ESLint } = require("../../lib/ec0lint"),
     BuiltinRules = require("../../lib/rules"),
     path = require("path"),
     sinon = require("sinon"),
@@ -61,7 +61,7 @@ describe("cli", () => {
         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: sinon.spy() });
 
         const localCLI = proxyquire("../../lib/cli", {
-            "./eslint": { ESLint: fakeESLint },
+            "./ec0lint": { ESLint: fakeESLint },
             "./shared/logging": log
         });
 
@@ -91,7 +91,7 @@ describe("cli", () => {
          * Mocha uses `this` to set timeouts on an individual hook level.
          */
         this.timeout(60 * 1000); // eslint-disable-line no-invalid-this -- Mocha API
-        fixtureDir = `${os.tmpdir()}/eslint/fixtures`;
+        fixtureDir = `${os.tmpdir()}/ec0lint/fixtures`;
         sh.mkdir("-p", fixtureDir);
         sh.cp("-r", "./tests/fixtures/.", fixtureDir);
     });
@@ -878,7 +878,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -896,7 +896,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -926,7 +926,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().once();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -961,7 +961,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -996,7 +996,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1012,7 +1012,7 @@ describe("cli", () => {
             const fakeESLint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1041,7 +1041,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1067,7 +1067,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1100,7 +1100,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1135,7 +1135,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1169,7 +1169,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1184,7 +1184,7 @@ describe("cli", () => {
             const fakeESLint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 

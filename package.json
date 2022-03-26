@@ -4,7 +4,7 @@
   "author": "Malwina Kubas @malwinq",
   "description": "Make your website greener!",
   "bin": {
-    "eslint": "./bin/eslint.js"
+    "ec0lint": "./bin/ec0lint.js"
   },
   "main": "./lib/api.js",
   "exports": {

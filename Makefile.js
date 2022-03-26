@@ -66,7 +66,7 @@ const NODE = "node ", // intentional extra space
 
     // Utilities - intentional extra space at the end of each string
     MOCHA = `${NODE_MODULES}mocha/bin/_mocha `,
-    ESLINT = `${NODE} bin/eslint.js --report-unused-disable-directives `,
+    ESLINT = `${NODE} bin/ec0lint.js --report-unused-disable-directives `,
 
     // Files
     RULE_FILES = glob.sync("lib/rules/*.js").filter(filePath => path.basename(filePath) !== "index.js"),
