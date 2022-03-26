@@ -297,7 +297,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 cwd: originalDir,
-                configFile: ".eslintrc.js"
+                configFile: ".ec0lintrc.js"
             });
 
             const report = engine.executeOnFiles(["lib/**/cli*.js"]);
@@ -312,7 +312,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 cwd: originalDir,
-                configFile: ".eslintrc.js"
+                configFile: ".ec0lintrc.js"
             });
 
             const report = engine.executeOnFiles(["lib/**/cli*.js", "lib/cli.?s", "lib/{cli,cli-engine/cli-engine}.js"]);
@@ -1173,7 +1173,7 @@ describe("CLIEngine", () => {
         it("should warn when deprecated rules are configured", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
-                configFile: ".eslintrc.js",
+                configFile: ".ec0lintrc.js",
                 rules: {
                     "indent-legacy": 1,
                     "require-jsdoc": 1,
@@ -1197,7 +1197,7 @@ describe("CLIEngine", () => {
         it("should not warn when deprecated rules are not configured", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
-                configFile: ".eslintrc.js",
+                configFile: ".ec0lintrc.js",
                 rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
             });
 
@@ -4946,13 +4946,13 @@ describe("CLIEngine", () => {
             });
         });
 
-        describe("ignorePatterns can unignore '.eslintrc.js'.", () => {
+        describe("ignorePatterns can unignore '.ec0lintrc.js'.", () => {
 
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "!.eslintrc.js"
+                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
+                        ignorePatterns: "!.ec0lintrc.js"
                     })}`,
                     "foo.js": ""
                 }
@@ -4961,13 +4961,13 @@ describe("CLIEngine", () => {
             beforeEach(prepare);
             afterEach(cleanup);
 
-            it("'isPathIgnored()' should return 'false' for '.eslintrc.js'.", () => {
+            it("'isPathIgnored()' should return 'false' for '.ec0lintrc.js'.", () => {
                 const engine = new CLIEngine({ cwd: getPath() });
 
-                assert.strictEqual(engine.isPathIgnored(".eslintrc.js"), false);
+                assert.strictEqual(engine.isPathIgnored(".ec0lintrc.js"), false);
             });
 
-            it("'executeOnFiles()' should verify '.eslintrc.js'.", () => {
+            it("'executeOnFiles()' should verify '.ec0lintrc.js'.", () => {
                 const engine = new CLIEngine({ cwd: getPath() });
                 const filePaths = engine.executeOnFiles("**/*.js")
                     .results
@@ -4975,7 +4975,7 @@ describe("CLIEngine", () => {
                     .sort();
 
                 assert.deepStrictEqual(filePaths, [
-                    path.join(root, ".eslintrc.js"),
+                    path.join(root, ".ec0lintrc.js"),
                     path.join(root, "foo.js")
                 ]);
             });
@@ -4985,7 +4985,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.js": `module.exports = ${JSON.stringify({
+                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "!.*"
                     })}`,
                     ".eslintignore": ".foo*",
@@ -5018,7 +5018,7 @@ describe("CLIEngine", () => {
 
                 assert.deepStrictEqual(filePaths, [
                     path.join(root, ".bar.js"),
-                    path.join(root, ".eslintrc.js")
+                    path.join(root, ".ec0lintrc.js")
                 ]);
             });
         });
@@ -5028,7 +5028,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.js": `module.exports = ${JSON.stringify({
+                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "*.js"
                     })}`,
                     ".eslintignore": "!foo.js",
@@ -5492,7 +5492,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.js": `module.exports = ${JSON.stringify({
+                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
                         overrides: [
                             {
                                 files: "*.js",

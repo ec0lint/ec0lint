@@ -9,4 +9,4 @@
 /tmp/**
 /tools/internal-rules/node_modules/**
 test.js
-!.eslintrc.js
+!.ec0lintrc.js
