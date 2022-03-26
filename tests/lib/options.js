@@ -319,38 +319,13 @@ describe("options", () => {
         });
     });
 
-    describe("--fix", () => {
-        it("should return true for --fix when passed", () => {
-            const currentOptions = options.parse("--fix");
-
-            assert.isTrue(currentOptions.fix);
-        });
-    });
-
-    describe("--fix-type", () => {
-        it("should return one value with --fix-type is passed", () => {
-            const currentOptions = options.parse("--fix-type problem");
-
-            assert.strictEqual(currentOptions.fixType.length, 1);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-        });
-
-        it("should return two values when --fix-type is passed twice", () => {
-            const currentOptions = options.parse("--fix-type problem --fix-type suggestion");
-
-            assert.strictEqual(currentOptions.fixType.length, 2);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-            assert.strictEqual(currentOptions.fixType[1], "suggestion");
-        });
-
-        it("should return two values when --fix-type is passed a comma-separated value", () => {
-            const currentOptions = options.parse("--fix-type problem,suggestion");
-
-            assert.strictEqual(currentOptions.fixType.length, 2);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-            assert.strictEqual(currentOptions.fixType[1], "suggestion");
-        });
-    });
+    // describe("--fix", () => {
+    //     it("should return true for --fix when passed", () => {
+    //         const currentOptions = options.parse("--fix");
+    //
+    //         assert.isTrue(currentOptions.fix);
+    //     });
+    // });
 
     describe("--debug", () => {
         it("should return true for --debug when passed", () => {

@@ -3259,58 +3259,58 @@ describe("ESLint", () => {
             });
         });
 
-        describe("'--fix-type' should not crash even if plugin rules exist; https://github.com/eslint/eslint/issues/11586", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "cli-engine/11586"),
-                files: {
-                    "node_modules/ec0lint-plugin-test/index.js": `
-                            exports.rules = {
-                                "no-example": {
-                                    meta: { type: "problem", fixable: "code" },
-                                    create(context) {
-                                        return {
-                                            Identifier(node) {
-                                                if (node.name === "example") {
-                                                    context.report({
-                                                        node,
-                                                        message: "fix",
-                                                        fix: fixer => fixer.replaceText(node, "fixed")
-                                                    })
-                                                }
-                                            }
-                                        };
-                                    }
-                                }
-                            };
-                        `,
-                    ".ec0lintrc.json": {
-                        plugins: ["test"],
-                        rules: { "test/no-example": "error" }
-                    },
-                    "a.js": "example;"
-                }
-            });
-
-            beforeEach(() => {
-                eslint = new ESLint({
-                    cwd: getPath(),
-                    fix: true,
-                    fixTypes: ["problem"]
-                });
-
-                return prepare();
-            });
-
-            afterEach(cleanup);
-
-            it("should not crash.", async () => {
-                const results = await eslint.lintFiles("a.js");
-
-                assert.strictEqual(results.length, 1);
-                assert.deepStrictEqual(results[0].messages, []);
-                assert.deepStrictEqual(results[0].output, "fixed;");
-            });
-        });
+        // describe("'--fix-type' should not crash even if plugin rules exist; https://github.com/eslint/eslint/issues/11586", () => {
+        //     const { prepare, cleanup, getPath } = createCustomTeardown({
+        //         cwd: path.join(os.tmpdir(), "cli-engine/11586"),
+        //         files: {
+        //             "node_modules/ec0lint-plugin-test/index.js": `
+        //                     exports.rules = {
+        //                         "no-example": {
+        //                             meta: { type: "problem", fixable: "code" },
+        //                             create(context) {
+        //                                 return {
+        //                                     Identifier(node) {
+        //                                         if (node.name === "example") {
+        //                                             context.report({
+        //                                                 node,
+        //                                                 message: "fix",
+        //                                                 fix: fixer => fixer.replaceText(node, "fixed")
+        //                                             })
+        //                                         }
+        //                                     }
+        //                                 };
+        //                             }
+        //                         }
+        //                     };
+        //                 `,
+        //             ".ec0lintrc.json": {
+        //                 plugins: ["test"],
+        //                 rules: { "test/no-example": "error" }
+        //             },
+        //             "a.js": "example;"
+        //         }
+        //     });
+        //
+        //     beforeEach(() => {
+        //         eslint = new ESLint({
+        //             cwd: getPath(),
+        //             fix: true,
+        //             fixTypes: ["problem"]
+        //         });
+        //
+        //         return prepare();
+        //     });
+        //
+        //     afterEach(cleanup);
+        //
+        //     it("should not crash.", async () => {
+        //         const results = await eslint.lintFiles("a.js");
+        //
+        //         assert.strictEqual(results.length, 1);
+        //         assert.deepStrictEqual(results[0].messages, []);
+        //         assert.deepStrictEqual(results[0].output, "fixed;");
+        //     });
+        // });
 
         describe("multiple processors", () => {
             const root = path.join(os.tmpdir(), "eslint/eslint/multiple-processors");

@@ -312,16 +312,16 @@ describe("cli", () => {
         });
     });
 
-    describe("when using --fix-type without --fix or --fix-dry-run", () => {
-        it("should exit with error", async () => {
-            const filePath = getFixturePath("passing.js");
-            const code = `--fix-type suggestion ${filePath}`;
-
-            const exit = await cli.execute(code);
-
-            assert.strictEqual(exit, 2);
-        });
-    });
+    // describe("when using --fix-type without --fix or --fix-dry-run", () => {
+    //     it("should exit with error", async () => {
+    //         const filePath = getFixturePath("passing.js");
+    //         const code = `--fix-type suggestion ${filePath}`;
+    //
+    //         const exit = await cli.execute(code);
+    //
+    //         assert.strictEqual(exit, 2);
+    //     });
+    // });
 
     describe("when executing a file with a syntax error", () => {
         it("should exit with error", async () => {
@@ -908,291 +908,291 @@ describe("cli", () => {
 
     });
 
-    describe("when passed --fix", () => {
-        let localCLI;
-
-        afterEach(() => {
-            sinon.verifyAndRestore();
-        });
-
-        it("should pass fix:true to ESLint when executing on files", async () => {
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().once();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix .");
-
-            assert.strictEqual(exitCode, 0);
-
-        });
-
-
-        it("should rewrite files when in fix mode", async () => {
-
-            const report = [{
-                filePath: "./foo.js",
-                output: "bar",
-                messages: [
-                    {
-                        severity: 2,
-                        message: "Fake message"
-                    }
-                ],
-                errorCount: 1,
-                warningCount: 0
-            }];
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix .");
-
-            assert.strictEqual(exitCode, 1);
-
-        });
-
-        it("should provide fix predicate and rewrite files when in fix mode and quiet mode", async () => {
-
-            const report = [{
-                filePath: "./foo.js",
-                output: "bar",
-                messages: [
-                    {
-                        severity: 1,
-                        message: "Fake message"
-                    }
-                ],
-                errorCount: 0,
-                warningCount: 1
-            }];
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.getErrorResults = sinon.stub().returns([]);
-            fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix --quiet .");
-
-            assert.strictEqual(exitCode, 0);
-
-        });
-
-        it("should not call ESLint and return 2 when executing on text", async () => {
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix .", "foo = bar;");
-
-            assert.strictEqual(exitCode, 2);
-        });
-
-    });
-
-    describe("when passed --fix-dry-run", () => {
-        let localCLI;
-
-        afterEach(() => {
-            sinon.verifyAndRestore();
-        });
-
-        it("should pass fix:true to ESLint when executing on files", async () => {
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix-dry-run .");
-
-            assert.strictEqual(exitCode, 0);
-
-        });
-
-        it("should pass fixTypes to ESLint when --fix-type is passed", async () => {
-
-            const expectedESLintOptions = {
-                fix: true,
-                fixTypes: ["suggestion"]
-            };
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match(expectedESLintOptions));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.stub();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix-dry-run --fix-type suggestion .");
-
-            assert.strictEqual(exitCode, 0);
-        });
-
-        it("should not rewrite files when in fix-dry-run mode", async () => {
-
-            const report = [{
-                filePath: "./foo.js",
-                output: "bar",
-                messages: [
-                    {
-                        severity: 2,
-                        message: "Fake message"
-                    }
-                ],
-                errorCount: 1,
-                warningCount: 0
-            }];
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix-dry-run .");
-
-            assert.strictEqual(exitCode, 1);
-
-        });
-
-        it("should provide fix predicate when in fix-dry-run mode and quiet mode", async () => {
-
-            const report = [{
-                filePath: "./foo.js",
-                output: "bar",
-                messages: [
-                    {
-                        severity: 1,
-                        message: "Fake message"
-                    }
-                ],
-                errorCount: 0,
-                warningCount: 1
-            }];
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.getErrorResults = sinon.stub().returns([]);
-            fakeESLint.outputFixes = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix-dry-run --quiet .");
-
-            assert.strictEqual(exitCode, 0);
-
-        });
-
-        it("should allow executing on text", async () => {
-
-            const report = [{
-                filePath: "./foo.js",
-                output: "bar",
-                messages: [
-                    {
-                        severity: 2,
-                        message: "Fake message"
-                    }
-                ],
-                errorCount: 1,
-                warningCount: 0
-            }];
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
-
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintText").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix-dry-run .", "foo = bar;");
-
-            assert.strictEqual(exitCode, 1);
-        });
-
-        it("should not call ESLint and return 2 when used with --fix", async () => {
-
-            // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().never();
-
-            localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
-                "./shared/logging": log
-            });
-
-            const exitCode = await localCLI.execute("--fix --fix-dry-run .", "foo = bar;");
-
-            assert.strictEqual(exitCode, 2);
-        });
-    });
+    // describe("when passed --fix", () => {
+    //     let localCLI;
+    //
+    //     afterEach(() => {
+    //         sinon.verifyAndRestore();
+    //     });
+    //
+    //     it("should pass fix:true to ESLint when executing on files", async () => {
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.mock().once();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix .");
+    //
+    //         assert.strictEqual(exitCode, 0);
+    //
+    //     });
+    //
+    //
+    //     it("should rewrite files when in fix mode", async () => {
+    //
+    //         const report = [{
+    //             filePath: "./foo.js",
+    //             output: "bar",
+    //             messages: [
+    //                 {
+    //                     severity: 2,
+    //                     message: "Fake message"
+    //                 }
+    //             ],
+    //             errorCount: 1,
+    //             warningCount: 0
+    //         }];
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix .");
+    //
+    //         assert.strictEqual(exitCode, 1);
+    //
+    //     });
+    //
+    //     it("should provide fix predicate and rewrite files when in fix mode and quiet mode", async () => {
+    //
+    //         const report = [{
+    //             filePath: "./foo.js",
+    //             output: "bar",
+    //             messages: [
+    //                 {
+    //                     severity: 1,
+    //                     message: "Fake message"
+    //                 }
+    //             ],
+    //             errorCount: 0,
+    //             warningCount: 1
+    //         }];
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.getErrorResults = sinon.stub().returns([]);
+    //         fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix --quiet .");
+    //
+    //         assert.strictEqual(exitCode, 0);
+    //
+    //     });
+    //
+    //     it("should not call ESLint and return 2 when executing on text", async () => {
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix .", "foo = bar;");
+    //
+    //         assert.strictEqual(exitCode, 2);
+    //     });
+    //
+    // });
+
+    // describe("when passed --fix-dry-run", () => {
+    //     let localCLI;
+    //
+    //     afterEach(() => {
+    //         sinon.verifyAndRestore();
+    //     });
+    //
+    //     it("should pass fix:true to ESLint when executing on files", async () => {
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix-dry-run .");
+    //
+    //         assert.strictEqual(exitCode, 0);
+    //
+    //     });
+    //
+    //     it("should pass fixTypes to ESLint when --fix-type is passed", async () => {
+    //
+    //         const expectedESLintOptions = {
+    //             fix: true,
+    //             fixTypes: ["suggestion"]
+    //         };
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match(expectedESLintOptions));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.stub();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix-dry-run --fix-type suggestion .");
+    //
+    //         assert.strictEqual(exitCode, 0);
+    //     });
+    //
+    //     it("should not rewrite files when in fix-dry-run mode", async () => {
+    //
+    //         const report = [{
+    //             filePath: "./foo.js",
+    //             output: "bar",
+    //             messages: [
+    //                 {
+    //                     severity: 2,
+    //                     message: "Fake message"
+    //                 }
+    //             ],
+    //             errorCount: 1,
+    //             warningCount: 0
+    //         }];
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix-dry-run .");
+    //
+    //         assert.strictEqual(exitCode, 1);
+    //
+    //     });
+    //
+    //     it("should provide fix predicate when in fix-dry-run mode and quiet mode", async () => {
+    //
+    //         const report = [{
+    //             filePath: "./foo.js",
+    //             output: "bar",
+    //             messages: [
+    //                 {
+    //                     severity: 1,
+    //                     message: "Fake message"
+    //                 }
+    //             ],
+    //             errorCount: 0,
+    //             warningCount: 1
+    //         }];
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.getErrorResults = sinon.stub().returns([]);
+    //         fakeESLint.outputFixes = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix-dry-run --quiet .");
+    //
+    //         assert.strictEqual(exitCode, 0);
+    //
+    //     });
+    //
+    //     it("should allow executing on text", async () => {
+    //
+    //         const report = [{
+    //             filePath: "./foo.js",
+    //             output: "bar",
+    //             messages: [
+    //                 {
+    //                     severity: 2,
+    //                     message: "Fake message"
+    //                 }
+    //             ],
+    //             errorCount: 1,
+    //             warningCount: 0
+    //         }];
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+    //
+    //         Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
+    //         sinon.stub(fakeESLint.prototype, "lintText").returns(report);
+    //         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
+    //         fakeESLint.outputFixes = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix-dry-run .", "foo = bar;");
+    //
+    //         assert.strictEqual(exitCode, 1);
+    //     });
+    //
+    //     it("should not call ESLint and return 2 when used with --fix", async () => {
+    //
+    //         // create a fake ESLint class to test with
+    //         const fakeESLint = sinon.mock().never();
+    //
+    //         localCLI = proxyquire("../../lib/cli", {
+    //             "./ec0lint": { ESLint: fakeESLint },
+    //             "./shared/logging": log
+    //         });
+    //
+    //         const exitCode = await localCLI.execute("--fix --fix-dry-run .", "foo = bar;");
+    //
+    //         assert.strictEqual(exitCode, 2);
+    //     });
+    // });
 
     describe("when passing --print-config", () => {
         it("should print out the configuration", async () => {
