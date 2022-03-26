@@ -33,12 +33,12 @@ describe("FileEnumerator", () => {
                 "lib/nested/one.js": "",
                 "lib/nested/two.js": "",
                 "lib/nested/parser.js": "",
-                "lib/nested/.eslintrc.yml": "parser: './parser'",
+                "lib/nested/.ec0lintrc.yml": "parser: './parser'",
                 "lib/one.js": "",
                 "lib/two.js": "",
                 "test/one.js": "",
                 "test/two.js": "",
-                "test/.eslintrc.yml": "env: { mocha: true }",
+                "test/.ec0lintrc.yml": "env: { mocha: true }",
                 ".eslintignore": "/lib/nested/parser.js",
                 ".ec0lintrc.json": JSON.stringify({
                     rules: {
@@ -120,12 +120,12 @@ describe("FileEnumerator", () => {
                     );
                 });
 
-                it("should use the merged config of '.ec0lintrc.json' and 'lib/nested/.eslintrc.yml' for 'lib/nested/one.js' and 'lib/nested/two.js'.", () => {
+                it("should use the merged config of '.ec0lintrc.json' and 'lib/nested/.ec0lintrc.yml' for 'lib/nested/one.js' and 'lib/nested/two.js'.", () => {
                     assert.strictEqual(list[0].config, list[1].config);
                     assert.strictEqual(list[0].config.length, 4);
                     assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, "lib/nested/.eslintrc.yml"));
+                    assert.strictEqual(list[0].config[2].filePath, path.join(root, "lib/nested/.ec0lintrc.yml"));
                     assert.strictEqual(list[0].config[3].filePath, path.join(root, ".eslintignore"));
                 });
 
@@ -171,12 +171,12 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[0].config[2].filePath, path.join(root, ".eslintignore"));
                 });
 
-                it("should use the merged config of '.ec0lintrc.json' and 'test/.eslintrc.yml' for 'test/one.js' and 'test/two.js'.", () => {
+                it("should use the merged config of '.ec0lintrc.json' and 'test/.ec0lintrc.yml' for 'test/one.js' and 'test/two.js'.", () => {
                     assert.strictEqual(list[2].config, list[3].config);
                     assert.strictEqual(list[2].config.length, 4);
                     assert.strictEqual(list[2].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[2].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[2].config[2].filePath, path.join(root, "test/.eslintrc.yml"));
+                    assert.strictEqual(list[2].config[2].filePath, path.join(root, "test/.ec0lintrc.yml"));
                     assert.strictEqual(list[2].config[3].filePath, path.join(root, ".eslintignore"));
                 });
             });

@@ -36,7 +36,7 @@
     "fileexts": {
         ".ec0lintrc.js": "module.exports = {\n    rules: {\n        semi: [2, \"always\"]\n    },\n    root: true\n};\n",
         "subdir": {
-            ".eslintrc.yml": "rules:\n  eqeqeq: 2\n",
+            ".ec0lintrc.yml": "rules:\n  eqeqeq: 2\n",
             "subsubdir": {
                 ".ec0lintrc.json": "{\n    \"env\": {\n        \"browser\": true\n    }\n}\n"
             }

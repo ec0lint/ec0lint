@@ -259,7 +259,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
                 useEslintrc: false,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.eslintrc.yml"
+                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
             });
 
             const report = engine.executeOnText("foo");
@@ -301,7 +301,7 @@ describe("CLIEngine", () => {
             });
 
             const report = engine.executeOnFiles(["lib/**/cli*.js"]);
-
+            console.log(report.results);
             assert.strictEqual(report.results.length, 2);
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[1].messages.length, 0);
@@ -1019,7 +1019,7 @@ describe("CLIEngine", () => {
                 ignore: false,
                 useEslintrc: false,
                 rulePaths: [getFixturePath("rules/")],
-                configFile: getFixturePath("rules", "eslint.json")
+                configFile: getFixturePath("rules", "ec0lint.json")
             });
 
             const filePath = fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"));
@@ -1041,7 +1041,7 @@ describe("CLIEngine", () => {
                 ignore: false,
                 cwd,
                 rulePaths: ["./"],
-                configFile: "eslint.json"
+                configFile: "ec0lint.json"
             });
 
             const filePath = fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"));
@@ -1142,7 +1142,7 @@ describe("CLIEngine", () => {
                 envs: ["node"]
             });
 
-            const filePath = fs.realpathSync(getFixturePath("eslintrc", "quotes.js"));
+            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "quotes.js"));
 
             const report = engine.executeOnFiles([filePath]);
 
@@ -1210,7 +1210,7 @@ describe("CLIEngine", () => {
         it("should warn when deprecated rules are found in a config", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.eslintrc.yml",
+                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
                 useEslintrc: false
             });
 
@@ -2818,7 +2818,7 @@ describe("CLIEngine", () => {
         });
 
         describe("multiple processors", () => {
-            const root = path.join(os.tmpdir(), "eslint/cli-engine/multiple-processors");
+            const root = path.join(os.tmpdir(), "ec0lint/cli-engine/multiple-processors");
             const commonFiles = {
                 "node_modules/pattern-processor/index.js": fs.readFileSync(
                     require.resolve("../../fixtures/processors/pattern-processor"),
@@ -2930,36 +2930,6 @@ describe("CLIEngine", () => {
                     </script>
                     \`\`\`
                 `);
-            });
-
-            it("should lint HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                engine = new CLIEngine({
-                    cwd: teardown.getPath(),
-                    extensions: ["js", "html"]
-                });
-
-                const { results } = engine.executeOnFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS block
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "semi"); // JS block in HTML block
-                assert.strictEqual(results[0].messages[1].line, 7);
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
             it("should fix HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
@@ -3133,7 +3103,7 @@ describe("CLIEngine", () => {
                     assert.strictEqual(err.messageTemplate, "extend-config-missing");
                     assert.deepStrictEqual(err.messageData, {
                         configName: "nonexistent-config",
-                        importerName: getFixturePath("module-not-found", "extends-js", ".eslintrc.yml")
+                        importerName: getFixturePath("module-not-found", "extends-js", ".ec0lintrc.yml")
                     });
                     return;
                 }
@@ -3147,7 +3117,7 @@ describe("CLIEngine", () => {
                     assert.strictEqual(err.code, "MODULE_NOT_FOUND");
                     assert.strictEqual(err.messageTemplate, "plugin-missing");
                     assert.deepStrictEqual(err.messageData, {
-                        importerName: `extends-plugin${path.sep}.eslintrc.yml`,
+                        importerName: `extends-plugin${path.sep}.ec0lintrc.yml`,
                         pluginName: "eslint-plugin-nonexistent-plugin",
                         resolvePluginsRelativeTo: path.join(cwd, "extends-plugin") // the directory of the config file.
                     });
@@ -3163,7 +3133,7 @@ describe("CLIEngine", () => {
                     assert.strictEqual(err.code, "MODULE_NOT_FOUND");
                     assert.strictEqual(err.messageTemplate, "plugin-missing");
                     assert.deepStrictEqual(err.messageData, {
-                        importerName: `plugins${path.sep}.eslintrc.yml`,
+                        importerName: `plugins${path.sep}.ec0lintrc.yml`,
                         pluginName: "eslint-plugin-nonexistent-plugin",
                         resolvePluginsRelativeTo: path.join(cwd, "plugins") // the directory of the config file.
                     });
@@ -3220,7 +3190,7 @@ describe("CLIEngine", () => {
         describe("with '--rulesdir' option", () => {
 
             const rootPath = getFixturePath("cli-engine/with-rulesdir");
-
+            console.log(rootPath);
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: rootPath,
                 files: {
@@ -3278,7 +3248,7 @@ describe("CLIEngine", () => {
                         "b.js": "",
                         "ab.js": "",
                         "[ab].js": "",
-                        ".eslintrc.yml": "root: true"
+                        ".ec0lintrc.yml": "root: true"
                     }
                 });
 
@@ -3301,7 +3271,7 @@ describe("CLIEngine", () => {
                         "a.js": "",
                         "b.js": "",
                         "ab.js": "",
-                        ".eslintrc.yml": "root: true"
+                        ".ec0lintrc.yml": "root: true"
                     }
                 });
 
@@ -3334,7 +3304,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         "test.js": "/* globals foo */",
-                        ".eslintrc.yml": "noInlineConfig: true"
+                        ".ec0lintrc.yml": "noInlineConfig: true"
                     }
                 });
 
@@ -3346,7 +3316,7 @@ describe("CLIEngine", () => {
                 const messages = results[0].messages;
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.eslintrc.yml).");
+                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.ec0lintrc.yml).");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
@@ -3357,7 +3327,7 @@ describe("CLIEngine", () => {
                     files: {
                         "node_modules/ec0lint-config-foo/index.js": "module.exports = {noInlineConfig: true}",
                         "test.js": "/* globals foo */",
-                        ".eslintrc.yml": "extends: foo"
+                        ".ec0lintrc.yml": "extends: foo"
                     }
                 });
 
@@ -3369,7 +3339,7 @@ describe("CLIEngine", () => {
                 const messages = results[0].messages;
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.eslintrc.yml » ec0lint-config-foo).");
+                assert.strictEqual(messages[0].message, "'/*globals*/' has no effect because you have 'noInlineConfig' setting in your config (.ec0lintrc.yml » ec0lint-config-foo).");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
@@ -3390,7 +3360,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         "test.js": "/* eslint-disable eqeqeq */",
-                        ".eslintrc.yml": "reportUnusedDisableDirectives: true"
+                        ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
 
@@ -3413,7 +3383,7 @@ describe("CLIEngine", () => {
                         cwd: root,
                         files: {
                             "test.js": "/* eslint-disable eqeqeq */",
-                            ".eslintrc.yml": "reportUnusedDisableDirectives: true"
+                            ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
 
@@ -3437,7 +3407,7 @@ describe("CLIEngine", () => {
                         cwd: root,
                         files: {
                             "test.js": "/* eslint-disable eqeqeq */",
-                            ".eslintrc.yml": "reportUnusedDisableDirectives: true"
+                            ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
 
@@ -3476,7 +3446,7 @@ describe("CLIEngine", () => {
                         rules: { "no-console": "error" }
                     })}`,
                     "test.js": "console.log('hello')",
-                    ".eslintrc.yml": "extends: one"
+                    ".ec0lintrc.yml": "extends: one"
                 }
             });
 
@@ -3595,9 +3565,9 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("config-hierarchy", "root-true", "parent", "root", "subdir")
             };
             const engine = new CLIEngine(options);
-            const filePath = getFixturePath("config-hierarchy", "root-true", "parent", "root", ".eslintrc");
+            const filePath = getFixturePath("config-hierarchy", "root-true", "parent", "root", ".ec0lintrc");
 
-            const actualConfig = engine.getConfigForFile("./.eslintrc");
+            const actualConfig = engine.getConfigForFile("./.ec0lintrc");
             const expectedConfig = new CascadingConfigArrayFactory(options)
                 .getConfigArrayForFile(filePath)
                 .extractConfig(filePath)

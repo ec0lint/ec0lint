@@ -3313,7 +3313,7 @@ describe("ESLint", () => {
         // });
 
         describe("multiple processors", () => {
-            const root = path.join(os.tmpdir(), "eslint/eslint/multiple-processors");
+            const root = path.join(os.tmpdir(), "ec0lint/ec0lint/multiple-processors");
             const commonFiles = {
                 "node_modules/pattern-processor/index.js": fs.readFileSync(
                     require.resolve("../../fixtures/processors/pattern-processor"),
