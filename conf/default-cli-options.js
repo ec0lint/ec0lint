@@ -23,7 +23,7 @@ module.exports = {
      * it will always be used
      */
     cacheLocation: "",
-    cacheFile: ".eslintcache",
+    cacheFile: ".ec0lintcache",
     cacheStrategy: "metadata",
     fix: false,
     allowInlineConfig: true,

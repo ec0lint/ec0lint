@@ -2189,7 +2189,7 @@ describe("ESLint", () => {
              * @returns {void}
              */
             function deleteCache() {
-                doDelete(path.resolve(".eslintcache"));
+                doDelete(path.resolve(".ec0lintcache"));
                 doDelete(path.resolve(".cache/custom-cache"));
             }
 
@@ -2301,11 +2301,11 @@ describe("ESLint", () => {
 
                 await eslint.lintFiles([file]);
 
-                assert(shell.test("-f", path.resolve(cwd, ".eslintcache")), "the cache for eslint was created at provided cwd");
+                assert(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for eslint was created at provided cwd");
             });
 
             it("should invalidate the cache if the configuration changed between executions", async () => {
-                assert(!shell.test("-f", path.resolve(".eslintcache")), "the cache for eslint does not exist");
+                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
 
                 eslint = new ESLint({
                     useEslintrc: false,
@@ -2333,7 +2333,7 @@ describe("ESLint", () => {
                     assert.strictEqual(errorCount + warningCount, 0, "the file passed without errors or warnings");
                 }
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert(shell.test("-f", path.resolve(".eslintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -2360,11 +2360,11 @@ describe("ESLint", () => {
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed because the config changed");
                 assert.strictEqual(cachedResult.errorCount, 1, "since configuration changed the cache was not used an one error was reported");
-                assert(shell.test("-f", path.resolve(".eslintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
             });
 
             it("should remember the files from a previous run and do not operate on them if not changed", async () => {
-                assert(!shell.test("-f", path.resolve(".eslintcache")), "the cache for eslint does not exist");
+                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
 
                 eslint = new ESLint({
                     useEslintrc: false,
@@ -2390,7 +2390,7 @@ describe("ESLint", () => {
                 const result = await eslint.lintFiles([file]);
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert(shell.test("-f", path.resolve(".eslintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -2422,7 +2422,7 @@ describe("ESLint", () => {
             });
 
             it("should remember the files from a previous run and do not operate on then if not changed", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
                 const eslintOptions = {
                     useEslintrc: false,
 
@@ -2460,7 +2460,7 @@ describe("ESLint", () => {
             });
 
             it("should store in the cache a file that failed the test", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 assert(!shell.test("-f", cacheLocation), "the cache for eslint does not exist");
 
@@ -2495,7 +2495,7 @@ describe("ESLint", () => {
             });
 
             it("should not contain in the cache a file that was deleted", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 doDelete(cacheLocation);
 
@@ -2539,7 +2539,7 @@ describe("ESLint", () => {
             });
 
             it("should contain files that were not visited in the cache provided they still exist", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 doDelete(cacheLocation);
 
@@ -2583,7 +2583,7 @@ describe("ESLint", () => {
             });
 
             it("should not delete cache when executing on text", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
@@ -2606,7 +2606,7 @@ describe("ESLint", () => {
             });
 
             it("should not delete cache when executing on text with a provided filename", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
@@ -2629,7 +2629,7 @@ describe("ESLint", () => {
             });
 
             it("should not delete cache when executing on files with --cache flag", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
@@ -2654,7 +2654,7 @@ describe("ESLint", () => {
             });
 
             it("should delete cache when executing on files without --cache flag", async () => {
-                const cacheLocation = getFixturePath(".eslintcache");
+                const cacheLocation = getFixturePath(".ec0lintcache");
 
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
@@ -2719,7 +2719,7 @@ describe("ESLint", () => {
 
             describe("cacheStrategy", () => {
                 it("should detect changes using a file's modification time when set to 'metadata'", async () => {
-                    const cacheLocation = getFixturePath(".eslintcache");
+                    const cacheLocation = getFixturePath(".ec0lintcache");
 
                     doDelete(cacheLocation);
 
@@ -2758,7 +2758,7 @@ describe("ESLint", () => {
                 });
 
                 it("should not detect changes using a file's modification time when set to 'content'", async () => {
-                    const cacheLocation = getFixturePath(".eslintcache");
+                    const cacheLocation = getFixturePath(".ec0lintcache");
 
                     doDelete(cacheLocation);
 
@@ -2799,7 +2799,7 @@ describe("ESLint", () => {
                 });
 
                 it("should detect changes using a file's contents when set to 'content'", async () => {
-                    const cacheLocation = getFixturePath(".eslintcache");
+                    const cacheLocation = getFixturePath(".ec0lintcache");
 
                     doDelete(cacheLocation);
 

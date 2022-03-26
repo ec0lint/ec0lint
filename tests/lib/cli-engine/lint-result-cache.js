@@ -24,7 +24,7 @@ describe("LintResultCache", () => {
         __dirname,
         "../../fixtures/lint-result-cache"
     );
-    const cacheFileLocation = path.join(fixturePath, ".eslintcache");
+    const cacheFileLocation = path.join(fixturePath, ".ec0lintcache");
     const fileEntryCacheStubs = {};
 
     let LintResultCache,
