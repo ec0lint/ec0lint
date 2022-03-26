@@ -202,22 +202,6 @@ describe("options", () => {
         });
     });
 
-    describe("--stdin", () => {
-        it("should return true for .stdin when passed", () => {
-            const currentOptions = options.parse("--stdin");
-
-            assert.isTrue(currentOptions.stdin);
-        });
-    });
-
-    describe("--stdin-filename", () => {
-        it("should return a string for .stdinFilename when passed", () => {
-            const currentOptions = options.parse("--stdin-filename test.js");
-
-            assert.strictEqual(currentOptions.stdinFilename, "test.js");
-        });
-    });
-
     describe("--global", () => {
         it("should return an array for a single occurrence", () => {
             const currentOptions = options.parse("--global foo");
@@ -252,42 +236,6 @@ describe("options", () => {
             assert.strictEqual(currentOptions.global.length, 2);
             assert.strictEqual(currentOptions.global[0], "foo:true");
             assert.strictEqual(currentOptions.global[1], "bar:false");
-        });
-    });
-
-    describe("--plugin", () => {
-        it("should return an array when passed a single occurrence", () => {
-            const currentOptions = options.parse("--plugin single");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 1);
-            assert.strictEqual(currentOptions.plugin[0], "single");
-        });
-
-        it("should return an array when passed a comma-delimited string", () => {
-            const currentOptions = options.parse("--plugin foo,bar");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 2);
-            assert.strictEqual(currentOptions.plugin[0], "foo");
-            assert.strictEqual(currentOptions.plugin[1], "bar");
-        });
-
-        it("should return an array when passed multiple times", () => {
-            const currentOptions = options.parse("--plugin foo --plugin bar");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 2);
-            assert.strictEqual(currentOptions.plugin[0], "foo");
-            assert.strictEqual(currentOptions.plugin[1], "bar");
-        });
-    });
-
-    describe("--quiet", () => {
-        it("should return true for .quiet when passed", () => {
-            const currentOptions = options.parse("--quiet");
-
-            assert.isTrue(currentOptions.quiet);
         });
     });
 
