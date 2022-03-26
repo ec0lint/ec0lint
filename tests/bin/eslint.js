@@ -171,7 +171,7 @@ describe("bin/eslint.js", () => {
                 const stderrPromise = getOutput(child).then(output => {
                     assert.match(
                         output.stderr,
-                        /ESLint couldn't find a configuration file/u
+                        /ec0lint couldn't find a configuration file/u
                     );
                 });
 
