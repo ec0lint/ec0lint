@@ -1,6 +1,6 @@
 {
   "name": "ec0lint",
-  "version": "0.0.8",
+  "version": "0.0.11",
   "author": "Malwina Kubas @malwinq",
   "description": "Make your website greener!",
   "bin": {
