@@ -12,7 +12,7 @@
             "console-wrong-quotes.js": "console.log('bar');\r\n"
         },
         "plugins2": {
-            ".eslintrc": "plugins: \r\n    [\"example\", \"eslint-plugin-test\"]\r\n    ",
+            ".eslintrc": "plugins: \r\n    [\"example\", \"ec0lint-plugin-test\"]\r\n    ",
             "console-wrong-quotes.js": "console.log('bar');\r\n"
         },
         "process-exit.js": "process.exit(0);\r\n",
@@ -27,9 +27,9 @@
         "wrong-quotes.js": "// function is necessary to avoid any other errors\r\nfunction foo(bar) {\r\n    \"use strict\";\r\n    return bar;\r\n}\r\n\r\nfoo('bar');\r\n"
     },
     "envs": {
-        ".eslintrc.json": "{\n  \"root\": true,\n  \"env\": { \"node\": true }\n}\n",
+        ".ec0lintrc.json": "{\n  \"root\": true,\n  \"env\": { \"node\": true }\n}\n",
         "sub": {
-            ".eslintrc.json": "{\n  \"env\": { \"node\": false, \"browser\": true }\n}\n",
+            ".ec0lintrc.json": "{\n  \"env\": { \"node\": false, \"browser\": true }\n}\n",
             "foo.js": "foo;\n"
         }
     },
@@ -38,7 +38,7 @@
         "subdir": {
             ".eslintrc.yml": "rules:\n  eqeqeq: 2\n",
             "subsubdir": {
-                ".eslintrc.json": "{\n    \"env\": {\n        \"browser\": true\n    }\n}\n"
+                ".ec0lintrc.json": "{\n    \"env\": {\n        \"browser\": true\n    }\n}\n"
             }
         }
     },
@@ -76,7 +76,7 @@
             "package.json": "{\n    \"name\": \"foo\",\n    \"version\": \"1.0.0\"\n}"
         },
         "home-folder": {
-            ".eslintrc.json": "{\n    \"rules\": {\n        \"home-folder-rule\": 2\n    }\n}\n",
+            ".ec0lintrc.json": "{\n    \"rules\": {\n        \"home-folder-rule\": 2\n    }\n}\n",
             "project": {
                 ".eslintrc": "{\n    \"rules\": {\n        \"project-level-rule\": 2\n    }\n}\n",
                 "package.json": "{}\n"

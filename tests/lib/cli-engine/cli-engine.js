@@ -2746,7 +2746,7 @@ describe("CLIEngine", () => {
                             rules: { "no-console": "error" }
                         }]
                     },
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         extends: "./no-console-error-in-overrides.json",
                         rules: { "no-console": "off" }
                     },
@@ -2788,7 +2788,7 @@ describe("CLIEngine", () => {
                             }
                         };
                     `,
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
 
                         // Import via the recommended config.
                         extends: "plugin:test/recommended",
@@ -2871,7 +2871,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" }
                         }
@@ -2897,7 +2897,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" }
                         }
@@ -2937,7 +2937,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" }
                         }
@@ -2967,7 +2967,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" }
                         }
@@ -3009,7 +3009,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" },
                             overrides: [
@@ -3054,112 +3054,13 @@ describe("CLIEngine", () => {
                 `);
             });
 
-            it("should use the config '**/*.html/*.js' to lint JavaScript blocks in HTML.", async () => {
-
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".eslintrc.json": {
-                            plugins: ["markdown", "html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-
-                                    // this rules are not used because ESLint re-resolve configs if a code block had a different file extension.
-                                    rules: {
-                                        semi: "error",
-                                        "no-console": "off"
-                                    }
-                                },
-                                {
-                                    files: "**/*.html/*.js",
-                                    rules: {
-                                        semi: "off",
-                                        "no-console": "error"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                engine = new CLIEngine({
-                    cwd: teardown.getPath(),
-                    extensions: ["js", "html"]
-                });
-
-                const { results } = engine.executeOnFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[1].line, 7);
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
-            });
-
-            it("should use the same config as one which has 'processor' property in order to lint blocks in HTML if the processor was legacy style.", async () => {
-
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".eslintrc.json": {
-                            plugins: ["markdown", "html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-                                    processor: "html/legacy", // this processor returns strings rather than `{text, filename}`
-                                    rules: {
-                                        semi: "off",
-                                        "no-console": "error"
-                                    }
-                                },
-                                {
-                                    files: "**/*.html/*.js",
-                                    rules: {
-                                        semi: "error",
-                                        "no-console": "off"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                engine = new CLIEngine({
-                    cwd: teardown.getPath(),
-                    extensions: ["js", "html"]
-                });
-
-                const { results } = engine.executeOnFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 3);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[1].line, 7);
-                assert.strictEqual(results[0].messages[2].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[2].line, 10);
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
-            });
-
             it("should throw an error if invalid processor was specified.", async () => {
 
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             processor: "markdown/unknown"
                         }
@@ -3183,7 +3084,7 @@ describe("CLIEngine", () => {
                     cwd: root,
                     files: {
                         ...commonFiles,
-                        ".eslintrc.json": {
+                        ".ec0lintrc.json": {
                             plugins: ["markdown", "html"],
                             rules: { semi: "error" },
                             overrides: [
@@ -3330,7 +3231,7 @@ describe("CLIEngine", () => {
                                 }
                             })
                         `,
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         root: true,
                         rules: { test: "error" }
                     },
@@ -3606,7 +3507,7 @@ describe("CLIEngine", () => {
             afterEach(async () => {
                 await cleanup();
 
-                const configFilePath = path.resolve(root, "../.eslintrc.json");
+                const configFilePath = path.resolve(root, "../.ec0lintrc.json");
 
                 if (shell.test("-e", configFilePath)) {
                     shell.rm(configFilePath);
@@ -3617,8 +3518,8 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "../.eslintrc.json": "BROKEN FILE",
-                        ".eslintrc.json": JSON.stringify({ root: true }),
+                        "../.ec0lintrc.json": "BROKEN FILE",
+                        ".ec0lintrc.json": JSON.stringify({ root: true }),
                         "index.js": "console.log(\"hello\")"
                     }
                 });
@@ -3635,8 +3536,8 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "../.eslintrc.json": { ignorePatterns: ["/dont-ignore-entry-dir"] },
-                        ".eslintrc.json": { root: true },
+                        "../.ec0lintrc.json": { ignorePatterns: ["/dont-ignore-entry-dir"] },
+                        ".ec0lintrc.json": { root: true },
                         "index.js": "console.log(\"hello\")"
                     }
                 });
@@ -3654,8 +3555,8 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        ".eslintrc.json": { ignorePatterns: ["/subdir"] },
-                        "subdir/.eslintrc.json": { root: true },
+                        ".ec0lintrc.json": { ignorePatterns: ["/subdir"] },
+                        "subdir/.ec0lintrc.json": { root: true },
                         "subdir/index.js": "console.log(\"hello\")"
                     }
                 });
@@ -4807,7 +4708,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         ignorePatterns: "foo.js"
                     },
                     "foo.js": "",
@@ -4852,7 +4753,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         ignorePatterns: ["foo.js", "/bar.js"]
                     },
                     "foo.js": "",
@@ -4901,7 +4802,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         ignorePatterns: "!/node_modules/foo"
                     },
                     "node_modules/foo/index.js": "",
@@ -5069,10 +4970,10 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         ignorePatterns: "foo.js"
                     }),
-                    "subdir/.eslintrc.json": JSON.stringify({
+                    "subdir/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: "bar.js"
                     }),
                     "foo.js": "",
@@ -5125,10 +5026,10 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         ignorePatterns: "foo.js"
                     }),
-                    "subdir/.eslintrc.json": JSON.stringify({
+                    "subdir/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: "!foo.js"
                     }),
                     "foo.js": "",
@@ -5168,8 +5069,8 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": {},
-                    "subdir/.eslintrc.json": {
+                    ".ec0lintrc.json": {},
+                    "subdir/.ec0lintrc.json": {
                         ignorePatterns: "*.js"
                     },
                     ".eslintignore": "!foo.js",
@@ -5213,10 +5114,10 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": {
+                    ".ec0lintrc.json": {
                         ignorePatterns: "foo.js"
                     },
-                    "subdir/.eslintrc.json": {
+                    "subdir/.ec0lintrc.json": {
                         root: true,
                         ignorePatterns: "bar.js"
                     },
@@ -5273,8 +5174,8 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({}),
-                    "subdir/.eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({}),
+                    "subdir/.ec0lintrc.json": JSON.stringify({
                         root: true,
                         ignorePatterns: "bar.js"
                     }),
@@ -5328,7 +5229,7 @@ describe("CLIEngine", () => {
                     "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "foo.js"
                     })}`,
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         extends: "one"
                     }),
                     "foo.js": "",
@@ -5372,7 +5273,7 @@ describe("CLIEngine", () => {
                     "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "/foo.js"
                     })}`,
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         extends: "one"
                     }),
                     "foo.js": "",
@@ -5417,7 +5318,7 @@ describe("CLIEngine", () => {
                     "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
                         ignorePatterns: "*.js"
                     })}`,
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         extends: "one",
                         ignorePatterns: "!bar.js"
                     }),
@@ -5458,7 +5359,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         ignorePatterns: "*.js"
                     }),
                     "foo.js": ""
@@ -5526,7 +5427,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         overrides: [
                             {
                                 files: "foo/*.txt",
@@ -5585,7 +5486,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         overrides: [
                             {
                                 files: "foo/**/*.txt"
@@ -5626,7 +5527,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         overrides: [
                             {
                                 files: "foo/**/*"
@@ -5672,7 +5573,7 @@ describe("CLIEngine", () => {
                             }
                         ]
                     })}`,
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         extends: "foo"
                     }),
                     "foo/nested/test.txt": "",
@@ -5718,7 +5619,7 @@ describe("CLIEngine", () => {
                             ]
                         }
                     })}`,
-                    ".eslintrc.json": JSON.stringify({
+                    ".ec0lintrc.json": JSON.stringify({
                         extends: "plugin:foo/bar"
                     }),
                     "foo/nested/test.txt": "",
@@ -5755,11 +5656,11 @@ describe("CLIEngine", () => {
     describe("'ignorePatterns', 'overrides[].files', and 'overrides[].excludedFiles' of the configuration that the '--config' option provided should be resolved from CWD.", () => {
         const root = getFixturePath("cli-engine/config-and-overrides-files");
 
-        describe("if { files: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.eslintrc.json',", () => {
+        describe("if { files: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/myconf/.eslintrc.json": JSON.stringify({
+                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         overrides: [
                             {
                                 files: "foo/*.js",
@@ -5779,7 +5680,7 @@ describe("CLIEngine", () => {
 
             it("'executeOnFiles()' with 'foo/test.js' should use the override entry.", () => {
                 const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.eslintrc.json",
+                    configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
                     useEslintrc: false
@@ -5816,7 +5717,7 @@ describe("CLIEngine", () => {
 
             it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should NOT use the override entry.", () => {
                 const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.eslintrc.json",
+                    configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
                     useEslintrc: false
@@ -5839,11 +5740,11 @@ describe("CLIEngine", () => {
             });
         });
 
-        describe("if { files: '*', excludedFiles: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.eslintrc.json',", () => {
+        describe("if { files: '*', excludedFiles: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/myconf/.eslintrc.json": JSON.stringify({
+                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         overrides: [
                             {
                                 files: "*",
@@ -5864,7 +5765,7 @@ describe("CLIEngine", () => {
 
             it("'executeOnFiles()' with 'foo/test.js' should NOT use the override entry.", () => {
                 const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.eslintrc.json",
+                    configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
                     useEslintrc: false
@@ -5888,7 +5789,7 @@ describe("CLIEngine", () => {
 
             it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should use the override entry.", () => {
                 const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.eslintrc.json",
+                    configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
                     useEslintrc: false
@@ -5924,11 +5825,11 @@ describe("CLIEngine", () => {
             });
         });
 
-        describe("if { ignorePatterns: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.eslintrc.json',", () => {
+        describe("if { ignorePatterns: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/myconf/.eslintrc.json": JSON.stringify({
+                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
                         rules: {
                             eqeqeq: "error"
@@ -5944,7 +5845,7 @@ describe("CLIEngine", () => {
 
             it("'executeOnFiles()' with '**/*.js' should iterate 'node_modules/myconf/foo/test.js' but not 'foo/test.js'.", () => {
                 const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.eslintrc.json",
+                    configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     useEslintrc: false
                 });
@@ -5998,7 +5899,7 @@ describe("CLIEngine", () => {
     //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
     //                     plugins: ["foo"]
     //                 })}`,
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     extends: ["one"],
     //                     plugins: ["foo"]
     //                 }),
@@ -6029,7 +5930,7 @@ describe("CLIEngine", () => {
     //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
     //                     plugins: ["foo"]
     //                 })}`,
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     extends: ["one", "two"],
     //                     plugins: ["foo"]
     //                 }),
@@ -6052,10 +5953,10 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
-    //                 "subdir/.eslintrc.json": JSON.stringify({
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/test.js": ""
@@ -6077,11 +5978,11 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "subdir/.eslintrc.json": JSON.stringify({
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/test.js": ""
@@ -6097,18 +5998,18 @@ describe("CLIEngine", () => {
     //             assertThrows(
     //                 () => engine.executeOnFiles("subdir/test.js"),
     //                 {
-    //                     message: `Plugin "foo" was conflicted between "subdir${path.sep}.eslintrc.json" and ".eslintrc.json".`,
+    //                     message: `Plugin "foo" was conflicted between "subdir${path.sep}.ec0lintrc.json" and ".ec0lintrc.json".`,
     //                     messageTemplate: "plugin-conflict",
     //                     messageData: {
     //                         pluginId: "foo",
     //                         plugins: [
     //                             {
     //                                 filePath: path.join(getPath(), "subdir/node_modules/eslint-plugin-foo/index.js"),
-    //                                 importerName: `subdir${path.sep}.eslintrc.json`
+    //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
     //                             },
     //                             {
     //                                 filePath: path.join(getPath(), "node_modules/eslint-plugin-foo/index.js"),
-    //                                 importerName: ".eslintrc.json"
+    //                                 importerName: ".ec0lintrc.json"
     //                             }
     //                         ]
     //                     }
@@ -6122,10 +6023,10 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/.eslintrc.json": JSON.stringify({
+    //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "test.js": ""
@@ -6138,7 +6039,7 @@ describe("CLIEngine", () => {
     //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files, but node_modules directory is unique.)", () => {
     //             const engine = new CLIEngine({
     //                 cwd: getPath(),
-    //                 configFile: "node_modules/mine/.eslintrc.json"
+    //                 configFile: "node_modules/mine/.ec0lintrc.json"
     //             });
     //
     //             engine.executeOnFiles("test.js");
@@ -6151,10 +6052,10 @@ describe("CLIEngine", () => {
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
     //                 "node_modules/mine/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/.eslintrc.json": JSON.stringify({
+    //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "test.js": ""
@@ -6167,13 +6068,13 @@ describe("CLIEngine", () => {
     //         it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files.)", () => {
     //             const engine = new CLIEngine({
     //                 cwd: getPath(),
-    //                 configFile: "node_modules/mine/.eslintrc.json"
+    //                 configFile: "node_modules/mine/.ec0lintrc.json"
     //             });
     //
     //             assertThrows(
     //                 () => engine.executeOnFiles("test.js"),
     //                 {
-    //                     message: "Plugin \"foo\" was conflicted between \"--config\" and \".eslintrc.json\".",
+    //                     message: "Plugin \"foo\" was conflicted between \"--config\" and \".ec0lintrc.json\".",
     //                     messageTemplate: "plugin-conflict",
     //                     messageData: {
     //                         pluginId: "foo",
@@ -6184,7 +6085,7 @@ describe("CLIEngine", () => {
     //                             },
     //                             {
     //                                 filePath: path.join(getPath(), "node_modules/eslint-plugin-foo/index.js"),
-    //                                 importerName: ".eslintrc.json"
+    //                                 importerName: ".ec0lintrc.json"
     //                             }
     //                         ]
     //                     }
@@ -6198,7 +6099,7 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "subdir/.eslintrc.json": JSON.stringify({
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/test.js": ""
@@ -6224,7 +6125,7 @@ describe("CLIEngine", () => {
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
     //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "subdir/.eslintrc.json": JSON.stringify({
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/test.js": ""
@@ -6243,7 +6144,7 @@ describe("CLIEngine", () => {
     //             assertThrows(
     //                 () => engine.executeOnFiles("subdir/test.js"),
     //                 {
-    //                     message: `Plugin "foo" was conflicted between "CLIOptions" and "subdir${path.sep}.eslintrc.json".`,
+    //                     message: `Plugin "foo" was conflicted between "CLIOptions" and "subdir${path.sep}.ec0lintrc.json".`,
     //                     messageTemplate: "plugin-conflict",
     //                     messageData: {
     //                         pluginId: "foo",
@@ -6254,7 +6155,7 @@ describe("CLIEngine", () => {
     //                             },
     //                             {
     //                                 filePath: path.join(getPath(), "subdir/node_modules/eslint-plugin-foo/index.js"),
-    //                                 importerName: `subdir${path.sep}.eslintrc.json`
+    //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
     //                             }
     //                         ]
     //                     }
@@ -6268,11 +6169,11 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 ".eslintrc.json": JSON.stringify({
+    //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "subdir/.eslintrc.json": JSON.stringify({
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "subdir/test.js": ""
@@ -6297,12 +6198,12 @@ describe("CLIEngine", () => {
     //             cwd: `${root}${++uid}`,
     //             files: {
     //                 "one/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "one/.eslintrc.json": JSON.stringify({
+    //                 "one/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "one/test.js": "",
     //                 "two/node_modules/eslint-plugin-foo/index.js": "",
-    //                 "two/.eslintrc.json": JSON.stringify({
+    //                 "two/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "two/test.js": ""

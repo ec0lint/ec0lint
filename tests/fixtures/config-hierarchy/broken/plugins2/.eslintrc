@@ -1,3 +1,2 @@
-plugins: 
-    ["example", "eslint-plugin-test"]
-    
+plugins:
+    ["example", "ec0lint-plugin-test"]
