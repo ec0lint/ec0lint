@@ -46,6 +46,66 @@ ruleTester.run("lighter-http", rule, {
         {
             code: "import * as got from 'got'",
             errors: [{ message: "Do not import got. Instead use fetch." }]
+        },
+        {
+            code: "import request from 'request'",
+            errors: [{ message: "Do not import request. Instead use fetch." }]
+        },
+        {
+            code: "var request = require('request')",
+            errors: [{ message: "Do not import request. Instead use fetch." }]
+        },
+        {
+            code: "import * as request from 'request'",
+            errors: [{ message: "Do not import request. Instead use fetch." }]
+        },
+        {
+            code: "import makeFetchHappen from 'make-fetch-happen'",
+            errors: [{ message: "Do not import make-fetch-happen. Instead use fetch." }]
+        },
+        {
+            code: "var makeFetchHappen = require('make-fetch-happen')",
+            errors: [{ message: "Do not import make-fetch-happen. Instead use fetch." }]
+        },
+        {
+            code: "import * as makeFetchHappen from 'make-fetch-happen'",
+            errors: [{ message: "Do not import make-fetch-happen. Instead use fetch." }]
+        },
+        {
+            code: "import superagent from 'superagent'",
+            errors: [{ message: "Do not import superagent. Instead use fetch." }]
+        },
+        {
+            code: "var superagent = require('superagent')",
+            errors: [{ message: "Do not import superagent. Instead use fetch." }]
+        },
+        {
+            code: "import * as superagent from 'superagent'",
+            errors: [{ message: "Do not import superagent. Instead use fetch." }]
+        },
+        {
+            code: "import needle from 'needle'",
+            errors: [{ message: "Do not import needle. Instead use fetch." }]
+        },
+        {
+            code: "var needle = require('needle')",
+            errors: [{ message: "Do not import needle. Instead use fetch." }]
+        },
+        {
+            code: "import * as needle from 'needle'",
+            errors: [{ message: "Do not import needle. Instead use fetch." }]
+        },
+        {
+            code: "import simpleGet from 'simple-get'",
+            errors: [{ message: "Do not import simple-get. Instead use fetch." }]
+        },
+        {
+            code: "var simpleGet = require('simple-get')",
+            errors: [{ message: "Do not import simple-get. Instead use fetch." }]
+        },
+        {
+            code: "import * as simpleGet from 'simple-get'",
+            errors: [{ message: "Do not import simple-get. Instead use fetch." }]
         }
     ]
 });
