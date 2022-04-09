@@ -9,7 +9,7 @@ module.exports = {
     configFile: null,
     baseConfig: false,
     rulePaths: [],
-    useEslintrc: true,
+    useEc0lintrc: true,
     envs: [],
     globals: [],
     extensions: null,

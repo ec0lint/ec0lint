@@ -114,7 +114,7 @@ describe("cli", () => {
         });
 
         it("should not print debug info when passed the empty string as text", async () => {
-            const result = await cli.execute(["--stdin", "--no-eslintrc"], "");
+            const result = await cli.execute(["--stdin", "--no-ec0lintrc"], "");
 
             assert.strictEqual(result, 0);
             assert.isTrue(log.info.notCalled);
@@ -138,7 +138,7 @@ describe("cli", () => {
 
     describe("when given a config file", () => {
         it("should load the specified config file", async () => {
-            const configPath = getFixturePath(".eslintrc");
+            const configPath = getFixturePath(".ec0lintrc");
             const filePath = getFixturePath("passing.js");
 
             await cli.execute(`--config ${configPath} ${filePath}`);
@@ -243,7 +243,7 @@ describe("cli", () => {
     describe("when given a valid built-in formatter name that uses rules meta.", () => {
         it("should execute without any errors", async () => {
             const filePath = getFixturePath("passing.js");
-            const exit = await cli.execute(`-f json-with-metadata ${filePath} --no-eslintrc`);
+            const exit = await cli.execute(`-f json-with-metadata ${filePath} --no-ec0lintrc`);
 
             assert.strictEqual(exit, 0);
 
@@ -562,19 +562,19 @@ describe("cli", () => {
 
     });
 
-    describe("when executing with no-eslintrc flag", () => {
+    describe("when executing with no-ec0lintrc flag", () => {
         it("should ignore a local config file", async () => {
-            const filePath = getFixturePath("eslintrc", "quotes.js");
-            const exit = await cli.execute(`--no-eslintrc --no-ignore ${filePath}`);
+            const filePath = getFixturePath("ec0lintrc", "quotes.js");
+            const exit = await cli.execute(`--no-ec0lintrc --no-ignore ${filePath}`);
 
             assert.isTrue(log.info.notCalled);
             assert.strictEqual(exit, 0);
         });
     });
 
-    describe("when executing without no-eslintrc flag", () => {
+    describe("when executing without no-ec0lintrc flag", () => {
         it("should load a local config file", async () => {
-            const filePath = getFixturePath("eslintrc", "quotes.js");
+            const filePath = getFixturePath("ec0lintrc", "quotes.js");
             const exit = await cli.execute(`--no-ignore ${filePath}`);
 
             assert.isTrue(log.info.calledOnce);
@@ -589,7 +589,7 @@ describe("cli", () => {
                 getFixturePath("globals-node.js")
             ];
 
-            await cli.execute(`--no-eslintrc --config ./conf/ec0lint-recommended.js --no-ignore ${files.join(" ")}`);
+            await cli.execute(`--no-ec0lintrc --config ./conf/ec0lint-recommended.js --no-ignore ${files.join(" ")}`);
 
             assert.strictEqual(log.info.args[0][0].split("\n").length, 10);
         });

@@ -82,7 +82,7 @@ describe("CLIEngine", () => {
         });
     }
 
-    // copy into clean area so as not to get "infected" by this project's .eslintrc files
+    // copy into clean area so as not to get "infected" by this project's .ec0lintrc files
     before(function() {
 
         /*
@@ -138,7 +138,7 @@ describe("CLIEngine", () => {
 
         let engine;
 
-        // it("should report the total and per file warnings when using local cwd .eslintrc", () => {
+        // it("should report the total and per file warnings when using local cwd .ec0lintrc", () => {
         //
         //     engine = new CLIEngine({
         //         rules: {
@@ -172,7 +172,7 @@ describe("CLIEngine", () => {
         //
         //     engine = new CLIEngine({
         //         configFile: "fixtures/configurations/quotes-error.json",
-        //         useEslintrc: false,
+        //         useEc0lintrc: false,
         //         cwd: getFixturePath("..")
         //     });
         //
@@ -206,7 +206,7 @@ describe("CLIEngine", () => {
 
         // it("should return source code of file in `source` property when errors are present", () => {
         //     engine = new CLIEngine({
-        //         useEslintrc: false,
+        //         useEc0lintrc: false,
         //         rules: { semi: 2 }
         //     });
         //
@@ -258,7 +258,7 @@ describe("CLIEngine", () => {
         it("should warn when deprecated rules are found in a config", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
             });
 
@@ -331,7 +331,7 @@ describe("CLIEngine", () => {
                 parserOptions: {
                     ecmaVersion: 2021
                 },
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             const report = engine.executeOnFiles(["lib/cli.js"]);
@@ -345,7 +345,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 parser: "esprima",
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             const report = engine.executeOnFiles(["lib/cli.js"]);
@@ -359,7 +359,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 parser: "test11",
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             assert.throws(() => engine.executeOnFiles(["lib/cli.js"]), "Cannot find module 'test11'");
@@ -529,7 +529,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 cwd: getFixturePath(".."),
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: {
                     quotes: [2, "single"]
                 }
@@ -552,7 +552,7 @@ describe("CLIEngine", () => {
         it("should not check files within a .hidden folder if they are passed explicitly without the --no-ignore flag", () => {
             engine = new CLIEngine({
                 cwd: getFixturePath("cli-engine"),
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: {
                     quotes: [2, "single"]
                 }
@@ -576,7 +576,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 cwd: getFixturePath(".."),
                 ignore: false,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: {
                     quotes: [2, "single"]
                 }
@@ -598,7 +598,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 cwd: getFixturePath("cli-engine"),
                 ignore: true,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 ignorePattern: "!.hidden*",
                 rules: {
                     quotes: [2, "single"]
@@ -877,7 +877,7 @@ describe("CLIEngine", () => {
         it("should ignore one-level down node_modules when ignore file has 'node_modules/' in it", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath("cli-engine", "nested_node_modules", ".eslintignore"),
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: {
                     quotes: [2, "double"]
                 },
@@ -898,7 +898,7 @@ describe("CLIEngine", () => {
         it("should ignore all files and throw an error when tests/fixtures/ is in ignore file", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath("cli-engine/.eslintignore2"),
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: {
                     quotes: [2, "double"]
                 }
@@ -1017,7 +1017,7 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 ignore: false,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rulePaths: [getFixturePath("rules/")],
                 configFile: getFixturePath("rules", "ec0lint.json")
             });
@@ -1081,11 +1081,11 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when executing without useEslintrc flag", () => {
+        it("should return zero messages when executing without useEc0lintrc flag", () => {
 
             engine = new CLIEngine({
                 ignore: false,
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
@@ -1098,11 +1098,11 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when executing without useEslintrc flag in Node.js environment", () => {
+        it("should return zero messages when executing without useEc0lintrc flag in Node.js environment", () => {
 
             engine = new CLIEngine({
                 ignore: false,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 envs: ["node"]
             });
 
@@ -1121,7 +1121,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 ignore: false,
                 baseConfig: false,
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
@@ -1134,11 +1134,11 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages and ignore .eslintrc files when executing with no-eslintrc flag", () => {
+        it("should return zero messages and ignore .ec0lintrc files when executing with no-ec0lintrc flag", () => {
 
             engine = new CLIEngine({
                 ignore: false,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 envs: ["node"]
             });
 
@@ -1152,11 +1152,11 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages and ignore package.json files when executing with no-eslintrc flag", () => {
+        it("should return zero messages and ignore package.json files when executing with no-ec0lintrc flag", () => {
 
             engine = new CLIEngine({
                 ignore: false,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 envs: ["node"]
             });
 
@@ -1211,7 +1211,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
                 configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
-                useEslintrc: false
+                useEc0lintrc: false
             });
 
             const report = engine.executeOnFiles(["lib/cli*.js"]);
@@ -1241,7 +1241,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     fix: true,
                     rules: {
                         semi: 2,
@@ -1333,7 +1333,7 @@ describe("CLIEngine", () => {
             it("should run autofix even if files are cached without autofix results", () => {
                 const baseOptions = {
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     rules: {
                         semi: 2,
                         quotes: [2, "double"],
@@ -1362,11 +1362,11 @@ describe("CLIEngine", () => {
         describe("configuration hierarchy", () => {
 
             // Default configuration - blank
-            it("should return zero messages when executing with no .eslintrc", () => {
+            it("should return zero messages when executing with no .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
@@ -1377,12 +1377,12 @@ describe("CLIEngine", () => {
             });
 
             // No default configuration rules - conf/environments.js (/*eslint-env node*/)
-            it("should return zero messages when executing with no .eslintrc in the Node.js environment", () => {
+            it("should return zero messages when executing with no .ec0lintrc in the Node.js environment", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
                     reset: true,
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes-node.js`)]);
@@ -1392,8 +1392,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - first level .eslintrc
-            it("should return zero messages when executing with .eslintrc in the Node.js environment", () => {
+            // Project configuration - first level .ec0lintrc
+            it("should return zero messages when executing with .ec0lintrc in the Node.js environment", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1406,8 +1406,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - first level .eslintrc
-            it("should return zero messages when executing with .eslintrc in the Node.js environment", () => {
+            // Project configuration - first level .ec0lintrc
+            it("should return zero messages when executing with .ec0lintrc in the Node.js environment", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1419,8 +1419,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].messages.length, 0);
             });
 
-            // Project configuration - first level .eslintrc
-            it("should return one message when executing with .eslintrc", () => {
+            // Project configuration - first level .ec0lintrc
+            it("should return one message when executing with .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1435,8 +1435,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - second level .eslintrc
-            it("should return one message when executing with local .eslintrc that overrides parent .eslintrc", () => {
+            // Project configuration - second level .ec0lintrc
+            it("should return one message when executing with local .ec0lintrc that overrides parent .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1451,8 +1451,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - third level .eslintrc
-            it("should return one message when executing with local .eslintrc that overrides parent and grandparent .eslintrc", () => {
+            // Project configuration - third level .ec0lintrc
+            it("should return one message when executing with local .ec0lintrc that overrides parent and grandparent .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1513,8 +1513,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - .eslintrc overrides package.json in same directory
-            it("should return one message when executing with .eslintrc that overrides a package.json in the same directory", () => {
+            // Project configuration - .ec0lintrc overrides package.json in same directory
+            it("should return one message when executing with .ec0lintrc that overrides a package.json in the same directory", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, "..")
@@ -1529,8 +1529,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --config with first level .eslintrc
-            it("should return two messages when executing with config file that adds to local .eslintrc", () => {
+            // Command line configuration - --config with first level .ec0lintrc
+            it("should return two messages when executing with config file that adds to local .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1548,8 +1548,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --config with first level .eslintrc
-            it("should return no messages when executing with config file that overrides local .eslintrc", () => {
+            // Command line configuration - --config with first level .ec0lintrc
+            it("should return no messages when executing with config file that overrides local .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1563,8 +1563,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --config with second level .eslintrc
-            it("should return two messages when executing with config file that adds to local and parent .eslintrc", () => {
+            // Command line configuration - --config with second level .ec0lintrc
+            it("should return two messages when executing with config file that adds to local and parent .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1582,8 +1582,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --config with second level .eslintrc
-            it("should return one message when executing with config file that overrides local and parent .eslintrc", () => {
+            // Command line configuration - --config with second level .ec0lintrc
+            it("should return one message when executing with config file that overrides local and parent .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1599,8 +1599,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --config with first level .eslintrc
-            it("should return no messages when executing with config file that overrides local .eslintrc", () => {
+            // Command line configuration - --config with first level .ec0lintrc
+            it("should return no messages when executing with config file that overrides local .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1614,8 +1614,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --rule with --config and first level .eslintrc
-            it("should return one message when executing with command line rule and config file that overrides local .eslintrc", () => {
+            // Command line configuration - --rule with --config and first level .ec0lintrc
+            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1634,8 +1634,8 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Command line configuration - --rule with --config and first level .eslintrc
-            it("should return one message when executing with command line rule and config file that overrides local .eslintrc", () => {
+            // Command line configuration - --rule with --config and first level .ec0lintrc
+            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -1661,7 +1661,7 @@ describe("CLIEngine", () => {
                 engine = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     configFile: getFixturePath("configurations", "plugins-with-prefix.json"),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("rules", "test/test-custom-rule.js"))]);
@@ -1676,7 +1676,7 @@ describe("CLIEngine", () => {
                 engine = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     configFile: getFixturePath("configurations", "plugins-with-prefix-and-namespace.json"),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"))]);
@@ -1691,7 +1691,7 @@ describe("CLIEngine", () => {
                 engine = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     configFile: getFixturePath("configurations", "plugins-without-prefix.json"),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"))]);
@@ -1706,7 +1706,7 @@ describe("CLIEngine", () => {
                 engine = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     configFile: getFixturePath("configurations", "plugins-without-prefix-with-namespace.json"),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("rules", "test", "test-custom-rule.js"))]);
@@ -1720,7 +1720,7 @@ describe("CLIEngine", () => {
             it("should return two messages when executing with cli option that specifies a plugin", () => {
                 engine = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["example"],
                     rules: { "example/example-rule": 1 }
                 });
@@ -1736,7 +1736,7 @@ describe("CLIEngine", () => {
             it("should return two messages when executing with cli option that specifies preloaded plugin", () => {
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["test"],
                     rules: { "test/example-rule": 1 }
                 }, {
@@ -1764,7 +1764,7 @@ describe("CLIEngine", () => {
                         plugins: ["with-rules"],
                         rules: { "with-rules/rule1": "error" }
                     },
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 const report = engine.executeOnText("foo");
@@ -1843,7 +1843,7 @@ describe("CLIEngine", () => {
                     assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
 
                     engine = new CLIEngine({
-                        useEslintrc: false,
+                        useEc0lintrc: false,
 
                         // specifying cache true the cache will be created
                         cache: true,
@@ -1870,7 +1870,7 @@ describe("CLIEngine", () => {
                 assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -1896,7 +1896,7 @@ describe("CLIEngine", () => {
                 const cwd = path.resolve(getFixturePath("cli-engine"));
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     cache: true,
                     cwd,
                     rules: {
@@ -1917,7 +1917,7 @@ describe("CLIEngine", () => {
                 assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -1945,7 +1945,7 @@ describe("CLIEngine", () => {
                 sinon.restore();
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -1972,7 +1972,7 @@ describe("CLIEngine", () => {
                 assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -1999,7 +1999,7 @@ describe("CLIEngine", () => {
                 sinon.restore();
 
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -2026,7 +2026,7 @@ describe("CLIEngine", () => {
 
                 const cacheFile = getFixturePath(".ec0lintcache");
                 const cliEngineOptions = {
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -2067,7 +2067,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -2106,7 +2106,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -2151,7 +2151,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
 
                     // specifying cache true the cache will be created
                     cache: true,
@@ -2192,7 +2192,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     cacheFile,
                     rules: {
                         "no-console": 0,
@@ -2213,7 +2213,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     cacheFile,
                     rules: {
                         "no-console": 0,
@@ -2234,7 +2234,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     cache: true,
                     cacheFile,
                     rules: {
@@ -2258,7 +2258,7 @@ describe("CLIEngine", () => {
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     cacheFile,
                     rules: {
                         "no-console": 0,
@@ -2283,7 +2283,7 @@ describe("CLIEngine", () => {
                     assert.isFalse(shell.test("-f", customCacheFile), "the cache for eslint does not exist");
 
                     engine = new CLIEngine({
-                        useEslintrc: false,
+                        useEc0lintrc: false,
 
                         // specify a custom cache file
                         cacheFile: customCacheFile,
@@ -2328,7 +2328,7 @@ describe("CLIEngine", () => {
 
                     engine = new CLIEngine({
                         cwd: path.join(fixtureDir, ".."),
-                        useEslintrc: false,
+                        useEc0lintrc: false,
 
                         // specifying cache true the cache will be created
                         cache: true,
@@ -2366,7 +2366,7 @@ describe("CLIEngine", () => {
 
                     engine = new CLIEngine({
                         cwd: path.join(fixtureDir, ".."),
-                        useEslintrc: false,
+                        useEc0lintrc: false,
 
                         // specifying cache true the cache will be created
                         cache: true,
@@ -2409,7 +2409,7 @@ describe("CLIEngine", () => {
 
                     engine = new CLIEngine({
                         cwd: path.join(fixtureDir, ".."),
-                        useEslintrc: false,
+                        useEc0lintrc: false,
 
                         // specifying cache true the cache will be created
                         cache: true,
@@ -2444,7 +2444,7 @@ describe("CLIEngine", () => {
             it("should return two messages when executing with config file that specifies a processor", () => {
                 engine = cliEngineWithPlugins({
                     configFile: getFixturePath("configurations", "processors.json"),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     extensions: ["js", "txt"],
                     cwd: path.join(fixtureDir, "..")
                 });
@@ -2456,7 +2456,7 @@ describe("CLIEngine", () => {
             });
             it("should return two messages when executing with config file that specifies preloaded processor", () => {
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
                         "no-console": 2,
@@ -2489,7 +2489,7 @@ describe("CLIEngine", () => {
             it("should run processors when calling executeOnFiles with config file that specifies a processor", () => {
                 engine = cliEngineWithPlugins({
                     configFile: getFixturePath("configurations", "processors.json"),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     extensions: ["js", "txt"],
                     cwd: path.join(fixtureDir, "..")
                 });
@@ -2501,7 +2501,7 @@ describe("CLIEngine", () => {
             });
             it("should run processors when calling executeOnFiles with config file that specifies preloaded processor", () => {
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
                         "no-console": 2,
@@ -2535,7 +2535,7 @@ describe("CLIEngine", () => {
             it("should run processors when calling executeOnText with config file that specifies a processor", () => {
                 engine = cliEngineWithPlugins({
                     configFile: getFixturePath("configurations", "processors.json"),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     extensions: ["js", "txt"],
                     ignore: false
                 });
@@ -2547,7 +2547,7 @@ describe("CLIEngine", () => {
             });
             it("should run processors when calling executeOnText with config file that specifies preloaded processor", () => {
                 engine = new CLIEngine({
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
                         "no-console": 2,
@@ -2601,7 +2601,7 @@ describe("CLIEngine", () => {
 
                 it("should run in autofix mode when using a processor that supports autofixing", () => {
                     engine = new CLIEngine({
-                        useEslintrc: false,
+                        useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
                             semi: 2
@@ -2627,7 +2627,7 @@ describe("CLIEngine", () => {
 
                 it("should not run in autofix mode when using a processor that does not support autofixing", () => {
                     engine = new CLIEngine({
-                        useEslintrc: false,
+                        useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
                             semi: 2
@@ -2653,7 +2653,7 @@ describe("CLIEngine", () => {
 
                 it("should not run in autofix mode when `fix: true` is not provided, even if the processor supports autofixing", () => {
                     engine = new CLIEngine({
-                        useEslintrc: false,
+                        useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
                             semi: 2
@@ -2682,7 +2682,7 @@ describe("CLIEngine", () => {
             beforeEach(() => {
                 engine = new CLIEngine({
                     cwd: getFixturePath("cli-engine"),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
             });
 
@@ -3045,7 +3045,7 @@ describe("CLIEngine", () => {
 
                 assert.throws(() => {
                     engine.executeOnFiles(["test.md"]);
-                }, /ESLint configuration of processor in '\.eslintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
+                }, /ESLint configuration of processor in '\.ec0lintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
             });
 
             it("should lint HTML blocks as well with multiple processors if 'overrides[].files' is present.", async () => {
@@ -3794,7 +3794,7 @@ describe("CLIEngine", () => {
             it("should accept an array for options.ignorePattern", () => {
                 const engine = new CLIEngine({
                     ignorePattern: ["a", "b"],
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
 
                 assert(engine.isPathIgnored("a"));
@@ -4259,7 +4259,7 @@ describe("CLIEngine", () => {
         it("should return source code of file in the `source` property", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine({
-                useEslintrc: false,
+                useEc0lintrc: false,
                 rules: { quotes: [2, "double"] }
             });
 
@@ -4274,7 +4274,7 @@ describe("CLIEngine", () => {
         it("should contain `output` property after fixes", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine({
-                useEslintrc: false,
+                useEc0lintrc: false,
                 fix: true,
                 rules: {
                     semi: 2,
@@ -4519,7 +4519,7 @@ describe("CLIEngine", () => {
             const config = {
                 envs: ["browser"],
                 ignore: true,
-                useEslintrc: false,
+                useEc0lintrc: false,
                 allowInlineConfig: false,
                 rules: {
                     "eol-last": 0,
@@ -4547,7 +4547,7 @@ describe("CLIEngine", () => {
             const config = {
                 envs: ["browser"],
                 ignore: true,
-                useEslintrc: false,
+                useEc0lintrc: false,
 
                 // allowInlineConfig: true is the default
                 rules: {
@@ -4573,7 +4573,7 @@ describe("CLIEngine", () => {
 
     describe("when evaluating code when reportUnusedDisableDirectives is enabled", () => {
         it("should report problems for unused eslint-disable directives", () => {
-            const cliEngine = new CLIEngine({ useEslintrc: false, reportUnusedDisableDirectives: true });
+            const cliEngine = new CLIEngine({ useEc0lintrc: false, reportUnusedDisableDirectives: true });
 
             assert.deepStrictEqual(
                 cliEngine.executeOnText("/* eslint-disable */"),
@@ -4631,13 +4631,13 @@ describe("CLIEngine", () => {
                 const filePath = getFixturePath("single-quoted.js");
                 const engine1 = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     plugins: ["example"],
                     rules: { "example/example-rule": 1 }
                 });
                 const engine2 = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const fileConfig1 = engine1.getConfigForFile(filePath);
                 const fileConfig2 = engine2.getConfigForFile(filePath);
@@ -4653,12 +4653,12 @@ describe("CLIEngine", () => {
                 const filePath = getFixturePath("single-quoted.js");
                 const engine1 = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false,
+                    useEc0lintrc: false,
                     rules: { "example/example-rule": 1 }
                 });
                 const engine2 = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const fileConfig1 = engine1.getConfigForFile(filePath);
                 const fileConfig2 = engine2.getConfigForFile(filePath);
@@ -5653,7 +5653,7 @@ describe("CLIEngine", () => {
                     configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const { results } = engine.executeOnFiles("foo/test.js");
 
@@ -5690,7 +5690,7 @@ describe("CLIEngine", () => {
                     configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
 
@@ -5738,7 +5738,7 @@ describe("CLIEngine", () => {
                     configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const { results } = engine.executeOnFiles("foo/test.js");
 
@@ -5762,7 +5762,7 @@ describe("CLIEngine", () => {
                     configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
                     ignore: false,
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
 
@@ -5817,7 +5817,7 @@ describe("CLIEngine", () => {
                 const engine = new CLIEngine({
                     configFile: "node_modules/myconf/.ec0lintrc.json",
                     cwd: getPath(),
-                    useEslintrc: false
+                    useEc0lintrc: false
                 });
                 const files = engine.executeOnFiles("**/*.js")
                     .results

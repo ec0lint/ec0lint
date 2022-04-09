@@ -426,7 +426,7 @@ function getFormatterResults() {
             "consistent-return": "error"
         },
         cli = new CLIEngine({
-            useEslintrc: false,
+            useEc0lintrc: false,
             baseConfig: { extends: "ec0lint:recommended" },
             rules
         }),
@@ -1057,7 +1057,7 @@ function time(cmd, runs, runNumber, results, cb) {
 function runPerformanceTest(title, targets, multiplier, cb) {
     const cpuSpeed = os.cpus()[0].speed,
         max = multiplier / cpuSpeed,
-        cmd = `${ESLINT}--config "${PERF_ESLINTRC}" --no-eslintrc --no-ignore ${targets}`;
+        cmd = `${ESLINT}--config "${PERF_ESLINTRC}" --no-ec0lintrc --no-ignore ${targets}`;
 
     echo("");
     echo(title);

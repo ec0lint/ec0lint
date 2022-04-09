@@ -210,7 +210,7 @@ describe("FileEnumerator", () => {
                             ...options,
 
                             // Disable "No Configuration Found" error.
-                            useEslintrc: false
+                            useEc0lintrc: false
                         })
                     }).iterateFiles(patterns),
                     ({ filePath, ignored }) => ({ filename: filePath, ignored })
