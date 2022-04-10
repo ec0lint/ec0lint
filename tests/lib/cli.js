@@ -447,7 +447,7 @@ describe("cli", () => {
 
     describe("when given a directory with eslint excluded files in the directory", () => {
         it("should throw an error and not process any files", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("cli");
 
             await stdAssert.rejects(async () => {
@@ -458,7 +458,7 @@ describe("cli", () => {
 
     describe("when given a file in excluded files list", () => {
         it("should not process the file", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("passing.js");
             const exit = await cli.execute(`--ignore-path ${ignorePath} ${filePath}`);
 
@@ -468,7 +468,7 @@ describe("cli", () => {
         });
 
         it("should process the file when forced", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("passing.js");
             const exit = await cli.execute(`--ignore-path ${ignorePath} --no-ignore ${filePath}`);
 

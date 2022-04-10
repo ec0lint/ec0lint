@@ -39,7 +39,7 @@ describe("FileEnumerator", () => {
                 "test/one.js": "",
                 "test/two.js": "",
                 "test/.ec0lintrc.yml": "env: { mocha: true }",
-                ".eslintignore": "/lib/nested/parser.js",
+                ".ec0lintignore": "/lib/nested/parser.js",
                 ".ec0lintrc.json": JSON.stringify({
                     rules: {
                         "no-undef": "error",
@@ -91,7 +91,7 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[0].config.length, 3);
                     assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".eslintignore"));
+                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".ec0lintignore"));
                 });
             });
 
@@ -126,7 +126,7 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
                     assert.strictEqual(list[0].config[2].filePath, path.join(root, "lib/nested/.ec0lintrc.yml"));
-                    assert.strictEqual(list[0].config[3].filePath, path.join(root, ".eslintignore"));
+                    assert.strictEqual(list[0].config[3].filePath, path.join(root, ".ec0lintignore"));
                 });
 
                 it("should use the config '.ec0lintrc.json' for 'lib/one.js' and 'lib/two.js'.", () => {
@@ -134,7 +134,7 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[2].config.length, 3);
                     assert.strictEqual(list[2].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[2].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[2].config[2].filePath, path.join(root, ".eslintignore"));
+                    assert.strictEqual(list[2].config[2].filePath, path.join(root, ".ec0lintignore"));
                 });
             });
 
@@ -168,7 +168,7 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[0].config.length, 3);
                     assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".eslintignore"));
+                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".ec0lintignore"));
                 });
 
                 it("should use the merged config of '.ec0lintrc.json' and 'test/.ec0lintrc.yml' for 'test/one.js' and 'test/two.js'.", () => {
@@ -177,7 +177,7 @@ describe("FileEnumerator", () => {
                     assert.strictEqual(list[2].config[0].name, "DefaultIgnorePattern");
                     assert.strictEqual(list[2].config[1].filePath, path.join(root, ".ec0lintrc.json"));
                     assert.strictEqual(list[2].config[2].filePath, path.join(root, "test/.ec0lintrc.yml"));
-                    assert.strictEqual(list[2].config[3].filePath, path.join(root, ".eslintignore"));
+                    assert.strictEqual(list[2].config[3].filePath, path.join(root, ".ec0lintignore"));
                 });
             });
         });
@@ -381,7 +381,7 @@ describe("FileEnumerator", () => {
 
                 it("should throw if only ignored files match a glob", () => {
                     const pattern = getFixturePath("glob-util", "ignored");
-                    const options = { ignore: true, ignorePath: getFixturePath("glob-util", "ignored", ".eslintignore") };
+                    const options = { ignore: true, ignorePath: getFixturePath("glob-util", "ignored", ".ec0lintignore") };
 
                     assert.throws(() => {
                         listFiles([pattern], options);
@@ -390,7 +390,7 @@ describe("FileEnumerator", () => {
 
                 it("should throw an error if no files match a glob", () => {
 
-                    // Relying here on the .eslintignore from the repo root
+                    // Relying here on the .ec0lintignore from the repo root
                     const patterns = ["tests/fixtures/glob-util/ignored/**/*.js"];
 
                     assert.throws(() => {
@@ -407,7 +407,7 @@ describe("FileEnumerator", () => {
                 });
 
                 it("should ignore a file from a glob if it matches a pattern in an ignore file", () => {
-                    const options = { ignore: true, ignorePath: getFixturePath("glob-util", "ignored", ".eslintignore") };
+                    const options = { ignore: true, ignorePath: getFixturePath("glob-util", "ignored", ".ec0lintignore") };
                     const patterns = [getFixturePath("glob-util", "ignored", "**/*.js")];
 
                     assert.throws(() => {
@@ -473,7 +473,7 @@ describe("FileEnumerator", () => {
                     assert.includeDeepMembers(result, [{ filename: unignoredFilename, ignored: false }]);
                 });
 
-                it("should return unignored files from folders unignored in .eslintignore", () => {
+                it("should return unignored files from folders unignored in .ec0lintignore", () => {
                     const options = { cwd: getFixturePath("glob-util", "unignored"), ignore: true };
                     const glob = getFixturePath("glob-util", "unignored", "**/*.js");
                     const patterns = [glob];
@@ -485,7 +485,7 @@ describe("FileEnumerator", () => {
                     assert.deepStrictEqual(result, [{ filename, ignored: false }]);
                 });
 
-                it("should return unignored files from folders unignored in .eslintignore for explicitly specified folder", () => {
+                it("should return unignored files from folders unignored in .ec0lintignore for explicitly specified folder", () => {
                     const options = { cwd: getFixturePath("glob-util", "unignored"), ignore: true };
                     const dir = getFixturePath("glob-util", "unignored", "dir");
                     const patterns = [dir];
