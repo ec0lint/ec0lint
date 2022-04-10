@@ -20,7 +20,7 @@ const assert = require("chai").assert,
         Legacy: {
             CascadingConfigArrayFactory
         }
-    } = require("@eslint/eslintrc"),
+    } = require("@ec0lint/ec0lintrc"),
     { unIndent, createCustomTeardown } = require("../../_utils");
 
 const proxyquire = require("proxyquire").noCallThru().noPreserveCache();

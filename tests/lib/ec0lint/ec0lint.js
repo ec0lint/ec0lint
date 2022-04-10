@@ -23,7 +23,7 @@ const {
     Legacy: {
         CascadingConfigArrayFactory
     }
-} = require("@eslint/eslintrc");
+} = require("@ec0lint/ec0lintrc");
 const hash = require("../../../lib/cli-engine/hash");
 const { unIndent, createCustomTeardown } = require("../../_utils");
 const coreRules = require("../../../lib/rules");

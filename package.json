@@ -46,7 +46,7 @@
   "homepage": "TBD",
   "bugs": "https://github.com/ec0lint/ec0lint/issues/",
   "dependencies": {
-    "@eslint/eslintrc": "^1.2.0",
+    "@ec0lint/ec0lintrc": "^0.0.1",
     "@humanwhocodes/config-array": "^0.9.2",
     "ajv": "^6.10.0",
     "chalk": "^4.0.0",

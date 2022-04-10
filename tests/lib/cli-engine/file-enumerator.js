@@ -17,7 +17,7 @@ const {
     Legacy: {
         CascadingConfigArrayFactory
     }
-} = require("@eslint/eslintrc");
+} = require("@ec0lint/ec0lintrc");
 const { createCustomTeardown } = require("../../_utils");
 const { FileEnumerator } = require("../../../lib/cli-engine/file-enumerator");
 
