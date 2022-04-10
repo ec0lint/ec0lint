@@ -3735,7 +3735,7 @@ describe("CLIEngine", () => {
                 assert(engine.isPathIgnored("sampleignorepattern"));
             });
 
-            it("should use package.json's eslintIgnore files if no specified .ec0lintignore file", () => {
+            it("should use package.json's ec0lintIgnore files if no specified .ec0lintignore file", () => {
                 const cwd = getFixturePath("ignored-paths", "package-json-ignore");
                 const engine = new CLIEngine({ cwd });
 
@@ -3757,7 +3757,7 @@ describe("CLIEngine", () => {
                 });
             });
 
-            it("should not use package.json's eslintIgnore files if specified .ec0lintignore file", () => {
+            it("should not use package.json's ec0lintIgnore files if specified .ec0lintignore file", () => {
                 const cwd = getFixturePath("ignored-paths");
                 const engine = new CLIEngine({ cwd });
 
@@ -3770,13 +3770,13 @@ describe("CLIEngine", () => {
                 assert(engine.isPathIgnored("sampleignorepattern"));
             });
 
-            it("should error if package.json's eslintIgnore is not an array of file paths", () => {
+            it("should error if package.json's ec0lintIgnore is not an array of file paths", () => {
                 const cwd = getFixturePath("ignored-paths", "bad-package-json-ignore");
 
                 assert.throws(() => {
                     // eslint-disable-next-line no-new -- Check for throwing
                     new CLIEngine({ cwd });
-                }, "Package.json eslintIgnore property requires an array of paths");
+                }, "Package.json ec0lintIgnore property requires an array of paths");
             });
         });
 

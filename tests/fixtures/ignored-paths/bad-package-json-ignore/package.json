@@ -7,5 +7,5 @@
             "node": true
         }
     },
-    "eslintIgnore": "hello.js"
+    "ec0lintIgnore": "hello.js"
 }

@@ -4350,7 +4350,7 @@ describe("ESLint", () => {
                 assert(await engine.isPathIgnored("sampleignorepattern"));
             });
 
-            it("should use package.json's eslintIgnore files if no specified .ec0lintignore file", async () => {
+            it("should use package.json's ec0lintIgnore files if no specified .ec0lintignore file", async () => {
                 const cwd = getFixturePath("ignored-paths", "package-json-ignore");
                 const engine = new ESLint({ cwd });
 
@@ -4372,7 +4372,7 @@ describe("ESLint", () => {
                 });
             });
 
-            it("should not use package.json's eslintIgnore files if specified .ec0lintignore file", async () => {
+            it("should not use package.json's ec0lintIgnore files if specified .ec0lintignore file", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const engine = new ESLint({ cwd });
 
@@ -4385,13 +4385,13 @@ describe("ESLint", () => {
                 assert(await engine.isPathIgnored("sampleignorepattern"));
             });
 
-            it("should error if package.json's eslintIgnore is not an array of file paths", () => {
+            it("should error if package.json's ec0lintIgnore is not an array of file paths", () => {
                 const cwd = getFixturePath("ignored-paths", "bad-package-json-ignore");
 
                 assert.throws(() => {
                     // eslint-disable-next-line no-new -- Check for throwing
                     new ESLint({ cwd });
-                }, /Package\.json eslintIgnore property requires an array of paths/u);
+                }, /Package\.json ec0lintIgnore property requires an array of paths/u);
             });
         });
 
