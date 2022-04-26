@@ -3,7 +3,7 @@ extends:
     - "ec0lint:recommended"
     - "plugin:node/recommended"
     - "plugin:jsdoc/recommended"
-    - "plugin:eslint-comments/recommended"
+    - "plugin:ec0lint-comments/recommended"
 
 settings:
     staticResources:
