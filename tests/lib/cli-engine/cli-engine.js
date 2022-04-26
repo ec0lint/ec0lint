@@ -301,7 +301,6 @@ describe("CLIEngine", () => {
             });
 
             const report = engine.executeOnFiles(["lib/**/cli*.js"]);
-            console.log(report.results);
             assert.strictEqual(report.results.length, 2);
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[1].messages.length, 0);
