@@ -2053,7 +2053,7 @@ describe("ESLint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "@eslint/example/example-rule");
+                assert.strictEqual(results[0].messages[0].ruleId, "@ec0lint/example/example-rule");
             });
 
             it("should return two messages when executing with config file that specifies a plugin without prefix", async () => {
@@ -2079,7 +2079,7 @@ describe("ESLint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "@eslint/example/example-rule");
+                assert.strictEqual(results[0].messages[0].ruleId, "@ec0lint/example/example-rule");
             });
 
             it("should return two messages when executing with cli option that specifies a plugin", async () => {

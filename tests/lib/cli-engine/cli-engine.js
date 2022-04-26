@@ -1682,7 +1682,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "@eslint/example/example-rule");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "@ec0lint/example/example-rule");
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
@@ -1712,7 +1712,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "@eslint/example/example-rule");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "@ec0lint/example/example-rule");
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
