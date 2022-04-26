@@ -3117,7 +3117,7 @@ describe("CLIEngine", () => {
                     assert.strictEqual(err.messageTemplate, "plugin-missing");
                     assert.deepStrictEqual(err.messageData, {
                         importerName: `extends-plugin${path.sep}.ec0lintrc.yml`,
-                        pluginName: "eslint-plugin-nonexistent-plugin",
+                        pluginName: "ec0lint-plugin-nonexistent-plugin",
                         resolvePluginsRelativeTo: path.join(cwd, "extends-plugin") // the directory of the config file.
                     });
                     return;
@@ -3133,7 +3133,7 @@ describe("CLIEngine", () => {
                     assert.strictEqual(err.messageTemplate, "plugin-missing");
                     assert.deepStrictEqual(err.messageData, {
                         importerName: `plugins${path.sep}.ec0lintrc.yml`,
-                        pluginName: "eslint-plugin-nonexistent-plugin",
+                        pluginName: "ec0lint-plugin-nonexistent-plugin",
                         resolvePluginsRelativeTo: path.join(cwd, "plugins") // the directory of the config file.
                     });
                     return;
@@ -5578,7 +5578,7 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: root,
                 files: {
-                    "node_modules/eslint-plugin-foo/index.js": `exports.configs = ${JSON.stringify({
+                    "node_modules/ec0lint-plugin-foo/index.js": `exports.configs = ${JSON.stringify({
                         bar: {
                             overrides: [
                                 {
