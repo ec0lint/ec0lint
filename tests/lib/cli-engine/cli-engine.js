@@ -3190,7 +3190,6 @@ describe("CLIEngine", () => {
         describe("with '--rulesdir' option", () => {
 
             const rootPath = getFixturePath("cli-engine/with-rulesdir");
-            console.log(rootPath);
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: rootPath,
                 files: {
