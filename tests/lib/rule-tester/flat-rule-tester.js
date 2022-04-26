@@ -1187,7 +1187,7 @@ describe("FlatRuleTester", () => {
             const config = configs.getConfig("test.js");
 
             assert.strictEqual(
-                config.languageOptions.parser[Symbol.for("eslint.RuleTester.parser")],
+                config.languageOptions.parser[Symbol.for("ec0lint.RuleTester.parser")],
                 esprima
             );
         });
