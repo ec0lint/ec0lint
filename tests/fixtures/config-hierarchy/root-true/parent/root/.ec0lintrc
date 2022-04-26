@@ -1,6 +1,6 @@
 {
     "root": true,
     "rules": {
-        "axios-calls": "error"
+        "no-extra-semi": "error"
     }
 }

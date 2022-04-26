@@ -11,7 +11,6 @@
 /** @type {import("../lib/shared/types").ConfigData} */
 module.exports = {
     rules: {
-        "axios-calls": "error",
-        "font-format": "error"
+        "no-extra-semi": "error"
     }
 };

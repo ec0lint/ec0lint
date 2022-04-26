@@ -55,14 +55,14 @@ module.exports = {
     },
 
     rules: {
-        "ec0lint-plugin/axios-calls": "error"
+        "ec0lint-plugin/no-extra-semi": "error"
     },
     overrides: [
         {
             files: ["lib/rules/*", "tools/internal-rules/*"],
             excludedFiles: ["index.js"],
             rules: {
-                "ec0lint-plugin/axios-calls": "error"
+                "ec0lint-plugin/no-extra-semi": "error"
             }
         }
     ]

@@ -19,7 +19,7 @@ const rules = eslintRecommended.rules;
 
 describe("ec0lint-recommended", () => {
     it("should configure recommended rules as error", () => {
-        assert.strictEqual(rules["axios-calls"], "error");
+        assert.strictEqual(rules["no-extra-semi"], "error");
     });
 
     // it("should not configure non-recommended rules", () => {
