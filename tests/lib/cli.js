@@ -701,7 +701,7 @@ describe("cli", () => {
 
     describe("when supplied with a plugin", () => {
         it("should pass plugins to ESLint", async () => {
-            const examplePluginName = "eslint-plugin-example";
+            const examplePluginName = "ec0lint-plugin-example";
 
             await verifyESLintOpts(`--no-ignore --plugin ${examplePluginName} foo.js`, {
                 overrideConfig: {
