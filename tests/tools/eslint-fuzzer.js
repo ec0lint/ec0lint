@@ -14,7 +14,7 @@ const configRule = require("../../tools/config-rule");
 // Tests
 //------------------------------------------------------------------------------
 
-describe("eslint-fuzzer", function() {
+describe("ec0lint-fuzzer", function() {
     let fakeRule, fuzz;
 
     /*
@@ -42,7 +42,7 @@ describe("eslint-fuzzer", function() {
         // Create a closure around `fakeRule` so that tests can reassign it and have the changes take effect.
         linter.defineRule("test-fuzzer-rule", Object.assign(context => fakeRule(context), { meta: { fixable: "code" } }));
 
-        fuzz = require("../../tools/eslint-fuzzer");
+        fuzz = require("../../tools/ec0lint-fuzzer");
     });
 
     after(() => {
