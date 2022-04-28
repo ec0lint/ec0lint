@@ -115,7 +115,7 @@ describe("RuntimeInfo", () => {
                     Node version: v12.8.0
                     npm version: v6.11.3
                     Local ESLint version: v6.3.0 (Currently used)
-                    Global ESLint version: v5.16.0
+                    Global ec0lint version: v5.16.0
                     Operating System: darwin 20.3.0
                 `
             );
@@ -133,7 +133,7 @@ describe("RuntimeInfo", () => {
                     Node version: v12.8.0
                     npm version: v6.11.3
                     Local ESLint version: v6.3.0
-                    Global ESLint version: v5.16.0 (Currently used)
+                    Global ec0lint version: v5.16.0 (Currently used)
                     Operating System: darwin 20.3.0
                 `
             );
@@ -157,8 +157,8 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ESLint version: Not found
-                    Global ESLint version: v5.16.0 (Currently used)
+                    Local ec0lint version: Not found
+                    Global ec0lint version: v5.16.0 (Currently used)
                     Operating System: darwin 20.3.0
                 `
             );
@@ -175,8 +175,8 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ESLint version: v6.3.0 (Currently used)
-                    Global ESLint version: Not found
+                    Local ec0lint version: v6.3.0 (Currently used)
+                    Global ec0lint version: Not found
                     Operating System: darwin 20.3.0
                 `
             );
@@ -210,7 +210,7 @@ describe("RuntimeInfo", () => {
             assert.strictEqual(logErrorStub.args[0][0], "Error finding eslint version running the command `npm ls --depth=0 --json eslint`");
         });
 
-        it("log and throw an error when checking for global ESLint version when returned output of command is malformed", () => {
+        it("log and throw an error when checking for global ec0lint version when returned output of command is malformed", () => {
             spawnSyncStubArgs[4] = "This is not JSON";
             setupSpawnSyncStubReturnVals(spawnSyncStub, spawnSyncStubArgs);
 
