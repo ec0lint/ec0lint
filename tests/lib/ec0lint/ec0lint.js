@@ -4678,7 +4678,7 @@ describe("ESLint", () => {
             assert.strictEqual(typeof formatter.format, "function");
         });
 
-        it("should return a formatter object when a formatter prefixed with eslint-formatter is requested", async () => {
+        it("should return a formatter object when a formatter prefixed with ec0lint-formatter is requested", async () => {
             const engine = new ESLint({
                 cwd: getFixturePath("cli-engine")
             });
@@ -4688,11 +4688,11 @@ describe("ESLint", () => {
             assert.strictEqual(typeof formatter.format, "function");
         });
 
-        it("should return a formatter object when a formatter is requested, also when the eslint-formatter prefix is included in the format argument", async () => {
+        it("should return a formatter object when a formatter is requested, also when the ec0lint-formatter prefix is included in the format argument", async () => {
             const engine = new ESLint({
                 cwd: getFixturePath("cli-engine")
             });
-            const formatter = await engine.loadFormatter("eslint-formatter-bar");
+            const formatter = await engine.loadFormatter("ec0lint-formatter-bar");
 
             assert.strictEqual(typeof formatter, "object");
             assert.strictEqual(typeof formatter.format, "function");
@@ -4708,11 +4708,11 @@ describe("ESLint", () => {
             assert.strictEqual(typeof formatter.format, "function");
         });
 
-        it("should return a formatter object when a formatter is requested within a scoped npm package, also when the eslint-formatter prefix is included in the format argument", async () => {
+        it("should return a formatter object when a formatter is requested within a scoped npm package, also when the ec0lint-formatter prefix is included in the format argument", async () => {
             const engine = new ESLint({
                 cwd: getFixturePath("cli-engine")
             });
-            const formatter = await engine.loadFormatter("@somenamespace/eslint-formatter-foo");
+            const formatter = await engine.loadFormatter("@somenamespace/ec0lint-formatter-foo");
 
             assert.strictEqual(typeof formatter, "object");
             assert.strictEqual(typeof formatter.format, "function");

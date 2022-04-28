@@ -4054,7 +4054,7 @@ describe("CLIEngine", () => {
             assert.isFunction(formatter);
         });
 
-        it("should return a function when a formatter prefixed with eslint-formatter is requested", () => {
+        it("should return a function when a formatter prefixed with ec0lint-formatter is requested", () => {
             const engine = new CLIEngine({
                     cwd: getFixturePath("cli-engine")
                 }),
@@ -4063,11 +4063,11 @@ describe("CLIEngine", () => {
             assert.isFunction(formatter);
         });
 
-        it("should return a function when a formatter is requested, also when the eslint-formatter prefix is included in the format argument", () => {
+        it("should return a function when a formatter is requested, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
                     cwd: getFixturePath("cli-engine")
                 }),
-                formatter = engine.getFormatter("eslint-formatter-bar");
+                formatter = engine.getFormatter("ec0lint-formatter-bar");
 
             assert.isFunction(formatter);
         });
@@ -4081,11 +4081,11 @@ describe("CLIEngine", () => {
             assert.isFunction(formatter);
         });
 
-        it("should return a function when a formatter is requested within a scoped npm package, also when the eslint-formatter prefix is included in the format argument", () => {
+        it("should return a function when a formatter is requested within a scoped npm package, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
                     cwd: getFixturePath("cli-engine")
                 }),
-                formatter = engine.getFormatter("@somenamespace/eslint-formatter-foo");
+                formatter = engine.getFormatter("@somenamespace/ec0lint-formatter-foo");
 
             assert.isFunction(formatter);
         });
@@ -4114,11 +4114,11 @@ describe("CLIEngine", () => {
 
             assert.throws(() => {
                 engine.getFormatter("table");
-            }, "The table formatter is no longer part of core ESLint. Install it manually with `npm install -D eslint-formatter-table`");
+            }, "The table formatter is no longer part of core ESLint. Install it manually with `npm install -D ec0lint-formatter-table`");
 
             assert.throws(() => {
                 engine.getFormatter("codeframe");
-            }, "The codeframe formatter is no longer part of core ESLint. Install it manually with `npm install -D eslint-formatter-codeframe`");
+            }, "The codeframe formatter is no longer part of core ESLint. Install it manually with `npm install -D ec0lint-formatter-codeframe`");
         });
 
         it("should throw if the required formatter exists but has an error", () => {
