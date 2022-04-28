@@ -1349,7 +1349,7 @@ describe("RuleTester", () => {
                 ],
                 invalid: []
             });
-        }, /ESLint configuration in rule-tester is invalid./u);
+        }, /ec0lint configuration in rule-tester is invalid./u);
     });
 
     it("throw an error when an invalid config value is included", () => {

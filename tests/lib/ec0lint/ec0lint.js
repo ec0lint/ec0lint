@@ -3628,7 +3628,7 @@ describe("ESLint", () => {
 
                 await assert.rejects(async () => {
                     await eslint.lintFiles(["test.md"]);
-                }, /ESLint configuration of processor in '\.ec0lintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
+                }, /ec0lint configuration of processor in '\.ec0lintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
             });
 
             it("should lint HTML blocks as well with multiple processors if 'overrides[].files' is present.", async () => {
