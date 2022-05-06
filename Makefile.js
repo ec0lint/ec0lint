@@ -70,7 +70,6 @@ const NODE = "node ", // intentional extra space
     // Files
     RULE_FILES = glob.sync("lib/rules/*.js").filter(filePath => path.basename(filePath) !== "index.js"),
     JSON_FILES = find("conf/").filter(fileType("json")),
-    MARKDOWN_FILES_ARRAY = find("docs/").concat(ls(".")).filter(fileType("md")).filter(file => !MARKDOWNLINT_IGNORED_FILES.includes(file)),
     TEST_FILES = "\"tests/{bin,conf,lib,tools}/**/*.js\"",
     PERF_ESLINTRC = path.join(PERF_TMP_DIR, "ec0lintrc.yml"),
     PERF_MULTIFILES_TARGET_DIR = path.join(PERF_TMP_DIR, "ec0lint"),
@@ -467,8 +466,6 @@ target.lint = function([fix = false] = []) {
     echo("Validating JSON Files");
     JSON_FILES.forEach(validateJsonFile);
 
-    echo("Validating Markdown Files");
-    lastReturn = lintMarkdown(MARKDOWN_FILES_ARRAY);
     if (lastReturn.code !== 0) {
         errors++;
     }
@@ -767,6 +764,10 @@ target.checkRuleFiles = function() {
         const basename = path.basename(filename, ".js");
         const ruleCode = cat(filename);
         const knownHeaders = ["Rule Details", "Options", "Environments", "Examples", "Known Limitations", "When Not To Use It", "Related Rules", "Compatibility", "Further Reading"];
+        const docFilename = `docs/src/rules/${basename}.md`;
+        const docText = cat(docFilename);
+        const docMarkdown = marked.lexer(docText, { gfm: true, silent: false });
+
 
         /**
          * Check if basename is present in rule-types.json file.
