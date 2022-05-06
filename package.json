@@ -94,7 +94,6 @@
     "ejs": "^3.0.2",
     "eslint": "^8.0.0",
     "ec0lint-config-ec0lint": "file:packages/ec0lint-config-ec0lint",
-    "ec0lint-plugin-ec0lint-comments": "^0.0.2",
     "ec0lint-plugin-ec0lint-plugin": "^0.0.1",
     "ec0lint-plugin-internal-rules": "file:tools/internal-rules",
     "eslint-plugin-jsdoc": "^37.0.0",

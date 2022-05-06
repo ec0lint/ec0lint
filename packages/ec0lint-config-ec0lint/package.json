@@ -19,9 +19,6 @@
   },
   "homepage": "TBD",
   "bugs": "https://github.com/ec0lint/ec0lint/issues/",
-  "peerDependencies": {
-    "ec0lint-plugin-ec0lint-comments": ">=0.0.1"
-  },
   "keywords": [
     "ec0lint",
     "ec0lintconfig",
