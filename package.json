@@ -31,8 +31,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": "ec0lint",
-    "*.md": "markdownlint"
+    "*.js": "ec0lint"
   },
   "files": [
     "LICENSE",
@@ -113,8 +112,6 @@
     "karma-webpack": "^5.0.0",
     "lint-staged": "^11.0.0",
     "load-perf": "^0.2.0",
-    "markdownlint": "^0.24.0",
-    "markdownlint-cli": "^0.30.0",
     "marked": "^4.0.8",
     "memfs": "^3.0.1",
     "mocha": "^8.3.2",

@@ -16,7 +16,6 @@ const checker = require("npm-license"),
     fs = require("fs"),
     glob = require("glob"),
     marked = require("marked"),
-    markdownlint = require("markdownlint"),
     os = require("os"),
     path = require("path"),
     semver = require("semver"),
@@ -71,7 +70,6 @@ const NODE = "node ", // intentional extra space
     // Files
     RULE_FILES = glob.sync("lib/rules/*.js").filter(filePath => path.basename(filePath) !== "index.js"),
     JSON_FILES = find("conf/").filter(fileType("json")),
-    MARKDOWNLINT_IGNORED_FILES = fs.readFileSync(path.join(__dirname, ".markdownlintignore"), "utf-8").split("\n"),
     MARKDOWN_FILES_ARRAY = find("docs/").concat(ls(".")).filter(fileType("md")).filter(file => !MARKDOWNLINT_IGNORED_FILES.includes(file)),
     TEST_FILES = "\"tests/{bin,conf,lib,tools}/**/*.js\"",
     PERF_ESLINTRC = path.join(PERF_TMP_DIR, "ec0lintrc.yml"),
@@ -386,28 +384,6 @@ function getFirstVersionOfDeletion(filePath) {
         .map(version => semver.valid(version.trim()))
         .filter(version => version)
         .sort(semver.compare)[0];
-}
-
-/**
- * Lints Markdown files.
- * @param {Array} files Array of file names to lint.
- * @returns {Object} exec-style exit code object.
- * @private
- */
-function lintMarkdown(files) {
-    const config = yaml.load(fs.readFileSync(path.join(__dirname, "./.markdownlint.yml"), "utf8")),
-        result = markdownlint.sync({
-            files,
-            config,
-            resultVersion: 1
-        }),
-        resultString = result.toString(),
-        returnCode = resultString ? 1 : 0;
-
-    if (resultString) {
-        console.error(resultString);
-    }
-    return { code: returnCode };
 }
 
 /**

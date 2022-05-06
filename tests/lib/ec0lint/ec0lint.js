@@ -3319,14 +3319,6 @@ describe("ESLint", () => {
                     require.resolve("../../fixtures/processors/pattern-processor"),
                     "utf8"
                 ),
-                "node_modules/ec0lint-plugin-markdown/index.js": `
-                    const { defineProcessor } = require("pattern-processor");
-                    const processor = defineProcessor(${/```(\w+)\n([\s\S]+?)\n```/gu});
-                    exports.processors = {
-                        ".md": { ...processor, supportsAutofix: true },
-                        "non-fixable": processor
-                    };
-                `,
                 "node_modules/ec0lint-plugin-html/index.js": `
                     const { defineProcessor } = require("pattern-processor");
                     const processor = defineProcessor(${/<script lang="(\w*)">\n([\s\S]+?)\n<\/script>/gu});
@@ -3367,7 +3359,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" }
                         }
                     }
@@ -3390,7 +3382,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" }
                         }
                     }
@@ -3425,7 +3417,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" }
                         }
                     }
@@ -3450,7 +3442,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" }
                         }
                     }
@@ -3485,7 +3477,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" },
                             overrides: [
                                 {
@@ -3529,7 +3521,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" },
                             overrides: [
                                 {
@@ -3572,7 +3564,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" },
                             overrides: [
                                 {
@@ -3616,7 +3608,7 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             processor: "markdown/unknown"
                         }
                     }
@@ -3637,16 +3629,12 @@ describe("ESLint", () => {
                     files: {
                         ...commonFiles,
                         ".ec0lintrc.json": {
-                            plugins: ["markdown", "html"],
+                            plugins: ["html"],
                             rules: { semi: "error" },
                             overrides: [
                                 {
                                     files: "*.html",
                                     processor: "html/.html"
-                                },
-                                {
-                                    files: "*.md",
-                                    processor: "markdown/.md"
                                 }
                             ]
                         }

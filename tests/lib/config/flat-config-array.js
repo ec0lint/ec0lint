@@ -399,19 +399,19 @@ describe("FlatConfigArray", () => {
                     },
                     {
                         plugins: {
-                            markdown: {
+                            node: {
                                 processors: {
-                                    markdown: stubProcessor
+                                    node: stubProcessor
                                 }
                             }
                         },
-                        processor: "markdown/markdown"
+                        processor: "node/node"
                     }
                 ], {
                     plugins: {
-                        markdown: {
+                        node: {
                             processors: {
-                                markdown: stubProcessor
+                                node: stubProcessor
                             }
                         },
                         ...baseConfig.plugins
@@ -429,7 +429,7 @@ describe("FlatConfigArray", () => {
 
                 return assertMergedResult([
                     {
-                        processor: "markdown/markdown"
+                        processor: "node/node"
                     },
                     {
                         processor
