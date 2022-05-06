@@ -458,10 +458,10 @@ target.lint = function([fix = false] = []) {
         lastReturn;
 
     echo("Validating JavaScript files");
-    // lastReturn = exec(`${ESLINT}${fix ? "--fix" : ""} .`);
-    // if (lastReturn.code !== 0) {
-    //     errors++;
-    // }
+    lastReturn = exec(`${EC0LINT}${fix ? "--fix" : ""} .`);
+    if (lastReturn.code !== 0) {
+        errors++;
+    }
 
     echo("Validating JSON Files");
     JSON_FILES.forEach(validateJsonFile);
