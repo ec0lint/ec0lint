@@ -1,6 +1,6 @@
 {
   "name": "ec0lint-config-ec0lint",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Malwina Kubas @malwinq",
   "description": "Default ec0lint configuration for ec0lint projects",
   "scripts": {
@@ -20,9 +20,7 @@
   "homepage": "TBD",
   "bugs": "https://github.com/ec0lint/ec0lint/issues/",
   "peerDependencies": {
-    "ec0lint-plugin-ec0lint-comments": ">=0.0.1",
-    "eslint-plugin-jsdoc": ">=36.0.6",
-    "eslint-plugin-node": ">=11.1.0"
+    "ec0lint-plugin-ec0lint-comments": ">=0.0.1"
   },
   "keywords": [
     "ec0lint",
