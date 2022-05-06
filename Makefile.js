@@ -61,7 +61,7 @@ const NODE = "node ", // intentional extra space
     BUILD_DIR = "build",
     DOCS_DIR = "../website/docs",
     SITE_DIR = "../website/",
-    PERF_TMP_DIR = path.join(TEMP_DIR, "eslint", "performance"),
+    PERF_TMP_DIR = path.join(TEMP_DIR, "ec0lint", "performance"),
 
     // Utilities - intentional extra space at the end of each string
     MOCHA = `${NODE_MODULES}mocha/bin/_mocha `,
@@ -71,12 +71,12 @@ const NODE = "node ", // intentional extra space
     RULE_FILES = glob.sync("lib/rules/*.js").filter(filePath => path.basename(filePath) !== "index.js"),
     JSON_FILES = find("conf/").filter(fileType("json")),
     TEST_FILES = "\"tests/{bin,conf,lib,tools}/**/*.js\"",
-    PERF_ESLINTRC = path.join(PERF_TMP_DIR, "ec0lintrc.yml"),
+    PERF_EC0LINTRC = path.join(PERF_TMP_DIR, "ec0lintrc.yml"),
     PERF_MULTIFILES_TARGET_DIR = path.join(PERF_TMP_DIR, "ec0lint"),
     PERF_MULTIFILES_TARGETS = `"${PERF_MULTIFILES_TARGET_DIR + path.sep}{lib,tests${path.sep}lib}${path.sep}**${path.sep}*.js"`,
 
     // Settings
-    MOCHA_TIMEOUT = parseInt(process.env.ESLINT_MOCHA_TIMEOUT, 10) || 10000;
+    MOCHA_TIMEOUT = parseInt(process.env.EC0LINT_MOCHA_TIMEOUT, 10) || 10000;
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -143,7 +143,7 @@ function generateBlogPost(releaseInfo, prereleaseMajorVersion) {
         day = now.getDate(),
         filename = `../website/_posts/${now.getFullYear()}-${
             month < 10 ? `0${month}` : month}-${
-            day < 10 ? `0${day}` : day}-eslint-v${
+            day < 10 ? `0${day}` : day}-ec0lint-v${
             releaseInfo.version}-released.md`;
 
     output.to(filename);
@@ -262,7 +262,7 @@ function publishSite() {
  */
 function generateRelease() {
     ReleaseOps.generateRelease();
-    const releaseInfo = JSON.parse(cat(".eslint-release-info.json"));
+    const releaseInfo = JSON.parse(cat(".ec0lint-release-info.json"));
 
     echo("Generating site");
     target.gensite();
@@ -278,7 +278,7 @@ function generateRelease() {
  */
 function generatePrerelease(prereleaseId) {
     ReleaseOps.generateRelease(prereleaseId);
-    const releaseInfo = JSON.parse(cat(".eslint-release-info.json"));
+    const releaseInfo = JSON.parse(cat(".ec0lint-release-info.json"));
     const nextMajor = semver.inc(releaseInfo.version, "major");
 
     echo("Generating site");
@@ -557,7 +557,7 @@ target.test = function() {
 };
 
 target.gensite = function(prereleaseVersion) {
-    echo("Generating eslint.org");
+    echo("Generating ec0lint.org");
 
     let docFiles = [
         "/rules/",
@@ -621,9 +621,9 @@ target.gensite = function(prereleaseVersion) {
     tempFiles.forEach((filename, i) => {
         if (test("-f", filename) && path.extname(filename) === ".md") {
 
-            const rulesUrl = "https://github.com/eslint/eslint/tree/HEAD/lib/rules/",
-                testsUrl = "https://github.com/eslint/eslint/tree/HEAD/tests/lib/rules/",
-                docsUrl = "https://github.com/eslint/eslint/tree/HEAD/docs/rules/",
+            const rulesUrl = "https://github.com/ec0lint/ec0lint/tree/HEAD/lib/rules/",
+                testsUrl = "https://github.com/ec0lint/ec0lint/tree/HEAD/tests/lib/rules/",
+                docsUrl = "https://github.com/ec0lint/ec0lint/tree/HEAD/docs/rules/",
                 baseName = path.basename(filename),
                 sourceBaseName = `${path.basename(filename, ".md")}.js`,
                 sourcePath = path.join("lib/rules", sourceBaseName),
@@ -670,7 +670,7 @@ target.gensite = function(prereleaseVersion) {
                 "---",
                 `title: ${title}`,
                 "layout: doc",
-                `edit_link: https://github.com/eslint/eslint/edit/main/${filePath}`,
+                `edit_link: https://github.com/ec0lint/ec0lint/edit/main/${filePath}`,
                 ruleType,
                 "---",
                 "<!-- Note: No pull requests accepted for this file. See README.md in the root directory for details. -->",
@@ -700,8 +700,8 @@ target.gensite = function(prereleaseVersion) {
 
                 text += "\n## Version\n\n";
                 text += removed
-                    ? `This rule was introduced in ESLint ${added} and removed in ${removed}.\n`
-                    : `This rule was introduced in ESLint ${added}.\n`;
+                    ? `This rule was introduced in ec0lint ${added} and removed in ${removed}.\n`
+                    : `This rule was introduced in ec0lint ${added}.\n`;
 
                 text += "\n## Resources\n\n";
                 if (!removed) {
@@ -746,7 +746,7 @@ target.gensite = function(prereleaseVersion) {
     echo("> Creating the formatter examples (Step 14)");
     generateFormatterExamples(getFormatterResults(), prereleaseVersion);
 
-    echo("Done generating eslint.org");
+    echo("Done generating ec0lint.org");
 };
 
 target.webpack = function(mode = "none") {
@@ -823,8 +823,8 @@ target.checkRuleFiles = function() {
          * @private
          */
         function hasDeprecatedInfo() {
-            const deprecatedTagRegExp = /@deprecated in ESLint/u;
-            const deprecatedInfoRegExp = /This rule was .+deprecated.+in ESLint/u;
+            const deprecatedTagRegExp = /@deprecated in ec0lint/u;
+            const deprecatedInfoRegExp = /This rule was .+deprecated.+in ec0lint/u;
 
             return deprecatedTagRegExp.test(ruleCode);
         }
@@ -857,7 +857,7 @@ target.checkRuleFiles = function() {
 
             // check deprecated
             if (ruleDef.meta.deprecated && !hasDeprecatedInfo()) {
-                console.error(`Missing deprecated information in ${basename} rule code or README.md. Please write @deprecated tag in code or 「This rule was deprecated in ESLint ...」 in README.md.`);
+                console.error(`Missing deprecated information in ${basename} rule code or README.md. Please write @deprecated tag in code or 「This rule was deprecated in ec0lint ...」 in README.md.`);
                 errors++;
             }
 
@@ -952,7 +952,7 @@ function downloadMultifilesTestTarget(cb) {
     } else {
         mkdir("-p", PERF_MULTIFILES_TARGET_DIR);
         echo("Downloading the repository of multi-files performance test target.");
-        exec(`git clone -b v1.10.3 --depth 1 https://github.com/eslint/eslint.git "${PERF_MULTIFILES_TARGET_DIR}"`, { silent: true }, cb);
+        exec(`git clone -b v1.10.3 --depth 1 https://github.com/ec0lint/ec0lint.git "${PERF_MULTIFILES_TARGET_DIR}"`, { silent: true }, cb);
     }
 }
 
@@ -974,7 +974,7 @@ function createConfigForPerformanceTest() {
         content.push(`    ${ruleId}: 1`);
     }
 
-    content.join("\n").to(PERF_ESLINTRC);
+    content.join("\n").to(PERF_EC0LINTRC);
 }
 
 /**
@@ -1034,7 +1034,7 @@ function time(cmd, runs, runNumber, results, cb) {
 function runPerformanceTest(title, targets, multiplier, cb) {
     const cpuSpeed = os.cpus()[0].speed,
         max = multiplier / cpuSpeed,
-        cmd = `${ESLINT}--config "${PERF_ESLINTRC}" --no-ec0lintrc --no-ignore ${targets}`;
+        cmd = `${EC0LINT}--config "${PERF_EC0LINTRC}" --no-ec0lintrc --no-ignore ${targets}`;
 
     echo("");
     echo(title);
