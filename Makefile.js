@@ -855,6 +855,7 @@ target.checkRuleFiles = function() {
             errors++;
         } else {
 
+            /*
             // ec0TODO - revert after rules deletion
             // check deprecated
             // if (ruleDef.meta.deprecated && !hasDeprecatedInfo()) {
@@ -875,7 +876,8 @@ target.checkRuleFiles = function() {
             //         errors++;
             //     }
             // }
-
+            */
+            
             if (!hasRuleTypeJSDocComment()) {
                 console.error(`Missing rule type JSDoc comment from ${basename} rule code.`);
                 errors++;
