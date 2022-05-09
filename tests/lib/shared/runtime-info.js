@@ -46,8 +46,8 @@ function setupSpawnSyncStubReturnVals(stub, returnVals) {
 // Tests
 //------------------------------------------------------------------------------
 
-const LOCAL_ESLINT_BIN_PATH = "/Users/username/code/project/node_modules/ec0lint/bin/ec0lint.js";
-const GLOBAL_ESLINT_BIN_PATH = "/usr/local/bin/npm/node_modules/ec0lint/bin/ec0lint.js";
+const LOCAL_EC0LINT_BIN_PATH = "/Users/username/code/project/node_modules/ec0lint/bin/ec0lint.js";
+const GLOBAL_EC0LINT_BIN_PATH = "/usr/local/bin/npm/node_modules/ec0lint/bin/ec0lint.js";
 const NPM_BIN_PATH = "/usr/local/bin/npm";
 
 describe("RuntimeInfo", () => {
@@ -65,7 +65,7 @@ describe("RuntimeInfo", () => {
             spawnSyncStub = sinon.stub(spawn, "sync");
             logErrorStub = sinon.stub(log, "error");
             originalProcessArgv = process.argv;
-            process.argv[1] = LOCAL_ESLINT_BIN_PATH;
+            process.argv[1] = LOCAL_EC0LINT_BIN_PATH;
             spawnSyncStubArgs = [
                 "v12.8.0",
                 "6.11.3",
@@ -74,8 +74,8 @@ describe("RuntimeInfo", () => {
                         "name": "project",
                         "version": "1.0.0",
                         "dependencies": {
-                            "eslint": {
-                                "version": "6.3.0"
+                            "ec0lint": {
+                                "version": "0.0.22"
                             }
                         }
                     }
@@ -84,10 +84,10 @@ describe("RuntimeInfo", () => {
                 unIndent`
                     {
                         "dependencies": {
-                            "eslint": {
-                                "version": "5.16.0",
-                                "from": "eslint",
-                                "resolved": "https://registry.npmjs.org/eslint/-/eslint-6.16.0.tgz"
+                            "ec0lint": {
+                                "version": "0.0.22",
+                                "from": "ec0lint",
+                                "resolved": "https://registry.npmjs.org/ec0lint/-/ec0lint-0.0.22.tgz"
                             }
                         }
                     }
@@ -114,7 +114,7 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ESLint version: v6.3.0 (Currently used)
+                    Local ec0lint version: v6.3.0 (Currently used)
                     Global ec0lint version: v5.16.0
                     Operating System: darwin 20.3.0
                 `
@@ -123,7 +123,7 @@ describe("RuntimeInfo", () => {
 
         it("should return a string containing environment information when running global installation", () => {
             setupSpawnSyncStubReturnVals(spawnSyncStub, spawnSyncStubArgs);
-            process.argv[1] = GLOBAL_ESLINT_BIN_PATH;
+            process.argv[1] = GLOBAL_EC0LINT_BIN_PATH;
 
             assert.strictEqual(
                 RuntimeInfo.environment(),
@@ -132,7 +132,7 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ESLint version: v6.3.0
+                    Local ec0lint version: v6.3.0
                     Global ec0lint version: v5.16.0 (Currently used)
                     Operating System: darwin 20.3.0
                 `
@@ -148,7 +148,7 @@ describe("RuntimeInfo", () => {
             `);
             spawnSyncStubArgs.push(NPM_BIN_PATH);
             setupSpawnSyncStubReturnVals(spawnSyncStub, spawnSyncStubArgs);
-            process.argv[1] = GLOBAL_ESLINT_BIN_PATH;
+            process.argv[1] = GLOBAL_EC0LINT_BIN_PATH;
 
             assert.strictEqual(
                 RuntimeInfo.environment(),
@@ -202,12 +202,12 @@ describe("RuntimeInfo", () => {
             assert.strictEqual(logErrorStub.args[0][0], "Error finding npm binary path when running command `npm bin -g`");
         });
 
-        it("log and throw an error when checking for local ESLint version when returned output of command is malformed", () => {
+        it("log and throw an error when checking for local ec0lint version when returned output of command is malformed", () => {
             spawnSyncStubArgs[2] = "This is not JSON";
             setupSpawnSyncStubReturnVals(spawnSyncStub, spawnSyncStubArgs);
 
             assert.throws(RuntimeInfo.environment, "Unexpected token T in JSON at position 0");
-            assert.strictEqual(logErrorStub.args[0][0], "Error finding eslint version running the command `npm ls --depth=0 --json eslint`");
+            assert.strictEqual(logErrorStub.args[0][0], "Error finding ec0lint version running the command `npm ls --depth=0 --json ec0lint`");
         });
 
         it("log and throw an error when checking for global ec0lint version when returned output of command is malformed", () => {
@@ -215,7 +215,7 @@ describe("RuntimeInfo", () => {
             setupSpawnSyncStubReturnVals(spawnSyncStub, spawnSyncStubArgs);
 
             assert.throws(RuntimeInfo.environment, "Unexpected token T in JSON at position 0");
-            assert.strictEqual(logErrorStub.args[0][0], "Error finding eslint version running the command `npm ls --depth=0 --json eslint -g`");
+            assert.strictEqual(logErrorStub.args[0][0], "Error finding ec0lint version running the command `npm ls --depth=0 --json ec0lint -g`");
         });
     });
 
