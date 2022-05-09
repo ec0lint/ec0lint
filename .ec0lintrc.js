@@ -55,14 +55,14 @@ module.exports = {
     },
 
     rules: {
-        "eslint-plugin/prefer-message-ids": "error",
-        "eslint-plugin/prefer-output-null": "error",
-        "eslint-plugin/prefer-placeholders": "error",
-        "eslint-plugin/prefer-replace-text": "error",
-        "eslint-plugin/report-message-format": ["error", "[^a-z].*\\.$"],
-        "eslint-plugin/require-meta-docs-description": "error",
-        "eslint-plugin/test-case-property-ordering": "error",
-        "eslint-plugin/test-case-shorthand-strings": "error",
+        "ec0lint-plugin/prefer-message-ids": "error",
+        "ec0lint-plugin/prefer-output-null": "error",
+        "ec0lint-plugin/prefer-placeholders": "error",
+        "ec0lint-plugin/prefer-replace-text": "error",
+        "ec0lint-plugin/report-message-format": ["error", "[^a-z].*\\.$"],
+        "ec0lint-plugin/require-meta-docs-description": "error",
+        "ec0lint-plugin/test-case-property-ordering": "error",
+        "ec0lint-plugin/test-case-shorthand-strings": "error",
         "internal-rules/multiline-comment-style": "error"
     },
     overrides: [
@@ -77,7 +77,7 @@ module.exports = {
             files: ["lib/rules/*"],
             excludedFiles: ["index.js"],
             rules: {
-                "eslint-plugin/require-meta-docs-url": ["error", { pattern: "https://eslint.org/docs/rules/{{name}}" }]
+                "ec0lint-plugin/require-meta-docs-url": ["error", { pattern: "https://eslint.org/docs/rules/{{name}}" }]
             }
         },
         {
