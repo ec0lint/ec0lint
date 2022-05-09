@@ -3316,14 +3316,15 @@ describe("ESLint", () => {
                     require.resolve("../../fixtures/processors/pattern-processor"),
                     "utf8"
                 ),
-                "node_modules/ec0lint-plugin-html/index.js": `
-                    const { defineProcessor } = require("pattern-processor");
-                    const processor = defineProcessor(${/<script lang="(\w*)">\n([\s\S]+?)\n<\/script>/gu});
-                    const legacyProcessor = defineProcessor(${/<script lang="(\w*)">\n([\s\S]+?)\n<\/script>/gu}, true);
-                    exports.processors = {
-                        ".html": { ...processor, supportsAutofix: true },
-                        "non-fixable": processor,
-                        "legacy": legacyProcessor
+                "node_modules/ec0lint-plugin-test/index.js": `
+                    exports.configs = {
+                        recommended: { plugins: ["test"] }
+                    };
+                    exports.rules = {
+                        foo: {
+                            meta: { schema: [{ type: "number" }] },
+                            create() { return {}; }
+                        }
                     };
                 `,
                 "test.md": unIndent`
