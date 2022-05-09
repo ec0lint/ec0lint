@@ -863,18 +863,17 @@ target.checkRuleFiles = function() {
 
             const recommended = require("./conf/ec0lint-recommended");
 
-            // TODO
-            // if (ruleDef.meta.docs.recommended) {
-            //     if (recommended.rules[basename] !== "error") {
-            //         console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
-            //         errors++;
-            //     }
-            // } else {
-            //     if (basename in recommended.rules) {
-            //         console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
-            //         errors++;
-            //     }
-            // }
+            if (ruleDef.meta.docs.recommended) {
+                if (recommended.rules[basename] !== "error") {
+                    console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
+                    errors++;
+                }
+            } else {
+                if (basename in recommended.rules) {
+                    console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
+                    errors++;
+                }
+            }
 
             if (!hasRuleTypeJSDocComment()) {
                 console.error(`Missing rule type JSDoc comment from ${basename} rule code.`);
