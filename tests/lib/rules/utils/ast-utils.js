@@ -404,7 +404,6 @@ describe("ast-utils", () => {
 
     describe("getStaticStringValue", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
 
             // string literals
@@ -1019,7 +1018,6 @@ describe("ast-utils", () => {
 
     describe("getNextLocation", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
             "": [[1, 0], null],
             "\n": [[1, 0], [2, 0], null],
@@ -1573,7 +1571,7 @@ describe("ast-utils", () => {
                     },
                     nodeB: {
                         type: "Literal",
-                        value: /(?:)/, // eslint-disable-line require-unicode-regexp -- Checking non-Unicode regex
+                        value: /(?:)/,
                         regex: { pattern: "(?:)", flags: "" }
                     },
                     expected: false
@@ -1666,7 +1664,6 @@ describe("ast-utils", () => {
 
     describe("hasOctalOrNonOctalDecimalEscapeSequence", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
             "\\1": true,
             "\\2": true,

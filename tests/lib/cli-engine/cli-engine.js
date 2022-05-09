@@ -91,7 +91,7 @@ describe("CLIEngine", () => {
          * exceeds the default test timeout, so raise it just for this hook.
          * Mocha uses `this` to set timeouts on an individual hook level.
          */
-        this.timeout(60 * 1000); // eslint-disable-line no-invalid-this -- Mocha API
+        this.timeout(60 * 1000);
         shell.mkdir("-p", fixtureDir);
         shell.cp("-r", "./tests/fixtures/.", fixtureDir);
     });
@@ -119,7 +119,6 @@ describe("CLIEngine", () => {
 
         it("should report one fatal message when given a path by --ignore-path that is not a file when ignore is true.", () => {
             assert.throws(() => {
-                // eslint-disable-next-line no-new -- Testing synchronous throwing
                 new CLIEngine({ ignorePath: fixtureDir });
             }, `Cannot read .ec0lintignore file: ${fixtureDir}\nError: EISDIR: illegal operation on a directory, read`);
         });
@@ -128,7 +127,7 @@ describe("CLIEngine", () => {
         it("should not modify baseConfig when format is specified", () => {
             const customBaseConfig = { root: true };
 
-            new CLIEngine({ baseConfig: customBaseConfig, format: "foo" }); // eslint-disable-line no-new -- Test side effects
+            new CLIEngine({ baseConfig: customBaseConfig, format: "foo" });
 
             assert.deepStrictEqual(customBaseConfig, { root: true });
         });
@@ -138,89 +137,88 @@ describe("CLIEngine", () => {
 
         let engine;
 
-        // it("should report the total and per file warnings when using local cwd .ec0lintrc", () => {
-        //
-        //     engine = new CLIEngine({
-        //         rules: {
-        //             quotes: 1,
-        //             "no-var": 1,
-        //             "eol-last": 1,
-        //             strict: 1,
-        //             "no-unused-vars": 1
-        //         }
-        //     });
-        //
-        //     const report = engine.executeOnText("var foo = 'bar';");
-        //
-        //     assert.strictEqual(report.results.length, 1);
-        //     assert.strictEqual(report.errorCount, 0);
-        //     assert.strictEqual(report.warningCount, 5);
-        //     assert.strictEqual(report.fixableErrorCount, 0);
-        //     assert.strictEqual(report.fixableWarningCount, 3);
-        //     assert.strictEqual(report.results[0].messages.length, 5);
-        //     assert.strictEqual(report.results[0].messages[0].ruleId, "strict");
-        //     assert.strictEqual(report.results[0].messages[1].ruleId, "no-var");
-        //     assert.strictEqual(report.results[0].messages[2].ruleId, "no-unused-vars");
-        //     assert.strictEqual(report.results[0].messages[3].ruleId, "quotes");
-        //     assert.strictEqual(report.results[0].messages[4].ruleId, "eol-last");
-        //     assert.strictEqual(report.results[0].fixableErrorCount, 0);
-        //     assert.strictEqual(report.results[0].fixableWarningCount, 3);
-        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        // });
+        it("should report the total and per file warnings when using local cwd .ec0lintrc", () => {
 
-        // it("should report one message when using specific config file", () => {
-        //
-        //     engine = new CLIEngine({
-        //         configFile: "fixtures/configurations/quotes-error.json",
-        //         useEc0lintrc: false,
-        //         cwd: getFixturePath("..")
-        //     });
-        //
-        //     const report = engine.executeOnText("var foo = 'bar';");
-        //
-        //     assert.strictEqual(report.results.length, 1);
-        //     assert.strictEqual(report.errorCount, 1);
-        //     assert.strictEqual(report.warningCount, 0);
-        //     assert.strictEqual(report.fixableErrorCount, 1);
-        //     assert.strictEqual(report.fixableWarningCount, 0);
-        //     assert.strictEqual(report.results[0].messages.length, 1);
-        //     assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-        //     assert.isUndefined(report.results[0].messages[0].output);
-        //     assert.strictEqual(report.results[0].errorCount, 1);
-        //     assert.strictEqual(report.results[0].fixableErrorCount, 1);
-        //     assert.strictEqual(report.results[0].warningCount, 0);
-        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        // });
+            engine = new CLIEngine({
+                rules: {
+                    quotes: 1,
+                    "no-var": 1,
+                    "eol-last": 1,
+                    strict: 1,
+                    "no-unused-vars": 1
+                }
+            });
 
-        // it("should suppress excluded file warnings by default", () => {
-        //     engine = new CLIEngine({
-        //         ignorePath: getFixturePath(".ec0lintignore"),
-        //         cwd: getFixturePath("..")
-        //     });
-        //
-        //     const report = engine.executeOnText("var bar = foo;", "fixtures/passing.js");
-        //
-        //     // should not report anything because there are no errors
-        //     assert.strictEqual(report.results.length, 0);
-        // });
+            const report = engine.executeOnText("var foo = 'bar';");
 
-        // it("should return source code of file in `source` property when errors are present", () => {
-        //     engine = new CLIEngine({
-        //         useEc0lintrc: false,
-        //         rules: { semi: 2 }
-        //     });
-        //
-        //     const report = engine.executeOnText("var foo = 'bar'");
-        //
-        //     assert.strictEqual(report.results[0].source, "var foo = 'bar'");
-        // });
+            assert.strictEqual(report.results.length, 1);
+            assert.strictEqual(report.errorCount, 0);
+            assert.strictEqual(report.warningCount, 5);
+            assert.strictEqual(report.fixableErrorCount, 0);
+            assert.strictEqual(report.fixableWarningCount, 3);
+            assert.strictEqual(report.results[0].messages.length, 5);
+            assert.strictEqual(report.results[0].messages[0].ruleId, "strict");
+            assert.strictEqual(report.results[0].messages[1].ruleId, "no-var");
+            assert.strictEqual(report.results[0].messages[2].ruleId, "no-unused-vars");
+            assert.strictEqual(report.results[0].messages[3].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[4].ruleId, "eol-last");
+            assert.strictEqual(report.results[0].fixableErrorCount, 0);
+            assert.strictEqual(report.results[0].fixableWarningCount, 3);
+            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        });
 
-        // @scope for @scope/eslint-plugin
+        it("should report one message when using specific config file", () => {
+
+            engine = new CLIEngine({
+                configFile: "fixtures/configurations/quotes-error.json",
+                useEc0lintrc: false,
+                cwd: getFixturePath("..")
+            });
+
+            const report = engine.executeOnText("var foo = 'bar';");
+
+            assert.strictEqual(report.results.length, 1);
+            assert.strictEqual(report.errorCount, 1);
+            assert.strictEqual(report.warningCount, 0);
+            assert.strictEqual(report.fixableErrorCount, 1);
+            assert.strictEqual(report.fixableWarningCount, 0);
+            assert.strictEqual(report.results[0].messages.length, 1);
+            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+            assert.isUndefined(report.results[0].messages[0].output);
+            assert.strictEqual(report.results[0].errorCount, 1);
+            assert.strictEqual(report.results[0].fixableErrorCount, 1);
+            assert.strictEqual(report.results[0].warningCount, 0);
+            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        });
+
+        it("should suppress excluded file warnings by default", () => {
+            engine = new CLIEngine({
+                ignorePath: getFixturePath(".ec0lintignore"),
+                cwd: getFixturePath("..")
+            });
+
+            const report = engine.executeOnText("var bar = foo;", "fixtures/passing.js");
+
+            // should not report anything because there are no errors
+            assert.strictEqual(report.results.length, 0);
+        });
+
+        it("should return source code of file in `source` property when errors are present", () => {
+            engine = new CLIEngine({
+                useEc0lintrc: false,
+                rules: { semi: 2 }
+            });
+
+            const report = engine.executeOnText("var foo = 'bar'");
+
+            assert.strictEqual(report.results[0].source, "var foo = 'bar'");
+        });
+
+        // @scope for @scope/ec0lint-plugin
         describe("(plugin shorthand)", () => {
             const Module = require("module");
             let originalFindPath = null;
 
-            /* eslint-disable no-underscore-dangle -- Private Node API overriding */
             before(() => {
                 originalFindPath = Module._findPath;
                 Module._findPath = function(id, ...otherArgs) {
@@ -3734,7 +3732,6 @@ describe("CLIEngine", () => {
 
                 assert.throw(() => {
                     try {
-                        // eslint-disable-next-line no-new -- Check for throwing
                         new CLIEngine({ cwd });
                     } catch (error) {
                         assert.strictEqual(error.messageTemplate, "failed-to-read-json");
@@ -3760,7 +3757,6 @@ describe("CLIEngine", () => {
                 const cwd = getFixturePath("ignored-paths", "bad-package-json-ignore");
 
                 assert.throws(() => {
-                    // eslint-disable-next-line no-new -- Check for throwing
                     new CLIEngine({ cwd });
                 }, "Package.json ec0lintIgnore property requires an array of paths");
             });
@@ -3892,7 +3888,6 @@ describe("CLIEngine", () => {
                 const ignorePath = getFixturePath("ignored-paths", "not-a-directory", ".foobaz");
 
                 assert.throws(() => {
-                    // eslint-disable-next-line no-new -- Check for throwing
                     new CLIEngine({ ignorePath, cwd });
                 }, "Cannot read .ec0lintignore file");
             });

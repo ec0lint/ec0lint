@@ -21,7 +21,7 @@ describe("ec0lint-fuzzer", function() {
      * These tests take awhile because isolating which rule caused an error requires running eslint up to hundreds of
      * times, one rule at a time.
      */
-    this.timeout(15000); // eslint-disable-line no-invalid-this -- Mocha timeout
+    this.timeout(15000); 
 
     const linter = new eslint.Linter();
     const coreRules = linter.getRules();

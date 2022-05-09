@@ -330,9 +330,6 @@ describe("FlatRuleTester", () => {
                 before(() => {
                     originalGlobalIt = global.it;
 
-                    // eslint-disable-next-line no-global-assign -- Temporarily override Mocha global
-                    it = () => {};
-
                     /*
                      * These tests override `describe` and `it`, so we need to
                      * un-override them here so they won't interfere.
@@ -343,8 +340,6 @@ describe("FlatRuleTester", () => {
                     FlatRuleTester.it = void 0;
                 });
                 after(() => {
-
-                    // eslint-disable-next-line no-global-assign -- Restore Mocha global
                     it = originalGlobalIt;
                     FlatRuleTester.describe = originalRuleTesterDescribe;
                     FlatRuleTester.it = originalRuleTesterIt;
