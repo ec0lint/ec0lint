@@ -764,7 +764,7 @@ target.checkRuleFiles = function() {
         const basename = path.basename(filename, ".js");
         const ruleCode = cat(filename);
         const knownHeaders = ["Rule Details", "Options", "Environments", "Examples", "Known Limitations", "When Not To Use It", "Related Rules", "Compatibility", "Further Reading"];
-        const docFilename = `docs/src/rules/${basename}.md`;
+        const docFilename = `docs/rules/${basename}.md`;
         const docText = cat(docFilename);
         const docMarkdown = marked.lexer(docText, { gfm: true, silent: false });
 
