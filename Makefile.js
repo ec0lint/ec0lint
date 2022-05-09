@@ -875,7 +875,7 @@ target.checkRuleFiles = function() {
              *         console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
              *         errors++;
              *     }
-          * }
+             * }
              */
 
             if (!hasRuleTypeJSDocComment()) {
