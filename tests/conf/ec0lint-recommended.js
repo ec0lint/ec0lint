@@ -22,7 +22,7 @@ describe("ec0lint-recommended", () => {
         assert.strictEqual(rules["no-extra-semi"], "error");
     });
 
-    // it("should not configure non-recommended rules", () => {
-    //     assert.notProperty(rules, "camelcase");
-    // });
+    it("should not configure non-recommended rules", () => {
+        assert.notProperty(rules, "camelcase");
+    });
 });
