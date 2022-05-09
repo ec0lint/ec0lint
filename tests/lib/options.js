@@ -267,13 +267,13 @@ describe("options", () => {
         });
     });
 
-    // describe("--fix", () => {
-    //     it("should return true for --fix when passed", () => {
-    //         const currentOptions = options.parse("--fix");
-    //
-    //         assert.isTrue(currentOptions.fix);
-    //     });
-    // });
+    describe("--fix", () => {
+        it("should return true for --fix when passed", () => {
+            const currentOptions = options.parse("--fix");
+
+            assert.isTrue(currentOptions.fix);
+        });
+    });
 
     describe("--debug", () => {
         it("should return true for --debug when passed", () => {
