@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 
 const checker = require("npm-license"),
-    ReleaseOps = require("eslint-release"),
+    // ReleaseOps = require("eslint-release"),
     dateformat = require("dateformat"),
     fs = require("fs"),
     glob = require("glob"),
@@ -261,7 +261,7 @@ function publishSite() {
  * @returns {void}
  */
 function generateRelease() {
-    ReleaseOps.generateRelease();
+    // ReleaseOps.generateRelease();
     const releaseInfo = JSON.parse(cat(".ec0lint-release-info.json"));
 
     echo("Generating site");
@@ -277,7 +277,7 @@ function generateRelease() {
  * @returns {void}
  */
 function generatePrerelease(prereleaseId) {
-    ReleaseOps.generateRelease(prereleaseId);
+    // ReleaseOps.generateRelease(prereleaseId);
     const releaseInfo = JSON.parse(cat(".ec0lint-release-info.json"));
     const nextMajor = semver.inc(releaseInfo.version, "major");
 
@@ -314,7 +314,7 @@ function generatePrerelease(prereleaseId) {
  * @returns {void}
  */
 function publishRelease() {
-    ReleaseOps.publishRelease();
+    // ReleaseOps.publishRelease();
     publishSite();
 }
 
