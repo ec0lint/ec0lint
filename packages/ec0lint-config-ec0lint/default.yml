@@ -27,10 +27,6 @@ rules:
     eol-last: "error"
     eqeqeq: "error"
 
-    eslint-comments/disable-enable-pair: ["error"]
-    eslint-comments/no-unused-disable: "error"
-    eslint-comments/require-description: "error"
-
     func-call-spacing: "error"
     func-style: ["error", "declaration"]
     function-call-argument-newline: ["error", "consistent"]
@@ -38,54 +34,6 @@ rules:
     generator-star-spacing: "error"
     grouped-accessor-pairs: "error"
     guard-for-in: "error"
-
-    # jsdoc: adopt non-recommended rules or change recommended configuration
-    # jsdoc/check-examples: "error"
-    # jsdoc/check-indentation: "error" # Revisit if allowing configurable spaces after tag line breaks
-    jsdoc/check-line-alignment: ["error", "never"]
-    jsdoc/check-syntax: "error"
-    # jsdoc/check-types': ["error', { exemptTagContexts: [ { tag: "typedef", types: ["object", "GenericObject"] } ] }
-
-    jsdoc/check-values: ["error", { allowedLicenses: true }]
-    jsdoc/newline-after-description: ["error", "never"]
-    jsdoc/no-bad-blocks: "error"
-    jsdoc/require-asterisk-prefix: "error"
-    jsdoc/require-description: ["error", { checkConstructors: false }]
-    # jsdoc/require-file-overview: "error"
-    jsdoc/require-hyphen-before-param-description: ["error", "never"]
-    jsdoc/require-returns: ["error", { forceRequireReturn: true, forceReturnsWithAsync: true }]
-    jsdoc/require-throws: "error"
-    jsdoc/tag-lines: ["error", "never", { tags: { example: { lines: "always" }, fileoverview: { lines: "any" } } }]
-
-    # jsdoc: disable recommended rules
-    jsdoc/no-undefined-types: "off"
-    jsdoc/require-yields: "off"
-
-    # jsdoc: change recommended rules from warnings into errors
-    jsdoc/check-access: "error"
-    jsdoc/check-alignment: "error"
-    jsdoc/check-param-names: "error"
-    jsdoc/check-property-names: "error"
-    jsdoc/check-tag-names: "error"
-    jsdoc/check-types: "error"
-    jsdoc/empty-tags: "error"
-    jsdoc/implements-on-classes: "error"
-    jsdoc/multiline-blocks: "error"
-    jsdoc/no-multi-asterisks: "error"
-    jsdoc/require-jsdoc: ["error", { require: {ClassDeclaration: true} }]
-    jsdoc/require-param: "error"
-    jsdoc/require-param-description: "error"
-    jsdoc/require-param-name: "error"
-    jsdoc/require-param-type: "error"
-    jsdoc/require-property: "error"
-    jsdoc/require-property-description: "error"
-    jsdoc/require-property-name: "error"
-    jsdoc/require-property-type: "error"
-    jsdoc/require-returns-check: "error"
-    jsdoc/require-returns-description: "error"
-    jsdoc/require-returns-type: "error"
-    jsdoc/require-yields-check: "error"
-    jsdoc/valid-types: "error"
 
     key-spacing: ["error", { beforeColon: false, afterColon: true }]
     keyword-spacing: "error"
@@ -172,13 +120,6 @@ rules:
     no-useless-return: "error"
     no-whitespace-before-property: "error"
     no-var: "error"
-
-    node/callback-return: ["error", ["cb", "callback", "next"]]
-    node/handle-callback-err: ["error", "err"]
-    node/no-deprecated-api: "error"
-    node/no-mixed-requires: "error"
-    node/no-new-require: "error"
-    node/no-path-concat: "error"
 
     object-curly-newline: ["error", { "consistent": true, "multiline": true }]
     object-curly-spacing: ["error", "always"]
