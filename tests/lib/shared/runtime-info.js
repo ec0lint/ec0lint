@@ -114,8 +114,8 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ec0lint version: v6.3.0 (Currently used)
-                    Global ec0lint version: v5.16.0
+                    Local ec0lint version: v0.0.22 (Currently used)
+                    Global ec0lint version: v0.0.22
                     Operating System: darwin 20.3.0
                 `
             );
@@ -132,7 +132,7 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ec0lint version: v6.3.0
+                    Local ec0lint version: v0.0.22
                     Global ec0lint version: v5.16.0 (Currently used)
                     Operating System: darwin 20.3.0
                 `
@@ -158,7 +158,7 @@ describe("RuntimeInfo", () => {
                     Node version: v12.8.0
                     npm version: v6.11.3
                     Local ec0lint version: Not found
-                    Global ec0lint version: v5.16.0 (Currently used)
+                    Global ec0lint version: v0.0.22 (Currently used)
                     Operating System: darwin 20.3.0
                 `
             );
@@ -175,7 +175,7 @@ describe("RuntimeInfo", () => {
 
                     Node version: v12.8.0
                     npm version: v6.11.3
-                    Local ec0lint version: v6.3.0 (Currently used)
+                    Local ec0lint version: v0.0.22 (Currently used)
                     Global ec0lint version: Not found
                     Operating System: darwin 20.3.0
                 `
