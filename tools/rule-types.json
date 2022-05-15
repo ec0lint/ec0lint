@@ -142,6 +142,7 @@
     "no-mixed-operators": "suggestion",
     "no-mixed-requires": "suggestion",
     "no-mixed-spaces-and-tabs": "layout",
+    "no-moment-js": "suggestion",
     "no-multi-assign": "suggestion",
     "no-multi-spaces": "layout",
     "no-multi-str": "suggestion",
