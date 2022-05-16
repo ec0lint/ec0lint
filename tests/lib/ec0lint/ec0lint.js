@@ -3048,78 +3048,78 @@ describe("ESLint", () => {
                 });
 
 
-                it("should run in autofix mode when using a processor that supports autofixing", async () => {
-                    eslint = new ESLint({
-                        useEc0lintrc: false,
-                        overrideConfig: {
-                            plugins: ["test-processor"],
-                            rules: {
-                                semi: 2
-                            }
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true,
-                        plugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-                    const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
+                // it("should run in autofix mode when using a processor that supports autofixing", async () => {
+                //     eslint = new ESLint({
+                //         useEc0lintrc: false,
+                //         overrideConfig: {
+                //             plugins: ["test-processor"],
+                //             rules: {
+                //                 semi: 2
+                //             }
+                //         },
+                //         extensions: ["js", "txt"],
+                //         ignore: false,
+                //         fix: true,
+                //         plugins: {
+                //             "test-processor": {
+                //                 processors: {
+                //                     ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
+                //                 }
+                //             }
+                //         }
+                //     });
+                //     const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
+                //
+                //     assert.strictEqual(results[0].messages.length, 0);
+                //     assert.strictEqual(results[0].output, "<script>foo;</script>");
+                // });
 
-                    assert.strictEqual(results[0].messages.length, 0);
-                    assert.strictEqual(results[0].output, "<script>foo;</script>");
-                });
+                // it("should not run in autofix mode when using a processor that does not support autofixing", async () => {
+                //     eslint = new ESLint({
+                //         useEc0lintrc: false,
+                //         overrideConfig: {
+                //             plugins: ["test-processor"],
+                //             rules: {
+                //                 semi: 2
+                //             }
+                //         },
+                //         extensions: ["js", "txt"],
+                //         ignore: false,
+                //         fix: true,
+                //         plugins: {
+                //             "test-processor": { processors: { ".html": HTML_PROCESSOR } }
+                //         }
+                //     });
+                //     const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
+                //
+                //     assert.strictEqual(results[0].messages.length, 1);
+                //     assert(!Object.prototype.hasOwnProperty.call(results[0], "output"));
+                // });
 
-                it("should not run in autofix mode when using a processor that does not support autofixing", async () => {
-                    eslint = new ESLint({
-                        useEc0lintrc: false,
-                        overrideConfig: {
-                            plugins: ["test-processor"],
-                            rules: {
-                                semi: 2
-                            }
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true,
-                        plugins: {
-                            "test-processor": { processors: { ".html": HTML_PROCESSOR } }
-                        }
-                    });
-                    const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
-
-                    assert.strictEqual(results[0].messages.length, 1);
-                    assert(!Object.prototype.hasOwnProperty.call(results[0], "output"));
-                });
-
-                it("should not run in autofix mode when `fix: true` is not provided, even if the processor supports autofixing", async () => {
-                    eslint = new ESLint({
-                        useEc0lintrc: false,
-                        overrideConfig: {
-                            plugins: ["test-processor"],
-                            rules: {
-                                semi: 2
-                            }
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        plugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-                    const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
-
-                    assert.strictEqual(results[0].messages.length, 1);
-                    assert(!Object.prototype.hasOwnProperty.call(results[0], "output"));
-                });
+                // it("should not run in autofix mode when `fix: true` is not provided, even if the processor supports autofixing", async () => {
+                //     eslint = new ESLint({
+                //         useEc0lintrc: false,
+                //         overrideConfig: {
+                //             plugins: ["test-processor"],
+                //             rules: {
+                //                 semi: 2
+                //             }
+                //         },
+                //         extensions: ["js", "txt"],
+                //         ignore: false,
+                //         plugins: {
+                //             "test-processor": {
+                //                 processors: {
+                //                     ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
+                //                 }
+                //             }
+                //         }
+                //     });
+                //     const results = await eslint.lintText("<script>foo</script>", { filePath: "foo.html" });
+                //
+                //     assert.strictEqual(results[0].messages.length, 1);
+                //     assert(!Object.prototype.hasOwnProperty.call(results[0], "output"));
+                // });
             });
         });
 
@@ -3351,306 +3351,306 @@ describe("ESLint", () => {
 
             afterEach(() => cleanup());
 
-            it("should lint only JavaScript blocks if '--ext' was not given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
+            // it("should lint only JavaScript blocks if '--ext' was not given.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" }
+            //             }
+            //         }
+            //     });
+            //
+            //     cleanup = teardown.cleanup;
+            //     await teardown.prepare();
+            //     eslint = new ESLint({ cwd: teardown.getPath() });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 1);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi");
+            //     assert.strictEqual(results[0].messages[0].line, 2);
+            // });
 
-                cleanup = teardown.cleanup;
-                await teardown.prepare();
-                eslint = new ESLint({ cwd: teardown.getPath() });
-                const results = await eslint.lintFiles(["test.md"]);
+            // it("should fix only JavaScript blocks if '--ext' was not given.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" }
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), fix: true });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 0);
+            //     assert.strictEqual(results[0].output, unIndent`
+            //         \`\`\`js
+            //         console.log("hello");${/* ← fixed */""}
+            //         \`\`\`
+            //         \`\`\`html
+            //         <div>Hello</div>
+            //         <script lang="js">
+            //             console.log("hello")${/* ← ignored */""}
+            //         </script>
+            //         <script lang="ts">
+            //             console.log("hello")${/* ← ignored */""}
+            //         </script>
+            //         \`\`\`
+            //     `);
+            // });
 
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-            });
+            // it("should lint HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" }
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 2);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS block
+            //     assert.strictEqual(results[0].messages[0].line, 2);
+            //     assert.strictEqual(results[0].messages[1].ruleId, "semi"); // JS block in HTML block
+            //     assert.strictEqual(results[0].messages[1].line, 7);
+            // });
 
-            it("should fix only JavaScript blocks if '--ext' was not given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
+            // it("should fix HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" }
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"], fix: true });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 0);
+            //     assert.strictEqual(results[0].output, unIndent`
+            //         \`\`\`js
+            //         console.log("hello");${/* ← fixed */""}
+            //         \`\`\`
+            //         \`\`\`html
+            //         <div>Hello</div>
+            //         <script lang="js">
+            //             console.log("hello");${/* ← fixed */""}
+            //         </script>
+            //         <script lang="ts">
+            //             console.log("hello")${/* ← ignored */""}
+            //         </script>
+            //         \`\`\`
+            //     `);
+            // });
 
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), fix: true });
-                const results = await eslint.lintFiles(["test.md"]);
+            // it("should use overridden processor; should report HTML blocks but not fix HTML blocks if the processor for '*.html' didn't support autofix.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" },
+            //                 overrides: [
+            //                     {
+            //                         files: "*.html",
+            //                         processor: "html/non-fixable" // supportsAutofix: false
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"], fix: true });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 1);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS Block in HTML Block
+            //     assert.strictEqual(results[0].messages[0].line, 7);
+            //     assert.strictEqual(results[0].messages[0].fix, void 0);
+            //     assert.strictEqual(results[0].output, unIndent`
+            //         \`\`\`js
+            //         console.log("hello");${/* ← fixed */""}
+            //         \`\`\`
+            //         \`\`\`html
+            //         <div>Hello</div>
+            //         <script lang="js">
+            //             console.log("hello")${/* ← reported but not fixed */""}
+            //         </script>
+            //         <script lang="ts">
+            //             console.log("hello")
+            //         </script>
+            //         \`\`\`
+            //     `);
+            // });
+            //
+            // it("should use the config '**/*.html/*.js' to lint JavaScript blocks in HTML.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" },
+            //                 overrides: [
+            //                     {
+            //                         files: "*.html",
+            //
+            //                         // this rules are not used because ESLint re-resolve configs if a code block had a different file extension.
+            //                         rules: {
+            //                             semi: "error",
+            //                             "no-console": "off"
+            //                         }
+            //                     },
+            //                     {
+            //                         files: "**/*.html/*.js",
+            //                         rules: {
+            //                             semi: "off",
+            //                             "no-console": "error"
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 2);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi");
+            //     assert.strictEqual(results[0].messages[0].line, 2);
+            //     assert.strictEqual(results[0].messages[1].ruleId, "no-console");
+            //     assert.strictEqual(results[0].messages[1].line, 7);
+            // });
 
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-                assert.strictEqual(results[0].output, unIndent`
-                    \`\`\`js
-                    console.log("hello");${/* ← fixed */""}
-                    \`\`\`
-                    \`\`\`html
-                    <div>Hello</div>
-                    <script lang="js">
-                        console.log("hello")${/* ← ignored */""}
-                    </script>
-                    <script lang="ts">
-                        console.log("hello")${/* ← ignored */""}
-                    </script>
-                    \`\`\`
-                `);
-            });
+            // it("should use the same config as one which has 'processor' property in order to lint blocks in HTML if the processor was legacy style.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" },
+            //                 overrides: [
+            //                     {
+            //                         files: "*.html",
+            //                         processor: "html/legacy", // this processor returns strings rather than `{text, filename}`
+            //                         rules: {
+            //                             semi: "off",
+            //                             "no-console": "error"
+            //                         }
+            //                     },
+            //                     {
+            //                         files: "**/*.html/*.js",
+            //                         rules: {
+            //                             semi: "error",
+            //                             "no-console": "off"
+            //                         }
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 3);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi");
+            //     assert.strictEqual(results[0].messages[0].line, 2);
+            //     assert.strictEqual(results[0].messages[1].ruleId, "no-console");
+            //     assert.strictEqual(results[0].messages[1].line, 7);
+            //     assert.strictEqual(results[0].messages[2].ruleId, "no-console");
+            //     assert.strictEqual(results[0].messages[2].line, 10);
+            // });
 
-            it("should lint HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
+            // it("should throw an error if invalid processor was specified.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 processor: "markdown/unknown"
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath() });
+            //
+            //     await assert.rejects(async () => {
+            //         await eslint.lintFiles(["test.md"]);
+            //     }, /ec0lint configuration of processor in '\.ec0lintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
+            // });
 
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS block
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "semi"); // JS block in HTML block
-                assert.strictEqual(results[0].messages[1].line, 7);
-            });
-
-            it("should fix HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"], fix: true });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-                assert.strictEqual(results[0].output, unIndent`
-                    \`\`\`js
-                    console.log("hello");${/* ← fixed */""}
-                    \`\`\`
-                    \`\`\`html
-                    <div>Hello</div>
-                    <script lang="js">
-                        console.log("hello");${/* ← fixed */""}
-                    </script>
-                    <script lang="ts">
-                        console.log("hello")${/* ← ignored */""}
-                    </script>
-                    \`\`\`
-                `);
-            });
-
-            it("should use overridden processor; should report HTML blocks but not fix HTML blocks if the processor for '*.html' didn't support autofix.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-                                    processor: "html/non-fixable" // supportsAutofix: false
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"], fix: true });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS Block in HTML Block
-                assert.strictEqual(results[0].messages[0].line, 7);
-                assert.strictEqual(results[0].messages[0].fix, void 0);
-                assert.strictEqual(results[0].output, unIndent`
-                    \`\`\`js
-                    console.log("hello");${/* ← fixed */""}
-                    \`\`\`
-                    \`\`\`html
-                    <div>Hello</div>
-                    <script lang="js">
-                        console.log("hello")${/* ← reported but not fixed */""}
-                    </script>
-                    <script lang="ts">
-                        console.log("hello")
-                    </script>
-                    \`\`\`
-                `);
-            });
-
-            it("should use the config '**/*.html/*.js' to lint JavaScript blocks in HTML.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-
-                                    // this rules are not used because ESLint re-resolve configs if a code block had a different file extension.
-                                    rules: {
-                                        semi: "error",
-                                        "no-console": "off"
-                                    }
-                                },
-                                {
-                                    files: "**/*.html/*.js",
-                                    rules: {
-                                        semi: "off",
-                                        "no-console": "error"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[1].line, 7);
-            });
-
-            it("should use the same config as one which has 'processor' property in order to lint blocks in HTML if the processor was legacy style.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-                                    processor: "html/legacy", // this processor returns strings rather than `{text, filename}`
-                                    rules: {
-                                        semi: "off",
-                                        "no-console": "error"
-                                    }
-                                },
-                                {
-                                    files: "**/*.html/*.js",
-                                    rules: {
-                                        semi: "error",
-                                        "no-console": "off"
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), extensions: ["js", "html"] });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 3);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[1].line, 7);
-                assert.strictEqual(results[0].messages[2].ruleId, "no-console");
-                assert.strictEqual(results[0].messages[2].line, 10);
-            });
-
-            it("should throw an error if invalid processor was specified.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            processor: "markdown/unknown"
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
-
-                await assert.rejects(async () => {
-                    await eslint.lintFiles(["test.md"]);
-                }, /ec0lint configuration of processor in '\.ec0lintrc\.json' is invalid: 'markdown\/unknown' was not found\./u);
-            });
-
-            it("should lint HTML blocks as well with multiple processors if 'overrides[].files' is present.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" },
-                            overrides: [
-                                {
-                                    files: "*.html",
-                                    processor: "html/.html"
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS block
-                assert.strictEqual(results[0].messages[0].line, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "semi"); // JS block in HTML block
-                assert.strictEqual(results[0].messages[1].line, 7);
-            });
+            // it("should lint HTML blocks as well with multiple processors if 'overrides[].files' is present.", async () => {
+            //     const teardown = createCustomTeardown({
+            //         cwd: root,
+            //         files: {
+            //             ...commonFiles,
+            //             ".ec0lintrc.json": {
+            //                 plugins: ["html"],
+            //                 rules: { semi: "error" },
+            //                 overrides: [
+            //                     {
+            //                         files: "*.html",
+            //                         processor: "html/.html"
+            //                     }
+            //                 ]
+            //             }
+            //         }
+            //     });
+            //
+            //     await teardown.prepare();
+            //     cleanup = teardown.cleanup;
+            //     eslint = new ESLint({ cwd: teardown.getPath() });
+            //     const results = await eslint.lintFiles(["test.md"]);
+            //
+            //     assert.strictEqual(results.length, 1);
+            //     assert.strictEqual(results[0].messages.length, 2);
+            //     assert.strictEqual(results[0].messages[0].ruleId, "semi"); // JS block
+            //     assert.strictEqual(results[0].messages[0].line, 2);
+            //     assert.strictEqual(results[0].messages[1].ruleId, "semi"); // JS block in HTML block
+            //     assert.strictEqual(results[0].messages[1].line, 7);
+            // });
         });
 
         describe("MODULE_NOT_FOUND error handling", () => {
