@@ -46,7 +46,7 @@ function getVariable(scope, name) {
  * it will actually enable the given envs for this source file. This variable is used to avoid having a string
  * like that appear in the code.
  */
-const ESLINT_ENV = "eslint-env";
+const ESLINT_ENV = "ec0lint-env";
 
 //------------------------------------------------------------------------------
 // Tests
@@ -2221,7 +2221,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with comments to ignore reporting on specific rules on a specific line", () => {
 
-        describe("eslint-disable-line", () => {
+        describe("ec0lint-disable-line", () => {
             it("should report a violation", () => {
                 const code = [
                     "alert('test'); // eslint-disable-line no-alert",
@@ -2317,7 +2317,7 @@ describe("Linter", () => {
                     {
                         ruleId: null,
                         severity: 2,
-                        message: "eslint-disable-line comment should not span multiple lines.",
+                        message: "ec0lint-disable-line comment should not span multiple lines.",
                         line: 1,
                         column: 16,
                         endLine: 2,
@@ -2434,7 +2434,7 @@ describe("Linter", () => {
             });
         });
 
-        describe("eslint-disable-next-line", () => {
+        describe("ec0lint-disable-next-line", () => {
             it("should ignore violation of specified rule on next line", () => {
                 const code = [
                     "// eslint-disable-next-line no-alert",
@@ -3751,12 +3751,12 @@ var a = "test2";
             "globals foo",
             "global foo",
             "exported foo",
-            "eslint eqeqeq: error",
-            "eslint-disable eqeqeq",
-            "eslint-disable-line eqeqeq",
-            "eslint-disable-next-line eqeqeq",
-            "eslint-enable eqeqeq",
-            "eslint-env es6"
+            "ec0lint eqeqeq: error",
+            "ec0lint-disable eqeqeq",
+            "ec0lint-disable-line eqeqeq",
+            "ec0lint-disable-next-line eqeqeq",
+            "ec0lint-enable eqeqeq",
+            "ec0lint-env es6"
         ]) {
             it(`should warn '/* ${directive} */' if 'noInlineConfig' was given.`, () => {
                 const messages = linter.verify(`/* ${directive} */`, { noInlineConfig: true });
@@ -3773,8 +3773,8 @@ var a = "test2";
         }
 
         for (const directive of [
-            "eslint-disable-line eqeqeq",
-            "eslint-disable-next-line eqeqeq"
+            "ec0lint-disable-line eqeqeq",
+            "ec0lint-disable-next-line eqeqeq"
         ]) {
             it(`should warn '// ${directive}' if 'noInlineConfig' was given.`, () => {
                 const messages = linter.verify(`// ${directive}`, { noInlineConfig: true });
@@ -5200,7 +5200,7 @@ var a = "test2";
             });
         });
 
-        it("should be able to use es6 features if there is a comment which has \"eslint-env es6\"", () => {
+        it("should be able to use es6 features if there is a comment which has \"ec0lint-env es6\"", () => {
             const code = [
                 "/* eslint-env es6 */",
                 "var arrow = () => 0;",
@@ -5224,7 +5224,7 @@ var a = "test2";
                 "var unicode = '\\u{20BB7}';"
             ].join("\n");
 
-            const messages = linter.verify(code, null, "eslint-env es6");
+            const messages = linter.verify(code, null, "ec0lint-env es6");
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 0);
@@ -12322,7 +12322,7 @@ var a = "test2";
                         {
                             ruleId: null,
                             severity: 2,
-                            message: "eslint-disable-line comment should not span multiple lines.",
+                            message: "ec0lint-disable-line comment should not span multiple lines.",
                             line: 1,
                             column: 16,
                             endLine: 2,
@@ -13415,11 +13415,11 @@ var a = "test2";
                         "globals foo",
                         "global foo",
                         "exported foo",
-                        "eslint eqeqeq: error",
-                        "eslint-disable eqeqeq",
-                        "eslint-disable-line eqeqeq",
-                        "eslint-disable-next-line eqeqeq",
-                        "eslint-enable eqeqeq"
+                        "ec0lint eqeqeq: error",
+                        "ec0lint-disable eqeqeq",
+                        "ec0lint-disable-line eqeqeq",
+                        "ec0lint-disable-next-line eqeqeq",
+                        "ec0lint-enable eqeqeq"
                     ]) {
                         it(`should warn '/* ${directive} */' if 'noInlineConfig' was given.`, () => {
                             const messages = linter.verify(`/* ${directive} */`, {
@@ -13440,8 +13440,8 @@ var a = "test2";
                     }
 
                     for (const directive of [
-                        "eslint-disable-line eqeqeq",
-                        "eslint-disable-next-line eqeqeq"
+                        "ec0lint-disable-line eqeqeq",
+                        "ec0lint-disable-next-line eqeqeq"
                     ]) {
                         it(`should warn '// ${directive}' if 'noInlineConfig' was given.`, () => {
                             const messages = linter.verify(`// ${directive}`, {

@@ -6,7 +6,7 @@
         "console-wrong-quotes.js": "console.log('bar');\r\n",
         "override-conf.yaml": "rules:\r\n    quotes: 0\r\n",
         "override-env-conf.yaml": "extends: \"ec0lint:recommended\"\nenv:\n    node: true\nrules:\n    no-mixed-requires: 0\n",
-        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"eslintConfig\": {}\r\n}\r\n",
+        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {}\r\n}\r\n",
         "plugins": {
             ".ec0lintrc": "plugins: \r\n    [\"example\"]\r\n    ",
             "console-wrong-quotes.js": "console.log('bar');\r\n"
@@ -56,13 +56,13 @@
     },
     "packagejson": {
         ".ec0lintrc": "rules:\r\n    quotes: [2, \"double\"]\r\n",
-        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"eslintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
+        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
         "subdir": {
-            "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"eslintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
+            "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
             "subsubdir": {
-                "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"eslintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
+                "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
                 "subsubsubdir": {
-                    "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"eslintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
+                    "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
                     "wrong-quotes.js": "var str = 'quotes';\r\n"
                 },
                 "wrong-quotes.js": "var str = 'quotes';\r\n"

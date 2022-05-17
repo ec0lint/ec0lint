@@ -2,7 +2,7 @@
     "private": true,
     "name": "eslint-test",
     "version": "0.0.0",
-    "eslintConfig": {
+    "ec0lintConfig": {
         "rules": {
             "semi": "error"
         }

@@ -17,7 +17,7 @@ const rules = eslintAll.rules;
 // Tests
 //------------------------------------------------------------------------------
 
-describe("eslint-all", () => {
+describe("ec0lint-all", () => {
     it("should only include rules", () => {
         const ruleNames = Object.keys(rules);
 

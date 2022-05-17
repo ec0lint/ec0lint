@@ -33,9 +33,9 @@ const childProcess = require("child_process");
 // Tests
 //------------------------------------------------------------------------------
 
-describe("ESLint", () => {
+describe("ec0lint", () => {
     const examplePluginName = "ec0lint-plugin-example";
-    const examplePluginNameWithNamespace = "@eslint/ec0lint-plugin-example";
+    const examplePluginNameWithNamespace = "@ec0lint/ec0lint-plugin-example";
     const examplePlugin = {
         rules: {
             "example-rule": require("../../fixtures/rules/custom-rule"),
@@ -113,7 +113,7 @@ describe("ESLint", () => {
         shell.rm("-r", fixtureDir);
     });
 
-    describe("ESLint constructor function", () => {
+    describe("ec0lint constructor function", () => {
         it("the default value of 'options.cwd' should be the current working directory.", async () => {
             process.chdir(__dirname);
             try {
@@ -3108,7 +3108,7 @@ describe("ESLint", () => {
         describe("a config file setting should have higher priority than a shareable config file's settings always; https://github.com/eslint/eslint/issues/11510", () => {
 
             const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "eslint/11510"),
+                cwd: path.join(os.tmpdir(), "ec0lint/11510"),
                 files: {
                     "no-console-error-in-overrides.json": JSON.stringify({
                         overrides: [{
@@ -3142,7 +3142,7 @@ describe("ESLint", () => {
         describe("configs of plugin rules should be validated even if 'plugins' key doesn't exist; https://github.com/eslint/eslint/issues/11559", () => {
 
             const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "eslint/11559"),
+                cwd: path.join(os.tmpdir(), "ec0lint/11559"),
                 files: {
                     "node_modules/ec0lint-plugin-test/index.js": `
                             exports.configs = {

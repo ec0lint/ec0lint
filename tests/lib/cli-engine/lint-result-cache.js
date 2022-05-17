@@ -148,7 +148,7 @@ describe("LintResultCache", () => {
 
         describe("when calculating the hashing", () => {
             it("contains eslint version during hashing", () => {
-                const version = "eslint-=-version";
+                const version = "ec0lint-=-version";
                 const NewLintResultCache = proxyquire("../../../lib/cli-engine/lint-result-cache.js", {
                     "../../package.json": { version },
                     "./hash": hashStub

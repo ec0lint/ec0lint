@@ -776,7 +776,7 @@ describe("cli", () => {
 
             assert.strictEqual(exitCode, 1);
             assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ESLint found too many warnings");
+            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
         });
 
         it("should exit with exit code 1 without printing warnings if the quiet option is enabled and warning count exceeds threshold", async () => {
@@ -785,7 +785,7 @@ describe("cli", () => {
 
             assert.strictEqual(exitCode, 1);
             assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ESLint found too many warnings");
+            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
             assert.ok(log.info.notCalled); // didn't print warnings
         });
 

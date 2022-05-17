@@ -155,7 +155,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-enable comments without rules", () => {
+    describe("ec0lint-enable comments without rules", () => {
         it("keeps problems after the eslint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -321,7 +321,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-enable comments with rules", () => {
+    describe("ec0lint-enable comments with rules", () => {
         it("keeps problems after the comment that have the same ruleId as the eslint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -432,7 +432,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-line comments without rules", () => {
+    describe("ec0lint-disable-line comments without rules", () => {
         it("keeps problems on a previous line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -502,7 +502,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-line comments with rules", () => {
+    describe("ec0lint-disable-line comments with rules", () => {
         it("filters problems on the current line that match the ruleId", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -624,7 +624,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-next-line comments without rules", () => {
+    describe("ec0lint-disable-next-line comments without rules", () => {
         it("filters problems on the next line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -689,7 +689,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-next-line comments with rules", () => {
+    describe("ec0lint-disable-next-line comments with rules", () => {
         it("filters problems on the next line that match the ruleId", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({

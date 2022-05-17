@@ -28,7 +28,7 @@ const { FileEnumerator } = require("../../../lib/cli-engine/file-enumerator");
 describe("FileEnumerator", () => {
     describe("'iterateFiles(patterns)' method should iterate files and configs.", () => {
         describe("with three directories ('lib', 'lib/nested', 'test') that contains 'one.js' and 'two.js'", () => {
-            const root = path.join(os.tmpdir(), "eslint/file-enumerator");
+            const root = path.join(os.tmpdir(), "ec0lint/file-enumerator");
             const files = {
                 "lib/nested/one.js": "",
                 "lib/nested/two.js": "",
@@ -226,7 +226,7 @@ describe("FileEnumerator", () => {
                  * it just for this hook. Mocha uses `this` to set timeouts on
                  * an individual hook level.
                  */
-                this.timeout(60 * 1000); 
+                this.timeout(60 * 1000);
                 fixtureDir = `${os.tmpdir()}/eslint/tests/fixtures/`;
                 sh.mkdir("-p", fixtureDir);
                 sh.cp("-r", "./tests/fixtures/*", fixtureDir);
@@ -500,7 +500,7 @@ describe("FileEnumerator", () => {
         });
 
         describe("if contains symbolic links", async () => {
-            const root = path.join(os.tmpdir(), "eslint/file-enumerator");
+            const root = path.join(os.tmpdir(), "ec0lint/file-enumerator");
             const files = {
                 "dir1/1.js": "",
                 "dir1/2.js": "",
@@ -546,11 +546,11 @@ describe("FileEnumerator", () => {
 
 // TODO
     // describe("constructor default values when config extends ec0lint:recommended", () => {
-    //     const root = path.join(os.tmpdir(), "eslint/file-enumerator");
+    //     const root = path.join(os.tmpdir(), "ec0lint/file-enumerator");
     //     const files = {
     //         "file.js": "",
     //         ".ec0lintrc.json": JSON.stringify({
-    //             extends: ["eslint:recommended", "eslint:all"]
+    //             extends: ["ec0lint:recommended", "ec0lint:all"]
     //         })
     //     };
     //     const { prepare, cleanup, getPath } = createCustomTeardown({ cwd: root, files });

@@ -155,17 +155,17 @@ ruleTester.run("no-warning-comments", rule, {
             ]
         },
         {
-            code: "/* eslint one-var: 2 */",
-            options: [{ terms: ["eslint"] }],
+            code: "/* ec0lint one-var: 2 */",
+            options: [{ terms: ["ec0lint"] }],
             errors: [
-                { messageId: "unexpectedComment", data: { matchedTerm: "eslint", comment: "eslint one-var: 2" } }
+                { messageId: "unexpectedComment", data: { matchedTerm: "ec0lint", comment: "ec0lint one-var: 2" } }
             ]
         },
         {
             code: "/* eslint one-var: 2 */",
             options: [{ terms: ["one"], location: "anywhere" }],
             errors: [
-                { messageId: "unexpectedComment", data: { matchedTerm: "one", comment: "eslint one-var: 2" } }
+                { messageId: "unexpectedComment", data: { matchedTerm: "one", comment: "ec0lint one-var: 2" } }
             ]
         },
         {
