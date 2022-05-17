@@ -972,17 +972,17 @@ ruleTester.run("lines-around-comment", rule, {
         {
             code:
             "foo;\n\n" +
-            "/* eslint-disable no-underscore-dangle */\n\n" +
+            "/* ec0lint-disable no-underscore-dangle */\n\n" +
             "this._values = values;\n" +
             "this._values2 = true;\n" +
-            "/* eslint-enable no-underscore-dangle */\n" +
+            "/* ec0lint-enable no-underscore-dangle */\n" +
             "bar",
             options: [{
                 beforeBlockComment: true,
                 afterBlockComment: true
             }]
         },
-        "foo;\n/* eslint */",
+        "foo;\n/* ec0lint */",
         "foo;\n/* jshint */",
         "foo;\n/* jslint */",
         "foo;\n/* istanbul */",
@@ -2015,18 +2015,18 @@ ruleTester.run("lines-around-comment", rule, {
         {
             code:
             "foo;\n\n" +
-            "/* eslint-disable no-underscore-dangle */\n\n" +
+            "/* ec0lint-disable no-underscore-dangle */\n\n" +
             "this._values = values;\n" +
             "this._values2 = true;\n" +
-            "/* eslint-enable no-underscore-dangle */\n" +
+            "/* ec0lint-enable no-underscore-dangle */\n" +
             "bar",
             output:
             "foo;\n\n" +
-            "/* eslint-disable no-underscore-dangle */\n\n" +
+            "/* ec0lint-disable no-underscore-dangle */\n\n" +
             "this._values = values;\n" +
             "this._values2 = true;\n" +
             "\n" +
-            "/* eslint-enable no-underscore-dangle */\n" +
+            "/* ec0lint-enable no-underscore-dangle */\n" +
             "\n" +
             "bar",
             options: [{
@@ -2040,8 +2040,8 @@ ruleTester.run("lines-around-comment", rule, {
             ]
         },
         {
-            code: "foo;\n/* eslint */",
-            output: "foo;\n\n/* eslint */",
+            code: "foo;\n/* ec0lint */",
+            output: "foo;\n\n/* ec0lint */",
             options: [{ applyDefaultIgnorePatterns: false }],
             errors: [{ messageId: "before", type: "Block" }]
         },
@@ -2094,8 +2094,8 @@ ruleTester.run("lines-around-comment", rule, {
             errors: [{ messageId: "before", type: "Block" }]
         },
         {
-            code: "foo\n/* eslint */",
-            output: "foo\n\n/* eslint */",
+            code: "foo\n/* ec0lint */",
+            output: "foo\n\n/* ec0lint */",
             options: [{ applyDefaultIgnorePatterns: false }],
             errors: [{ messageId: "before", type: "Block" }]
         },

@@ -472,7 +472,7 @@ describe("FlatRuleTester", () => {
         assert.throws(() => {
             ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
                 valid: [
-                    "/*eslint semi: 2*/ eval(foo);"
+                    "/*ec0lint semi: 2*/ eval(foo);"
                 ],
                 invalid: [
                     { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }

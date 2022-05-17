@@ -354,6 +354,6 @@ describe("CodePathAnalyzer", () => {
             */
         });
 
-        /* eslint-enable internal-rules/multiline-comment-style -- Commenting out */
+        /* ec0lint-enable internal-rules/multiline-comment-style -- Commenting out */
     });
 });

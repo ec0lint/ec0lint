@@ -2,7 +2,7 @@
     "broken": {
         ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    quotes: [2, \"double\"]\r\n",
         "add-conf.yaml": "rules:\r\n    semi: [1, \"never\"]\r\n",
-        "console-wrong-quotes-node.js": "\r\n/*eslint-env node*/\r\n\r\nconsole.log('bar');\r\n",
+        "console-wrong-quotes-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
         "console-wrong-quotes.js": "console.log('bar');\r\n",
         "override-conf.yaml": "rules:\r\n    quotes: 0\r\n",
         "override-env-conf.yaml": "extends: \"ec0lint:recommended\"\nenv:\n    node: true\nrules:\n    no-mixed-requires: 0\n",

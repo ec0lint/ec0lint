@@ -123,7 +123,6 @@ describe("CLIEngine", () => {
             }, `Cannot read .ec0lintignore file: ${fixtureDir}\nError: EISDIR: illegal operation on a directory, read`);
         });
 
-        // https://github.com/eslint/eslint/issues/2380
         it("should not modify baseConfig when format is specified", () => {
             const customBaseConfig = { root: true };
 
@@ -232,7 +231,7 @@ describe("CLIEngine", () => {
             after(() => {
                 Module._findPath = originalFindPath;
             });
-            /* eslint-enable no-underscore-dangle -- Private Node API overriding */
+            /* ec0lint-enable no-underscore-dangle -- Private Node API overriding */
 
             it("should resolve 'plugins:[\"@scope\"]' to 'node_modules/@scope/ec0lint-plugin'.", () => {
                 engine = new CLIEngine({ cwd: getFixturePath("plugin-shorthand/basic") });
@@ -510,7 +509,6 @@ describe("CLIEngine", () => {
             }, "All files matched by 'node_modules' are ignored.");
         });
 
-        // https://github.com/eslint/eslint/issues/5547
         it("should not check node_modules files even with --no-ignore flag", () => {
 
             engine = new CLIEngine({
@@ -546,7 +544,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        // https://github.com/eslint/eslint/issues/12873
         it("should not check files within a .hidden folder if they are passed explicitly without the --no-ignore flag", () => {
             engine = new CLIEngine({
                 cwd: getFixturePath("cli-engine"),
@@ -839,7 +836,7 @@ describe("CLIEngine", () => {
 
         });
 
-        it("should throw an error when given a directory with all eslint excluded files in the directory", () => {
+        it("should throw an error when given a directory with all ec0lint excluded files in the directory", () => {
 
             engine = new CLIEngine({
                 ignorePath: getFixturePath(".ec0lintignore")
@@ -871,7 +868,6 @@ describe("CLIEngine", () => {
             }, "All files matched by './tests/fixtures/cli-engine/' are ignored.");
         });
 
-        // https://github.com/eslint/eslint/issues/3788
         it("should ignore one-level down node_modules when ignore file has 'node_modules/' in it", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath("cli-engine", "nested_node_modules", ".ec0lintignore"),
@@ -892,7 +888,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        // https://github.com/eslint/eslint/issues/3812
         it("should ignore all files and throw an error when tests/fixtures/ is in ignore file", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath("cli-engine/.ec0lintignore2"),
@@ -1355,8 +1350,6 @@ describe("CLIEngine", () => {
 
         });
 
-        // These tests have to do with https://github.com/eslint/eslint/issues/963
-
         describe("configuration hierarchy", () => {
 
             // Default configuration - blank
@@ -1374,7 +1367,7 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // No default configuration rules - conf/environments.js (/*eslint-env node*/)
+            // No default configuration rules - conf/environments.js (/*ec0lint-env node*/)
             it("should return zero messages when executing with no .ec0lintrc in the Node.js environment", () => {
 
                 engine = new CLIEngine({
@@ -1840,7 +1833,7 @@ describe("CLIEngine", () => {
                 });
 
                 it("should create the cache file inside the provided directory", () => {
-                    assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
+                    assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
 
                     engine = new CLIEngine({
                         useEc0lintrc: false,
@@ -1860,14 +1853,14 @@ describe("CLIEngine", () => {
 
                     engine.executeOnFiles([file]);
 
-                    assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for eslint was created");
+                    assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
 
                     sinon.restore();
                 });
             });
 
             it("should create the cache file inside the provided directory using the cacheLocation option", () => {
-                assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
+                assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
 
                 engine = new CLIEngine({
                     useEc0lintrc: false,
@@ -1887,7 +1880,7 @@ describe("CLIEngine", () => {
 
                 engine.executeOnFiles([file]);
 
-                assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
 
                 sinon.restore();
             });
@@ -1910,11 +1903,11 @@ describe("CLIEngine", () => {
 
                 engine.executeOnFiles([file]);
 
-                assert.isTrue(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for eslint was created at provided cwd");
+                assert.isTrue(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for ec0lint was created at provided cwd");
             });
 
             it("should invalidate the cache if the configuration changed between executions", () => {
-                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
+                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
 
                 engine = new CLIEngine({
                     useEc0lintrc: false,
@@ -1939,7 +1932,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(result.errorCount + result.warningCount, 0, "the file passed without errors or warnings");
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -1964,12 +1957,12 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed because the config changed");
                 assert.strictEqual(cachedResult.errorCount, 1, "since configuration changed the cache was not used an one error was reported");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
             });
 
             it("should remember the files from a previous run and do not operate on them if not changed", () => {
 
-                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
+                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
 
                 engine = new CLIEngine({
                     useEc0lintrc: false,
@@ -1993,7 +1986,7 @@ describe("CLIEngine", () => {
                 const result = engine.executeOnFiles([file]);
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -2039,7 +2032,7 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 };
 
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for eslint does not exist");
+                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint does not exist");
 
                 engine = new CLIEngine(cliEngineOptions);
 
@@ -2049,21 +2042,21 @@ describe("CLIEngine", () => {
 
                 engine.executeOnFiles([file]);
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint was created");
 
                 cliEngineOptions.cache = false;
                 engine = new CLIEngine(cliEngineOptions);
 
                 engine.executeOnFiles([file]);
 
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for eslint was deleted since last run did not used the cache");
+                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint was deleted since last run did not used the cache");
             });
 
             it("should store in the cache a file that failed the test", () => {
 
                 const cacheFile = getFixturePath(".ec0lintcache");
 
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for eslint does not exist");
+                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint does not exist");
 
                 engine = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
@@ -2084,7 +2077,7 @@ describe("CLIEngine", () => {
 
                 const result = engine.executeOnFiles([badFile, goodFile]);
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint was created");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint was created");
 
                 const fileCache = fCache.createFromFile(cacheFile);
                 const { cache } = fileCache;
@@ -2201,11 +2194,11 @@ describe("CLIEngine", () => {
                     extensions: ["js"]
                 });
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
 
                 engine.executeOnText("var foo = 'bar';");
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint still exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
             });
 
             it("should not delete cache when executing on text with a provided filename", () => {
@@ -2222,11 +2215,11 @@ describe("CLIEngine", () => {
                     extensions: ["js"]
                 });
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
 
                 engine.executeOnText("var bar = foo;", "fixtures/passing.js");
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint still exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
             });
 
             it("should not delete cache when executing on files with --cache flag", () => {
@@ -2246,11 +2239,11 @@ describe("CLIEngine", () => {
 
                 const file = getFixturePath("cli-engine", "console.js");
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
 
                 engine.executeOnFiles([file]);
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint still exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
             });
 
             it("should delete cache when executing on files without --cache flag", () => {
@@ -2269,18 +2262,18 @@ describe("CLIEngine", () => {
 
                 const file = getFixturePath("cli-engine", "console.js");
 
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for eslint exists");
+                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
 
                 engine.executeOnFiles([file]);
 
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for eslint has been deleted");
+                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint has been deleted");
             });
 
             describe("cacheFile", () => {
                 it("should use the specified cache file", () => {
                     const customCacheFile = path.resolve(".cache/custom-cache");
 
-                    assert.isFalse(shell.test("-f", customCacheFile), "the cache for eslint does not exist");
+                    assert.isFalse(shell.test("-f", customCacheFile), "the cache for ec0lint does not exist");
 
                     engine = new CLIEngine({
                         useEc0lintrc: false,
@@ -2303,7 +2296,7 @@ describe("CLIEngine", () => {
 
                     const result = engine.executeOnFiles([badFile, goodFile]);
 
-                    assert.isTrue(shell.test("-f", customCacheFile), "the cache for eslint was created");
+                    assert.isTrue(shell.test("-f", customCacheFile), "the cache for ec0lint was created");
 
                     const fileCache = fCache.createFromFile(customCacheFile);
                     const { cache } = fileCache;
@@ -2773,7 +2766,7 @@ describe("CLIEngine", () => {
             });
         });
 
-        describe("configs of plugin rules should be validated even if 'plugins' key doesn't exist; https://github.com/eslint/eslint/issues/11559", () => {
+        describe("configs of plugin rules should be validated even if 'plugins' key doesn't exist; https://github.com/ec0lint/ec0lint/issues/11559", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: path.join(os.tmpdir(), "cli-engine/11559"),
                 files: {
@@ -3125,11 +3118,11 @@ describe("CLIEngine", () => {
 
             afterEach(() => cleanup());
 
-            it("should warn unused 'eslint-disable' comments if 'reportUnusedDisableDirectives' was given.", async () => {
+            it("should warn unused 'ec0lint-disable' comments if 'reportUnusedDisableDirectives' was given.", async () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "test.js": "/* eslint-disable eqeqeq */",
+                        "test.js": "/* ec0lint-disable eqeqeq */",
                         ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
@@ -3143,16 +3136,16 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].message, "Unused eslint-disable directive (no problems were reported from 'eqeqeq').");
+                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
             describe("the runtime option overrides config files.", () => {
-                it("should not warn unused 'eslint-disable' comments if 'reportUnusedDisableDirectives=off' was given in runtime.", async () => {
+                it("should not warn unused 'ec0lint-disable' comments if 'reportUnusedDisableDirectives=off' was given in runtime.", async () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* eslint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable eqeqeq */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3172,11 +3165,11 @@ describe("CLIEngine", () => {
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
 
-                it("should warn unused 'eslint-disable' comments as error if 'reportUnusedDisableDirectives=error' was given in runtime.", async () => {
+                it("should warn unused 'ec0lint-disable' comments as error if 'reportUnusedDisableDirectives=error' was given in runtime.", async () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* eslint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable eqeqeq */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3194,7 +3187,7 @@ describe("CLIEngine", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].severity, 2);
-                    assert.strictEqual(messages[0].message, "Unused eslint-disable directive (no problems were reported from 'eqeqeq').");
+                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
             });
@@ -3380,7 +3373,6 @@ describe("CLIEngine", () => {
             assert.isFalse(engine.isPathIgnored("undef.js"));
         });
 
-        // https://github.com/eslint/eslint/issues/5547
         it("should return true for default ignores even if ignoring is disabled", () => {
             const engine = new CLIEngine({
                 ignore: false,
@@ -3883,11 +3875,11 @@ describe("CLIEngine", () => {
 
             assert.throws(() => {
                 engine.getFormatter("table");
-            }, "The table formatter is no longer part of core ESLint. Install it manually with `npm install -D ec0lint-formatter-table`");
+            }, "The table formatter is no longer part of core ec0lint. Install it manually with `npm install -D ec0lint-formatter-table`");
 
             assert.throws(() => {
                 engine.getFormatter("codeframe");
-            }, "The codeframe formatter is no longer part of core ESLint. Install it manually with `npm install -D ec0lint-formatter-codeframe`");
+            }, "The codeframe formatter is no longer part of core ec0lint. Install it manually with `npm install -D ec0lint-formatter-codeframe`");
         });
 
         it("should throw if the required formatter exists but has an error", () => {
@@ -3950,7 +3942,7 @@ describe("CLIEngine", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine();
 
-            const report = engine.executeOnText("var foo = 'bar'; // eslint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
+            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
             assert.lengthOf(errorResults, 0);
@@ -3979,7 +3971,7 @@ describe("CLIEngine", () => {
                 }
             });
 
-            const report = engine.executeOnText("var foo = 'bar'; // eslint-disable-line quotes -- justification\n");
+            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
             assert.strictEqual(report.results, 'test');
@@ -4264,7 +4256,7 @@ describe("CLIEngine", () => {
 
         it("should report a violation for disabling rules", () => {
             const code = [
-                "alert('test'); // eslint-disable-line no-alert"
+                "alert('test'); // ec0lint-disable-line no-alert"
             ].join("\n");
             const config = {
                 envs: ["browser"],
@@ -4280,9 +4272,9 @@ describe("CLIEngine", () => {
                 }
             };
 
-            const eslintCLI = new CLIEngine(config);
+            const ec0lintCLI = new CLIEngine(config); //!
 
-            const report = eslintCLI.executeOnText(code);
+            const report = ec0lintCLI.executeOnText(code); //!
             const { messages, suppressedMessages } = report.results[0];
 
             assert.strictEqual(messages.length, 1);
@@ -4292,7 +4284,7 @@ describe("CLIEngine", () => {
 
         it("should not report a violation by default", () => {
             const code = [
-                "alert('test'); // eslint-disable-line no-alert"
+                "alert('test'); // ec0lint-disable-line no-alert"
             ].join("\n");
             const config = {
                 envs: ["browser"],
@@ -4309,9 +4301,9 @@ describe("CLIEngine", () => {
                 }
             };
 
-            const eslintCLI = new CLIEngine(config);
+            const ec0lintCLI = new CLIEngine(config);
 
-            const report = eslintCLI.executeOnText(code);
+            const report = ec0lintCLI.executeOnText(code);
             const { messages, suppressedMessages } = report.results[0];
 
             assert.strictEqual(messages.length, 0);
@@ -4322,11 +4314,11 @@ describe("CLIEngine", () => {
     });
 
     describe("when evaluating code when reportUnusedDisableDirectives is enabled", () => {
-        it("should report problems for unused eslint-disable directives", () => {
+        it("should report problems for unused ec0lint-disable directives", () => {
             const cliEngine = new CLIEngine({ useEc0lintrc: false, reportUnusedDisableDirectives: true });
 
             assert.deepStrictEqual(
-                cliEngine.executeOnText("/* eslint-disable */"),
+                cliEngine.executeOnText("/* ec0lint-disable */"),
                 {
                     results: [
                         {
@@ -4334,7 +4326,7 @@ describe("CLIEngine", () => {
                             messages: [
                                 {
                                     ruleId: null,
-                                    message: "Unused eslint-disable directive (no problems were reported).",
+                                    message: "Unused ec0lint-disable directive (no problems were reported).",
                                     line: 1,
                                     column: 1,
                                     fix: {
@@ -4351,7 +4343,7 @@ describe("CLIEngine", () => {
                             fatalErrorCount: 0,
                             fixableErrorCount: 1,
                             fixableWarningCount: 0,
-                            source: "/* eslint-disable */"
+                            source: "/* ec0lint-disable */"
                         }
                     ],
                     errorCount: 1,
@@ -4367,8 +4359,8 @@ describe("CLIEngine", () => {
 
     describe("when retreiving version number", () => {
         it("should return current version number", () => {
-            const eslintCLI = require("../../../lib/cli-engine").CLIEngine;
-            const version = eslintCLI.version;
+            const ec0lintCLI = require("../../../lib/cli-engine").CLIEngine;
+            const version = ec0lintCLI.version;
 
             assert.isString(version);
             assert.isTrue(parseInt(version[0], 10) >= 0);
@@ -5609,13 +5601,13 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
     //                     extends: ["two"],
     //                     plugins: ["foo"]
     //                 })}`,
-    //                 "node_modules/ec0lint-config-two/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
     //                     plugins: ["foo"]
     //                 })}`,
@@ -5641,12 +5633,12 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
     //                     plugins: ["foo"]
     //                 })}`,
-    //                 "node_modules/ec0lint-config-two/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
     //                     plugins: ["foo"]
     //                 })}`,
@@ -5672,7 +5664,7 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
     //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5697,11 +5689,11 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
     //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
-    //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5724,11 +5716,11 @@ describe("CLIEngine", () => {
     //                         pluginId: "foo",
     //                         plugins: [
     //                             {
-    //                                 filePath: path.join(getPath(), "subdir/node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
     //                             },
     //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: ".ec0lintrc.json"
     //                             }
     //                         ]
@@ -5742,7 +5734,7 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5770,8 +5762,8 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
+    //                 "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5800,11 +5792,11 @@ describe("CLIEngine", () => {
     //                         pluginId: "foo",
     //                         plugins: [
     //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/mine/node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: "--config"
     //                             },
     //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: ".ec0lintrc.json"
     //                             }
     //                         ]
@@ -5818,7 +5810,7 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5843,8 +5835,8 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
-    //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
+    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5870,11 +5862,11 @@ describe("CLIEngine", () => {
     //                         pluginId: "foo",
     //                         plugins: [
     //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: "CLIOptions"
     //                             },
     //                             {
-    //                                 filePath: path.join(getPath(), "subdir/node_modules/eslint-plugin-foo/index.js"),
+    //                                 filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
     //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
     //                             }
     //                         ]
@@ -5884,15 +5876,15 @@ describe("CLIEngine", () => {
     //         });
     //     });
     //
-    //     describe("'--resolve-plugins-relative-to' option overrides the location that ESLint load plugins from.", () => {
+    //     describe("'--resolve-plugins-relative-to' option overrides the location that ec0lint load plugins from.", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "node_modules/eslint-plugin-foo/index.js": "",
+    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
     //                 ".ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
-    //                 "subdir/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "subdir/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
@@ -5917,12 +5909,12 @@ describe("CLIEngine", () => {
     //         const { prepare, cleanup, getPath } = createCustomTeardown({
     //             cwd: `${root}${++uid}`,
     //             files: {
-    //                 "one/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "one/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "one/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),
     //                 "one/test.js": "",
-    //                 "two/node_modules/eslint-plugin-foo/index.js": "",
+    //                 "two/node_modules/ec0lint-plugin-foo/index.js": "",
     //                 "two/.ec0lintrc.json": JSON.stringify({
     //                     plugins: ["foo"]
     //                 }),

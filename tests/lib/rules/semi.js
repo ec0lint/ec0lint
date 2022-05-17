@@ -1697,12 +1697,12 @@ ruleTester.run("semi", rule, {
         // https://github.com/eslint/eslint/issues/7928
         {
             code: [
-                "/*eslint no-extra-semi: error */",
+                "/*ec0lint no-extra-semi: error */",
                 "foo();",
                 ";[0,1,2].forEach(bar)"
             ].join("\n"),
             output: [
-                "/*eslint no-extra-semi: error */",
+                "/*ec0lint no-extra-semi: error */",
                 "foo()",
                 ";[0,1,2].forEach(bar)"
             ].join("\n"),

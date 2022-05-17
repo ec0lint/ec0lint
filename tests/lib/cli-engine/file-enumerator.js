@@ -227,7 +227,7 @@ describe("FileEnumerator", () => {
                  * an individual hook level.
                  */
                 this.timeout(60 * 1000);
-                fixtureDir = `${os.tmpdir()}/eslint/tests/fixtures/`;
+                fixtureDir = `${os.tmpdir()}/ec0lint/tests/fixtures/`;
                 sh.mkdir("-p", fixtureDir);
                 sh.cp("-r", "./tests/fixtures/*", fixtureDir);
             });

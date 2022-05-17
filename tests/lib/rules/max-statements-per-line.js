@@ -70,7 +70,7 @@ ruleTester.run("max-statements-per-line", rule, {
         { code: "(bar => { a; }) ? (baz => { b; }) : (qux => { c; });", options: [{ max: 4 }], parserOptions: { ecmaVersion: 6 } },
         {
             code: [
-                "const name = 'ESLint'",
+                "const name = 'ec0lint'",
                 "",
                 ";(function foo() {",
                 "})()"

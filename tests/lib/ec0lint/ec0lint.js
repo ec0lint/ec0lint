@@ -2225,7 +2225,7 @@ describe("ec0lint", () => {
                 });
 
                 it("should create the cache file inside the provided directory", async () => {
-                    assert(!shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
+                    assert(!shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
 
                     eslint = new ESLint({
                         useEc0lintrc: false,
@@ -2246,14 +2246,14 @@ describe("ec0lint", () => {
 
                     await eslint.lintFiles([file]);
 
-                    assert(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for eslint was created");
+                    assert(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
 
                     sinon.restore();
                 });
             });
 
             it("should create the cache file inside the provided directory using the cacheLocation option", async () => {
-                assert(!shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for eslint does not exist");
+                assert(!shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
 
                 eslint = new ESLint({
                     useEc0lintrc: false,
@@ -2274,7 +2274,7 @@ describe("ec0lint", () => {
 
                 await eslint.lintFiles([file]);
 
-                assert(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
 
                 sinon.restore();
             });
@@ -2298,11 +2298,11 @@ describe("ec0lint", () => {
 
                 await eslint.lintFiles([file]);
 
-                assert(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for eslint was created at provided cwd");
+                assert(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for ec0lint was created at provided cwd");
             });
 
             it("should invalidate the cache if the configuration changed between executions", async () => {
-                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
+                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
 
                 eslint = new ESLint({
                     useEc0lintrc: false,
@@ -2330,7 +2330,7 @@ describe("ec0lint", () => {
                     assert.strictEqual(errorCount + warningCount, 0, "the file passed without errors or warnings");
                 }
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -2357,11 +2357,11 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed because the config changed");
                 assert.strictEqual(cachedResult.errorCount, 1, "since configuration changed the cache was not used an one error was reported");
-                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
             });
 
             it("should remember the files from a previous run and do not operate on them if not changed", async () => {
-                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint does not exist");
+                assert(!shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
 
                 eslint = new ESLint({
                     useEc0lintrc: false,
@@ -2387,7 +2387,7 @@ describe("ec0lint", () => {
                 const result = await eslint.lintFiles([file]);
 
                 assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for eslint was created");
+                assert(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
 
                 // destroy the spy
                 sinon.restore();
@@ -2436,7 +2436,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, "..")
                 };
 
-                assert(!shell.test("-f", cacheLocation), "the cache for eslint does not exist");
+                assert(!shell.test("-f", cacheLocation), "the cache for ec0lint does not exist");
 
                 eslint = new ESLint(eslintOptions);
 
@@ -2446,20 +2446,20 @@ describe("ec0lint", () => {
 
                 await eslint.lintFiles([file]);
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint was created");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint was created");
 
                 eslintOptions.cache = false;
                 eslint = new ESLint(eslintOptions);
 
                 await eslint.lintFiles([file]);
 
-                assert(!shell.test("-f", cacheLocation), "the cache for eslint was deleted since last run did not used the cache");
+                assert(!shell.test("-f", cacheLocation), "the cache for ec0lint was deleted since last run did not used the cache");
             });
 
             it("should store in the cache a file that failed the test", async () => {
                 const cacheLocation = getFixturePath(".ec0lintcache");
 
-                assert(!shell.test("-f", cacheLocation), "the cache for eslint does not exist");
+                assert(!shell.test("-f", cacheLocation), "the cache for ec0lint does not exist");
 
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
@@ -2480,7 +2480,7 @@ describe("ec0lint", () => {
                 const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
                 const result = await eslint.lintFiles([badFile, goodFile]);
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint was created");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint was created");
                 const fileCache = fCache.createFromFile(cacheLocation);
                 const { cache } = fileCache;
 
@@ -2595,11 +2595,11 @@ describe("ec0lint", () => {
                     extensions: ["js"]
                 });
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
                 await eslint.lintText("var foo = 'bar';");
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint still exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint still exists");
             });
 
             it("should not delete cache when executing on text with a provided filename", async () => {
@@ -2618,11 +2618,11 @@ describe("ec0lint", () => {
                     extensions: ["js"]
                 });
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
                 await eslint.lintText("var bar = foo;", { filePath: "fixtures/passing.js" });
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint still exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint still exists");
             });
 
             it("should not delete cache when executing on files with --cache flag", async () => {
@@ -2643,11 +2643,11 @@ describe("ec0lint", () => {
                 });
                 const file = getFixturePath("cli-engine", "console.js");
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
                 await eslint.lintFiles([file]);
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint still exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint still exists");
             });
 
             it("should delete cache when executing on files without --cache flag", async () => {
@@ -2667,18 +2667,18 @@ describe("ec0lint", () => {
                 });
                 const file = getFixturePath("cli-engine", "console.js");
 
-                assert(shell.test("-f", cacheLocation), "the cache for eslint exists");
+                assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
                 await eslint.lintFiles([file]);
 
-                assert(!shell.test("-f", cacheLocation), "the cache for eslint has been deleted");
+                assert(!shell.test("-f", cacheLocation), "the cache for ec0lint has been deleted");
             });
 
             describe("cacheFile", () => {
                 it("should use the specified cache file", async () => {
                     const customCacheFile = path.resolve(".cache/custom-cache");
 
-                    assert(!shell.test("-f", customCacheFile), "the cache for eslint does not exist");
+                    assert(!shell.test("-f", customCacheFile), "the cache for ec0lint does not exist");
 
                     eslint = new ESLint({
                         useEc0lintrc: false,
@@ -2701,7 +2701,7 @@ describe("ec0lint", () => {
                     const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
                     const result = await eslint.lintFiles([badFile, goodFile]);
 
-                    assert(shell.test("-f", customCacheFile), "the cache for eslint was created");
+                    assert(shell.test("-f", customCacheFile), "the cache for ec0lint was created");
                     const fileCache = fCache.createFromFile(customCacheFile);
                     const { cache } = fileCache;
 

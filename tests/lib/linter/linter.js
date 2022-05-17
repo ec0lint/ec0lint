@@ -1,5 +1,5 @@
 /**
- * @fileoverview Tests for eslint object.
+ * @fileoverview Tests for ec0lint object.
  * @author Nicholas C. Zakas
  */
 
@@ -41,8 +41,8 @@ function getVariable(scope, name) {
 }
 
 /**
- * `eslint-env` comments are processed by doing a full source text match before parsing.
- * As a result, if this source file contains `eslint- env` followed by an environment in a string,
+ * `ec0lint-env` comments are processed by doing a full source text match before parsing.
+ * As a result, if this source file contains `ec0lint- env` followed by an environment in a string,
  * it will actually enable the given envs for this source file. This variable is used to avoid having a string
  * like that appear in the code.
  */
@@ -225,7 +225,7 @@ describe("Linter", () => {
         });
 
         it("should have a suppressed message", () => {
-            const code = "/* eslint-disable no-alert -- justification */\nalert(\"test\");";
+            const code = "/* ec0lint-disable no-alert -- justification */\nalert(\"test\");";
             const config = {
                 rules: { "no-alert": 1 }
             };
@@ -244,7 +244,7 @@ describe("Linter", () => {
 
         it("should have a suppressed message", () => {
             const code = [
-                "/* eslint-disable no-alert --- j1",
+                "/* ec0lint-disable no-alert --- j1",
                 " * --- j2",
                 " */",
                 "alert(\"test\");"
@@ -267,8 +267,8 @@ describe("Linter", () => {
 
         it("should not report a lint message", () => {
             const code = [
-                "/* eslint-disable -- j1 */",
-                "// eslint-disable-next-line -- j2",
+                "/* ec0lint-disable -- j1 */",
+                "// ec0lint-disable-next-line -- j2",
                 "alert(\"test\");"
             ].join("\n");
             const config = {
@@ -292,8 +292,8 @@ describe("Linter", () => {
 
         it("should not report a lint message", () => {
             const code = [
-                "/* eslint-disable -- j1 */",
-                "alert(\"test\"); // eslint-disable-line -- j2"
+                "/* ec0lint-disable -- j1 */",
+                "alert(\"test\"); // ec0lint-disable-line -- j2"
             ].join("\n");
             const config = {
                 rules: { "no-alert": 1 }
@@ -316,10 +316,10 @@ describe("Linter", () => {
 
         it("should have a suppressed message with multiple suppressions", () => {
             const code = [
-                "/* eslint-disable no-alert -- j1 */",
-                "/* eslint-disable no-console -- unused */",
-                "/* eslint-disable-next-line no-alert -- j2 */",
-                "alert(\"test\"); // eslint-disable-line no-alert -- j3"
+                "/* ec0lint-disable no-alert -- j1 */",
+                "/* ec0lint-disable no-console -- unused */",
+                "/* ec0lint-disable-next-line no-alert -- j2 */",
+                "alert(\"test\"); // ec0lint-disable-line no-alert -- j3"
             ].join("\n");
             const config = {
                 rules: { "no-alert": 1 }
@@ -1356,7 +1356,7 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code containing /*eslint-env */ block", () => {
+    describe("when evaluating code containing /*ec0lint-env */ block", () => {
         it("variables should be available in global scope", () => {
             const code = `/*${ESLINT_ENV} node*/ function f() {} /*${ESLINT_ENV} browser, foo*/`;
             const config = { rules: { checker: "error" } };
@@ -1380,7 +1380,7 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code containing /*eslint-env */ block with sloppy whitespace", () => {
+    describe("when evaluating code containing /*ec0lint-env */ block with sloppy whitespace", () => {
         const code = `/* ${ESLINT_ENV} ,, node  , no-browser ,,  */`;
 
         it("variables should be available in global scope", () => {
@@ -1766,7 +1766,7 @@ describe("Linter", () => {
     describe("when evaluating code with comments to enable rules", () => {
 
         it("should report a violation", () => {
-            const code = "/*eslint no-alert:1*/ alert('test');";
+            const code = "/*ec0lint no-alert:1*/ alert('test');";
             const config = { rules: {} };
 
             const messages = linter.verify(code, config, filename);
@@ -1782,7 +1782,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { strict: 2 } };
-            const codeA = "/*eslint strict: 0*/ function bar() { return 2; }";
+            const codeA = "/*ec0lint strict: 0*/ function bar() { return 2; }";
             const codeB = "function foo() { return 1; }";
             let messages = linter.verify(codeA, config, filename, false);
             let suppressedMessages = linter.getSuppressedMessages();
@@ -1799,7 +1799,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { quotes: [2, "double"] } };
-            const codeA = "/*eslint quotes: 0*/ function bar() { return '2'; }";
+            const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
             let messages = linter.verify(codeA, config, filename, false);
             let suppressedMessages = linter.getSuppressedMessages();
@@ -1816,7 +1816,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { quotes: [2, "double"] } };
-            const codeA = "/*eslint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
+            const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
 
             let messages = linter.verify(codeA, config, filename, false);
@@ -1834,7 +1834,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { "no-unused-vars": [2, { vars: "all" }] } };
-            const codeA = "/*eslint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
+            const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
             const codeB = "var b = 55;";
 
             let messages = linter.verify(codeA, config, filename, false);
@@ -1853,7 +1853,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with invalid comments to enable rules", () => {
         it("should report a violation when the config is not a valid rule configuration", () => {
-            const messages = linter.verify("/*eslint no-alert:true*/ alert('test');", {});
+            const messages = linter.verify("/*ec0lint no-alert:true*/ alert('test');", {});
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -1876,7 +1876,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation when the config violates a rule's schema", () => {
-            const messages = linter.verify("/* eslint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
+            const messages = linter.verify("/* ec0lint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -1900,7 +1900,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to disable rules", () => {
-        const code = "/*eslint no-alert:0*/ alert('test');";
+        const code = "/*ec0lint no-alert:0*/ alert('test');";
 
         it("should not report a violation", () => {
             const config = { rules: { "no-alert": 1 } };
@@ -1917,28 +1917,28 @@ describe("Linter", () => {
         let code, messages, suppressedMessages;
 
         it("should report an error when disabling a non-existent rule in inline comment", () => {
-            code = "/*eslint foo:0*/ ;";
+            code = "/*ec0lint foo:0*/ ;";
             messages = linter.verify(code, {}, filename);
             suppressedMessages = linter.getSuppressedMessages();
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
             assert.strictEqual(suppressedMessages.length, 0);
 
-            code = "/*eslint-disable foo*/ ;";
+            code = "/*ec0lint-disable foo*/ ;";
             messages = linter.verify(code, {}, filename);
             suppressedMessages = linter.getSuppressedMessages();
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
             assert.strictEqual(suppressedMessages.length, 0);
 
-            code = "/*eslint-disable-line foo*/ ;";
+            code = "/*ec0lint-disable-line foo*/ ;";
             messages = linter.verify(code, {}, filename);
             suppressedMessages = linter.getSuppressedMessages();
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
             assert.strictEqual(suppressedMessages.length, 0);
 
-            code = "/*eslint-disable-next-line foo*/ ;";
+            code = "/*ec0lint-disable-next-line foo*/ ;";
             messages = linter.verify(code, {}, filename);
             suppressedMessages = linter.getSuppressedMessages();
             assert.strictEqual(messages.length, 1);
@@ -1972,7 +1972,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable multiple rules", () => {
-        const code = "/*eslint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
+        const code = "/*ec0lint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: {} };
@@ -1991,7 +1991,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable and disable multiple rules", () => {
-        const code = "/*eslint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
+        const code = "/*ec0lint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: { "no-console": 1, "no-alert": 0 } };
@@ -2022,7 +2022,7 @@ describe("Linter", () => {
 
         it("should not report a violation when inline comment enables plugin rule and there's no violation", () => {
             const config = { rules: {} };
-            const code = "/*eslint test-plugin/test-rule: 2*/ var a = \"no violation\";";
+            const code = "/*ec0lint test-plugin/test-rule: 2*/ var a = \"no violation\";";
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2032,7 +2032,7 @@ describe("Linter", () => {
         });
 
         it("should not report a violation when inline comment disables plugin rule", () => {
-            const code = "/*eslint test-plugin/test-rule:0*/ var a = \"trigger violation\"";
+            const code = "/*ec0lint test-plugin/test-rule:0*/ var a = \"trigger violation\"";
             const config = { rules: { "test-plugin/test-rule": 1 } };
 
             const messages = linter.verify(code, config, filename);
@@ -2043,7 +2043,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation when the report is right before the comment", () => {
-            const code = " /* eslint-disable */ ";
+            const code = " /* ec0lint-disable */ ";
 
             linter.defineRule("checker", context => ({
                 Program() {
@@ -2059,7 +2059,7 @@ describe("Linter", () => {
         });
 
         it("should not report a violation when the report is right at the start of the comment", () => {
-            const code = " /* eslint-disable */ ";
+            const code = " /* ec0lint-disable */ ";
 
             linter.defineRule("checker", context => ({
                 Program() {
@@ -2079,7 +2079,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { "test-plugin/test-rule": 2 } };
-            const codeA = "/*eslint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
+            const codeA = "/*ec0lint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
             const codeB = "var a = \"trigger violation\";";
 
             let messages = linter.verify(codeA, config, filename, false);
@@ -2100,9 +2100,9 @@ describe("Linter", () => {
         it("should report a violation", () => {
 
             const code = [
-                "/*eslint-disable */",
+                "/*ec0lint-disable */",
                 "alert('test');",
-                "/*eslint-enable */",
+                "/*ec0lint-enable */",
                 "alert('test');"
             ].join("\n");
             const config = { rules: { "no-alert": 1 } };
@@ -2126,7 +2126,7 @@ describe("Linter", () => {
 
         it("should not report a violation", () => {
             const code = [
-                "/*eslint-disable */",
+                "/*ec0lint-disable */",
                 "alert('test');",
                 "alert('test');"
             ].join("\n");
@@ -2146,10 +2146,10 @@ describe("Linter", () => {
 
         it("should not report a violation", () => {
             const code = [
-                "                    alert('test1');/*eslint-disable */\n",
+                "                    alert('test1');/*ec0lint-disable */\n",
                 "alert('test');",
                 "                                         alert('test');\n",
-                "/*eslint-enable */alert('test2');"
+                "/*ec0lint-enable */alert('test2');"
             ].join("");
             const config = { rules: { "no-alert": 1 } };
 
@@ -2168,13 +2168,13 @@ describe("Linter", () => {
         it("should report a violation", () => {
 
             const code = [
-                "/*eslint-disable */",
+                "/*ec0lint-disable */",
                 "alert('test');",
-                "/*eslint-disable */",
+                "/*ec0lint-disable */",
                 "alert('test');",
-                "/*eslint-enable*/",
+                "/*ec0lint-enable*/",
                 "alert('test');",
-                "/*eslint-enable*/"
+                "/*ec0lint-enable*/"
             ].join("\n");
 
             const config = { rules: { "no-alert": 1 } };
@@ -2189,9 +2189,9 @@ describe("Linter", () => {
 
         it("should not report a violation", () => {
             const code = [
-                "/*eslint-disable */",
+                "/*ec0lint-disable */",
                 "(function(){ var b = 44;})()",
-                "/*eslint-enable */;any();"
+                "/*ec0lint-enable */;any();"
             ].join("\n");
 
             const config = { rules: { "no-unused-vars": 1 } };
@@ -2205,8 +2205,8 @@ describe("Linter", () => {
 
         it("should not report a violation", () => {
             const code = [
-                "(function(){ /*eslint-disable */ var b = 44;})()",
-                "/*eslint-enable */;any();"
+                "(function(){ /*ec0lint-disable */ var b = 44;})()",
+                "/*ec0lint-enable */;any();"
             ].join("\n");
 
             const config = { rules: { "no-unused-vars": 1 } };
@@ -2224,7 +2224,7 @@ describe("Linter", () => {
         describe("ec0lint-disable-line", () => {
             it("should report a violation", () => {
                 const code = [
-                    "alert('test'); // eslint-disable-line no-alert",
+                    "alert('test'); // ec0lint-disable-line no-alert",
                     "console.log('test');" // here
                 ].join("\n");
                 const config = {
@@ -2246,8 +2246,8 @@ describe("Linter", () => {
 
             it("should report a violation", () => {
                 const code = [
-                    "alert('test'); // eslint-disable-line no-alert",
-                    "console.log('test'); // eslint-disable-line no-console",
+                    "alert('test'); // ec0lint-disable-line no-alert",
+                    "console.log('test'); // ec0lint-disable-line no-console",
                     "alert('test');" // here
                 ].join("\n");
                 const config = {
@@ -2268,9 +2268,9 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
             });
 
-            it("should report a violation if eslint-disable-line in a block comment is not on a single line", () => {
+            it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
                 const code = [
-                    "/* eslint-disable-line",
+                    "/* ec0lint-disable-line",
                     "*",
                     "*/ console.log('test');" // here
                 ].join("\n");
@@ -2288,9 +2288,9 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
-            it("should not disable rule and add an extra report if eslint-disable-line in a block comment is not on a single line", () => {
+            it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                 const code = [
-                    "alert('test'); /* eslint-disable-line ",
+                    "alert('test'); /* ec0lint-disable-line ",
                     "no-alert */"
                 ].join("\n");
                 const config = {
@@ -2329,10 +2329,10 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
-            it("should not report a violation for eslint-disable-line in block comment", () => {
+            it("should not report a violation for ec0lint-disable-line in block comment", () => {
                 const code = [
-                    "alert('test'); // eslint-disable-line no-alert",
-                    "alert('test'); /*eslint-disable-line no-alert*/"
+                    "alert('test'); // ec0lint-disable-line no-alert",
+                    "alert('test'); /*ec0lint-disable-line no-alert*/"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2352,8 +2352,8 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "alert('test'); // eslint-disable-line no-alert",
-                    "console.log('test'); // eslint-disable-line no-console"
+                    "alert('test'); // ec0lint-disable-line no-alert",
+                    "console.log('test'); // ec0lint-disable-line no-console"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2374,8 +2374,8 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "alert('test') // eslint-disable-line no-alert, quotes, semi",
-                    "console.log('test'); // eslint-disable-line"
+                    "alert('test') // ec0lint-disable-line no-alert, quotes, semi",
+                    "console.log('test'); // ec0lint-disable-line"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2395,8 +2395,8 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "alert('test') /* eslint-disable-line no-alert, quotes, semi */",
-                    "console.log('test'); /* eslint-disable-line */"
+                    "alert('test') /* ec0lint-disable-line no-alert, quotes, semi */",
+                    "console.log('test'); /* ec0lint-disable-line */"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2416,7 +2416,7 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified in mixed comments", () => {
                 const code = [
-                    " alert(\"test\"); /* eslint-disable-line no-alert */ // eslint-disable-line quotes"
+                    " alert(\"test\"); /* ec0lint-disable-line no-alert */ // ec0lint-disable-line quotes"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2437,7 +2437,7 @@ describe("Linter", () => {
         describe("ec0lint-disable-next-line", () => {
             it("should ignore violation of specified rule on next line", () => {
                 const code = [
-                    "// eslint-disable-next-line no-alert",
+                    "// ec0lint-disable-next-line no-alert",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2457,9 +2457,9 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
             });
 
-            it("should ignore violation of specified rule if eslint-disable-next-line is a block comment", () => {
+            it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
-                    "/* eslint-disable-next-line no-alert */",
+                    "/* ec0lint-disable-next-line no-alert */",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2478,9 +2478,9 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
             });
-            it("should ignore violation of specified rule if eslint-disable-next-line is a block comment", () => {
+            it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
-                    "/* eslint-disable-next-line no-alert */",
+                    "/* ec0lint-disable-next-line no-alert */",
                     "alert('test');"
                 ].join("\n");
                 const config = {
@@ -2499,7 +2499,7 @@ describe("Linter", () => {
 
             it("should not ignore violation if code is not on next line", () => {
                 const code = [
-                    "/* eslint-disable-next-line",
+                    "/* ec0lint-disable-next-line",
                     "no-alert */alert('test');"
                 ].join("\n");
                 const config = {
@@ -2518,7 +2518,7 @@ describe("Linter", () => {
 
             it("should ignore violation if block comment span multiple lines", () => {
                 const code = [
-                    "/* eslint-disable-next-line",
+                    "/* ec0lint-disable-next-line",
                     "no-alert */",
                     "alert('test');"
                 ].join("\n");
@@ -2538,7 +2538,7 @@ describe("Linter", () => {
 
             it("should ignore violations only of specified rule", () => {
                 const code = [
-                    "// eslint-disable-next-line no-console",
+                    "// ec0lint-disable-next-line no-console",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2560,7 +2560,7 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified", () => {
                 const code = [
-                    "// eslint-disable-next-line no-alert, quotes",
+                    "// ec0lint-disable-next-line no-alert, quotes",
                     "alert(\"test\");",
                     "console.log('test');"
                 ].join("\n");
@@ -2584,7 +2584,7 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified in multiple lines", () => {
                 const code = [
-                    "/* eslint-disable-next-line",
+                    "/* ec0lint-disable-next-line",
                     "no-alert,",
                     "quotes",
                     "*/",
@@ -2606,7 +2606,7 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified in mixed comments", () => {
                 const code = [
-                    "/* eslint-disable-next-line no-alert */ // eslint-disable-next-line quotes",
+                    "/* ec0lint-disable-next-line no-alert */ // ec0lint-disable-next-line quotes",
                     "alert(\"test\");"
                 ].join("\n");
                 const config = {
@@ -2627,9 +2627,9 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
                 const code = [
-                    "/* eslint-disable-next-line",
+                    "/* ec0lint-disable-next-line",
                     "no-alert",
-                    "*/ // eslint-disable-next-line quotes",
+                    "*/ // ec0lint-disable-next-line quotes",
                     "alert(\"test\");"
                 ].join("\n");
                 const config = {
@@ -2645,7 +2645,7 @@ describe("Linter", () => {
 
             it("should ignore violations of only the specified rule on next line", () => {
                 const code = [
-                    "// eslint-disable-next-line quotes",
+                    "// ec0lint-disable-next-line quotes",
                     "alert(\"test\");",
                     "console.log('test');"
                 ].join("\n");
@@ -2670,7 +2670,7 @@ describe("Linter", () => {
             it("should ignore violations of specified rule on next line only", () => {
                 const code = [
                     "alert('test');",
-                    "// eslint-disable-next-line no-alert",
+                    "// ec0lint-disable-next-line no-alert",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2693,7 +2693,7 @@ describe("Linter", () => {
 
             it("should ignore all rule violations on next line if none specified", () => {
                 const code = [
-                    "// eslint-disable-next-line",
+                    "// ec0lint-disable-next-line",
                     "alert(\"test\");",
                     "console.log('test')"
                 ].join("\n");
@@ -2717,10 +2717,10 @@ describe("Linter", () => {
                 assert.strictEqual(suppressedMessages[2].ruleId, "semi");
             });
 
-            it("should ignore violations if eslint-disable-next-line is a block comment", () => {
+            it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
                     "alert('test');",
-                    "/* eslint-disable-next-line no-alert */",
+                    "/* ec0lint-disable-next-line no-alert */",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2743,7 +2743,7 @@ describe("Linter", () => {
 
             it("should report a violation", () => {
                 const code = [
-                    "/* eslint-disable-next-line",
+                    "/* ec0lint-disable-next-line",
                     "*",
                     "*/",
                     "console.log('test');" // here
@@ -2766,7 +2766,7 @@ describe("Linter", () => {
 
             it("should not ignore violations if comment is of the type hashbang", () => {
                 const code = [
-                    "#! eslint-disable-next-line no-alert",
+                    "#! ec0lint-disable-next-line no-alert",
                     "alert('test');",
                     "console.log('test');"
                 ].join("\n");
@@ -2792,7 +2792,7 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert */",
+                "/*ec0lint-disable no-alert */",
                 "alert('test');",
                 "console.log('test');" // here
             ].join("\n");
@@ -2810,10 +2810,10 @@ describe("Linter", () => {
 
         it("should report no violation", () => {
             const code = [
-                "/*eslint-disable no-unused-vars */",
-                "var foo; // eslint-disable-line no-unused-vars",
+                "/*ec0lint-disable no-unused-vars */",
+                "var foo; // ec0lint-disable-line no-unused-vars",
                 "var bar;",
-                "/* eslint-enable no-unused-vars */" // here
+                "/* ec0lint-enable no-unused-vars */" // here
             ].join("\n");
             const config = { rules: { "no-unused-vars": 2 } };
 
@@ -2831,11 +2831,11 @@ describe("Linter", () => {
 
         it("should report no violation", () => {
             const code = [
-                "var foo1; // eslint-disable-line no-unused-vars",
-                "var foo2; // eslint-disable-line no-unused-vars",
-                "var foo3; // eslint-disable-line no-unused-vars",
-                "var foo4; // eslint-disable-line no-unused-vars",
-                "var foo5; // eslint-disable-line no-unused-vars"
+                "var foo1; // ec0lint-disable-line no-unused-vars",
+                "var foo2; // ec0lint-disable-line no-unused-vars",
+                "var foo3; // ec0lint-disable-line no-unused-vars",
+                "var foo4; // ec0lint-disable-line no-unused-vars",
+                "var foo5; // ec0lint-disable-line no-unused-vars"
             ].join("\n");
             const config = { rules: { "no-unused-vars": 2 } };
 
@@ -2848,9 +2848,9 @@ describe("Linter", () => {
 
         it("should report no violation", () => {
             const code = [
-                "/* eslint-disable quotes */",
+                "/* ec0lint-disable quotes */",
                 "console.log(\"foo\");",
-                "/* eslint-enable quotes */"
+                "/* ec0lint-enable quotes */"
             ].join("\n");
             const config = { rules: { quotes: 2 } };
 
@@ -2863,10 +2863,10 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert, no-console */",
+                "/*ec0lint-disable no-alert, no-console */",
                 "alert('test');",
                 "console.log('test');",
-                "/*eslint-enable*/",
+                "/*ec0lint-enable*/",
 
                 "alert('test');", // here
                 "console.log('test');" // here
@@ -2891,10 +2891,10 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert */",
+                "/*ec0lint-disable no-alert */",
                 "alert('test');",
                 "console.log('test');",
-                "/*eslint-enable no-console */",
+                "/*ec0lint-enable no-console */",
 
                 "alert('test');" // here
             ].join("\n");
@@ -2916,10 +2916,10 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert, no-console */",
+                "/*ec0lint-disable no-alert, no-console */",
                 "alert('test');",
                 "console.log('test');",
-                "/*eslint-enable no-alert*/",
+                "/*ec0lint-enable no-alert*/",
 
                 "alert('test');", // here
                 "console.log('test');"
@@ -2945,22 +2945,22 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert */",
+                "/*ec0lint-disable no-alert */",
 
-                "/*eslint-disable no-console */",
+                "/*ec0lint-disable no-console */",
                 "alert('test');",
                 "console.log('test');",
-                "/*eslint-enable */",
+                "/*ec0lint-enable */",
 
                 "alert('test');", // here
                 "console.log('test');", // here
 
-                "/*eslint-enable */",
+                "/*ec0lint-enable */",
 
                 "alert('test');", // here
                 "console.log('test');", // here
 
-                "/*eslint-enable*/"
+                "/*ec0lint-enable*/"
             ].join("\n");
             const config = { rules: { "no-alert": 1, "no-console": 1 } };
 
@@ -2986,20 +2986,20 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*eslint-disable no-alert, no-console */",
+                "/*ec0lint-disable no-alert, no-console */",
                 "alert('test');",
                 "console.log('test');",
 
-                "/*eslint-enable no-alert */",
+                "/*ec0lint-enable no-alert */",
 
                 "alert('test');", // here
                 "console.log('test');",
 
-                "/*eslint-enable no-console */",
+                "/*ec0lint-enable no-console */",
 
                 "alert('test');", // here
                 "console.log('test');", // here
-                "/*eslint-enable no-console */"
+                "/*ec0lint-enable no-console */"
             ].join("\n");
             const config = { rules: { "no-alert": 1, "no-console": 1 } };
 
@@ -3025,20 +3025,20 @@ describe("Linter", () => {
 
         it("should report a violation when severity is warn", () => {
             const code = [
-                "/*eslint-disable no-alert, no-console */",
+                "/*ec0lint-disable no-alert, no-console */",
                 "alert('test');",
                 "console.log('test');",
 
-                "/*eslint-enable no-alert */",
+                "/*ec0lint-enable no-alert */",
 
                 "alert('test');", // here
                 "console.log('test');",
 
-                "/*eslint-enable no-console */",
+                "/*ec0lint-enable no-console */",
 
                 "alert('test');", // here
                 "console.log('test');", // here
-                "/*eslint-enable no-console */"
+                "/*ec0lint-enable no-console */"
             ].join("\n");
             const config = { rules: { "no-alert": "warn", "no-console": "warn" } };
 
@@ -3064,7 +3064,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-        const code = "/*eslint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
+        const code = "/*ec0lint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: { "no-console": 1, "no-alert": 0 } };
@@ -3082,7 +3082,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule", () => {
-        const code = "/*eslint quotes:[2, \"double\"]*/ alert('test');";
+        const code = "/*ec0lint quotes:[2, \"double\"]*/ alert('test');";
 
         it("should report a violation", () => {
             const config = { rules: { quotes: [2, "single"] } };
@@ -3100,7 +3100,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-        const code = "/*eslint quotes:[\"error\", \"double\"]*/ alert('test');";
+        const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ alert('test');";
 
         it("should report a violation", () => {
             const config = { rules: { quotes: [2, "single"] } };
@@ -3119,7 +3119,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
         it("should report a violation", () => {
-            const code = "/*eslint no-alert:'1'*/ alert('test');";
+            const code = "/*ec0lint no-alert:'1'*/ alert('test');";
 
             const config = { rules: { "no-alert": 1 } };
 
@@ -3147,7 +3147,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation", () => {
-            const code = "/*eslint no-alert:abc*/ alert('test');";
+            const code = "/*ec0lint no-alert:abc*/ alert('test');";
 
             const config = { rules: { "no-alert": 1 } };
 
@@ -3175,7 +3175,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation", () => {
-            const code = "/*eslint no-alert:0 2*/ alert('test');";
+            const code = "/*ec0lint no-alert:0 2*/ alert('test');";
 
             const config = { rules: { "no-alert": 1 } };
 
@@ -3205,7 +3205,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with comments which have colon in its value", () => {
         const code = String.raw`
-/* eslint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
+/* ec0lint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
 alert('test');
 `;
 
@@ -3224,7 +3224,7 @@ alert('test');
 
     describe("when evaluating code with comments that contain escape sequences", () => {
         const code = String.raw`
-/* eslint max-len: ["error", 1, { ignoreComments: true, ignorePattern: "console\\.log\\(" }] */
+/* ec0lint max-len: ["error", 1, { ignoreComments: true, ignorePattern: "console\\.log\\(" }] */
 console.log("test");
 consolexlog("test2");
 var a = "test2";
@@ -3488,7 +3488,7 @@ var a = "test2";
         });
 
         it("should not report a violation", () => {
-            const code = "/*eslint-env es6 */ new Promise();";
+            const code = "/*ec0lint-env es6 */ new Promise();";
 
             const config = { rules: { "no-undef": 1 } };
 
@@ -3502,9 +3502,9 @@ var a = "test2";
         // https://github.com/eslint/eslint/issues/14652
         it("should not report a violation", () => {
             const codes = [
-                "/*eslint-env es6\n */ new Promise();",
-                "/*eslint-env browser,\nes6 */ window;Promise;",
-                "/*eslint-env\nbrowser,es6 */ window;Promise;"
+                "/*ec0lint-env es6\n */ new Promise();",
+                "/*ec0lint-env browser,\nes6 */ window;Promise;",
+                "/*ec0lint-env\nbrowser,es6 */ window;Promise;"
             ];
             const config = { rules: { "no-undef": 1 } };
 
@@ -3531,7 +3531,7 @@ var a = "test2";
         });
 
         it("should not report a violation", () => {
-            const code = "/*eslint-env mocha */ suite();test();";
+            const code = "/*ec0lint-env mocha */ suite();test();";
 
             const config = { rules: { "no-undef": 1 } };
 
@@ -3591,7 +3591,7 @@ var a = "test2";
         });
 
         it("should not report a violation", () => {
-            const code = `/*eslint no-process-exit: 0 */ /*${ESLINT_ENV} node */ process.exit();`;
+            const code = `/*ec0lint no-process-exit: 0 */ /*${ESLINT_ENV} node */ process.exit();`;
 
             const config = { rules: { "no-undef": 1 } };
 
@@ -3606,7 +3606,7 @@ var a = "test2";
     describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
         it("should report a violation for disabling rules", () => {
             const code = [
-                "alert('test'); // eslint-disable-line no-alert"
+                "alert('test'); // ec0lint-disable-line no-alert"
             ].join("\n");
             const config = {
                 rules: {
@@ -3661,9 +3661,9 @@ var a = "test2";
             assert(ok);
         });
 
-        it("should report a violation for eslint-disable", () => {
+        it("should report a violation for ec0lint-disable", () => {
             const code = [
-                "/* eslint-disable */",
+                "/* ec0lint-disable */",
                 "alert('test');"
             ].join("\n");
             const config = {
@@ -3686,7 +3686,7 @@ var a = "test2";
 
         it("should not report a violation for rule changes", () => {
             const code = [
-                "/*eslint no-alert:2*/",
+                "/*ec0lint no-alert:2*/",
                 "alert('test');"
             ].join("\n");
             const config = {
@@ -3707,7 +3707,7 @@ var a = "test2";
 
         it("should report a violation for disable-line", () => {
             const code = [
-                "alert('test'); // eslint-disable-line"
+                "alert('test'); // ec0lint-disable-line"
             ].join("\n");
             const config = {
                 rules: {
@@ -3852,8 +3852,8 @@ var a = "test2";
     });
 
     describe("reportUnusedDisable option", () => {
-        it("reports problems for unused eslint-disable comments", () => {
-            const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: true });
+        it("reports problems for unused ec0lint-disable comments", () => {
+            const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: true });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -3861,7 +3861,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -3877,10 +3877,10 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("reports problems for multiple eslint-disable comments, including unused ones", () => {
+        it("reports problems for multiple ec0lint-disable comments, including unused ones", () => {
             const code = [
-                "/* eslint-disable no-alert -- j1 */",
-                "alert(\"test\"); //eslint-disable-line no-alert -- j2"
+                "/* ec0lint-disable no-alert -- j1 */",
+                "alert(\"test\"); //ec0lint-disable-line no-alert -- j2"
             ].join("\n");
             const config = {
                 rules: {
@@ -3895,10 +3895,10 @@ var a = "test2";
             assert.strictEqual(suppressedMessages[0].suppressions.length, 2);
         });
 
-        it("reports problems for eslint-disable-line and eslint-disable-next-line comments, including unused ones", () => {
+        it("reports problems for ec0lint-disable-line and ec0lint-disable-next-line comments, including unused ones", () => {
             const code = [
-                "// eslint-disable-next-line no-alert -- j1 */",
-                "alert(\"test\"); //eslint-disable-line no-alert -- j2"
+                "// ec0lint-disable-next-line no-alert -- j1 */",
+                "alert(\"test\"); //ec0lint-disable-line no-alert -- j2"
             ].join("\n");
             const config = {
                 rules: {
@@ -3913,11 +3913,11 @@ var a = "test2";
             assert.strictEqual(suppressedMessages[0].suppressions.length, 2);
         });
 
-        it("reports problems for multiple unused eslint-disable comments with mutliple ruleIds", () => {
+        it("reports problems for multiple unused ec0lint-disable comments with mutliple ruleIds", () => {
             const code = [
-                "/* eslint no-undef: 2, no-void: 2 */",
-                "/* eslint-disable no-undef -- j1 */",
-                "void foo; //eslint-disable-line no-undef, no-void -- j2"
+                "/* ec0lint no-undef: 2, no-void: 2 */",
+                "/* ec0lint-disable no-undef -- j1 */",
+                "void foo; //ec0lint-disable-line no-undef, no-void -- j2"
             ].join("\n");
             const config = {
                 rules: {
@@ -3936,8 +3936,8 @@ var a = "test2";
             assert.strictEqual(suppressedMessages[1].suppressions.length, 2);
         });
 
-        it("reports problems for unused eslint-disable comments (error)", () => {
-            const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: "error" });
+        it("reports problems for unused ec0lint-disable comments (error)", () => {
+            const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: "error" });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -3945,7 +3945,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -3961,8 +3961,8 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("reports problems for unused eslint-disable comments (warn)", () => {
-            const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: "warn" });
+        it("reports problems for unused ec0lint-disable comments (warn)", () => {
+            const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: "warn" });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -3970,7 +3970,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -3986,8 +3986,8 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("reports problems for unused eslint-disable comments (in config)", () => {
-            const messages = linter.verify("/* eslint-disable */", { reportUnusedDisableDirectives: true });
+        it("reports problems for unused ec0lint-disable comments (in config)", () => {
+            const messages = linter.verify("/* ec0lint-disable */", { reportUnusedDisableDirectives: true });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -3995,7 +3995,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -4011,8 +4011,8 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("reports problems for partially unused eslint-disable comments (in config)", () => {
-            const code = "alert('test'); // eslint-disable-line no-alert, no-redeclare";
+        it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
+            const code = "alert('test'); // ec0lint-disable-line no-alert, no-redeclare";
             const config = {
                 reportUnusedDisableDirectives: true,
                 rules: {
@@ -4032,7 +4032,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'no-redeclare').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
                         line: 1,
                         column: 16,
                         fix: {
@@ -4093,35 +4093,35 @@ var a = "test2";
                 //-----------------------------------------------
 
                 {
-                    code: "// eslint-disable-line unused",
+                    code: "// ec0lint-disable-line unused",
                     output: " "
                 },
                 {
-                    code: "foo// eslint-disable-line unused",
+                    code: "foo// ec0lint-disable-line unused",
                     output: "foo "
                 },
                 {
-                    code: "// eslint-disable-line ,unused,",
+                    code: "// ec0lint-disable-line ,unused,",
                     output: " "
                 },
                 {
-                    code: "// eslint-disable-line unused-1, unused-2",
+                    code: "// ec0lint-disable-line unused-1, unused-2",
                     output: " "
                 },
                 {
-                    code: "// eslint-disable-line ,unused-1,, unused-2,, -- comment",
+                    code: "// ec0lint-disable-line ,unused-1,, unused-2,, -- comment",
                     output: " "
                 },
                 {
-                    code: "// eslint-disable-next-line unused\n",
+                    code: "// ec0lint-disable-next-line unused\n",
                     output: " \n"
                 },
                 {
-                    code: "// eslint-disable-next-line unused\nfoo",
+                    code: "// ec0lint-disable-next-line unused\nfoo",
                     output: " \nfoo"
                 },
                 {
-                    code: "/* eslint-disable \nunused\n*/",
+                    code: "/* ec0lint-disable \nunused\n*/",
                     output: " "
                 },
 
@@ -4131,358 +4131,358 @@ var a = "test2";
 
                 // content before the first rule should not be changed
                 {
-                    code: "//eslint-disable-line unused, used",
-                    output: "//eslint-disable-line used"
+                    code: "//ec0lint-disable-line unused, used",
+                    output: "//ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused, used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused, used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "//  eslint-disable-line unused, used",
-                    output: "//  eslint-disable-line used"
+                    code: "//  ec0lint-disable-line unused, used",
+                    output: "//  ec0lint-disable-line used"
                 },
                 {
-                    code: "/*\neslint-disable unused, used*/",
-                    output: "/*\neslint-disable used*/"
+                    code: "/*\nec0lint-disable unused, used*/",
+                    output: "/*\nec0lint-disable used*/"
                 },
                 {
-                    code: "/*\n eslint-disable unused, used*/",
-                    output: "/*\n eslint-disable used*/"
+                    code: "/*\n ec0lint-disable unused, used*/",
+                    output: "/*\n ec0lint-disable used*/"
                 },
                 {
-                    code: "/*\r\neslint-disable unused, used*/",
-                    output: "/*\r\neslint-disable used*/"
+                    code: "/*\r\nec0lint-disable unused, used*/",
+                    output: "/*\r\nec0lint-disable used*/"
                 },
                 {
-                    code: "/*\u2028eslint-disable unused, used*/",
-                    output: "/*\u2028eslint-disable used*/"
+                    code: "/*\u2028ec0lint-disable unused, used*/",
+                    output: "/*\u2028ec0lint-disable used*/"
                 },
                 {
-                    code: "/*\u00A0eslint-disable unused, used*/",
-                    output: "/*\u00A0eslint-disable used*/"
+                    code: "/*\u00A0ec0lint-disable unused, used*/",
+                    output: "/*\u00A0ec0lint-disable used*/"
                 },
                 {
-                    code: "// eslint-disable-line  unused, used",
-                    output: "// eslint-disable-line  used"
+                    code: "// ec0lint-disable-line  unused, used",
+                    output: "// ec0lint-disable-line  used"
                 },
                 {
-                    code: "/* eslint-disable\nunused, used*/",
-                    output: "/* eslint-disable\nused*/"
+                    code: "/* ec0lint-disable\nunused, used*/",
+                    output: "/* ec0lint-disable\nused*/"
                 },
                 {
-                    code: "/* eslint-disable\n unused, used*/",
-                    output: "/* eslint-disable\n used*/"
+                    code: "/* ec0lint-disable\n unused, used*/",
+                    output: "/* ec0lint-disable\n used*/"
                 },
                 {
-                    code: "/* eslint-disable\r\nunused, used*/",
-                    output: "/* eslint-disable\r\nused*/"
+                    code: "/* ec0lint-disable\r\nunused, used*/",
+                    output: "/* ec0lint-disable\r\nused*/"
                 },
                 {
-                    code: "/* eslint-disable\u2028unused, used*/",
-                    output: "/* eslint-disable\u2028used*/"
+                    code: "/* ec0lint-disable\u2028unused, used*/",
+                    output: "/* ec0lint-disable\u2028used*/"
                 },
                 {
-                    code: "/* eslint-disable\u00A0unused, used*/",
-                    output: "/* eslint-disable\u00A0used*/"
+                    code: "/* ec0lint-disable\u00A0unused, used*/",
+                    output: "/* ec0lint-disable\u00A0used*/"
                 },
 
                 // when removing the first rule, the comma and all whitespace up to the next rule (or next lone comma) should also be removed
                 {
-                    code: "// eslint-disable-line unused,used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused,used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused, used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused, used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused , used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused , used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused,  used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused,  used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused  ,used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused  ,used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "/* eslint-disable unused\n,\nused */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable unused\n,\nused */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "/* eslint-disable unused \n \n,\n\n used */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable unused \n \n,\n\n used */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "/* eslint-disable unused\u2028,\u2028used */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable unused\u2028,\u2028used */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "// eslint-disable-line unused\u00A0,\u00A0used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused\u00A0,\u00A0used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused,,used",
-                    output: "// eslint-disable-line ,used"
+                    code: "// ec0lint-disable-line unused,,used",
+                    output: "// ec0lint-disable-line ,used"
                 },
                 {
-                    code: "// eslint-disable-line unused, ,used",
-                    output: "// eslint-disable-line ,used"
+                    code: "// ec0lint-disable-line unused, ,used",
+                    output: "// ec0lint-disable-line ,used"
                 },
                 {
-                    code: "// eslint-disable-line unused,, used",
-                    output: "// eslint-disable-line , used"
+                    code: "// ec0lint-disable-line unused,, used",
+                    output: "// ec0lint-disable-line , used"
                 },
                 {
-                    code: "// eslint-disable-line unused,used ",
-                    output: "// eslint-disable-line used "
+                    code: "// ec0lint-disable-line unused,used ",
+                    output: "// ec0lint-disable-line used "
                 },
                 {
-                    code: "// eslint-disable-next-line unused,used\n",
-                    output: "// eslint-disable-next-line used\n"
+                    code: "// ec0lint-disable-next-line unused,used\n",
+                    output: "// ec0lint-disable-next-line used\n"
                 },
 
                 // when removing a rule in the middle, one comma and all whitespace between commas should also be removed
                 {
-                    code: "// eslint-disable-line used-1,unused,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1,unused,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1, unused,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1, unused,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1,unused ,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1,unused ,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1,  unused  ,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1,  unused  ,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
                 {
-                    code: "/* eslint-disable used-1,\nunused\n,used-2 */",
-                    output: "/* eslint-disable used-1,used-2 */"
+                    code: "/* ec0lint-disable used-1,\nunused\n,used-2 */",
+                    output: "/* ec0lint-disable used-1,used-2 */"
                 },
                 {
-                    code: "/* eslint-disable used-1,\n\n unused \n \n ,used-2 */",
-                    output: "/* eslint-disable used-1,used-2 */"
+                    code: "/* ec0lint-disable used-1,\n\n unused \n \n ,used-2 */",
+                    output: "/* ec0lint-disable used-1,used-2 */"
                 },
                 {
-                    code: "/* eslint-disable used-1,\u2028unused\u2028,used-2 */",
-                    output: "/* eslint-disable used-1,used-2 */"
+                    code: "/* ec0lint-disable used-1,\u2028unused\u2028,used-2 */",
+                    output: "/* ec0lint-disable used-1,used-2 */"
                 },
                 {
-                    code: "// eslint-disable-line used-1,\u00A0unused\u00A0,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1,\u00A0unused\u00A0,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
 
                 // when removing a rule in the middle, content around commas should not be changed
                 {
-                    code: "// eslint-disable-line used-1, unused ,used-2",
-                    output: "// eslint-disable-line used-1,used-2"
+                    code: "// ec0lint-disable-line used-1, unused ,used-2",
+                    output: "// ec0lint-disable-line used-1,used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1,unused, used-2",
-                    output: "// eslint-disable-line used-1, used-2"
+                    code: "// ec0lint-disable-line used-1,unused, used-2",
+                    output: "// ec0lint-disable-line used-1, used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1 ,unused,used-2",
-                    output: "// eslint-disable-line used-1 ,used-2"
+                    code: "// ec0lint-disable-line used-1 ,unused,used-2",
+                    output: "// ec0lint-disable-line used-1 ,used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1 ,unused, used-2",
-                    output: "// eslint-disable-line used-1 , used-2"
+                    code: "// ec0lint-disable-line used-1 ,unused, used-2",
+                    output: "// ec0lint-disable-line used-1 , used-2"
                 },
                 {
-                    code: "// eslint-disable-line used-1  , unused ,  used-2",
-                    output: "// eslint-disable-line used-1  ,  used-2"
+                    code: "// ec0lint-disable-line used-1  , unused ,  used-2",
+                    output: "// ec0lint-disable-line used-1  ,  used-2"
                 },
                 {
-                    code: "/* eslint-disable used-1\n,unused,\nused-2 */",
-                    output: "/* eslint-disable used-1\n,\nused-2 */"
+                    code: "/* ec0lint-disable used-1\n,unused,\nused-2 */",
+                    output: "/* ec0lint-disable used-1\n,\nused-2 */"
                 },
                 {
-                    code: "/* eslint-disable used-1\u2028,unused,\u2028used-2 */",
-                    output: "/* eslint-disable used-1\u2028,\u2028used-2 */"
+                    code: "/* ec0lint-disable used-1\u2028,unused,\u2028used-2 */",
+                    output: "/* ec0lint-disable used-1\u2028,\u2028used-2 */"
                 },
                 {
-                    code: "// eslint-disable-line used-1\u00A0,unused,\u00A0used-2",
-                    output: "// eslint-disable-line used-1\u00A0,\u00A0used-2"
+                    code: "// ec0lint-disable-line used-1\u00A0,unused,\u00A0used-2",
+                    output: "// ec0lint-disable-line used-1\u00A0,\u00A0used-2"
                 },
                 {
-                    code: "// eslint-disable-line , unused ,used",
-                    output: "// eslint-disable-line ,used"
+                    code: "// ec0lint-disable-line , unused ,used",
+                    output: "// ec0lint-disable-line ,used"
                 },
                 {
-                    code: "/* eslint-disable\n, unused ,used */",
-                    output: "/* eslint-disable\n,used */"
+                    code: "/* ec0lint-disable\n, unused ,used */",
+                    output: "/* ec0lint-disable\n,used */"
                 },
                 {
-                    code: "/* eslint-disable used-1,\n,unused,used-2 */",
-                    output: "/* eslint-disable used-1,\n,used-2 */"
+                    code: "/* ec0lint-disable used-1,\n,unused,used-2 */",
+                    output: "/* ec0lint-disable used-1,\n,used-2 */"
                 },
                 {
-                    code: "/* eslint-disable used-1,unused,\n,used-2 */",
-                    output: "/* eslint-disable used-1,\n,used-2 */"
+                    code: "/* ec0lint-disable used-1,unused,\n,used-2 */",
+                    output: "/* ec0lint-disable used-1,\n,used-2 */"
                 },
                 {
-                    code: "/* eslint-disable used-1,\n,unused,\n,used-2 */",
-                    output: "/* eslint-disable used-1,\n,\n,used-2 */"
+                    code: "/* ec0lint-disable used-1,\n,unused,\n,used-2 */",
+                    output: "/* ec0lint-disable used-1,\n,\n,used-2 */"
                 },
                 {
-                    code: "// eslint-disable-line used, unused,",
-                    output: "// eslint-disable-line used,"
+                    code: "// ec0lint-disable-line used, unused,",
+                    output: "// ec0lint-disable-line used,"
                 },
                 {
-                    code: "// eslint-disable-next-line used, unused,\n",
-                    output: "// eslint-disable-next-line used,\n"
+                    code: "// ec0lint-disable-next-line used, unused,\n",
+                    output: "// ec0lint-disable-next-line used,\n"
                 },
                 {
-                    code: "// eslint-disable-line used, unused, ",
-                    output: "// eslint-disable-line used, "
+                    code: "// ec0lint-disable-line used, unused, ",
+                    output: "// ec0lint-disable-line used, "
                 },
                 {
-                    code: "// eslint-disable-line used, unused, -- comment",
-                    output: "// eslint-disable-line used, -- comment"
+                    code: "// ec0lint-disable-line used, unused, -- comment",
+                    output: "// ec0lint-disable-line used, -- comment"
                 },
                 {
-                    code: "/* eslint-disable used, unused,\n*/",
-                    output: "/* eslint-disable used,\n*/"
+                    code: "/* ec0lint-disable used, unused,\n*/",
+                    output: "/* ec0lint-disable used,\n*/"
                 },
 
                 // when removing the last rule, the comma and all whitespace up to the previous rule (or previous lone comma) should also be removed
                 {
-                    code: "// eslint-disable-line used,unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used,unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used, unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used, unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used ,unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used ,unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used , unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used , unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used,  unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used,  unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used  ,unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used  ,unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "/* eslint-disable used\n,\nunused */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable used\n,\nunused */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "/* eslint-disable used \n \n,\n\n unused */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable used \n \n,\n\n unused */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "/* eslint-disable used\u2028,\u2028unused */",
-                    output: "/* eslint-disable used */"
+                    code: "/* ec0lint-disable used\u2028,\u2028unused */",
+                    output: "/* ec0lint-disable used */"
                 },
                 {
-                    code: "// eslint-disable-line used\u00A0,\u00A0unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used\u00A0,\u00A0unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used,,unused",
-                    output: "// eslint-disable-line used,"
+                    code: "// ec0lint-disable-line used,,unused",
+                    output: "// ec0lint-disable-line used,"
                 },
                 {
-                    code: "// eslint-disable-line used, ,unused",
-                    output: "// eslint-disable-line used,"
+                    code: "// ec0lint-disable-line used, ,unused",
+                    output: "// ec0lint-disable-line used,"
                 },
                 {
-                    code: "/* eslint-disable used,\n,unused */",
-                    output: "/* eslint-disable used, */"
+                    code: "/* ec0lint-disable used,\n,unused */",
+                    output: "/* ec0lint-disable used, */"
                 },
                 {
-                    code: "/* eslint-disable used\n, ,unused */",
-                    output: "/* eslint-disable used\n, */"
+                    code: "/* ec0lint-disable used\n, ,unused */",
+                    output: "/* ec0lint-disable used\n, */"
                 },
 
                 // content after the last rule should not be changed
                 {
-                    code: "// eslint-disable-line used,unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used,unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used,unused ",
-                    output: "// eslint-disable-line used "
+                    code: "// ec0lint-disable-line used,unused ",
+                    output: "// ec0lint-disable-line used "
                 },
                 {
-                    code: "// eslint-disable-line used,unused  ",
-                    output: "// eslint-disable-line used  "
+                    code: "// ec0lint-disable-line used,unused  ",
+                    output: "// ec0lint-disable-line used  "
                 },
                 {
-                    code: "// eslint-disable-line used,unused -- comment",
-                    output: "// eslint-disable-line used -- comment"
+                    code: "// ec0lint-disable-line used,unused -- comment",
+                    output: "// ec0lint-disable-line used -- comment"
                 },
                 {
-                    code: "// eslint-disable-next-line used,unused\n",
-                    output: "// eslint-disable-next-line used\n"
+                    code: "// ec0lint-disable-next-line used,unused\n",
+                    output: "// ec0lint-disable-next-line used\n"
                 },
                 {
-                    code: "// eslint-disable-next-line used,unused \n",
-                    output: "// eslint-disable-next-line used \n"
+                    code: "// ec0lint-disable-next-line used,unused \n",
+                    output: "// ec0lint-disable-next-line used \n"
                 },
                 {
-                    code: "/* eslint-disable used,unused\u2028*/",
-                    output: "/* eslint-disable used\u2028*/"
+                    code: "/* ec0lint-disable used,unused\u2028*/",
+                    output: "/* ec0lint-disable used\u2028*/"
                 },
                 {
-                    code: "// eslint-disable-line used,unused\u00A0",
-                    output: "// eslint-disable-line used\u00A0"
+                    code: "// ec0lint-disable-line used,unused\u00A0",
+                    output: "// ec0lint-disable-line used\u00A0"
                 },
 
                 // multiply rules to remove
                 {
-                    code: "// eslint-disable-line used, unused-1, unused-2",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line used, unused-1, unused-2",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused-1, used, unused-2",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused-1, used, unused-2",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused-1, unused-2, used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused-1, unused-2, used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used-1, unused-1, used-2, unused-2",
-                    output: "// eslint-disable-line used-1, used-2"
+                    code: "// ec0lint-disable-line used-1, unused-1, used-2, unused-2",
+                    output: "// ec0lint-disable-line used-1, used-2"
                 },
                 {
-                    code: "// eslint-disable-line unused-1, used-1, unused-2, used-2",
-                    output: "// eslint-disable-line used-1, used-2"
+                    code: "// ec0lint-disable-line unused-1, used-1, unused-2, used-2",
+                    output: "// ec0lint-disable-line used-1, used-2"
                 },
                 {
                     code: `
-                        /* eslint-disable unused-1,
+                        /* ec0lint-disable unused-1,
                            used-1,
                            unused-2,
                            used-2
                         */
                     `,
                     output: `
-                        /* eslint-disable used-1,
+                        /* ec0lint-disable used-1,
                            used-2
                         */
                     `
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                unused-1,
                                used-1,
                                unused-2,
@@ -4490,7 +4490,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                used-2
                         */
@@ -4498,7 +4498,7 @@ var a = "test2";
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                unused-1,
                                used-2,
@@ -4506,7 +4506,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                used-2
                         */
@@ -4514,7 +4514,7 @@ var a = "test2";
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                unused-1,
                                used-2,
@@ -4522,7 +4522,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                used-2,
                         */
@@ -4530,7 +4530,7 @@ var a = "test2";
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,unused-1
                                ,used-1
                                ,unused-2
@@ -4538,7 +4538,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,used-1
                                ,used-2
                         */
@@ -4546,7 +4546,7 @@ var a = "test2";
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,used-1
                                ,unused-1
                                ,used-2
@@ -4554,7 +4554,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,used-1
                                ,used-2
                         */
@@ -4562,7 +4562,7 @@ var a = "test2";
                 },
                 {
                     code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                unused-1,
                                used-2,
@@ -4572,7 +4572,7 @@ var a = "test2";
                         */
                     `,
                     output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                used-1,
                                used-2
 
@@ -4583,16 +4583,16 @@ var a = "test2";
 
                 // duplicates in the list
                 {
-                    code: "// eslint-disable-line unused, unused, used",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused, unused, used",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line unused, used, unused",
-                    output: "// eslint-disable-line used"
+                    code: "// ec0lint-disable-line unused, used, unused",
+                    output: "// ec0lint-disable-line used"
                 },
                 {
-                    code: "// eslint-disable-line used, unused, unused, used",
-                    output: "// eslint-disable-line used, used"
+                    code: "// ec0lint-disable-line used, unused, unused, used",
+                    output: "// ec0lint-disable-line used, used"
                 }
             ];
 
@@ -4610,7 +4610,7 @@ var a = "test2";
     describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
         it("should not report a violation", () => {
             const code = [
-                "alert('test'); // eslint-disable-line no-alert"
+                "alert('test'); // ec0lint-disable-line no-alert"
             ].join("\n");
             const config = {
                 rules: {
@@ -4838,7 +4838,7 @@ var a = "test2";
                 assert.strictEqual(ecmaVersion, 5, "ecmaVersion should be 5");
             });
 
-            it("should pass normalized ecmaVersion to eslint-scope", () => {
+            it("should pass normalized ecmaVersion to ec0lint-scope", () => {
                 let blockScope = null;
 
                 linter.defineRule("block-scope", context => ({
@@ -5202,7 +5202,7 @@ var a = "test2";
 
         it("should be able to use es6 features if there is a comment which has \"ec0lint-env es6\"", () => {
             const code = [
-                "/* eslint-env es6 */",
+                "/* ec0lint-env es6 */",
                 "var arrow = () => 0;",
                 "var binary = 0b1010;",
                 "{ let a = 0; const b = 1; }",
@@ -5375,7 +5375,7 @@ var a = "test2";
                 linter.defineRule("aaa", { create: aaa });
                 linter.defineRule("bbb", { create: bbb });
                 const messages = linter.verify(`
-                    /*eslint aaa:error -- bbb:error */
+                    /*ec0lint aaa:error -- bbb:error */
                     console.log("hello")
                 `, {});
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5390,9 +5390,9 @@ var a = "test2";
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
-            it("should ignore the part preceded by '--' in '/*eslint-env*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint-env*/'.", () => {
                 const messages = linter.verify(`
-                    /*eslint-env es2015 -- es2017 */
+                    /*ec0lint-env es2015 -- es2017 */
                     var Promise = {}
                     var Atomics = {}
                 `, { rules: { "no-redeclare": "error" } });
@@ -5498,9 +5498,9 @@ var a = "test2";
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
-            it("should ignore the part preceded by '--' in '/*eslint-disable*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                 const messages = linter.verify(`
-                    /*eslint-disable no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable no-redeclare -- no-unused-vars */
                     var aaa = {}
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
@@ -5539,10 +5539,10 @@ var a = "test2";
                 );
             });
 
-            it("should ignore the part preceded by '--' in '/*eslint-enable*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
                 const messages = linter.verify(`
-                    /*eslint-disable no-redeclare, no-unused-vars */
-                    /*eslint-enable no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable no-redeclare, no-unused-vars */
+                    /*ec0lint-enable no-redeclare -- no-unused-vars */
                     var aaa = {}
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
@@ -5581,10 +5581,10 @@ var a = "test2";
                 );
             });
 
-            it("should ignore the part preceded by '--' in '//eslint-disable-line'.", () => {
+            it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                 const messages = linter.verify(`
-                    var aaa = {} //eslint-disable-line no-redeclare -- no-unused-vars
-                    var aaa = {} //eslint-disable-line no-redeclare -- no-unused-vars
+                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
+                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5621,10 +5621,10 @@ var a = "test2";
                 );
             });
 
-            it("should ignore the part preceded by '--' in '/*eslint-disable-line*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                 const messages = linter.verify(`
-                    var aaa = {} /*eslint-disable-line no-redeclare -- no-unused-vars */
-                    var aaa = {} /*eslint-disable-line no-redeclare -- no-unused-vars */
+                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
+                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5661,11 +5661,11 @@ var a = "test2";
                 );
             });
 
-            it("should ignore the part preceded by '--' in '//eslint-disable-next-line'.", () => {
+            it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                 const messages = linter.verify(`
-                    //eslint-disable-next-line no-redeclare -- no-unused-vars
+                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
                     var aaa = {}
-                    //eslint-disable-next-line no-redeclare -- no-unused-vars
+                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5703,11 +5703,11 @@ var a = "test2";
                 );
             });
 
-            it("should ignore the part preceded by '--' in '/*eslint-disable-next-line*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                 const messages = linter.verify(`
-                    /*eslint-disable-next-line no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
                     var aaa = {}
-                    /*eslint-disable-next-line no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5750,7 +5750,7 @@ var a = "test2";
 
                 linter.defineRule("a--rule", { create: rule });
                 const messages = linter.verify(`
-                    /*eslint a--rule:error */
+                    /*ec0lint a--rule:error */
                     console.log("hello")
                 `, {});
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5771,7 +5771,7 @@ var a = "test2";
                 linter.defineRule("aaa", { create: aaa });
                 linter.defineRule("bbb", { create: bbb });
                 const messages = linter.verify(`
-                    /*eslint aaa:error -------- bbb:error */
+                    /*ec0lint aaa:error -------- bbb:error */
                     console.log("hello")
                 `, {});
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5793,7 +5793,7 @@ var a = "test2";
                 linter.defineRule("aaa", { create: aaa });
                 linter.defineRule("bbb", { create: bbb });
                 const messages = linter.verify(`
-                    /*eslint aaa:error
+                    /*ec0lint aaa:error
                         --------
                         bbb:error */
                     console.log("hello")
@@ -7157,7 +7157,7 @@ var a = "test2";
                 );
             });
 
-            it("eslint-scope should use the visitorKeys (so 'childVisitorKeys.ClassDeclaration' includes 'experimentalDecorators')", () => {
+            it("ec0lint-scope should use the visitorKeys (so 'childVisitorKeys.ClassDeclaration' includes 'experimentalDecorators')", () => {
                 assert.deepStrictEqual(
                     scopeManager.__options.childVisitorKeys.ClassDeclaration,
                     ["experimentalDecorators", "id", "superClass", "body"]
@@ -7984,7 +7984,7 @@ describe("Linter with FlatConfigArray", () => {
                             );
                         });
 
-                        it("eslint-scope should use the visitorKeys (so 'childVisitorKeys.ClassDeclaration' includes 'experimentalDecorators')", () => {
+                        it("ec0lint-scope should use the visitorKeys (so 'childVisitorKeys.ClassDeclaration' includes 'experimentalDecorators')", () => {
                             assert.deepStrictEqual(
                                 scopeManager.__options.childVisitorKeys.ClassDeclaration,
                                 ["experimentalDecorators", "id", "superClass", "body"]
@@ -11283,7 +11283,7 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to enable rules", () => {
 
                     it("should report a violation", () => {
-                        const code = "/*eslint no-alert:1*/ alert('test');";
+                        const code = "/*ec0lint no-alert:1*/ alert('test');";
                         const config = { rules: {} };
 
                         const messages = linter.verify(code, config, filename);
@@ -11304,7 +11304,7 @@ describe("Linter with FlatConfigArray", () => {
                             },
                             rules: { strict: 2 }
                         };
-                        const codeA = "/*eslint strict: 0*/ function bar() { return 2; }";
+                        const codeA = "/*ec0lint strict: 0*/ function bar() { return 2; }";
                         const codeB = "function foo() { return 1; }";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11326,7 +11326,7 @@ describe("Linter with FlatConfigArray", () => {
                             },
                             rules: { quotes: [2, "double"] }
                         };
-                        const codeA = "/*eslint quotes: 0*/ function bar() { return '2'; }";
+                        const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11343,7 +11343,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("rules should not change initial config", () => {
                         const config = { rules: { quotes: [2, "double"] } };
-                        const codeA = "/*eslint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
+                        const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11365,7 +11365,7 @@ describe("Linter with FlatConfigArray", () => {
                             },
                             rules: { "no-unused-vars": [2, { vars: "all" }] }
                         };
-                        const codeA = "/*eslint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
+                        const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
                         const codeB = "var b = 55;";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11383,7 +11383,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with invalid comments to enable rules", () => {
                     it("should report a violation when the config is not a valid rule configuration", () => {
-                        const messages = linter.verify("/*eslint no-alert:true*/ alert('test');", {});
+                        const messages = linter.verify("/*ec0lint no-alert:true*/ alert('test');", {});
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.deepStrictEqual(
@@ -11406,7 +11406,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation when the config violates a rule's schema", () => {
-                        const messages = linter.verify("/* eslint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
+                        const messages = linter.verify("/* ec0lint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.deepStrictEqual(
@@ -11433,7 +11433,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const config = { rules: { "no-alert": 1 } };
-                        const messages = linter.verify("/*eslint no-alert:0*/ alert('test');", config, filename);
+                        const messages = linter.verify("/*ec0lint no-alert:0*/ alert('test');", config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 0);
@@ -11441,32 +11441,32 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report an error when disabling a non-existent rule in inline comment", () => {
-                        let code = "/*eslint foo:0*/ ;";
+                        let code = "/*ec0lint foo:0*/ ;";
                         let messages = linter.verify(code, {}, filename);
                         let suppressedMessages = linter.getSuppressedMessages();
 
-                        assert.strictEqual(messages.length, 1, "/*eslint*/ comment should report problem.");
+                        assert.strictEqual(messages.length, 1, "/*ec0lint*/ comment should report problem.");
                         assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
                         assert.strictEqual(suppressedMessages.length, 0);
 
-                        code = "/*eslint-disable foo*/ ;";
+                        code = "/*ec0lint-disable foo*/ ;";
                         messages = linter.verify(code, {}, filename);
                         suppressedMessages = linter.getSuppressedMessages();
-                        assert.strictEqual(messages.length, 1, "/*eslint-disable*/ comment should report problem.");
+                        assert.strictEqual(messages.length, 1, "/*ec0lint-disable*/ comment should report problem.");
                         assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
                         assert.strictEqual(suppressedMessages.length, 0);
 
-                        code = "/*eslint-disable-line foo*/ ;";
+                        code = "/*ec0lint-disable-line foo*/ ;";
                         messages = linter.verify(code, {}, filename);
                         suppressedMessages = linter.getSuppressedMessages();
-                        assert.strictEqual(messages.length, 1, "/*eslint-disable-line*/ comment should report problem.");
+                        assert.strictEqual(messages.length, 1, "/*ec0lint-disable-line*/ comment should report problem.");
                         assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
                         assert.strictEqual(suppressedMessages.length, 0);
 
-                        code = "/*eslint-disable-next-line foo*/ ;";
+                        code = "/*ec0lint-disable-next-line foo*/ ;";
                         messages = linter.verify(code, {}, filename);
                         suppressedMessages = linter.getSuppressedMessages();
-                        assert.strictEqual(messages.length, 1, "/*eslint-disable-next-line*/ comment should report problem.");
+                        assert.strictEqual(messages.length, 1, "/*ec0lint-disable-next-line*/ comment should report problem.");
                         assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
@@ -11492,7 +11492,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable multiple rules", () => {
-                    const code = "/*eslint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
+                    const code = "/*ec0lint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: {} };
@@ -11511,7 +11511,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple rules", () => {
-                    const code = "/*eslint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
+                    const code = "/*ec0lint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "no-console": 1, "no-alert": 0 } };
@@ -11555,7 +11555,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation when inline comment enables plugin rule and there's no violation", () => {
                         const config = { ...baseConfig, rules: {} };
-                        const code = "/*eslint test-plugin/test-rule: 2*/ var a = \"no violation\";";
+                        const code = "/*ec0lint test-plugin/test-rule: 2*/ var a = \"no violation\";";
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11565,7 +11565,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should not report a violation when inline comment disables plugin rule", () => {
-                        const code = "/*eslint test-plugin/test-rule:0*/ var a = \"trigger violation\"";
+                        const code = "/*ec0lint test-plugin/test-rule:0*/ var a = \"trigger violation\"";
                         const config = { ...baseConfig, rules: { "test-plugin/test-rule": 1 } };
 
                         const messages = linter.verify(code, config, filename);
@@ -11576,7 +11576,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation when the report is right before the comment", () => {
-                        const code = " /* eslint-disable */ ";
+                        const code = " /* ec0lint-disable */ ";
 
                         const config = {
                             plugins: {
@@ -11605,7 +11605,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should not report a violation when the report is right at the start of the comment", () => {
-                        const code = " /* eslint-disable */ ";
+                        const code = " /* ec0lint-disable */ ";
 
                         const config = {
                             plugins: {
@@ -11636,7 +11636,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("rules should not change initial config", () => {
                         const config = { ...baseConfig, rules: { "test-plugin/test-rule": 2 } };
-                        const codeA = "/*eslint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
+                        const codeA = "/*ec0lint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
                         const codeB = "var a = \"trigger violation\";";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11656,9 +11656,9 @@ describe("Linter with FlatConfigArray", () => {
                     it("should report a violation", () => {
 
                         const code = [
-                            "/*eslint-disable */",
+                            "/*ec0lint-disable */",
                             "alert('test');",
-                            "/*eslint-enable */",
+                            "/*ec0lint-enable */",
                             "alert('test');"
                         ].join("\n");
                         const config = { rules: { "no-alert": 1 } };
@@ -11679,7 +11679,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const code = [
-                            "/*eslint-disable */",
+                            "/*ec0lint-disable */",
                             "alert('test');",
                             "alert('test');"
                         ].join("\n");
@@ -11694,10 +11694,10 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const code = [
-                            "                    alert('test1');/*eslint-disable */\n",
+                            "                    alert('test1');/*ec0lint-disable */\n",
                             "alert('test');",
                             "                                         alert('test');\n",
-                            "/*eslint-enable */alert('test2');"
+                            "/*ec0lint-enable */alert('test2');"
                         ].join("");
                         const config = { rules: { "no-alert": 1 } };
 
@@ -11716,13 +11716,13 @@ describe("Linter with FlatConfigArray", () => {
                     it("should report a violation", () => {
 
                         const code = [
-                            "/*eslint-disable */",
+                            "/*ec0lint-disable */",
                             "alert('test');",
-                            "/*eslint-disable */",
+                            "/*ec0lint-disable */",
                             "alert('test');",
-                            "/*eslint-enable*/",
+                            "/*ec0lint-enable*/",
                             "alert('test');",
-                            "/*eslint-enable*/"
+                            "/*ec0lint-enable*/"
                         ].join("\n");
 
                         const config = { rules: { "no-alert": 1 } };
@@ -11737,9 +11737,9 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const code = [
-                            "/*eslint-disable */",
+                            "/*ec0lint-disable */",
                             "(function(){ var b = 44;})()",
-                            "/*eslint-enable */;any();"
+                            "/*ec0lint-enable */;any();"
                         ].join("\n");
 
                         const config = { rules: { "no-unused-vars": 1 } };
@@ -11755,8 +11755,8 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const code = [
-                            "(function(){ /*eslint-disable */ var b = 44;})()",
-                            "/*eslint-enable */;any();"
+                            "(function(){ /*ec0lint-disable */ var b = 44;})()",
+                            "/*ec0lint-enable */;any();"
                         ].join("\n");
 
                         const config = { rules: { "no-unused-vars": 1 } };
@@ -11772,7 +11772,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-                    const code = "/*eslint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
+                    const code = "/*ec0lint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "no-console": 1, "no-alert": 0 } };
@@ -11790,7 +11790,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule", () => {
-                    const code = "/*eslint quotes:[2, \"double\"]*/ alert('test');";
+                    const code = "/*ec0lint quotes:[2, \"double\"]*/ alert('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { quotes: [2, "single"] } };
@@ -11808,7 +11808,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-                    const code = "/*eslint quotes:[\"error\", \"double\"]*/ alert('test');";
+                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ alert('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { quotes: [2, "single"] } };
@@ -11827,7 +11827,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
                     it("should report a violation", () => {
-                        const code = "/*eslint no-alert:'1'*/ alert('test');";
+                        const code = "/*ec0lint no-alert:'1'*/ alert('test');";
 
                         const config = { rules: { "no-alert": 1 } };
 
@@ -11855,7 +11855,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*eslint no-alert:abc*/ alert('test');";
+                        const code = "/*ec0lint no-alert:abc*/ alert('test');";
 
                         const config = { rules: { "no-alert": 1 } };
 
@@ -11883,7 +11883,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*eslint no-alert:0 2*/ alert('test');";
+                        const code = "/*ec0lint no-alert:0 2*/ alert('test');";
 
                         const config = { rules: { "no-alert": 1 } };
 
@@ -11913,7 +11913,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with comments which have colon in its value", () => {
                     const code = String.raw`
-/* eslint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
+/* ec0lint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
 alert('test');
 `;
 
@@ -11932,7 +11932,7 @@ alert('test');
 
                 describe("when evaluating code with comments that contain escape sequences", () => {
                     const code = String.raw`
-/* eslint max-len: ["error", 1, { ignoreComments: true, ignorePattern: "console\\.log\\(" }] */
+/* ec0lint max-len: ["error", 1, { ignoreComments: true, ignorePattern: "console\\.log\\(" }] */
 console.log("test");
 consolexlog("test2");
 var a = "test2";
@@ -11962,10 +11962,10 @@ var a = "test2";
 
             });
 
-            describe("/*eslint-disable*/ and /*eslint-enable*/", () => {
+            describe("/*ec0lint-disable*/ and /*ec0lint-enable*/", () => {
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert */",
+                        "/*ec0lint-disable no-alert */",
                         "alert('test');",
                         "console.log('test');" // here
                     ].join("\n");
@@ -11983,9 +11983,9 @@ var a = "test2";
 
                 it("should report no violation", () => {
                     const code = [
-                        "/* eslint-disable quotes */",
+                        "/* ec0lint-disable quotes */",
                         "console.log(\"foo\");",
-                        "/* eslint-enable quotes */"
+                        "/* ec0lint-enable quotes */"
                     ].join("\n");
                     const config = { rules: { quotes: 2 } };
 
@@ -11998,10 +11998,10 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert, no-console */",
+                        "/*ec0lint-disable no-alert, no-console */",
                         "alert('test');",
                         "console.log('test');",
-                        "/*eslint-enable*/",
+                        "/*ec0lint-enable*/",
 
                         "alert('test');", // here
                         "console.log('test');" // here
@@ -12026,10 +12026,10 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert */",
+                        "/*ec0lint-disable no-alert */",
                         "alert('test');",
                         "console.log('test');", // here
-                        "/*eslint-enable no-console */",
+                        "/*ec0lint-enable no-console */",
                         "alert('test');"
                     ].join("\n");
                     const config = { rules: { "no-alert": 1, "no-console": 1 } };
@@ -12050,10 +12050,10 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert, no-console */",
+                        "/*ec0lint-disable no-alert, no-console */",
                         "alert('test');",
                         "console.log('test');",
-                        "/*eslint-enable no-alert*/",
+                        "/*ec0lint-enable no-alert*/",
 
                         "alert('test');", // here
                         "console.log('test');"
@@ -12079,22 +12079,22 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert */",
+                        "/*ec0lint-disable no-alert */",
 
-                        "/*eslint-disable no-console */",
+                        "/*ec0lint-disable no-console */",
                         "alert('test');",
                         "console.log('test');",
-                        "/*eslint-enable */",
+                        "/*ec0lint-enable */",
 
                         "alert('test');", // here
                         "console.log('test');", // here
 
-                        "/*eslint-enable */",
+                        "/*ec0lint-enable */",
 
                         "alert('test');", // here
                         "console.log('test');", // here
 
-                        "/*eslint-enable*/"
+                        "/*ec0lint-enable*/"
                     ].join("\n");
                     const config = { rules: { "no-alert": 1, "no-console": 1 } };
 
@@ -12120,20 +12120,20 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*eslint-disable no-alert, no-console */",
+                        "/*ec0lint-disable no-alert, no-console */",
                         "alert('test');",
                         "console.log('test');",
 
-                        "/*eslint-enable no-alert */",
+                        "/*ec0lint-enable no-alert */",
 
                         "alert('test');", // here
                         "console.log('test');",
 
-                        "/*eslint-enable no-console */",
+                        "/*ec0lint-enable no-console */",
 
                         "alert('test');", // here
                         "console.log('test');", // here
-                        "/*eslint-enable no-console */"
+                        "/*ec0lint-enable no-console */"
                     ].join("\n");
                     const config = { rules: { "no-alert": 1, "no-console": 1 } };
 
@@ -12159,20 +12159,20 @@ var a = "test2";
 
                 it("should report a violation when severity is warn", () => {
                     const code = [
-                        "/*eslint-disable no-alert, no-console */",
+                        "/*ec0lint-disable no-alert, no-console */",
                         "alert('test');",
                         "console.log('test');",
 
-                        "/*eslint-enable no-alert */",
+                        "/*ec0lint-enable no-alert */",
 
                         "alert('test');", // here
                         "console.log('test');",
 
-                        "/*eslint-enable no-console */",
+                        "/*ec0lint-enable no-console */",
 
                         "alert('test');", // here
                         "console.log('test');", // here
-                        "/*eslint-enable no-console */"
+                        "/*ec0lint-enable no-console */"
                     ].join("\n");
                     const config = { rules: { "no-alert": "warn", "no-console": "warn" } };
 
@@ -12198,10 +12198,10 @@ var a = "test2";
 
                 it("should report no violation", () => {
                     const code = [
-                        "/*eslint-disable no-unused-vars */",
-                        "var foo; // eslint-disable-line no-unused-vars",
+                        "/*ec0lint-disable no-unused-vars */",
+                        "var foo; // ec0lint-disable-line no-unused-vars",
                         "var bar;",
-                        "/* eslint-enable no-unused-vars */" // here
+                        "/* ec0lint-enable no-unused-vars */" // here
                     ].join("\n");
                     const config = { rules: { "no-unused-vars": 2 } };
 
@@ -12219,11 +12219,11 @@ var a = "test2";
 
             });
 
-            describe("/*eslint-disable-line*/", () => {
+            describe("/*ec0lint-disable-line*/", () => {
 
                 it("should report a violation", () => {
                     const code = [
-                        "alert('test'); // eslint-disable-line no-alert",
+                        "alert('test'); // ec0lint-disable-line no-alert",
                         "console.log('test');" // here
                     ].join("\n");
                     const config = {
@@ -12247,8 +12247,8 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "alert('test'); // eslint-disable-line no-alert",
-                        "console.log('test'); // eslint-disable-line no-console",
+                        "alert('test'); // ec0lint-disable-line no-alert",
+                        "console.log('test'); // ec0lint-disable-line no-console",
                         "alert('test');" // here
                     ].join("\n");
                     const config = {
@@ -12272,9 +12272,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages[1].line, 2);
                 });
 
-                it("should report a violation if eslint-disable-line in a block comment is not on a single line", () => {
+                it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
-                        "/* eslint-disable-line",
+                        "/* ec0lint-disable-line",
                         "*",
                         "*/ console.log('test');" // here
                     ].join("\n");
@@ -12293,9 +12293,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("should not disable rule and add an extra report if eslint-disable-line in a block comment is not on a single line", () => {
+                it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
-                        "alert('test'); /* eslint-disable-line ",
+                        "alert('test'); /* ec0lint-disable-line ",
                         "no-alert */"
                     ].join("\n");
                     const config = {
@@ -12334,10 +12334,10 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("should not report a violation for eslint-disable-line in block comment", () => {
+                it("should not report a violation for ec0lint-disable-line in block comment", () => {
                     const code = [
-                        "alert('test'); // eslint-disable-line no-alert",
-                        "alert('test'); /*eslint-disable-line no-alert*/"
+                        "alert('test'); // ec0lint-disable-line no-alert",
+                        "alert('test'); /*ec0lint-disable-line no-alert*/"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12354,8 +12354,8 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "alert('test'); // eslint-disable-line no-alert",
-                        "console.log('test'); // eslint-disable-line no-console"
+                        "alert('test'); // ec0lint-disable-line no-alert",
+                        "console.log('test'); // ec0lint-disable-line no-console"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12373,8 +12373,8 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "alert('test') // eslint-disable-line no-alert, quotes, semi",
-                        "console.log('test'); // eslint-disable-line"
+                        "alert('test') // ec0lint-disable-line no-alert, quotes, semi",
+                        "console.log('test'); // ec0lint-disable-line"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12394,8 +12394,8 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "alert('test') /* eslint-disable-line no-alert, quotes, semi */",
-                        "console.log('test'); /* eslint-disable-line */"
+                        "alert('test') /* ec0lint-disable-line no-alert, quotes, semi */",
+                        "console.log('test'); /* ec0lint-disable-line */"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12415,7 +12415,7 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
-                        " alert(\"test\"); /* eslint-disable-line no-alert */ // eslint-disable-line quotes"
+                        " alert(\"test\"); /* ec0lint-disable-line no-alert */ // ec0lint-disable-line quotes"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12435,11 +12435,11 @@ var a = "test2";
 
                 it("should report no violation", () => {
                     const code = [
-                        "var foo1; // eslint-disable-line no-unused-vars",
-                        "var foo2; // eslint-disable-line no-unused-vars",
-                        "var foo3; // eslint-disable-line no-unused-vars",
-                        "var foo4; // eslint-disable-line no-unused-vars",
-                        "var foo5; // eslint-disable-line no-unused-vars"
+                        "var foo1; // ec0lint-disable-line no-unused-vars",
+                        "var foo2; // ec0lint-disable-line no-unused-vars",
+                        "var foo3; // ec0lint-disable-line no-unused-vars",
+                        "var foo4; // ec0lint-disable-line no-unused-vars",
+                        "var foo5; // ec0lint-disable-line no-unused-vars"
                     ].join("\n");
                     const config = { rules: { "no-unused-vars": 2 } };
 
@@ -12452,10 +12452,10 @@ var a = "test2";
 
             });
 
-            describe("/*eslint-disable-next-line*/", () => {
+            describe("/*ec0lint-disable-next-line*/", () => {
                 it("should ignore violation of specified rule on next line", () => {
                     const code = [
-                        "// eslint-disable-next-line no-alert",
+                        "// ec0lint-disable-next-line no-alert",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12475,9 +12475,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
                 });
 
-                it("should ignore violation of specified rule if eslint-disable-next-line is a block comment", () => {
+                it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
-                        "/* eslint-disable-next-line no-alert */",
+                        "/* ec0lint-disable-next-line no-alert */",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12496,9 +12496,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
                 });
-                it("should ignore violation of specified rule if eslint-disable-next-line is a block comment", () => {
+                it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
-                        "/* eslint-disable-next-line no-alert */",
+                        "/* ec0lint-disable-next-line no-alert */",
                         "alert('test');"
                     ].join("\n");
                     const config = {
@@ -12517,7 +12517,7 @@ var a = "test2";
 
                 it("should not ignore violation if code is not on next line", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "no-alert */alert('test');"
                     ].join("\n");
                     const config = {
@@ -12536,7 +12536,7 @@ var a = "test2";
 
                 it("should ignore violation if block comment span multiple lines", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "no-alert */",
                         "alert('test');"
                     ].join("\n");
@@ -12557,7 +12557,7 @@ var a = "test2";
                 // For https://github.com/eslint/eslint/issues/14284
                 it("should ignore violation if block comment span multiple lines with description", () => {
                     const code = `
-                    /* eslint-disable-next-line no-alert --
+                    /* ec0lint-disable-next-line no-alert --
                         description on why this exception is seen as appropriate but past a
                         comfortable reading line length
                     */
@@ -12579,7 +12579,7 @@ var a = "test2";
 
                 it("should ignore violations only of specified rule", () => {
                     const code = [
-                        "// eslint-disable-next-line no-console",
+                        "// ec0lint-disable-next-line no-console",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12601,7 +12601,7 @@ var a = "test2";
 
                 it("should ignore violations only of specified rule when block comment span multiple lines", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "no-console */",
                         "alert('test');",
                         "console.log('test');"
@@ -12621,7 +12621,7 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified", () => {
                     const code = [
-                        "// eslint-disable-next-line no-alert, quotes",
+                        "// ec0lint-disable-next-line no-alert, quotes",
                         "alert(\"test\");",
                         "console.log('test');"
                     ].join("\n");
@@ -12645,7 +12645,7 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in multiple lines", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "no-alert,",
                         "quotes",
                         "*/",
@@ -12667,7 +12667,7 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
-                        "/* eslint-disable-next-line no-alert */ // eslint-disable-next-line quotes",
+                        "/* ec0lint-disable-next-line no-alert */ // ec0lint-disable-next-line quotes",
                         "alert(\"test\");"
                     ].join("\n");
                     const config = {
@@ -12688,9 +12688,9 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "no-alert",
-                        "*/ // eslint-disable-next-line quotes",
+                        "*/ // ec0lint-disable-next-line quotes",
                         "alert(\"test\");"
                     ].join("\n");
                     const config = {
@@ -12706,7 +12706,7 @@ var a = "test2";
 
                 it("should ignore violations of only the specified rule on next line", () => {
                     const code = [
-                        "// eslint-disable-next-line quotes",
+                        "// ec0lint-disable-next-line quotes",
                         "alert(\"test\");",
                         "console.log('test');"
                     ].join("\n");
@@ -12731,7 +12731,7 @@ var a = "test2";
                 it("should ignore violations of specified rule on next line only", () => {
                     const code = [
                         "alert('test');",
-                        "// eslint-disable-next-line no-alert",
+                        "// ec0lint-disable-next-line no-alert",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12754,7 +12754,7 @@ var a = "test2";
 
                 it("should ignore all rule violations on next line if none specified", () => {
                     const code = [
-                        "// eslint-disable-next-line",
+                        "// ec0lint-disable-next-line",
                         "alert(\"test\");",
                         "console.log('test')"
                     ].join("\n");
@@ -12778,10 +12778,10 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages[2].ruleId, "semi");
                 });
 
-                it("should ignore violations if eslint-disable-next-line is a block comment", () => {
+                it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
                         "alert('test');",
-                        "/* eslint-disable-next-line no-alert */",
+                        "/* ec0lint-disable-next-line no-alert */",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12804,7 +12804,7 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/* eslint-disable-next-line",
+                        "/* ec0lint-disable-next-line",
                         "*",
                         "*/",
                         "console.log('test');" // here
@@ -12827,7 +12827,7 @@ var a = "test2";
 
                 it("should not ignore violations if comment is of the type hashbang", () => {
                     const code = [
-                        "#! eslint-disable-next-line no-alert",
+                        "#! ec0lint-disable-next-line no-alert",
                         "alert('test');",
                         "console.log('test');"
                     ].join("\n");
@@ -12849,7 +12849,7 @@ var a = "test2";
             });
 
             describe("descriptions in directive comments", () => {
-                it("should ignore the part preceded by '--' in '/*eslint*/'.", () => {
+                it("should ignore the part preceded by '--' in '/*ec0lint*/'.", () => {
                     const aaa = sinon.stub().returns({});
                     const bbb = sinon.stub().returns({});
                     const config = {
@@ -12864,7 +12864,7 @@ var a = "test2";
                     };
 
                     const messages = linter.verify(`
-                    /*eslint test/aaa:error -- test/bbb:error */
+                    /*ec0lint test/aaa:error -- test/bbb:error */
                     console.log("hello")
                 `, config);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12943,9 +12943,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("should ignore the part preceded by '--' in '/*eslint-disable*/'.", () => {
+                it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                     const messages = linter.verify(`
-                    /*eslint-disable no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable no-redeclare -- no-unused-vars */
                     var aaa = {}
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
@@ -12984,10 +12984,10 @@ var a = "test2";
                     );
                 });
 
-                it("should ignore the part preceded by '--' in '/*eslint-enable*/'.", () => {
+                it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
                     const messages = linter.verify(`
-                    /*eslint-disable no-redeclare, no-unused-vars */
-                    /*eslint-enable no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable no-redeclare, no-unused-vars */
+                    /*ec0lint-enable no-redeclare -- no-unused-vars */
                     var aaa = {}
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
@@ -13026,10 +13026,10 @@ var a = "test2";
                     );
                 });
 
-                it("should ignore the part preceded by '--' in '//eslint-disable-line'.", () => {
+                it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                     const messages = linter.verify(`
-                    var aaa = {} //eslint-disable-line no-redeclare -- no-unused-vars
-                    var aaa = {} //eslint-disable-line no-redeclare -- no-unused-vars
+                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
+                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -13066,10 +13066,10 @@ var a = "test2";
                     );
                 });
 
-                it("should ignore the part preceded by '--' in '/*eslint-disable-line*/'.", () => {
+                it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                     const messages = linter.verify(`
-                    var aaa = {} /*eslint-disable-line no-redeclare -- no-unused-vars */
-                    var aaa = {} /*eslint-disable-line no-redeclare -- no-unused-vars */
+                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
+                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -13106,11 +13106,11 @@ var a = "test2";
                     );
                 });
 
-                it("should ignore the part preceded by '--' in '//eslint-disable-next-line'.", () => {
+                it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                     const messages = linter.verify(`
-                    //eslint-disable-next-line no-redeclare -- no-unused-vars
+                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
                     var aaa = {}
-                    //eslint-disable-next-line no-redeclare -- no-unused-vars
+                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -13148,11 +13148,11 @@ var a = "test2";
                     );
                 });
 
-                it("should ignore the part preceded by '--' in '/*eslint-disable-next-line*/'.", () => {
+                it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                     const messages = linter.verify(`
-                    /*eslint-disable-next-line no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
                     var aaa = {}
-                    /*eslint-disable-next-line no-redeclare -- no-unused-vars */
+                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
                     var aaa = {}
                 `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -13203,7 +13203,7 @@ var a = "test2";
                     };
 
                     const messages = linter.verify(`
-                    /*eslint test/a--rule:error */
+                    /*ec0lint test/a--rule:error */
                     console.log("hello")
                 `, config);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -13232,7 +13232,7 @@ var a = "test2";
                     };
 
                     const messages = linter.verify(`
-                    /*eslint test/aaa:error -------- test/bbb:error */
+                    /*ec0lint test/aaa:error -------- test/bbb:error */
                     console.log("hello")
                 `, config);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -13262,7 +13262,7 @@ var a = "test2";
                     };
 
                     const messages = linter.verify(`
-                    /*eslint test/aaa:error
+                    /*ec0lint test/aaa:error
                         --------
                         test/bbb:error */
                     console.log("hello")
@@ -13284,7 +13284,7 @@ var a = "test2";
                 describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
                     it("should report a violation for disabling rules", () => {
                         const code = [
-                            "alert('test'); // eslint-disable-line no-alert"
+                            "alert('test'); // ec0lint-disable-line no-alert"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13342,9 +13342,9 @@ var a = "test2";
                         assert(ok);
                     });
 
-                    it("should report a violation for eslint-disable", () => {
+                    it("should report a violation for ec0lint-disable", () => {
                         const code = [
-                            "/* eslint-disable */",
+                            "/* ec0lint-disable */",
                             "alert('test');"
                         ].join("\n");
                         const config = {
@@ -13367,7 +13367,7 @@ var a = "test2";
 
                     it("should not report a violation for rule changes", () => {
                         const code = [
-                            "/*eslint no-alert:2*/",
+                            "/*ec0lint no-alert:2*/",
                             "alert('test');"
                         ].join("\n");
                         const config = {
@@ -13388,7 +13388,7 @@ var a = "test2";
 
                     it("should report a violation for disable-line", () => {
                         const code = [
-                            "alert('test'); // eslint-disable-line"
+                            "alert('test'); // ec0lint-disable-line"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13477,7 +13477,7 @@ var a = "test2";
                 describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
                     it("should not report a violation", () => {
                         const code = [
-                            "alert('test'); // eslint-disable-line no-alert"
+                            "alert('test'); // ec0lint-disable-line no-alert"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13501,8 +13501,8 @@ var a = "test2";
             });
 
             describe("reportUnusedDisableDirectives option", () => {
-                it("reports problems for unused eslint-disable comments", () => {
-                    const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: true });
+                it("reports problems for unused ec0lint-disable comments", () => {
+                    const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: true });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.deepStrictEqual(
@@ -13510,7 +13510,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13526,8 +13526,8 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("reports problems for unused eslint-disable comments (error)", () => {
-                    const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: "error" });
+                it("reports problems for unused ec0lint-disable comments (error)", () => {
+                    const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: "error" });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.deepStrictEqual(
@@ -13535,7 +13535,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13551,8 +13551,8 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("reports problems for unused eslint-disable comments (warn)", () => {
-                    const messages = linter.verify("/* eslint-disable */", {}, { reportUnusedDisableDirectives: "warn" });
+                it("reports problems for unused ec0lint-disable comments (warn)", () => {
+                    const messages = linter.verify("/* ec0lint-disable */", {}, { reportUnusedDisableDirectives: "warn" });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.deepStrictEqual(
@@ -13560,7 +13560,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13576,8 +13576,8 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("reports problems for unused eslint-disable comments (in config)", () => {
-                    const messages = linter.verify("/* eslint-disable */", {
+                it("reports problems for unused ec0lint-disable comments (in config)", () => {
+                    const messages = linter.verify("/* ec0lint-disable */", {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
                         }
@@ -13589,7 +13589,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13605,8 +13605,8 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("reports problems for partially unused eslint-disable comments (in config)", () => {
-                    const code = "alert('test'); // eslint-disable-line no-alert, no-redeclare";
+                it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
+                    const code = "alert('test'); // ec0lint-disable-line no-alert, no-redeclare";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
@@ -13628,7 +13628,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
                                 line: 1,
                                 column: 16,
                                 fix: {
@@ -13645,9 +13645,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
                 });
 
-                it("reports problems for unused eslint-disable-next-line comments (in config)", () => {
+                it("reports problems for unused ec0lint-disable-next-line comments (in config)", () => {
                     assert.deepStrictEqual(
-                        linter.verify("// eslint-disable-next-line", {
+                        linter.verify("// ec0lint-disable-next-line", {
                             linterOptions: {
                                 reportUnusedDisableDirectives: true
                             }
@@ -13655,7 +13655,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13669,9 +13669,9 @@ var a = "test2";
                     );
                 });
 
-                it("reports problems for unused multiline eslint-disable-next-line comments (in config)", () => {
+                it("reports problems for unused multiline ec0lint-disable-next-line comments (in config)", () => {
                     assert.deepStrictEqual(
-                        linter.verify("/* \neslint-disable-next-line\n */", {
+                        linter.verify("/* \nec0lint-disable-next-line\n */", {
                             linterOptions: {
                                 reportUnusedDisableDirectives: true
                             }
@@ -13679,7 +13679,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported).",
+                                message: "Unused ec0lint-disable directive (no problems were reported).",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13693,8 +13693,8 @@ var a = "test2";
                     );
                 });
 
-                it("reports problems for partially unused eslint-disable-next-line comments (in config)", () => {
-                    const code = "// eslint-disable-next-line no-alert, no-redeclare \nalert('test');";
+                it("reports problems for partially unused ec0lint-disable-next-line comments (in config)", () => {
+                    const code = "// ec0lint-disable-next-line no-alert, no-redeclare \nalert('test');";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
@@ -13715,7 +13715,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13729,9 +13729,9 @@ var a = "test2";
                     );
                 });
 
-                it("reports problems for partially unused multiline eslint-disable-next-line comments (in config)", () => {
+                it("reports problems for partially unused multiline ec0lint-disable-next-line comments (in config)", () => {
                     const code = `
-                    /* eslint-disable-next-line no-alert, no-redeclare --
+                    /* ec0lint-disable-next-line no-alert, no-redeclare --
                      * Here's a very long description about why this configuration is necessary
                      * along with some additional information
                     **/
@@ -13757,7 +13757,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused eslint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
                                 line: 2,
                                 column: 21,
                                 fix: {
@@ -13824,35 +13824,35 @@ var a = "test2";
                         //-----------------------------------------------
 
                         {
-                            code: "// eslint-disable-line test/unused",
+                            code: "// ec0lint-disable-line test/unused",
                             output: " "
                         },
                         {
-                            code: "foo// eslint-disable-line test/unused",
+                            code: "foo// ec0lint-disable-line test/unused",
                             output: "foo "
                         },
                         {
-                            code: "// eslint-disable-line ,test/unused,",
+                            code: "// ec0lint-disable-line ,test/unused,",
                             output: " "
                         },
                         {
-                            code: "// eslint-disable-line test/unused-1, test/unused-2",
+                            code: "// ec0lint-disable-line test/unused-1, test/unused-2",
                             output: " "
                         },
                         {
-                            code: "// eslint-disable-line ,test/unused-1,, test/unused-2,, -- comment",
+                            code: "// ec0lint-disable-line ,test/unused-1,, test/unused-2,, -- comment",
                             output: " "
                         },
                         {
-                            code: "// eslint-disable-next-line test/unused\n",
+                            code: "// ec0lint-disable-next-line test/unused\n",
                             output: " \n"
                         },
                         {
-                            code: "// eslint-disable-next-line test/unused\nfoo",
+                            code: "// ec0lint-disable-next-line test/unused\nfoo",
                             output: " \nfoo"
                         },
                         {
-                            code: "/* eslint-disable \ntest/unused\n*/",
+                            code: "/* ec0lint-disable \ntest/unused\n*/",
                             output: " "
                         },
 
@@ -13862,358 +13862,358 @@ var a = "test2";
 
                         // content before the first rule should not be changed
                         {
-                            code: "//eslint-disable-line test/unused, test/used",
-                            output: "//eslint-disable-line test/used"
+                            code: "//ec0lint-disable-line test/unused, test/used",
+                            output: "//ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused, test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused, test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "//  eslint-disable-line test/unused, test/used",
-                            output: "//  eslint-disable-line test/used"
+                            code: "//  ec0lint-disable-line test/unused, test/used",
+                            output: "//  ec0lint-disable-line test/used"
                         },
                         {
-                            code: "/*\neslint-disable test/unused, test/used*/",
-                            output: "/*\neslint-disable test/used*/"
+                            code: "/*\nec0lint-disable test/unused, test/used*/",
+                            output: "/*\nec0lint-disable test/used*/"
                         },
                         {
-                            code: "/*\n eslint-disable test/unused, test/used*/",
-                            output: "/*\n eslint-disable test/used*/"
+                            code: "/*\n ec0lint-disable test/unused, test/used*/",
+                            output: "/*\n ec0lint-disable test/used*/"
                         },
                         {
-                            code: "/*\r\neslint-disable test/unused, test/used*/",
-                            output: "/*\r\neslint-disable test/used*/"
+                            code: "/*\r\nec0lint-disable test/unused, test/used*/",
+                            output: "/*\r\nec0lint-disable test/used*/"
                         },
                         {
-                            code: "/*\u2028eslint-disable test/unused, test/used*/",
-                            output: "/*\u2028eslint-disable test/used*/"
+                            code: "/*\u2028ec0lint-disable test/unused, test/used*/",
+                            output: "/*\u2028ec0lint-disable test/used*/"
                         },
                         {
-                            code: "/*\u00A0eslint-disable test/unused, test/used*/",
-                            output: "/*\u00A0eslint-disable test/used*/"
+                            code: "/*\u00A0ec0lint-disable test/unused, test/used*/",
+                            output: "/*\u00A0ec0lint-disable test/used*/"
                         },
                         {
-                            code: "// eslint-disable-line  test/unused, test/used",
-                            output: "// eslint-disable-line  test/used"
+                            code: "// ec0lint-disable-line  test/unused, test/used",
+                            output: "// ec0lint-disable-line  test/used"
                         },
                         {
-                            code: "/* eslint-disable\ntest/unused, test/used*/",
-                            output: "/* eslint-disable\ntest/used*/"
+                            code: "/* ec0lint-disable\ntest/unused, test/used*/",
+                            output: "/* ec0lint-disable\ntest/used*/"
                         },
                         {
-                            code: "/* eslint-disable\n test/unused, test/used*/",
-                            output: "/* eslint-disable\n test/used*/"
+                            code: "/* ec0lint-disable\n test/unused, test/used*/",
+                            output: "/* ec0lint-disable\n test/used*/"
                         },
                         {
-                            code: "/* eslint-disable\r\ntest/unused, test/used*/",
-                            output: "/* eslint-disable\r\ntest/used*/"
+                            code: "/* ec0lint-disable\r\ntest/unused, test/used*/",
+                            output: "/* ec0lint-disable\r\ntest/used*/"
                         },
                         {
-                            code: "/* eslint-disable\u2028test/unused, test/used*/",
-                            output: "/* eslint-disable\u2028test/used*/"
+                            code: "/* ec0lint-disable\u2028test/unused, test/used*/",
+                            output: "/* ec0lint-disable\u2028test/used*/"
                         },
                         {
-                            code: "/* eslint-disable\u00A0test/unused, test/used*/",
-                            output: "/* eslint-disable\u00A0test/used*/"
+                            code: "/* ec0lint-disable\u00A0test/unused, test/used*/",
+                            output: "/* ec0lint-disable\u00A0test/used*/"
                         },
 
                         // when removing the first rule, the comma and all whitespace up to the next rule (or next lone comma) should also be removed
                         {
-                            code: "// eslint-disable-line test/unused,test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused,test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused, test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused, test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused , test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused , test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused,  test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused,  test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused  ,test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused  ,test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "/* eslint-disable test/unused\n,\ntest/used */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/unused\n,\ntest/used */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "/* eslint-disable test/unused \n \n,\n\n test/used */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/unused \n \n,\n\n test/used */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "/* eslint-disable test/unused\u2028,\u2028test/used */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/unused\u2028,\u2028test/used */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "// eslint-disable-line test/unused\u00A0,\u00A0test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused\u00A0,\u00A0test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused,,test/used",
-                            output: "// eslint-disable-line ,test/used"
+                            code: "// ec0lint-disable-line test/unused,,test/used",
+                            output: "// ec0lint-disable-line ,test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused, ,test/used",
-                            output: "// eslint-disable-line ,test/used"
+                            code: "// ec0lint-disable-line test/unused, ,test/used",
+                            output: "// ec0lint-disable-line ,test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused,, test/used",
-                            output: "// eslint-disable-line , test/used"
+                            code: "// ec0lint-disable-line test/unused,, test/used",
+                            output: "// ec0lint-disable-line , test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused,test/used ",
-                            output: "// eslint-disable-line test/used "
+                            code: "// ec0lint-disable-line test/unused,test/used ",
+                            output: "// ec0lint-disable-line test/used "
                         },
                         {
-                            code: "// eslint-disable-next-line test/unused,test/used\n",
-                            output: "// eslint-disable-next-line test/used\n"
+                            code: "// ec0lint-disable-next-line test/unused,test/used\n",
+                            output: "// ec0lint-disable-next-line test/used\n"
                         },
 
                         // when removing a rule in the middle, one comma and all whitespace between commas should also be removed
                         {
-                            code: "// eslint-disable-line test/used-1,test/unused,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1,test/unused,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1, test/unused,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1, test/unused,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1,test/unused ,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1,test/unused ,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1,  test/unused  ,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1,  test/unused  ,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,\ntest/unused\n,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,\ntest/unused\n,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,test/used-2 */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,\n\n test/unused \n \n ,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,\n\n test/unused \n \n ,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,test/used-2 */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,\u2028test/unused\u2028,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,\u2028test/unused\u2028,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,test/used-2 */"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1,\u00A0test/unused\u00A0,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1,\u00A0test/unused\u00A0,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
 
                         // when removing a rule in the middle, content around commas should not be changed
                         {
-                            code: "// eslint-disable-line test/used-1, test/unused ,test/used-2",
-                            output: "// eslint-disable-line test/used-1,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1, test/unused ,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1,test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1,test/unused, test/used-2",
-                            output: "// eslint-disable-line test/used-1, test/used-2"
+                            code: "// ec0lint-disable-line test/used-1,test/unused, test/used-2",
+                            output: "// ec0lint-disable-line test/used-1, test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1 ,test/unused,test/used-2",
-                            output: "// eslint-disable-line test/used-1 ,test/used-2"
+                            code: "// ec0lint-disable-line test/used-1 ,test/unused,test/used-2",
+                            output: "// ec0lint-disable-line test/used-1 ,test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1 ,test/unused, test/used-2",
-                            output: "// eslint-disable-line test/used-1 , test/used-2"
+                            code: "// ec0lint-disable-line test/used-1 ,test/unused, test/used-2",
+                            output: "// ec0lint-disable-line test/used-1 , test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1  , test/unused ,  test/used-2",
-                            output: "// eslint-disable-line test/used-1  ,  test/used-2"
+                            code: "// ec0lint-disable-line test/used-1  , test/unused ,  test/used-2",
+                            output: "// ec0lint-disable-line test/used-1  ,  test/used-2"
                         },
                         {
-                            code: "/* eslint-disable test/used-1\n,test/unused,\ntest/used-2 */",
-                            output: "/* eslint-disable test/used-1\n,\ntest/used-2 */"
+                            code: "/* ec0lint-disable test/used-1\n,test/unused,\ntest/used-2 */",
+                            output: "/* ec0lint-disable test/used-1\n,\ntest/used-2 */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1\u2028,test/unused,\u2028test/used-2 */",
-                            output: "/* eslint-disable test/used-1\u2028,\u2028test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1\u2028,test/unused,\u2028test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1\u2028,\u2028test/used-2 */"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1\u00A0,test/unused,\u00A0test/used-2",
-                            output: "// eslint-disable-line test/used-1\u00A0,\u00A0test/used-2"
+                            code: "// ec0lint-disable-line test/used-1\u00A0,test/unused,\u00A0test/used-2",
+                            output: "// ec0lint-disable-line test/used-1\u00A0,\u00A0test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line , test/unused ,test/used",
-                            output: "// eslint-disable-line ,test/used"
+                            code: "// ec0lint-disable-line , test/unused ,test/used",
+                            output: "// ec0lint-disable-line ,test/used"
                         },
                         {
-                            code: "/* eslint-disable\n, test/unused ,test/used */",
-                            output: "/* eslint-disable\n,test/used */"
+                            code: "/* ec0lint-disable\n, test/unused ,test/used */",
+                            output: "/* ec0lint-disable\n,test/used */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,\n,test/unused,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,\n,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,\n,test/unused,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,\n,test/used-2 */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,test/unused,\n,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,\n,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,test/unused,\n,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,\n,test/used-2 */"
                         },
                         {
-                            code: "/* eslint-disable test/used-1,\n,test/unused,\n,test/used-2 */",
-                            output: "/* eslint-disable test/used-1,\n,\n,test/used-2 */"
+                            code: "/* ec0lint-disable test/used-1,\n,test/unused,\n,test/used-2 */",
+                            output: "/* ec0lint-disable test/used-1,\n,\n,test/used-2 */"
                         },
                         {
-                            code: "// eslint-disable-line test/used, test/unused,",
-                            output: "// eslint-disable-line test/used,"
+                            code: "// ec0lint-disable-line test/used, test/unused,",
+                            output: "// ec0lint-disable-line test/used,"
                         },
                         {
-                            code: "// eslint-disable-next-line test/used, test/unused,\n",
-                            output: "// eslint-disable-next-line test/used,\n"
+                            code: "// ec0lint-disable-next-line test/used, test/unused,\n",
+                            output: "// ec0lint-disable-next-line test/used,\n"
                         },
                         {
-                            code: "// eslint-disable-line test/used, test/unused, ",
-                            output: "// eslint-disable-line test/used, "
+                            code: "// ec0lint-disable-line test/used, test/unused, ",
+                            output: "// ec0lint-disable-line test/used, "
                         },
                         {
-                            code: "// eslint-disable-line test/used, test/unused, -- comment",
-                            output: "// eslint-disable-line test/used, -- comment"
+                            code: "// ec0lint-disable-line test/used, test/unused, -- comment",
+                            output: "// ec0lint-disable-line test/used, -- comment"
                         },
                         {
-                            code: "/* eslint-disable test/used, test/unused,\n*/",
-                            output: "/* eslint-disable test/used,\n*/"
+                            code: "/* ec0lint-disable test/used, test/unused,\n*/",
+                            output: "/* ec0lint-disable test/used,\n*/"
                         },
 
                         // when removing the last rule, the comma and all whitespace up to the previous rule (or previous lone comma) should also be removed
                         {
-                            code: "// eslint-disable-line test/used,test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used,test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used, test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used, test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used ,test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used ,test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used , test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used , test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used,  test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used,  test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used  ,test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used  ,test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "/* eslint-disable test/used\n,\ntest/unused */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/used\n,\ntest/unused */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "/* eslint-disable test/used \n \n,\n\n test/unused */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/used \n \n,\n\n test/unused */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "/* eslint-disable test/used\u2028,\u2028test/unused */",
-                            output: "/* eslint-disable test/used */"
+                            code: "/* ec0lint-disable test/used\u2028,\u2028test/unused */",
+                            output: "/* ec0lint-disable test/used */"
                         },
                         {
-                            code: "// eslint-disable-line test/used\u00A0,\u00A0test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used\u00A0,\u00A0test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used,,test/unused",
-                            output: "// eslint-disable-line test/used,"
+                            code: "// ec0lint-disable-line test/used,,test/unused",
+                            output: "// ec0lint-disable-line test/used,"
                         },
                         {
-                            code: "// eslint-disable-line test/used, ,test/unused",
-                            output: "// eslint-disable-line test/used,"
+                            code: "// ec0lint-disable-line test/used, ,test/unused",
+                            output: "// ec0lint-disable-line test/used,"
                         },
                         {
-                            code: "/* eslint-disable test/used,\n,test/unused */",
-                            output: "/* eslint-disable test/used, */"
+                            code: "/* ec0lint-disable test/used,\n,test/unused */",
+                            output: "/* ec0lint-disable test/used, */"
                         },
                         {
-                            code: "/* eslint-disable test/used\n, ,test/unused */",
-                            output: "/* eslint-disable test/used\n, */"
+                            code: "/* ec0lint-disable test/used\n, ,test/unused */",
+                            output: "/* ec0lint-disable test/used\n, */"
                         },
 
                         // content after the last rule should not be changed
                         {
-                            code: "// eslint-disable-line test/used,test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used,test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used,test/unused ",
-                            output: "// eslint-disable-line test/used "
+                            code: "// ec0lint-disable-line test/used,test/unused ",
+                            output: "// ec0lint-disable-line test/used "
                         },
                         {
-                            code: "// eslint-disable-line test/used,test/unused  ",
-                            output: "// eslint-disable-line test/used  "
+                            code: "// ec0lint-disable-line test/used,test/unused  ",
+                            output: "// ec0lint-disable-line test/used  "
                         },
                         {
-                            code: "// eslint-disable-line test/used,test/unused -- comment",
-                            output: "// eslint-disable-line test/used -- comment"
+                            code: "// ec0lint-disable-line test/used,test/unused -- comment",
+                            output: "// ec0lint-disable-line test/used -- comment"
                         },
                         {
-                            code: "// eslint-disable-next-line test/used,test/unused\n",
-                            output: "// eslint-disable-next-line test/used\n"
+                            code: "// ec0lint-disable-next-line test/used,test/unused\n",
+                            output: "// ec0lint-disable-next-line test/used\n"
                         },
                         {
-                            code: "// eslint-disable-next-line test/used,test/unused \n",
-                            output: "// eslint-disable-next-line test/used \n"
+                            code: "// ec0lint-disable-next-line test/used,test/unused \n",
+                            output: "// ec0lint-disable-next-line test/used \n"
                         },
                         {
-                            code: "/* eslint-disable test/used,test/unused\u2028*/",
-                            output: "/* eslint-disable test/used\u2028*/"
+                            code: "/* ec0lint-disable test/used,test/unused\u2028*/",
+                            output: "/* ec0lint-disable test/used\u2028*/"
                         },
                         {
-                            code: "// eslint-disable-line test/used,test/unused\u00A0",
-                            output: "// eslint-disable-line test/used\u00A0"
+                            code: "// ec0lint-disable-line test/used,test/unused\u00A0",
+                            output: "// ec0lint-disable-line test/used\u00A0"
                         },
 
                         // multiply rules to remove
                         {
-                            code: "// eslint-disable-line test/used, test/unused-1, test/unused-2",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/used, test/unused-1, test/unused-2",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused-1, test/used, test/unused-2",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused-1, test/used, test/unused-2",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused-1, test/unused-2, test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused-1, test/unused-2, test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used-1, test/unused-1, test/used-2, test/unused-2",
-                            output: "// eslint-disable-line test/used-1, test/used-2"
+                            code: "// ec0lint-disable-line test/used-1, test/unused-1, test/used-2, test/unused-2",
+                            output: "// ec0lint-disable-line test/used-1, test/used-2"
                         },
                         {
-                            code: "// eslint-disable-line test/unused-1, test/used-1, test/unused-2, test/used-2",
-                            output: "// eslint-disable-line test/used-1, test/used-2"
+                            code: "// ec0lint-disable-line test/unused-1, test/used-1, test/unused-2, test/used-2",
+                            output: "// ec0lint-disable-line test/used-1, test/used-2"
                         },
                         {
                             code: `
-                        /* eslint-disable test/unused-1,
+                        /* ec0lint-disable test/unused-1,
                            test/used-1,
                            test/unused-2,
                            test/used-2
                         */
                     `,
                             output: `
-                        /* eslint-disable test/used-1,
+                        /* ec0lint-disable test/used-1,
                            test/used-2
                         */
                     `
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/unused-1,
                                test/used-1,
                                test/unused-2,
@@ -14221,7 +14221,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/used-2
                         */
@@ -14229,7 +14229,7 @@ var a = "test2";
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/unused-1,
                                test/used-2,
@@ -14237,7 +14237,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/used-2
                         */
@@ -14245,7 +14245,7 @@ var a = "test2";
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/unused-1,
                                test/used-2,
@@ -14253,7 +14253,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/used-2,
                         */
@@ -14261,7 +14261,7 @@ var a = "test2";
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,test/unused-1
                                ,test/used-1
                                ,test/unused-2
@@ -14269,7 +14269,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,test/used-1
                                ,test/used-2
                         */
@@ -14277,7 +14277,7 @@ var a = "test2";
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,test/used-1
                                ,test/unused-1
                                ,test/used-2
@@ -14285,7 +14285,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                ,test/used-1
                                ,test/used-2
                         */
@@ -14293,7 +14293,7 @@ var a = "test2";
                         },
                         {
                             code: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/unused-1,
                                test/used-2,
@@ -14303,7 +14303,7 @@ var a = "test2";
                         */
                     `,
                             output: `
-                        /* eslint-disable
+                        /* ec0lint-disable
                                test/used-1,
                                test/used-2
 
@@ -14314,16 +14314,16 @@ var a = "test2";
 
                         // duplicates in the list
                         {
-                            code: "// eslint-disable-line test/unused, test/unused, test/used",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused, test/unused, test/used",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/unused, test/used, test/unused",
-                            output: "// eslint-disable-line test/used"
+                            code: "// ec0lint-disable-line test/unused, test/used, test/unused",
+                            output: "// ec0lint-disable-line test/used"
                         },
                         {
-                            code: "// eslint-disable-line test/used, test/unused, test/unused, test/used",
-                            output: "// eslint-disable-line test/used, test/used"
+                            code: "// ec0lint-disable-line test/used, test/unused, test/unused, test/used",
+                            output: "// ec0lint-disable-line test/used, test/used"
                         }
                     ];
 
@@ -14582,7 +14582,7 @@ var a = "test2";
 
                 assert.throws(() => {
                     linter.verify("0", config);
-                }, "Rules with suggestions must set the `meta.hasSuggestions` property to `true`. `meta.docs.suggestion` is ignored by ESLint.");
+                }, "Rules with suggestions must set the `meta.hasSuggestions` property to `true`. `meta.docs.suggestion` is ignored by ec0lint.");
             });
         });
 
@@ -14673,7 +14673,7 @@ var a = "test2";
         });
 
         it("should have a suppressed message", () => {
-            const code = "/* eslint-disable no-alert -- justification */\nalert(\"test\");";
+            const code = "/* ec0lint-disable no-alert -- justification */\nalert(\"test\");";
             const config = {
                 rules: { "no-alert": 1 }
             };
@@ -14692,7 +14692,7 @@ var a = "test2";
 
         it("should have a suppressed message", () => {
             const code = [
-                "/* eslint-disable no-alert -- j1",
+                "/* ec0lint-disable no-alert -- j1",
                 " * j2",
                 " */",
                 "alert(\"test\");"

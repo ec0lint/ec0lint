@@ -1038,7 +1038,7 @@ describe("cli", () => {
 
         });
 
-        it("should pass fixTypes to ESLint when --fix-type is passed", async () => {
+        it("should pass fixTypes to ec0lint when --fix-type is passed", async () => {
 
             const expectedESLintOptions = {
                 fix: true,
