@@ -582,18 +582,20 @@ describe("cli", () => {
         });
     });
 
-    // describe("when executing without env flag", () => {
-    //     it("should not define environment-specific globals", async () => {
-    //         const files = [
-    //             getFixturePath("globals-browser.js"),
-    //             getFixturePath("globals-node.js")
-    //         ];
-    //
-    //         await cli.execute(`--no-ec0lintrc --config ./conf/ec0lint-recommended.js --no-ignore ${files.join(" ")}`);
-    //
-    //         assert.strictEqual(log.info.args[0][0].split("\n").length, 10);
-    //     });
-    // });
+    /*
+    describe("when executing without env flag", () => {
+        it("should not define environment-specific globals", async () => {
+            const files = [
+                getFixturePath("globals-browser.js"),
+                getFixturePath("globals-node.js")
+            ];
+
+            await cli.execute(`--no-ec0lintrc --config ./conf/ec0lint-recommended.js --no-ignore ${files.join(" ")}`);
+
+            assert.strictEqual(log.info.args[0][0].split("\n").length, 10);
+        });
+    });
+    */
 
     describe("when executing with global flag", () => {
         it("should default defined variables to read-only", async () => {
