@@ -1,6 +1,6 @@
--   id: eslint
-    name: eslint
-    entry: eslint
+-   id: ec0lint
+    name: ec0lint
+    entry: ec0lint
     description: "An AST-based pattern checker for JavaScript."
     language: node
     types: ['javascript']

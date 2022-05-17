@@ -1,5 +1,5 @@
 name: "\U0001F680 Propose a new core rule"
-description: "Propose a new rule to be added to the ESLint core"
+description: "Propose a new rule to be added to the ec0lint core"
 title: "New Rule: (fill in)"
 labels:
   - rule
