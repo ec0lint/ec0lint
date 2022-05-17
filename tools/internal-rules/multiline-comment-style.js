@@ -12,7 +12,6 @@ const multilineCommentStyle = require("../../lib/rules/multiline-comment-style")
 // Rule Definition
 //------------------------------------------------------------------------------
 
-// The `no-invalid-meta` internal rule has a false positive here.
 // ec0lint-disable-next-line internal-rules/no-invalid-meta -- Using rule composer
 module.exports = ruleComposer.filterReports(
     multilineCommentStyle,
