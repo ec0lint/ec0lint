@@ -3351,65 +3351,6 @@ describe("ESLint", () => {
 
             afterEach(() => cleanup());
 
-            /*
-            it("should lint only JavaScript blocks if '--ext' was not given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
-
-                cleanup = teardown.cleanup;
-                await teardown.prepare();
-                eslint = new ESLint({ cwd: teardown.getPath() });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "semi");
-                assert.strictEqual(results[0].messages[0].line, 2);
-            });
-
-            it("should fix only JavaScript blocks if '--ext' was not given.", async () => {
-                const teardown = createCustomTeardown({
-                    cwd: root,
-                    files: {
-                        ...commonFiles,
-                        ".ec0lintrc.json": {
-                            plugins: ["html"],
-                            rules: { semi: "error" }
-                        }
-                    }
-                });
-
-                await teardown.prepare();
-                cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath(), fix: true });
-                const results = await eslint.lintFiles(["test.md"]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-                assert.strictEqual(results[0].output, unIndent`
-                    \`\`\`js
-                    console.log("hello");${/* ← fixed */""}
-                    \`\`\`
-                    \`\`\`html
-                    <div>Hello</div>
-                    <script lang="js">
-                        console.log("hello")${/* ← ignored */""}
-                    </script>
-                    <script lang="ts">
-                        console.log("hello")${/* ← ignored */""}
-                    </script>
-                    \`\`\`
-                `);
-            });
-
             it("should lint HTML blocks as well with multiple processors if '--ext' option was given.", async () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
