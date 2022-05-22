@@ -1866,7 +1866,7 @@ describe("Linter", () => {
                         line: 1,
                         column: 1,
                         endLine: 1,
-                        endColumn: 25,
+                        endColumn: 26,
                         nodeType: null
                     }
                 ]
@@ -1889,7 +1889,7 @@ describe("Linter", () => {
                         line: 1,
                         column: 1,
                         endLine: 1,
-                        endColumn: 63,
+                        endColumn: 64,
                         nodeType: null
                     }
                 ]
@@ -5402,8 +5402,8 @@ var a = "test2";
                 assert.deepStrictEqual(
                     messages,
                     [{
-                        column: 25,
-                        endColumn: 32,
+                        column: 26,
+                        endColumn: 33,
                         endLine: 3,
                         line: 3,
                         message: "'Promise' is already defined as a built-in global variable.",
@@ -6526,7 +6526,7 @@ var a = "test2";
 
             assert.throws(() => {
                 linter.verify("0", { rules: { "rule-with-meta-docs-suggestion": "error" } });
-            }, "Rules with suggestions must set the `meta.hasSuggestions` property to `true`. `meta.docs.suggestion` is ignored by ESLint.");
+            }, "Rules with suggestions must set the `meta.hasSuggestions` property to `true`. `meta.docs.suggestion` is ignored by ec0lint.");
         });
     });
 
@@ -11706,7 +11706,7 @@ describe("Linter with FlatConfigArray", () => {
 
                         assert.strictEqual(messages.length, 2);
                         assert.strictEqual(messages[0].column, 21);
-                        assert.strictEqual(messages[1].column, 19);
+                        assert.strictEqual(messages[1].column, 20);
 
                         assert.strictEqual(suppressedMessages.length, 2);
                         assert.strictEqual(suppressedMessages[0].column, 1);
@@ -13683,7 +13683,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 32],
+                                    range: [0, 33],
                                     text: " "
                                 },
                                 severity: 1,
@@ -13719,7 +13719,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [36, 50],
+                                    range: [37, 51],
                                     text: ""
                                 },
                                 severity: 1,
@@ -13761,7 +13761,7 @@ var a = "test2";
                                 line: 2,
                                 column: 21,
                                 fix: {
-                                    range: [57, 71],
+                                    range: [58, 72],
                                     text: ""
                                 },
                                 severity: 1,
