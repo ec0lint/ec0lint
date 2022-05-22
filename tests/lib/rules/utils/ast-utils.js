@@ -218,7 +218,7 @@ describe("ast-utils", () => {
                 "/* lalala I'm a normal comment */",
                 "/* trying to confuse ec0lint */",
                 "/* trying to confuse ec0lint-directive-detection */",
-                "/*ec0lint is awesome*/"
+                "/*eC0lInT is awesome*/"
             ].join("\n");
             const ast = espree.parse(code, ESPREE_CONFIG);
             const sourceCode = new SourceCode(code, ast);
