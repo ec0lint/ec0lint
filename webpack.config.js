@@ -5,7 +5,7 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 module.exports = {
     mode: "none",
     entry: {
-        eslint: ["core-js/stable", "regenerator-runtime/runtime", "./lib/linter/linter.js"]
+        ec0lint: ["core-js/stable", "regenerator-runtime/runtime", "./lib/linter/linter.js"]
     },
     output: {
         filename: "[name].js",
