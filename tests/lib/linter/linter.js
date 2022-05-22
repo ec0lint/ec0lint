@@ -5402,8 +5402,8 @@ var a = "test2";
                 assert.deepStrictEqual(
                     messages,
                     [{
-                        column: 26,
-                        endColumn: 33,
+                        column: 25,
+                        endColumn: 32,
                         endLine: 3,
                         line: 3,
                         message: "'Promise' is already defined as a built-in global variable.",
