@@ -153,7 +153,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
             // assert.strictEqual(report.warningCount, 5); TODO
-            assert.strictEqual(report.results, 'test');
             assert.strictEqual(report.fixableErrorCount, 0);
             assert.strictEqual(report.fixableWarningCount, 3);
             assert.strictEqual(report.results[0].messages.length, 5);
