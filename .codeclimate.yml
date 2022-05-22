@@ -5,5 +5,5 @@ exclude_paths:
   - tests/**
 
 engines:
-  eslint:
+  ec0lint:
     enabled: true

@@ -131,7 +131,7 @@ ruleTester.run("no-inline-comments", rule, {
             errors: [lineError]
         },
         {
-            code: "var a = 3; // someday use eslint-disable-line here",
+            code: "var a = 3; // someday use ec0lint-disable-line here",
             errors: [lineError]
         },
         {

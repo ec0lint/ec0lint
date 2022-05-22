@@ -651,11 +651,11 @@ describe("cli", () => {
 
         it("should write the file and create dirs if they don't exist", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/eslint-output.txt ${filePath}`;
+            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             await cli.execute(code);
 
-            assert.include(fs.readFileSync("tests/output/eslint-output.txt", "utf8"), filePath);
+            assert.include(fs.readFileSync("tests/output/ec0lint-output.txt", "utf8"), filePath);
             assert.isTrue(log.info.notCalled);
         });
 
@@ -674,7 +674,7 @@ describe("cli", () => {
 
         it("should return an error if the path could not be written to", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/eslint-output.txt ${filePath}`;
+            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             fs.writeFileSync("tests/output", "foo");
 

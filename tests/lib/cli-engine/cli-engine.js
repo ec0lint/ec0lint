@@ -3971,7 +3971,6 @@ describe("CLIEngine", () => {
             const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
-            assert.strictEqual(report.results, 'test');
             assert.lengthOf(report.results[0].messages, 3);
             assert.lengthOf(report.results[0].suppressedMessages, 1);
             assert.lengthOf(errorResults[0].messages, 3);
