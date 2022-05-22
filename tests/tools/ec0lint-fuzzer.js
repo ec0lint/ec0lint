@@ -31,7 +31,7 @@ describe("ec0lint-fuzzer", function() {
     const CRASH_BUG = new TypeError("error thrown from a rule");
 
     // A comment to disable all core fixable rules
-    const disableFixableRulesComment = `// eslint-disable-line ${fixableRuleNames.join(",")}`;
+    const disableFixableRulesComment = `// ec0lint-disable-line ${fixableRuleNames.join(",")}`;
 
     before(() => {
         const realCoreRuleConfigs = configRule.createCoreRuleConfigs();

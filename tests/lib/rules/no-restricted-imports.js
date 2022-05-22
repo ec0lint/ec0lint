@@ -231,7 +231,7 @@ ruleTester.run("no-restricted-imports", rule, {
             }]
         },
         {
-            code: "import {\nAllowedObject,\nDisallowedObject, // eslint-disable-line\n} from \"foo\";",
+            code: "import {\nAllowedObject,\nDisallowedObject, // ec0lint-disable-line\n} from \"foo\";",
             options: [{ paths: [{ name: "foo", importNames: ["DisallowedObject"] }] }]
         },
         {
