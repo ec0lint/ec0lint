@@ -1,6 +1,6 @@
 {
   "name": "ec0lint",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "author": "Malwina Kubas @malwinq",
   "description": "Make your website greener!",
   "bin": {
@@ -89,7 +89,6 @@
     "ejs": "^3.0.2",
     "eslint": "^8.0.0",
     "ec0lint-config-ec0lint": "file:packages/ec0lint-config-ec0lint",
-    "ec0lint-plugin-ec0lint-plugin": "^0.0.1",
     "ec0lint-plugin-internal-rules": "file:tools/internal-rules",
     "eslump": "^3.0.0",
     "esprima": "^4.0.1",
