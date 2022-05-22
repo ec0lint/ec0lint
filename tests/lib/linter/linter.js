@@ -5368,7 +5368,7 @@ var a = "test2";
         });
 
         describe("descriptions in directive comments", () => {
-            it("should ignore the part preceded by '--' in '/*eslint*/'.", () => {
+            it("should ignore the part preceded by '--' in '/*ec0lint*/'.", () => {
                 const aaa = sinon.stub().returns({});
                 const bbb = sinon.stub().returns({});
 
@@ -11279,7 +11279,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
             });
 
-            describe("/*eslint*/ Comments", () => {
+            describe("/*ec0lint*/ Comments", () => {
                 describe("when evaluating code with comments to enable rules", () => {
 
                     it("should report a violation", () => {

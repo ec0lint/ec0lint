@@ -1794,7 +1794,7 @@ describe("ec0lint", () => {
                 assert.strictEqual(results[0].messages.length, 0);
             });
 
-            // No default configuration rules - conf/environments.js (/*eslint-env node*/)
+            // No default configuration rules - conf/environments.js (/*ec0lint-env node*/)
             it("should return zero messages when executing with no .ec0lintrc in the Node.js environment", async () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, ".."),
