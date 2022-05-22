@@ -3865,7 +3865,7 @@ var a = "test2";
                         line: 1,
                         column: 1,
                         fix: {
-                            range: [0, 20],
+                            range: [0, 21],
                             text: " "
                         },
                         severity: 2,
@@ -3949,7 +3949,7 @@ var a = "test2";
                         line: 1,
                         column: 1,
                         fix: {
-                            range: [0, 20],
+                            range: [0, 21],
                             text: " "
                         },
                         severity: 2,
@@ -3974,7 +3974,7 @@ var a = "test2";
                         line: 1,
                         column: 1,
                         fix: {
-                            range: [0, 20],
+                            range: [0, 21],
                             text: " "
                         },
                         severity: 1,
@@ -3999,7 +3999,7 @@ var a = "test2";
                         line: 1,
                         column: 1,
                         fix: {
-                            range: [0, 20],
+                            range: [0, 21],
                             text: " "
                         },
                         severity: 1,
@@ -4036,7 +4036,7 @@ var a = "test2";
                         line: 1,
                         column: 16,
                         fix: {
-                            range: [46, 60],
+                            range: [47, 60],
                             text: ""
                         },
                         severity: 1,
@@ -11396,7 +11396,7 @@ describe("Linter with FlatConfigArray", () => {
                                     line: 1,
                                     column: 1,
                                     endLine: 1,
-                                    endColumn: 25,
+                                    endColumn: 26,
                                     nodeType: null
                                 }
                             ]
@@ -11419,7 +11419,7 @@ describe("Linter with FlatConfigArray", () => {
                                     line: 1,
                                     column: 1,
                                     endLine: 1,
-                                    endColumn: 63,
+                                    endColumn: 64,
                                     nodeType: null
                                 }
                             ]
@@ -11923,7 +11923,7 @@ alert('test');
 
                         assert.strictEqual(messages.length, 1);
                         assert.strictEqual(messages[0].ruleId, "max-len");
-                        assert.strictEqual(messages[0].message, "This line has a length of 129. Maximum allowed is 100.");
+                        assert.strictEqual(messages[0].message, "This line has a length of 130. Maximum allowed is 100.");
                         assert.include(messages[0].nodeType, "Program");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -13514,7 +13514,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 20],
+                                    range: [0, 21],
                                     text: " "
                                 },
                                 severity: 2,
@@ -13539,7 +13539,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 20],
+                                    range: [0, 21],
                                     text: " "
                                 },
                                 severity: 2,
@@ -13564,7 +13564,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 20],
+                                    range: [0, 21],
                                     text: " "
                                 },
                                 severity: 1,
@@ -13593,7 +13593,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 20],
+                                    range: [0, 21],
                                     text: " "
                                 },
                                 severity: 1,
@@ -13632,7 +13632,7 @@ var a = "test2";
                                 line: 1,
                                 column: 16,
                                 fix: {
-                                    range: [46, 60],
+                                    range: [47, 60],
                                     text: ""
                                 },
                                 severity: 1,
