@@ -357,7 +357,7 @@ describe("FlatRuleTester", () => {
                             }],
                             invalid: []
                         });
-                    }, "The current test framework does not support exclusive tests with `only`.");
+                    }, "`.only` forbidden by --forbid-only");
                 });
             });
         });
@@ -1316,7 +1316,7 @@ describe("FlatRuleTester", () => {
                 ],
                 invalid: []
             });
-        }, 'ec0lint configuration in rule-tester is invalid.');
+        }, /ec0lint configuration in rule-tester is invalid/u);
     });
 
     it("throw an error when env is included in config", () => {

@@ -7572,22 +7572,6 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("should add globals for Node.js when sourceType is commonjs", () => {
-                    const messages = linter.verify("require()", {
-                        languageOptions: {
-                            ecmaVersion: 6,
-                            sourceType: "commonjs"
-                        },
-                        rules: {
-                            "no-undef": "error"
-                        }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0, "There should be no linting errors.");
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
                 it("should allow 'await' as a property name in modules", () => {
                     const result = linter.verify(
                         "obj.await",

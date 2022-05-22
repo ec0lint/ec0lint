@@ -3875,6 +3875,7 @@ describe("CLIEngine", () => {
             const errorResults = CLIEngine.getErrorResults(report.results);
 
             assert.lengthOf(errorResults[0].messages, 5);
+            assert.strictEqual(errorResults[0].messages, []);
             assert.strictEqual(errorResults[0].errorCount, 5);
             assert.strictEqual(errorResults[0].fixableErrorCount, 3);
             assert.strictEqual(errorResults[0].fixableWarningCount, 0);
@@ -3927,7 +3928,7 @@ describe("CLIEngine", () => {
             const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
-            assert.lengthOf(report.results[0].messages, 1);
+            assert.lengthOf(report.results[0].messages, 2);
             assert.lengthOf(report.results[0].suppressedMessages, 1);
             assert.lengthOf(errorResults[0].messages, 1);
             assert.lengthOf(errorResults[0].suppressedMessages, 0);

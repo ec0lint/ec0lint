@@ -243,6 +243,7 @@ describe("ec0lint", () => {
             const results = await eslint.lintText("var foo = 'bar';");
 
             assert.strictEqual(results.length, 1);
+            assert.strictEqual(results[0].messages, []);
             assert.strictEqual(results[0].messages.length, 5);
             assert.strictEqual(results[0].messages[0].ruleId, "strict");
             assert.strictEqual(results[0].messages[1].ruleId, "no-var");
@@ -423,10 +424,7 @@ describe("ec0lint", () => {
             const options = { filePath: "file.js" };
             const results = await eslint.lintText("foo ()", options);
 
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
-            assert.strictEqual(results[0].messages[0].severity, 2);
+            assert.strictEqual(results.length, 0);
         });
 
         describe("Fix Types", () => {
@@ -4315,6 +4313,7 @@ describe("ec0lint", () => {
             const results = await engine.lintText("var foo = 'bar';");
             const errorResults = ESLint.getErrorResults(results);
 
+            assert.strictEqual(errorResults[0].messages, []);
             assert.strictEqual(errorResults[0].messages.length, 5);
             assert.strictEqual(errorResults[0].errorCount, 5);
             assert.strictEqual(errorResults[0].fixableErrorCount, 3);
