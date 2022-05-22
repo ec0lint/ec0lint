@@ -3874,21 +3874,12 @@ describe("CLIEngine", () => {
             const report = engine.executeOnText("var foo = 'bar';");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
-            assert.strictEqual(errorResults[0].messages, []);
-            assert.lengthOf(errorResults[0].messages, 5);
-            assert.strictEqual(errorResults[0].errorCount, 5);
-            assert.strictEqual(errorResults[0].fixableErrorCount, 3);
+            assert.lengthOf(errorResults[0].messages, 1);
+            assert.strictEqual(errorResults[0].errorCount, 1);
+            assert.strictEqual(errorResults[0].fixableErrorCount, 0);
             assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-            assert.strictEqual(errorResults[0].messages[0].ruleId, "strict");
+            assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
             assert.strictEqual(errorResults[0].messages[0].severity, 2);
-            assert.strictEqual(errorResults[0].messages[1].ruleId, "no-var");
-            assert.strictEqual(errorResults[0].messages[1].severity, 2);
-            assert.strictEqual(errorResults[0].messages[2].ruleId, "no-unused-vars");
-            assert.strictEqual(errorResults[0].messages[2].severity, 2);
-            assert.strictEqual(errorResults[0].messages[3].ruleId, "quotes");
-            assert.strictEqual(errorResults[0].messages[3].severity, 2);
-            assert.strictEqual(errorResults[0].messages[4].ruleId, "eol-last");
-            assert.strictEqual(errorResults[0].messages[4].severity, 2);
             assert.lengthOf(errorResults[0].suppressedMessages, 0);
         });
 
