@@ -47,7 +47,7 @@ module.exports = {
         "internal-rules"
     ],
     extends: [
-        "ec0lint:recommended",
+        "ec0lint",
         "plugin:ec0lint-plugin/recommended"
     ],
     parserOptions: {
@@ -66,6 +66,12 @@ module.exports = {
         "internal-rules/multiline-comment-style": "error"
     },
     overrides: [
+        {
+            files: ["tools/*.js"],
+            rules: {
+                "no-console": "off"
+            }
+        },
         {
             files: ["lib/rules/*", "tools/internal-rules/*"],
             excludedFiles: ["index.js"],
