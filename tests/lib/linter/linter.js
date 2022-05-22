@@ -3161,7 +3161,7 @@ describe("Linter", () => {
              * message from caught exception
              * may differ amongst UAs, so verifying
              * first part only as defined in the
-             * parseJsonConfig function in lib/eslint.js
+             * parseJsonConfig function in lib/ec0lint.js
              */
             assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":abc':/u);
             assert.strictEqual(messages[0].line, 1);
@@ -3189,7 +3189,7 @@ describe("Linter", () => {
              * message from caught exception
              * may differ amongst UAs, so verifying
              * first part only as defined in the
-             * parseJsonConfig function in lib/eslint.js
+             * parseJsonConfig function in lib/ec0lint.js
              */
             assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":0 2':/u);
             assert.strictEqual(messages[0].line, 1);
@@ -13632,7 +13632,7 @@ var a = "test2";
                                 line: 1,
                                 column: 16,
                                 fix: {
-                                    range: [47, 60],
+                                    range: [47, 61],
                                     text: ""
                                 },
                                 severity: 1,
@@ -13659,7 +13659,7 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 27],
+                                    range: [0, 28],
                                     text: " "
                                 },
                                 severity: 1,
