@@ -3930,7 +3930,7 @@ describe("CLIEngine", () => {
 
             assert.lengthOf(report.results[0].messages, 2);
             assert.lengthOf(report.results[0].suppressedMessages, 1);
-            assert.lengthOf(errorResults[0].messages, 1);
+            assert.lengthOf(errorResults[0].messages, 2);
             assert.lengthOf(errorResults[0].suppressedMessages, 0);
         });
 

@@ -243,14 +243,9 @@ describe("ec0lint", () => {
             const results = await eslint.lintText("var foo = 'bar';");
 
             assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages, []);
-            assert.strictEqual(results[0].messages.length, 5);
-            assert.strictEqual(results[0].messages[0].ruleId, "strict");
-            assert.strictEqual(results[0].messages[1].ruleId, "no-var");
-            assert.strictEqual(results[0].messages[2].ruleId, "no-unused-vars");
-            assert.strictEqual(results[0].messages[3].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[4].ruleId, "eol-last");
-            assert.strictEqual(results[0].fixableErrorCount, 3);
+            assert.strictEqual(results[0].messages.length, 1);
+            assert.strictEqual(results[0].messages[0].ruleId, "no-unused-vars");
+            assert.strictEqual(results[0].fixableErrorCount, 0);
             assert.strictEqual(results[0].fixableWarningCount, 0);
             assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
         });
@@ -424,7 +419,8 @@ describe("ec0lint", () => {
             const options = { filePath: "file.js" };
             const results = await eslint.lintText("foo ()", options);
 
-            assert.strictEqual(results.length, 0);
+            assert.strictEqual(results.length, 1);
+            assert.strictEqual(results.[0].messages, []);
         });
 
         describe("Fix Types", () => {
@@ -4313,21 +4309,11 @@ describe("ec0lint", () => {
             const results = await engine.lintText("var foo = 'bar';");
             const errorResults = ESLint.getErrorResults(results);
 
-            assert.strictEqual(errorResults[0].messages, []);
-            assert.strictEqual(errorResults[0].messages.length, 5);
-            assert.strictEqual(errorResults[0].errorCount, 5);
-            assert.strictEqual(errorResults[0].fixableErrorCount, 3);
+            assert.strictEqual(errorResults[0].messages.length, 1);
+            assert.strictEqual(errorResults[0].errorCount, 1);
+            assert.strictEqual(errorResults[0].fixableErrorCount, 0);
             assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-            assert.strictEqual(errorResults[0].messages[0].ruleId, "strict");
-            assert.strictEqual(errorResults[0].messages[0].severity, 2);
-            assert.strictEqual(errorResults[0].messages[1].ruleId, "no-var");
-            assert.strictEqual(errorResults[0].messages[1].severity, 2);
-            assert.strictEqual(errorResults[0].messages[2].ruleId, "no-unused-vars");
-            assert.strictEqual(errorResults[0].messages[2].severity, 2);
-            assert.strictEqual(errorResults[0].messages[3].ruleId, "quotes");
-            assert.strictEqual(errorResults[0].messages[3].severity, 2);
-            assert.strictEqual(errorResults[0].messages[4].ruleId, "eol-last");
-            assert.strictEqual(errorResults[0].messages[4].severity, 2);
+            assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
         });
 
         it("should not mutate passed report parameter", async () => {
