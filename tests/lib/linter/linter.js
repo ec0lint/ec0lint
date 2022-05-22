@@ -4036,7 +4036,7 @@ var a = "test2";
                         line: 1,
                         column: 16,
                         fix: {
-                            range: [47, 60],
+                            range: [47, 61],
                             text: ""
                         },
                         severity: 1,

@@ -74,7 +74,7 @@ describe("bin/ec0lint.js", () => {
      * @returns {ChildProcess} The resulting child process
      */
     function runESLint(args, options) {
-        const newProcess = childProcess.fork(EXECUTABLE_PATH, args, Object.assign({ silent: false }, options));
+        const newProcess = childProcess.fork(EXECUTABLE_PATH, args, Object.assign({ silent: true }, options));
 
         forkedProcesses.add(newProcess);
         return newProcess;
