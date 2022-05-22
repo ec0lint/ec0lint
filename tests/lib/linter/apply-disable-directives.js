@@ -2010,7 +2010,7 @@ describe("apply-disable-directives", () => {
                         line: 2,
                         column: 11,
                         fix: {
-                            range: [64, 69],
+                            range: [65, 70],
                             text: ""
                         },
                         severity: 2,
