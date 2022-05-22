@@ -420,7 +420,7 @@ describe("ec0lint", () => {
             const results = await eslint.lintText("foo ()", options);
 
             assert.strictEqual(results.length, 1);
-            assert.strictEqual(results.[0].messages, []);
+            assert.strictEqual(results[0].messages, []);
         });
 
         describe("Fix Types", () => {
