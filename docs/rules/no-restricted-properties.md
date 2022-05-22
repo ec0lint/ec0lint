@@ -69,7 +69,7 @@ If the property name is omitted, accessing any property of the given object is d
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint no-restricted-properties: [2, {
+/* ec0lint no-restricted-properties: [2, {
     "object": "disallowedObjectName",
     "property": "disallowedPropertyName"
 }] */
@@ -80,7 +80,7 @@ disallowedObjectName.disallowedPropertyName(); /*error Disallowed object propert
 ```
 
 ```js
-/* eslint no-restricted-properties: [2, {
+/* ec0lint no-restricted-properties: [2, {
     "property": "__defineGetter__"
 }] */
 
@@ -88,7 +88,7 @@ foo.__defineGetter__(bar, baz);
 ```
 
 ```js
-/* eslint no-restricted-properties: [2, {
+/* ec0lint no-restricted-properties: [2, {
     "object": "require"
 }] */
 
@@ -98,7 +98,7 @@ require.resolve('foo');
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint no-restricted-properties: [2, {
+/* ec0lint no-restricted-properties: [2, {
     "object": "disallowedObjectName",
     "property": "disallowedPropertyName"
 }] */
@@ -109,7 +109,7 @@ allowedObjectName.disallowedPropertyName();
 ```
 
 ```js
-/* eslint no-restricted-properties: [2, {
+/* ec0lint no-restricted-properties: [2, {
     "object": "require"
 }] */
 

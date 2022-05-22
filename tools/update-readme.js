@@ -57,7 +57,7 @@ function formatTeamMembers(members) {
             </a>
             </td>${(index + 1) % 9 === 0 ? "</tr><tr>" : ""}`).join("")
         }</tr></tbody></table>`;
-    /* eslint-enable indent -- Allow deeper template substitution indent */
+    /* ec0lint-enable indent -- Allow deeper template substitution indent */
 }
 
 /**
@@ -76,7 +76,7 @@ function formatSponsors(sponsors) {
             }</p>`).join("")
         }
     <!--sponsorsend-->`;
-    /* eslint-enable indent -- Allow deeper template substitution indent */
+    /* ec0lint-enable indent -- Allow deeper template substitution indent */
 }
 
 //-----------------------------------------------------------------------------

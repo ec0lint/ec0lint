@@ -9,7 +9,7 @@ The rule should warn against code that tries to compare against `-0`, since that
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint no-compare-neg-zero: "error" */
+/* ec0lint no-compare-neg-zero: "error" */
 
 if (x === -0) {
     // doSomething()...
@@ -19,7 +19,7 @@ if (x === -0) {
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint no-compare-neg-zero: "error" */
+/* ec0lint no-compare-neg-zero: "error" */
 
 if (x === 0) {
     // doSomething()...
@@ -27,7 +27,7 @@ if (x === 0) {
 ```
 
 ```js
-/* eslint no-compare-neg-zero: "error" */
+/* ec0lint no-compare-neg-zero: "error" */
 
 if (Object.is(x, -0)) {
     // doSomething()...

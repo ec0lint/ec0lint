@@ -92,7 +92,7 @@ var x = (function () { return { y: 1 };})(); // wrapped function expression
 Examples of **incorrect** code for this rule with the `"inside", { "functionPrototypeMethods": true }` options:
 
 ```js
-/* eslint wrap-iife: [2, "inside", { functionPrototypeMethods: true }] */
+/* ec0lint wrap-iife: [2, "inside", { functionPrototypeMethods: true }] */
 
 var x = function(){ foo(); }()
 var x = (function(){ foo(); }())
@@ -103,7 +103,7 @@ var x = (function(){ foo(); }.call(bar))
 Examples of **correct** code for this rule with the `"inside", { "functionPrototypeMethods": true }` options:
 
 ```js
-/* eslint wrap-iife: [2, "inside", { functionPrototypeMethods: true }] */
+/* ec0lint wrap-iife: [2, "inside", { functionPrototypeMethods: true }] */
 
 var x = (function(){ foo(); })()
 var x = (function(){ foo(); }).call(bar)

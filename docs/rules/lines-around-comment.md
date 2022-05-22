@@ -526,7 +526,7 @@ Examples of **correct** code for the `ignorePattern` option:
 /*eslint lines-around-comment: ["error"]*/
 
 foo();
-/* eslint mentioned in this comment */,
+/* ec0lint mentioned in this comment */,
 bar();
 
 
@@ -564,7 +564,7 @@ Examples of **incorrect** code for the `{ "applyDefaultIgnorePatterns": false }`
 /*eslint lines-around-comment: ["error", { "applyDefaultIgnorePatterns": false }] */
 
 foo();
-/* eslint mentioned in comment */
+/* ec0lint mentioned in comment */
 
 ```
 

@@ -16,7 +16,7 @@ This rule disallows calls or assignments to methods of the `console` object.
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint no-console: "error" */
+/* ec0lint no-console: "error" */
 
 console.log("Log a debug level message.");
 console.warn("Log a warn level message.");
@@ -27,7 +27,7 @@ console.log = foo();
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint no-console: "error" */
+/* ec0lint no-console: "error" */
 
 // custom console
 Console.log("Hello world!");
@@ -42,7 +42,7 @@ This rule has an object option for exceptions:
 Examples of additional **correct** code for this rule with a sample `{ "allow": ["warn", "error"] }` option:
 
 ```js
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* ec0lint no-console: ["error", { allow: ["warn", "error"] }] */
 
 console.warn("Log a warn level message.");
 console.error("Log an error level message.");
@@ -55,7 +55,7 @@ If you're using Node.js, however, `console` is used to output information to the
 Another case where you might not use this rule is if you want to enforce console calls and not console overwrites. For example:
 
 ```js
-/* eslint no-console: ["error", { allow: ["warn"] }] */
+/* ec0lint no-console: ["error", { allow: ["warn"] }] */
 console.error = function (message) {
   throw new Error(message);
 };

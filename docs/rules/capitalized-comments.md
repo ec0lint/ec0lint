@@ -15,7 +15,7 @@ By default, this rule will require a non-lowercase letter at the beginning of co
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint capitalized-comments: ["error"] */
+/* ec0lint capitalized-comments: ["error"] */
 
 // lowercase comment
 
@@ -31,10 +31,10 @@ Examples of **correct** code for this rule:
 
 // 丈 Non-Latin character at beginning of comment
 
-/* eslint semi:off */
-/* eslint-env node */
-/* eslint-disable */
-/* eslint-enable */
+/* ec0lint semi:off */
+/* ec0lint-env node */
+/* ec0lint-disable */
+/* ec0lint-enable */
 /* istanbul ignore next */
 /* jscs:enable */
 /* jshint asi:true */
@@ -82,7 +82,7 @@ Note that configuration comments and comments which start with URLs are never re
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint capitalized-comments: ["error", "always"] */
+/* ec0lint capitalized-comments: ["error", "always"] */
 
 // lowercase comment
 
@@ -91,7 +91,7 @@ Examples of **incorrect** code for this rule:
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint capitalized-comments: ["error", "always"] */
+/* ec0lint capitalized-comments: ["error", "always"] */
 
 // Capitalized comment
 
@@ -99,10 +99,10 @@ Examples of **correct** code for this rule:
 
 // 丈 Non-Latin character at beginning of comment
 
-/* eslint semi:off */
-/* eslint-env node */
-/* eslint-disable */
-/* eslint-enable */
+/* ec0lint semi:off */
+/* ec0lint-env node */
+/* ec0lint-disable */
+/* ec0lint-enable */
 /* istanbul ignore next */
 /* jscs:enable */
 /* jshint asi:true */
@@ -122,7 +122,7 @@ Using the `"never"` option means that this rule will report any comments which s
 Examples of **incorrect** code with the `"never"` option:
 
 ```js
-/* eslint capitalized-comments: ["error", "never"] */
+/* ec0lint capitalized-comments: ["error", "never"] */
 
 // Capitalized comment
 
@@ -131,7 +131,7 @@ Examples of **incorrect** code with the `"never"` option:
 Examples of **correct** code with the `"never"` option:
 
 ```js
-/* eslint capitalized-comments: ["error", "never"] */
+/* ec0lint capitalized-comments: ["error", "never"] */
 
 // lowercase comment
 
@@ -148,7 +148,7 @@ The `ignorePattern` object takes a string value, which is used as a regular expr
 Examples of **correct** code with the `"ignorePattern"` option set to `"pragma"`:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "ignorePattern": "pragma" }] */
+/* ec0lint capitalized-comments: ["error", "always", { "ignorePattern": "pragma" }] */
 
 function foo() {
     /* pragma wrap(true) */
@@ -163,7 +163,7 @@ Setting the `ignoreInlineComments` option to `true` means that comments in the m
 Examples of **correct** code with the `"ignoreInlineComments"` option set to `true`:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "ignoreInlineComments": true }] */
+/* ec0lint capitalized-comments: ["error", "always", { "ignoreInlineComments": true }] */
 
 function foo(/* ignored */ a) {
 }
@@ -177,7 +177,7 @@ If the `ignoreConsecutiveComments` option is set to `true`, then comments which 
 Examples of **correct** code with `ignoreConsecutiveComments` set to `true`:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "ignoreConsecutiveComments": true }] */
+/* ec0lint capitalized-comments: ["error", "always", { "ignoreConsecutiveComments": true }] */
 
 // This comment is valid since it has the correct capitalization.
 // this comment is ignored since it follows another comment,
@@ -193,7 +193,7 @@ Examples of **correct** code with `ignoreConsecutiveComments` set to `true`:
 Examples of **incorrect** code with `ignoreConsecutiveComments` set to `true`:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "ignoreConsecutiveComments": true }] */
+/* ec0lint capitalized-comments: ["error", "always", { "ignoreConsecutiveComments": true }] */
 
 // this comment is invalid, but only on this line.
 // this comment does NOT get reported, since it is a consecutive comment.
@@ -224,7 +224,7 @@ If you wish to have a different configuration for line comments and block commen
 Examples of **incorrect** code with different line and block comment configuration:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "block": { "ignorePattern": "blockignore" } }] */
+/* ec0lint capitalized-comments: ["error", "always", { "block": { "ignorePattern": "blockignore" } }] */
 
 // capitalized line comment, this is incorrect, blockignore does not help here
 /* lowercased block comment, this is incorrect too */
@@ -234,7 +234,7 @@ Examples of **incorrect** code with different line and block comment configurati
 Examples of **correct** code with different line and block comment configuration:
 
 ```js
-/* eslint capitalized-comments: ["error", "always", { "block": { "ignorePattern": "blockignore" } }] */
+/* ec0lint capitalized-comments: ["error", "always", { "block": { "ignorePattern": "blockignore" } }] */
 
 // Uppercase line comment, this is correct
 /* blockignore lowercase block comment, this is correct due to ignorePattern */

@@ -1,5 +1,5 @@
-/* eslint semi: "error" */
-/* eslint prefer-arrow-callback: "error" */
+/* ec0lint semi: "error" */
+/* ec0lint prefer-arrow-callback: "error" */
 "use strict";
 
 func(() => {

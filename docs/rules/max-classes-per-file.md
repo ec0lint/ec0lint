@@ -57,7 +57,7 @@ For example:
 Examples of **correct** code for this rule with the `max` option set to `2`:
 
 ```js
-/* eslint max-classes-per-file: ["error", 2] */
+/* ec0lint max-classes-per-file: ["error", 2] */
 
 class Foo {}
 class Bar {}
@@ -66,7 +66,7 @@ class Bar {}
 Examples of **correct** code for this rule with the `ignoreExpressions` option set to `true`:
 
 ```js
-/* eslint max-classes-per-file: ["error", { ignoreExpressions: true }] */
+/* ec0lint max-classes-per-file: ["error", { ignoreExpressions: true }] */
 
 class VisitorFactory {
     forDescriptor(descriptor) {

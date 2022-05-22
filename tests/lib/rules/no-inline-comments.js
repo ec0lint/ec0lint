@@ -38,7 +38,7 @@ ruleTester.run("no-inline-comments", rule, {
         "var a = 2;\n// A valid comment after code",
         "// A solitary comment",
         "var a = 1; // eslint-disable-line no-debugger",
-        "var a = 1; /* eslint-disable-line no-debugger */",
+        "var a = 1; /* ec0lint-disable-line no-debugger */",
 
         // JSX exception
         `var a = (
