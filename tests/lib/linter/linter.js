@@ -2158,7 +2158,7 @@ describe("Linter", () => {
 
             assert.strictEqual(messages.length, 2);
             assert.strictEqual(messages[0].column, 21);
-            assert.strictEqual(messages[1].column, 19);
+            assert.strictEqual(messages[1].column, 20);
 
             assert.strictEqual(suppressedMessages.length, 2);
             assert.strictEqual(suppressedMessages[0].column, 1);
@@ -3215,7 +3215,7 @@ alert('test');
 
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].ruleId, "max-len");
-            assert.strictEqual(messages[0].message, "This line has a length of 129. Maximum allowed is 100.");
+            assert.strictEqual(messages[0].message, "This line has a length of 130. Maximum allowed is 100.");
             assert.include(messages[0].nodeType, "Program");
 
             assert.strictEqual(suppressedMessages.length, 0);

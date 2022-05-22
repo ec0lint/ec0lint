@@ -1469,7 +1469,6 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0], 'bla');
                 assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
@@ -1486,7 +1485,6 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages, 'test');
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
@@ -4331,7 +4329,7 @@ describe("CLIEngine", () => {
                                     line: 1,
                                     column: 1,
                                     fix: {
-                                        range: [0, 20],
+                                        range: [0, 21],
                                         text: " "
                                     },
                                     severity: 2,

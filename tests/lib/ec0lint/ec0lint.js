@@ -4633,7 +4633,7 @@ describe("ec0lint", () => {
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [0, 20],
+                                    range: [0, 21],
                                     text: " "
                                 },
                                 severity: 2,
