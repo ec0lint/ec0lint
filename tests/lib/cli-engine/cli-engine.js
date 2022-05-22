@@ -5570,364 +5570,364 @@ describe("CLIEngine", () => {
         });
     });
 
-    // describe("plugin conflicts", () => {
-    //     let uid = 0;
-    //     const root = getFixturePath("cli-engine/plugin-conflicts-");
-    //
-    //     /**
-    //      * Verify thrown errors.
-    //      * @param {() => void} f The function to run and throw.
-    //      * @param {Record<string, any>} props The properties to verify.
-    //      * @returns {void}
-    //      */
-    //     function assertThrows(f, props) {
-    //         try {
-    //             f();
-    //         } catch (error) {
-    //             for (const [key, value] of Object.entries(props)) {
-    //                 assert.deepStrictEqual(error[key], value, key);
-    //             }
-    //             return;
-    //         }
-    //
-    //         assert.fail("Function should throw an error, but not.");
-    //     }
-    //
-    //     describe("between a config file and linear extendees.", () => {
-    //
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-    //                     extends: ["two"],
-    //                     plugins: ["foo"]
-    //                 })}`,
-    //                 "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 })}`,
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     extends: ["one"],
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file.)", () => {
-    //             const engine = new CLIEngine({ cwd: getPath() });
-    //
-    //             engine.executeOnFiles("test.js");
-    //         });
-    //     });
-    //
-    //     describe("between a config file and same-depth extendees.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 })}`,
-    //                 "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 })}`,
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     extends: ["one", "two"],
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file.)", () => {
-    //             const engine = new CLIEngine({ cwd: getPath() });
-    //
-    //             engine.executeOnFiles("test.js");
-    //         });
-    //     });
-    //
-    //     describe("between two config files in different directories, with single node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files, but node_modules directory is unique.)", () => {
-    //             const engine = new CLIEngine({ cwd: getPath() });
-    //
-    //             engine.executeOnFiles("subdir/test.js");
-    //         });
-    //     });
-    //
-    //     describe("between two config files in different directories, with multiple node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "subdir/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files.)", () => {
-    //             const engine = new CLIEngine({ cwd: getPath() });
-    //
-    //             assertThrows(
-    //                 () => engine.executeOnFiles("subdir/test.js"),
-    //                 {
-    //                     message: `Plugin "foo" was conflicted between "subdir${path.sep}.ec0lintrc.json" and ".ec0lintrc.json".`,
-    //                     messageTemplate: "plugin-conflict",
-    //                     messageData: {
-    //                         pluginId: "foo",
-    //                         plugins: [
-    //                             {
-    //                                 filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
-    //                             },
-    //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: ".ec0lintrc.json"
-    //                             }
-    //                         ]
-    //                     }
-    //                 }
-    //             );
-    //         });
-    //     });
-    //
-    //     describe("between '--config' option and a regular config file, with single node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files, but node_modules directory is unique.)", () => {
-    //             const engine = new CLIEngine({
-    //                 cwd: getPath(),
-    //                 configFile: "node_modules/mine/.ec0lintrc.json"
-    //             });
-    //
-    //             engine.executeOnFiles("test.js");
-    //         });
-    //     });
-    //
-    //     describe("between '--config' option and a regular config file, with multiple node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "node_modules/mine/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files.)", () => {
-    //             const engine = new CLIEngine({
-    //                 cwd: getPath(),
-    //                 configFile: "node_modules/mine/.ec0lintrc.json"
-    //             });
-    //
-    //             assertThrows(
-    //                 () => engine.executeOnFiles("test.js"),
-    //                 {
-    //                     message: "Plugin \"foo\" was conflicted between \"--config\" and \".ec0lintrc.json\".",
-    //                     messageTemplate: "plugin-conflict",
-    //                     messageData: {
-    //                         pluginId: "foo",
-    //                         plugins: [
-    //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: "--config"
-    //                             },
-    //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: ".ec0lintrc.json"
-    //                             }
-    //                         ]
-    //                     }
-    //                 }
-    //             );
-    //         });
-    //     });
-    //
-    //     describe("between '--plugin' option and a regular config file, with single node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "subdir/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from both CWD and the base directory of the entry config file, but node_modules directory is unique.)", () => {
-    //             const engine = new CLIEngine({
-    //                 cwd: getPath(),
-    //                 plugins: ["foo"]
-    //             });
-    //
-    //             engine.executeOnFiles("subdir/test.js");
-    //         });
-    //     });
-    //
-    //     describe("between '--plugin' option and a regular config file, with multiple node_modules.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "subdir/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from both CWD and the base directory of the entry config file.)", () => {
-    //             const engine = new CLIEngine({
-    //                 cwd: getPath(),
-    //                 plugins: ["foo"]
-    //             });
-    //
-    //             assertThrows(
-    //                 () => engine.executeOnFiles("subdir/test.js"),
-    //                 {
-    //                     message: `Plugin "foo" was conflicted between "CLIOptions" and "subdir${path.sep}.ec0lintrc.json".`,
-    //                     messageTemplate: "plugin-conflict",
-    //                     messageData: {
-    //                         pluginId: "foo",
-    //                         plugins: [
-    //                             {
-    //                                 filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: "CLIOptions"
-    //                             },
-    //                             {
-    //                                 filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
-    //                                 importerName: `subdir${path.sep}.ec0lintrc.json`
-    //                             }
-    //                         ]
-    //                     }
-    //                 }
-    //             );
-    //         });
-    //     });
-    //
-    //     describe("'--resolve-plugins-relative-to' option overrides the location that ec0lint load plugins from.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 ".ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "subdir/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "subdir/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from '--resolve-plugins-relative-to'.)", () => {
-    //             const engine = new CLIEngine({
-    //                 cwd: getPath(),
-    //                 resolvePluginsRelativeTo: getPath()
-    //             });
-    //
-    //             engine.executeOnFiles("subdir/test.js");
-    //         });
-    //     });
-    //
-    //     describe("between two config files with different target files.", () => {
-    //         const { prepare, cleanup, getPath } = createCustomTeardown({
-    //             cwd: `${root}${++uid}`,
-    //             files: {
-    //                 "one/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "one/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "one/test.js": "",
-    //                 "two/node_modules/ec0lint-plugin-foo/index.js": "",
-    //                 "two/.ec0lintrc.json": JSON.stringify({
-    //                     plugins: ["foo"]
-    //                 }),
-    //                 "two/test.js": ""
-    //             }
-    //         });
-    //
-    //         beforeEach(prepare);
-    //         afterEach(cleanup);
-    //
-    //         it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file for each target file. Not related to each other.)", () => {
-    //             const engine = new CLIEngine({ cwd: getPath() });
-    //             const { results } = engine.executeOnFiles("*/test.js");
-    //
-    //             assert.strictEqual(results.length, 2);
-    //         });
-    //     });
-    // });
+    describe("plugin conflicts", () => {
+        let uid = 0;
+        const root = getFixturePath("cli-engine/plugin-conflicts-");
+
+        /**
+         * Verify thrown errors.
+         * @param {() => void} f The function to run and throw.
+         * @param {Record<string, any>} props The properties to verify.
+         * @returns {void}
+         */
+        function assertThrows(f, props) {
+            try {
+                f();
+            } catch (error) {
+                for (const [key, value] of Object.entries(props)) {
+                    assert.deepStrictEqual(error[key], value, key);
+                }
+                return;
+            }
+
+            assert.fail("Function should throw an error, but not.");
+        }
+
+        describe("between a config file and linear extendees.", () => {
+
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
+                        extends: ["two"],
+                        plugins: ["foo"]
+                    })}`,
+                    "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
+                        plugins: ["foo"]
+                    })}`,
+                    ".ec0lintrc.json": JSON.stringify({
+                        extends: ["one"],
+                        plugins: ["foo"]
+                    }),
+                    "test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file.)", () => {
+                const engine = new CLIEngine({ cwd: getPath() });
+
+                engine.executeOnFiles("test.js");
+            });
+        });
+
+        describe("between a config file and same-depth extendees.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
+                        plugins: ["foo"]
+                    })}`,
+                    "node_modules/ec0lint-config-two/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
+                        plugins: ["foo"]
+                    })}`,
+                    ".ec0lintrc.json": JSON.stringify({
+                        extends: ["one", "two"],
+                        plugins: ["foo"]
+                    }),
+                    "test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file.)", () => {
+                const engine = new CLIEngine({ cwd: getPath() });
+
+                engine.executeOnFiles("test.js");
+            });
+        });
+
+        describe("between two config files in different directories, with single node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    ".ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files, but node_modules directory is unique.)", () => {
+                const engine = new CLIEngine({ cwd: getPath() });
+
+                engine.executeOnFiles("subdir/test.js");
+            });
+        });
+
+        describe("between two config files in different directories, with multiple node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    ".ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "subdir/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files.)", () => {
+                const engine = new CLIEngine({ cwd: getPath() });
+
+                assertThrows(
+                    () => engine.executeOnFiles("subdir/test.js"),
+                    {
+                        message: `Plugin "foo" was conflicted between "subdir${path.sep}.ec0lintrc.json" and ".ec0lintrc.json".`,
+                        messageTemplate: "plugin-conflict",
+                        messageData: {
+                            pluginId: "foo",
+                            plugins: [
+                                {
+                                    filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: `subdir${path.sep}.ec0lintrc.json`
+                                },
+                                {
+                                    filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: ".ec0lintrc.json"
+                                }
+                            ]
+                        }
+                    }
+                );
+            });
+        });
+
+        describe("between '--config' option and a regular config file, with single node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/mine/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    ".ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files, but node_modules directory is unique.)", () => {
+                const engine = new CLIEngine({
+                    cwd: getPath(),
+                    configFile: "node_modules/mine/.ec0lintrc.json"
+                });
+
+                engine.executeOnFiles("test.js");
+            });
+        });
+
+        describe("between '--config' option and a regular config file, with multiple node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "node_modules/mine/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    ".ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from the base directory of the entry config file, but there are two entry config files.)", () => {
+                const engine = new CLIEngine({
+                    cwd: getPath(),
+                    configFile: "node_modules/mine/.ec0lintrc.json"
+                });
+
+                assertThrows(
+                    () => engine.executeOnFiles("test.js"),
+                    {
+                        message: "Plugin \"foo\" was conflicted between \"--config\" and \".ec0lintrc.json\".",
+                        messageTemplate: "plugin-conflict",
+                        messageData: {
+                            pluginId: "foo",
+                            plugins: [
+                                {
+                                    filePath: path.join(getPath(), "node_modules/mine/node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: "--config"
+                                },
+                                {
+                                    filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: ".ec0lintrc.json"
+                                }
+                            ]
+                        }
+                    }
+                );
+            });
+        });
+
+        describe("between '--plugin' option and a regular config file, with single node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "subdir/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from both CWD and the base directory of the entry config file, but node_modules directory is unique.)", () => {
+                const engine = new CLIEngine({
+                    cwd: getPath(),
+                    plugins: ["foo"]
+                });
+
+                engine.executeOnFiles("subdir/test.js");
+            });
+        });
+
+        describe("between '--plugin' option and a regular config file, with multiple node_modules.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "subdir/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should throw plugin-conflict error. (Load the plugin from both CWD and the base directory of the entry config file.)", () => {
+                const engine = new CLIEngine({
+                    cwd: getPath(),
+                    plugins: ["foo"]
+                });
+
+                assertThrows(
+                    () => engine.executeOnFiles("subdir/test.js"),
+                    {
+                        message: `Plugin "foo" was conflicted between "CLIOptions" and "subdir${path.sep}.ec0lintrc.json".`,
+                        messageTemplate: "plugin-conflict",
+                        messageData: {
+                            pluginId: "foo",
+                            plugins: [
+                                {
+                                    filePath: path.join(getPath(), "node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: "CLIOptions"
+                                },
+                                {
+                                    filePath: path.join(getPath(), "subdir/node_modules/ec0lint-plugin-foo/index.js"),
+                                    importerName: `subdir${path.sep}.ec0lintrc.json`
+                                }
+                            ]
+                        }
+                    }
+                );
+            });
+        });
+
+        describe("'--resolve-plugins-relative-to' option overrides the location that ec0lint load plugins from.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "node_modules/ec0lint-plugin-foo/index.js": "",
+                    ".ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "subdir/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "subdir/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from '--resolve-plugins-relative-to'.)", () => {
+                const engine = new CLIEngine({
+                    cwd: getPath(),
+                    resolvePluginsRelativeTo: getPath()
+                });
+
+                engine.executeOnFiles("subdir/test.js");
+            });
+        });
+
+        describe("between two config files with different target files.", () => {
+            const { prepare, cleanup, getPath } = createCustomTeardown({
+                cwd: `${root}${++uid}`,
+                files: {
+                    "one/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "one/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "one/test.js": "",
+                    "two/node_modules/ec0lint-plugin-foo/index.js": "",
+                    "two/.ec0lintrc.json": JSON.stringify({
+                        plugins: ["foo"]
+                    }),
+                    "two/test.js": ""
+                }
+            });
+
+            beforeEach(prepare);
+            afterEach(cleanup);
+
+            it("'executeOnFiles()' should NOT throw plugin-conflict error. (Load the plugin from the base directory of the entry config file for each target file. Not related to each other.)", () => {
+                const engine = new CLIEngine({ cwd: getPath() });
+                const { results } = engine.executeOnFiles("*/test.js");
+
+                assert.strictEqual(results.length, 2);
+            });
+        });
+    });
 });
