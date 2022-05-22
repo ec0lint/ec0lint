@@ -1542,7 +1542,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 22,
                         fix: {
-                            range: [22, 30],
+                            range: [23, 31],
                             text: ""
                         },
                         severity: 2,
@@ -1590,7 +1590,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 24,
                         fix: {
-                            range: [23, 32],
+                            range: [24, 33],
                             text: ""
                         },
                         severity: 2,
@@ -1639,7 +1639,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 26],
+                            range: [19, 27],
                             text: ""
                         },
                         severity: 2,
@@ -1688,7 +1688,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 25],
+                            range: [19, 26],
                             text: ""
                         },
                         severity: 2,
@@ -1745,7 +1745,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 28],
+                            range: [19, 29],
                             text: ""
                         },
                         severity: 2,
@@ -1757,7 +1757,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 28,
                         fix: {
-                            range: [26, 36],
+                            range: [27, 37],
                             text: ""
                         },
                         severity: 2,
@@ -1822,7 +1822,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 28],
+                            range: [19, 29],
                             text: ""
                         },
                         severity: 2,
@@ -1834,7 +1834,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 28,
                         fix: {
-                            range: [26, 36],
+                            range: [27, 37],
                             text: ""
                         },
                         severity: 2,
@@ -1846,7 +1846,7 @@ describe("apply-disable-directives", () => {
                         line: 1,
                         column: 43,
                         fix: {
-                            range: [42, 52],
+                            range: [43, 53],
                             text: ""
                         },
                         severity: 2,
