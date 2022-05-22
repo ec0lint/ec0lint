@@ -1,5 +1,5 @@
 /**
- * Parser: babel-eslint@10.0.3
+ * Parser: babel-ec0lint@10.0.3
  * Source code:
  * const { ...foo } = bar;
  */

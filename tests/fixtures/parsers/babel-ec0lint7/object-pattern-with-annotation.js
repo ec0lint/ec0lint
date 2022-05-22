@@ -1,5 +1,5 @@
 /**
- * Parser: babel-eslint v7.2.3
+ * Parser: babel-ec0lint v7.2.3
  * Source code:
  * ({
  *     foo

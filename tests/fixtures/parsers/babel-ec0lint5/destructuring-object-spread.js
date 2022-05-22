@@ -1,6 +1,6 @@
 "use strict";
 
-// The AST from babel-eslint version 5.x, for the following code:
+// The AST from babel-ec0lint version 5.x, for the following code:
 //
 //     let { name, ...otherStuff } = obj; otherStuff = {};
 //

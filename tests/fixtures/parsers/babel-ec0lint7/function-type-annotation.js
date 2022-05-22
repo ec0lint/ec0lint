@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Parser: babel-eslint v7.2.1
+ * Parser: babel-ec0lint v7.2.1
  * Source code:
  * type TransformFunction = (el: ASTElement, code: string) => string;
  */
