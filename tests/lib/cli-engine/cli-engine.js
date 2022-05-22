@@ -152,6 +152,7 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
+            assert.strictEqual(report.messags, []);
             // assert.strictEqual(report.results[0].messages[0].ruleId, "strict");
             assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
             // assert.strictEqual(report.warningCount, 5);
