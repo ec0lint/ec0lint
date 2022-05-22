@@ -1316,7 +1316,7 @@ describe("FlatRuleTester", () => {
                 ],
                 invalid: []
             });
-        }, /ec0lint configuration in rule-tester is invalid./u);
+        }, 'ec0lint configuration in rule-tester is invalid.');
     });
 
     it("throw an error when env is included in config", () => {
