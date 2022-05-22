@@ -5,6 +5,8 @@
     ],
 
     "rules": {
-        "no-extra-semi": "error"
+        "no-console": 2,
+        "no-unused-vars": 2,
+        "example/example-rule": 1
     }
 }
