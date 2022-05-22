@@ -2933,6 +2933,7 @@ describe("CLIEngine", () => {
                     engine.executeOnText("test", "throw-in-extends-plugin/test.js");
                 } catch (err) {
                     assert.strictEqual(err.code, "MODULE_NOT_FOUND");
+                    assert.strictEqual(err.messageTemplate, 'test');
                     assert.strictEqual(err.messageTemplate, void 0);
                     return;
                 }
