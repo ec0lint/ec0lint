@@ -1467,8 +1467,8 @@ describe("CLIEngine", () => {
 
                 const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-quotes.js`)]);
 
-                assert.strictEqual(report.results, 'bla');
                 assert.strictEqual(report.results.length, 1);
+                assert.strictEqual(report.results[0].messages[0], 'bla');
                 assert.strictEqual(report.results[0].messages.length, 1);
                 assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
@@ -1484,8 +1484,8 @@ describe("CLIEngine", () => {
 
                 const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-quotes.js`)]);
 
-                assert.strictEqual(report.results, 'test');
                 assert.strictEqual(report.results.length, 1);
+                assert.strictEqual(report.results[0].messages, 'test');
                 assert.strictEqual(report.results[0].messages.length, 0);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
