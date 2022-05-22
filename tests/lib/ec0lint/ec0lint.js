@@ -275,7 +275,7 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages[2].ruleId, "quotes");
             assert.strictEqual(results[0].messages[3].ruleId, "eol-last");
             assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 3);
+            assert.strictEqual(results[0].fixableWarningCount, 2);
             assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
         });
 
