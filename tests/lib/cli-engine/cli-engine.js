@@ -136,6 +136,29 @@ describe("CLIEngine", () => {
 
         let engine;
 
+        it("should report the total and per file errors when using local cwd .ec0lint", () => {
+
+            engine = new CLIEngine();
+
+            const report = engine.executeOnText("var foo = 'bar';");
+
+            assert.strictEqual(report.results.length, 1);
+            assert.strictEqual(report.errorCount, 5);
+            assert.strictEqual(report.warningCount, 0);
+            assert.strictEqual(report.fatalErrorCount, 0);
+            assert.strictEqual(report.fixableErrorCount, 3);
+            assert.strictEqual(report.fixableWarningCount, 0);
+            assert.strictEqual(report.results[0].messages.length, 5);
+            assert.strictEqual(report.results[0].messages[0].ruleId, "strict");
+            assert.strictEqual(report.results[0].messages[1].ruleId, "no-var");
+            assert.strictEqual(report.results[0].messages[2].ruleId, "no-unused-vars");
+            assert.strictEqual(report.results[0].messages[3].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[4].ruleId, "eol-last");
+            assert.strictEqual(report.results[0].fixableErrorCount, 3);
+            assert.strictEqual(report.results[0].fixableWarningCount, 0);
+            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        });
+
         it("should report the total and per file warnings when using local cwd .ec0lintrc", () => {
 
             engine = new CLIEngine({
@@ -152,16 +175,15 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.results[0].messages, []);
-            // assert.strictEqual(report.results[0].messages[0].ruleId, "strict");
-            assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
-            // assert.strictEqual(report.warningCount, 5);
-            assert.strictEqual(report.results[0].messages[2].ruleId, "no-unused-vars");
+            assert.strictEqual(report.warningCount, 4);
             assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].messages[3].ruleId, "quotes");
             assert.strictEqual(report.fixableWarningCount, 3);
-            assert.strictEqual(report.results[0].messages[4].ruleId, "eol-last");
-            assert.strictEqual(report.results[0].messages.length, 5);
+            assert.strictEqual(report.results[0].messages, []);
+            assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
+            assert.strictEqual(report.results[0].messages[1].ruleId, "no-unused-vars");
+            assert.strictEqual(report.results[0].messages[2].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[3].ruleId, "eol-last");
+            assert.strictEqual(report.results[0].messages.length, 4);
             assert.strictEqual(report.results[0].fixableErrorCount, 0);
             assert.strictEqual(report.results[0].fixableWarningCount, 3);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
