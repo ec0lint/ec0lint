@@ -15,7 +15,6 @@ const checker = require("npm-license"),
     dateformat = require("dateformat"),
     fs = require("fs"),
     glob = require("glob"),
-    marked = require("marked"),
     os = require("os"),
     path = require("path"),
     semver = require("semver"),
@@ -32,7 +31,7 @@ require("shelljs/make");
  * @see https://github.com/shelljs/shelljs/blob/124d3349af42cb794ae8f78fc9b0b538109f7ca7/make.js#L4
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/blob/3aa2d09b6408380598cfb802743b07e1edb725f3/types/shelljs/make.d.ts#L8-L11
  */
-const { cat, cd, cp, echo, exec, exit, find, ls, mkdir, pwd, rm, test } = require("shelljs");
+const { cat, cd, cp, echo, exec, exit, find, mkdir, pwd, rm, test } = require("shelljs");
 
 //------------------------------------------------------------------------------
 // Settings
@@ -276,7 +275,7 @@ function generateRelease() {
  * @param {string} prereleaseId The prerelease identifier (alpha, beta, etc.)
  * @returns {void}
  */
-function generatePrerelease(prereleaseId) {
+function generatePrerelease() {
     // ReleaseOps.generateRelease(prereleaseId);
     const releaseInfo = JSON.parse(cat(".ec0lint-release-info.json"));
     const nextMajor = semver.inc(releaseInfo.version, "major");
@@ -763,11 +762,6 @@ target.checkRuleFiles = function() {
     RULE_FILES.forEach(filename => {
         const basename = path.basename(filename, ".js");
         const ruleCode = cat(filename);
-        const knownHeaders = ["Rule Details", "Options", "Environments", "Examples", "Known Limitations", "When Not To Use It", "Related Rules", "Compatibility", "Further Reading"];
-        const docFilename = `docs/rules/${basename}.md`;
-        const docText = cat(docFilename);
-        const docMarkdown = marked.lexer(docText, { gfm: true, silent: false });
-
 
         /**
          * Check if basename is present in rule-types.json file.
@@ -776,57 +770,6 @@ target.checkRuleFiles = function() {
          */
         function isInRuleTypes() {
             return Object.prototype.hasOwnProperty.call(ruleTypes, basename);
-        }
-
-        /**
-         * Check if id is present in title
-         * @param {string} id id to check for
-         * @returns {boolean} true if present
-         * @private
-         * @todo Will remove this check when the main heading is automatically generated from rule metadata.
-         */
-        function hasIdInTitle(id) {
-            return new RegExp(`^# ${id}`, "u").test(docText);
-        }
-
-        /**
-         * Check if all H2 headers are known and in the expected order
-         * Only H2 headers are checked as H1 and H3 are variable and/or rule specific.
-         * @returns {boolean} true if all headers are known and in the right order
-         */
-        function hasKnownHeaders() {
-            const headers = docMarkdown.filter(token => token.type === "heading" && token.depth === 2).map(header => header.text);
-
-            for (const header of headers) {
-                if (!knownHeaders.includes(header)) {
-                    return false;
-                }
-            }
-
-            /*
-             * Check only the subset of used headers for the correct order
-             */
-            const presentHeaders = knownHeaders.filter(header => headers.includes(header));
-
-            for (let i = 0; i < presentHeaders.length; ++i) {
-                if (presentHeaders[i] !== headers[i]) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /**
-         * Check if deprecated information is in rule code and README.md.
-         * @returns {boolean} true if present
-         * @private
-         */
-        function hasDeprecatedInfo() {
-            const deprecatedTagRegExp = /@deprecated in ec0lint/u;
-            const deprecatedInfoRegExp = /This rule was .+deprecated.+in ec0lint/u;
-
-            return deprecatedTagRegExp.test(ruleCode);
         }
 
         /**
@@ -854,29 +797,6 @@ target.checkRuleFiles = function() {
             console.error(`Missing rule from index (./lib/rules/index.js): ${basename}. If you just added a new rule then add an entry for it in this file.`);
             errors++;
         } else {
-
-            /**
-             * ec0TODO - revert after rules deletion
-             * check deprecated
-             * if (ruleDef.meta.deprecated && !hasDeprecatedInfo()) {
-             *     console.error(`Missing deprecated information in ${basename} rule code or README.md. Please write @deprecated tag in code or 「This rule was deprecated in ec0lint ...」 in README.md.`);
-             *     errors++;
-             * }
-             *
-             * const recommended = require("./conf/ec0lint-recommended");
-             *
-             * if (ruleDef.meta.docs.recommended) {
-             *     if (recommended.rules[basename] !== "error") {
-             *         console.error(`Missing rule from ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just made a rule recommended then add an entry for it in this file.`);
-             *         errors++;
-             *     }
-             * } else {
-             *     if (basename in recommended.rules) {
-             *         console.error(`Extra rule in ec0lint:recommended (./conf/ec0lint-recommended.js): ${basename}. If you just added a rule then don't add an entry for it in this file.`);
-             *         errors++;
-             *     }
-             * }
-             */
 
             if (!hasRuleTypeJSDocComment()) {
                 console.error(`Missing rule type JSDoc comment from ${basename} rule code.`);
@@ -1124,5 +1044,5 @@ target.perf = function() {
 };
 
 target.generateRelease = generateRelease;
-target.generatePrerelease = ([prereleaseType]) => generatePrerelease(prereleaseType);
+target.generatePrerelease = () => generatePrerelease();
 target.publishRelease = publishRelease;

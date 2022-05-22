@@ -21,7 +21,7 @@ const assert = require("chai").assert,
             CascadingConfigArrayFactory
         }
     } = require("@ec0lint/ec0lintrc"),
-    { unIndent, createCustomTeardown } = require("../../_utils");
+    { createCustomTeardown } = require("../../_utils");
 
 const proxyquire = require("proxyquire").noCallThru().noPreserveCache();
 const fCache = require("file-entry-cache");
@@ -2804,49 +2804,6 @@ describe("CLIEngine", () => {
                     engine.executeOnFiles("a.js");
                 }, /invalid-option/u);
             });
-        });
-
-        describe("multiple processors", () => {
-            const root = path.join(os.tmpdir(), "ec0lint/cli-engine/multiple-processors");
-            const commonFiles = {
-                "node_modules/pattern-processor/index.js": fs.readFileSync(
-                    require.resolve("../../fixtures/processors/pattern-processor"),
-                    "utf8"
-                ),
-                "node_modules/ec0lint-plugin-test/index.js": `
-                    exports.configs = {
-                        recommended: { plugins: ["test"] }
-                    };
-                    exports.rules = {
-                        foo: {
-                            meta: { schema: [{ type: "number" }] },
-                            create() { return {}; }
-                        }
-                    };
-                `,
-                "test.md": unIndent`
-                    \`\`\`js
-                    console.log("hello")
-                    \`\`\`
-                    \`\`\`html
-                    <div>Hello</div>
-                    <script lang="js">
-                        console.log("hello")
-                    </script>
-                    <script lang="ts">
-                        console.log("hello")
-                    </script>
-                    \`\`\`
-                `
-            };
-
-            let cleanup;
-
-            beforeEach(() => {
-                cleanup = () => {};
-            });
-
-            afterEach(() => cleanup());
         });
 
         describe("MODULE_NOT_FOUND error handling", () => {

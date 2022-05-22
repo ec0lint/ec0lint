@@ -25,7 +25,7 @@ const {
     }
 } = require("@ec0lint/ec0lintrc");
 const hash = require("../../../lib/cli-engine/hash");
-const { unIndent, createCustomTeardown } = require("../../_utils");
+const { createCustomTeardown } = require("../../_utils");
 const coreRules = require("../../../lib/rules");
 const childProcess = require("child_process");
 
@@ -3025,26 +3025,6 @@ describe("ec0lint", () => {
                 assert.strictEqual(count, 2);
                 assert.strictEqual(results[0].messages[0].message, "'b' is defined but never used.");
                 assert.strictEqual(results[0].messages[0].ruleId, "post-processed");
-            });
-
-            describe("autofixing with processors", () => {
-                const HTML_PROCESSOR = Object.freeze({
-                    preprocess(text) {
-                        return [text.replace(/^<script>/u, "").replace(/<\/script>$/u, "")];
-                    },
-                    postprocess(problemLists) {
-                        return problemLists[0].map(problem => {
-                            if (problem.fix) {
-                                const updatedFix = Object.assign({}, problem.fix, {
-                                    range: problem.fix.range.map(index => index + "<script>".length)
-                                });
-
-                                return Object.assign({}, problem, { fix: updatedFix });
-                            }
-                            return problem;
-                        });
-                    }
-                });
             });
         });
 

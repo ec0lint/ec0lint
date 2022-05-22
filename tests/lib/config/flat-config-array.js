@@ -11,8 +11,6 @@
 
 const { FlatConfigArray } = require("../../../lib/config/flat-config-array");
 const assert = require("chai").assert;
-const allConfig = require("../../../conf/ec0lint-all");
-const recommendedConfig = require("../../../conf/ec0lint-recommended");
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -117,24 +115,6 @@ async function assertInvalidConfig(values, message) {
     assert.throws(() => {
         configs.getConfig("foo.js");
     }, message);
-}
-
-/**
- * Normalizes the rule configs to an array with severity to match
- * how Flat Config merges rule options.
- * @param {Object} rulesConfig The rules config portion of a config.
- * @returns {Array} The rules config object.
- */
-function normalizeRuleConfig(rulesConfig) {
-    const rulesConfigCopy = {
-        ...rulesConfig
-    };
-
-    for (const ruleId of Object.keys(rulesConfigCopy)) {
-        rulesConfigCopy[ruleId] = [2];
-    }
-
-    return rulesConfigCopy;
 }
 
 //-----------------------------------------------------------------------------
