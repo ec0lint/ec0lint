@@ -10,4 +10,4 @@
 /tools/internal-rules/node_modules/**
 test.js
 !.ec0lintrc.js
-.ec0lintrc.yml
+/**/.ec0lintrc.yml
