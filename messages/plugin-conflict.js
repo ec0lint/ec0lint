@@ -3,7 +3,7 @@
 module.exports = function(it) {
     const { pluginId, plugins } = it;
 
-    let result = `ec0int couldn't determine the plugin "${pluginId}" uniquely.
+    let result = `ec0lint couldn't determine the plugin "${pluginId}" uniquely.
 `;
 
     for (const { filePath, importerName } of plugins) {

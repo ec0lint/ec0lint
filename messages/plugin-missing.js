@@ -4,7 +4,7 @@ module.exports = function(it) {
     const { pluginName, resolvePluginsRelativeTo, importerName } = it;
 
     return `
-ec0int couldn't find the plugin "${pluginName}".
+ec0lint couldn't find the plugin "${pluginName}".
 
 (The package "${pluginName}" was not found when loaded as a Node module from the directory "${resolvePluginsRelativeTo}".)
 
