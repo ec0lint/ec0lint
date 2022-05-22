@@ -3874,8 +3874,8 @@ describe("CLIEngine", () => {
             const report = engine.executeOnText("var foo = 'bar';");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
-            assert.lengthOf(errorResults[0].messages, 5);
             assert.strictEqual(errorResults[0].messages, []);
+            assert.lengthOf(errorResults[0].messages, 5);
             assert.strictEqual(errorResults[0].errorCount, 5);
             assert.strictEqual(errorResults[0].fixableErrorCount, 3);
             assert.strictEqual(errorResults[0].fixableWarningCount, 0);
