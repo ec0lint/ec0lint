@@ -686,29 +686,6 @@ describe("cli", () => {
         });
     });
 
-    describe("when supplied with a plugin", () => {
-        it("should pass plugins to ESLint", async () => {
-            const examplePluginName = "ec0lint-plugin-example";
-
-            await verifyESLintOpts(`--no-ignore --plugin ${examplePluginName} foo.js`, {
-                overrideConfig: {
-                    plugins: [examplePluginName]
-                }
-            });
-        });
-
-    });
-
-    describe("when supplied with a plugin-loading path", () => {
-        it("should pass the option to ESLint", async () => {
-            const examplePluginDirPath = "foo/bar";
-
-            await verifyESLintOpts(`--resolve-plugins-relative-to ${examplePluginDirPath} foo.js`, {
-                resolvePluginsRelativeTo: examplePluginDirPath
-            });
-        });
-    });
-
     describe("when given an parser name", () => {
         it("should exit with a fatal error if parser is invalid", async () => {
             const filePath = getFixturePath("passing.js");
