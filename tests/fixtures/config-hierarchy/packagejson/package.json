@@ -1,7 +1,7 @@
 {
   "name": "",
   "version": "",
-  "eslintConfig": {
+  "ec0lintConfig": {
     "rules": {
       "quotes": [1, "single"]
     }

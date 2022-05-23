@@ -1,5 +1,5 @@
 /**
- * @fileoverview An opinionated wrapper around eslint-fuzzer
+ * @fileoverview An opinionated wrapper around ec0lint-fuzzer
  * @author Teddy Katz
  */
 
@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 const ProgressBar = require("progress");
-const fuzz = require("./eslint-fuzzer");
+const fuzz = require("./ec0lint-fuzzer");
 const eslint = require("..");
 const linter = new eslint.Linter();
 
@@ -36,7 +36,7 @@ const CRASH_AUTOFIX_TEST_COUNT_RATIO = 3;
  * takes about 15 seconds to run.
  * @param {boolean} [options.fuzzBrokenAutofixes=true] true if the fuzzer should look for invalid autofixes in addition to rule crashes
  * @returns {Object[]} A list of objects, where each object represents a problem detected by the fuzzer. The objects have the same
- * schema as objects returned from eslint-fuzzer.
+ * schema as objects returned from ec0lint-fuzzer.
  */
 function run({ amount = 300, fuzzBrokenAutofixes = true } = {}) {
     const crashTestCount = amount * CRASH_AUTOFIX_TEST_COUNT_RATIO;

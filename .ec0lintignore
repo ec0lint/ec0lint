@@ -1,0 +1,13 @@
+/build/**
+/coverage/**
+/docs/**
+/jsdoc/**
+/templates/**
+/tests/bench/**
+/tests/fixtures/**
+/tests/performance/**
+/tmp/**
+/tools/internal-rules/node_modules/**
+test.js
+!.ec0lintrc.js
+/**/.ec0lintrc.yml

@@ -13,8 +13,7 @@
 const commonjs = {
     exports: true,
     global: false,
-    module: false,
-    require: false
+    module: false
 };
 
 const es3 = {

@@ -33,7 +33,7 @@ ruleTester.run("multiline-comment-style", rule, {
              */
         `,
         `
-            /* eslint semi: [
+            /* ec0lint semi: [
               "error"
             ] */
         `,
@@ -111,7 +111,7 @@ ruleTester.run("multiline-comment-style", rule, {
         },
         {
             code: `
-                /* eslint semi: [
+                /* ec0lint semi: [
                   "error"
                 ] */
             `,
@@ -213,7 +213,7 @@ ruleTester.run("multiline-comment-style", rule, {
         },
         {
             code: `
-                /* eslint semi: "error" */
+                /* ec0lint semi: "error" */
             `,
             options: ["separate-lines"]
         },
@@ -260,7 +260,7 @@ ruleTester.run("multiline-comment-style", rule, {
         },
         {
             code: `
-                /* eslint semi: [
+                /* ec0lint semi: [
                     "error"
                 ] */
             `,

@@ -37,8 +37,8 @@ ruleTester.run("no-inline-comments", rule, {
         "// A valid comment before code\nvar a = 1;",
         "var a = 2;\n// A valid comment after code",
         "// A solitary comment",
-        "var a = 1; // eslint-disable-line no-debugger",
-        "var a = 1; /* eslint-disable-line no-debugger */",
+        "var a = 1; // ec0lint-disable-line no-debugger",
+        "var a = 1; /* ec0lint-disable-line no-debugger */",
 
         // JSX exception
         `var a = (
@@ -131,7 +131,7 @@ ruleTester.run("no-inline-comments", rule, {
             errors: [lineError]
         },
         {
-            code: "var a = 3; // someday use eslint-disable-line here",
+            code: "var a = 3; // someday use ec0lint-disable-line here",
             errors: [lineError]
         },
         {

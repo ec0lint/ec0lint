@@ -58,7 +58,7 @@ module.exports = function(config) {
             ],
             resolve: {
                 alias: {
-                    "../../../lib/linter$": "../../../build/eslint.js"
+                    "../../../lib/linter$": "../../../build/ec0lint.js"
                 }
             },
             stats: "errors-only"

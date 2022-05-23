@@ -1,4 +1,4 @@
-extends: "eslint:recommended"
+extends: "ec0lint:recommended"
 env:
     node: true
 rules:

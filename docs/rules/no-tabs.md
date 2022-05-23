@@ -45,7 +45,7 @@ This rule has an optional object option with the following properties:
 Examples of **correct** code for this rule with the `allowIndentationTabs: true` option:
 
 ```js
-/* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+/* ec0lint no-tabs: ["error", { allowIndentationTabs: true }] */
 
 function test() {
 \tdoSomething();

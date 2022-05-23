@@ -16,7 +16,7 @@
 
 const assert = require("chai").assert,
     stdAssert = require("assert"),
-    { ESLint } = require("../../lib/eslint"),
+    { ESLint } = require("../../lib/ec0lint"),
     BuiltinRules = require("../../lib/rules"),
     path = require("path"),
     sinon = require("sinon"),
@@ -61,7 +61,7 @@ describe("cli", () => {
         sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: sinon.spy() });
 
         const localCLI = proxyquire("../../lib/cli", {
-            "./eslint": { ESLint: fakeESLint },
+            "./ec0lint": { ESLint: fakeESLint },
             "./shared/logging": log
         });
 
@@ -90,8 +90,8 @@ describe("cli", () => {
          * exceeds the default test timeout, so raise it just for this hook.
          * Mocha uses `this` to set timeouts on an individual hook level.
          */
-        this.timeout(60 * 1000); // eslint-disable-line no-invalid-this -- Mocha API
-        fixtureDir = `${os.tmpdir()}/eslint/fixtures`;
+        this.timeout(60 * 1000);
+        fixtureDir = `${os.tmpdir()}/ec0lint/fixtures`;
         sh.mkdir("-p", fixtureDir);
         sh.cp("-r", "./tests/fixtures/.", fixtureDir);
     });
@@ -114,7 +114,7 @@ describe("cli", () => {
         });
 
         it("should not print debug info when passed the empty string as text", async () => {
-            const result = await cli.execute(["--stdin", "--no-eslintrc"], "");
+            const result = await cli.execute(["--stdin", "--no-ec0lintrc"], "");
 
             assert.strictEqual(result, 0);
             assert.isTrue(log.info.notCalled);
@@ -138,7 +138,7 @@ describe("cli", () => {
 
     describe("when given a config file", () => {
         it("should load the specified config file", async () => {
-            const configPath = getFixturePath(".eslintrc");
+            const configPath = getFixturePath(".ec0lintrc");
             const filePath = getFixturePath("passing.js");
 
             await cli.execute(`--config ${configPath} ${filePath}`);
@@ -243,7 +243,7 @@ describe("cli", () => {
     describe("when given a valid built-in formatter name that uses rules meta.", () => {
         it("should execute without any errors", async () => {
             const filePath = getFixturePath("passing.js");
-            const exit = await cli.execute(`-f json-with-metadata ${filePath} --no-eslintrc`);
+            const exit = await cli.execute(`-f json-with-metadata ${filePath} --no-ec0lintrc`);
 
             assert.strictEqual(exit, 0);
 
@@ -447,7 +447,7 @@ describe("cli", () => {
 
     describe("when given a directory with eslint excluded files in the directory", () => {
         it("should throw an error and not process any files", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("cli");
 
             await stdAssert.rejects(async () => {
@@ -458,7 +458,7 @@ describe("cli", () => {
 
     describe("when given a file in excluded files list", () => {
         it("should not process the file", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("passing.js");
             const exit = await cli.execute(`--ignore-path ${ignorePath} ${filePath}`);
 
@@ -468,7 +468,7 @@ describe("cli", () => {
         });
 
         it("should process the file when forced", async () => {
-            const ignorePath = getFixturePath(".eslintignore");
+            const ignorePath = getFixturePath(".ec0lintignore");
             const filePath = getFixturePath("passing.js");
             const exit = await cli.execute(`--ignore-path ${ignorePath} --no-ignore ${filePath}`);
 
@@ -518,7 +518,7 @@ describe("cli", () => {
     describe("when loading a custom rule", () => {
         it("should return an error when rule isn't found", async () => {
             const rulesPath = getFixturePath("rules", "wrong");
-            const configPath = getFixturePath("rules", "eslint.json");
+            const configPath = getFixturePath("rules", "ec0lint.json");
             const filePath = getFixturePath("rules", "test", "test-custom-rule.js");
             const code = `--rulesdir ${rulesPath} --config ${configPath} --no-ignore ${filePath}`;
 
@@ -531,7 +531,7 @@ describe("cli", () => {
 
         it("should return a warning when rule is matched", async () => {
             const rulesPath = getFixturePath("rules");
-            const configPath = getFixturePath("rules", "eslint.json");
+            const configPath = getFixturePath("rules", "ec0lint.json");
             const filePath = getFixturePath("rules", "test", "test-custom-rule.js");
             const code = `--rulesdir ${rulesPath} --config ${configPath} --no-ignore ${filePath}`;
 
@@ -562,36 +562,23 @@ describe("cli", () => {
 
     });
 
-    describe("when executing with no-eslintrc flag", () => {
+    describe("when executing with no-ec0lintrc flag", () => {
         it("should ignore a local config file", async () => {
-            const filePath = getFixturePath("eslintrc", "quotes.js");
-            const exit = await cli.execute(`--no-eslintrc --no-ignore ${filePath}`);
+            const filePath = getFixturePath("ec0lintrc", "quotes.js");
+            const exit = await cli.execute(`--no-ec0lintrc --no-ignore ${filePath}`);
 
             assert.isTrue(log.info.notCalled);
             assert.strictEqual(exit, 0);
         });
     });
 
-    describe("when executing without no-eslintrc flag", () => {
+    describe("when executing without no-ec0lintrc flag", () => {
         it("should load a local config file", async () => {
-            const filePath = getFixturePath("eslintrc", "quotes.js");
+            const filePath = getFixturePath("ec0lintrc", "quotes.js");
             const exit = await cli.execute(`--no-ignore ${filePath}`);
 
             assert.isTrue(log.info.calledOnce);
             assert.strictEqual(exit, 1);
-        });
-    });
-
-    describe("when executing without env flag", () => {
-        it("should not define environment-specific globals", async () => {
-            const files = [
-                getFixturePath("globals-browser.js"),
-                getFixturePath("globals-node.js")
-            ];
-
-            await cli.execute(`--no-eslintrc --config ./conf/eslint-recommended.js --no-ignore ${files.join(" ")}`);
-
-            assert.strictEqual(log.info.args[0][0].split("\n").length, 10);
         });
     });
 
@@ -664,11 +651,11 @@ describe("cli", () => {
 
         it("should write the file and create dirs if they don't exist", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/eslint-output.txt ${filePath}`;
+            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             await cli.execute(code);
 
-            assert.include(fs.readFileSync("tests/output/eslint-output.txt", "utf8"), filePath);
+            assert.include(fs.readFileSync("tests/output/ec0lint-output.txt", "utf8"), filePath);
             assert.isTrue(log.info.notCalled);
         });
 
@@ -687,7 +674,7 @@ describe("cli", () => {
 
         it("should return an error if the path could not be written to", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/eslint-output.txt ${filePath}`;
+            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             fs.writeFileSync("tests/output", "foo");
 
@@ -696,29 +683,6 @@ describe("cli", () => {
             assert.strictEqual(exit, 2);
             assert.isTrue(log.info.notCalled);
             assert.isTrue(log.error.calledOnce);
-        });
-    });
-
-    describe("when supplied with a plugin", () => {
-        it("should pass plugins to ESLint", async () => {
-            const examplePluginName = "eslint-plugin-example";
-
-            await verifyESLintOpts(`--no-ignore --plugin ${examplePluginName} foo.js`, {
-                overrideConfig: {
-                    plugins: [examplePluginName]
-                }
-            });
-        });
-
-    });
-
-    describe("when supplied with a plugin-loading path", () => {
-        it("should pass the option to ESLint", async () => {
-            const examplePluginDirPath = "foo/bar";
-
-            await verifyESLintOpts(`--resolve-plugins-relative-to ${examplePluginDirPath} foo.js`, {
-                resolvePluginsRelativeTo: examplePluginDirPath
-            });
         });
     });
 
@@ -789,7 +753,7 @@ describe("cli", () => {
 
             assert.strictEqual(exitCode, 1);
             assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ESLint found too many warnings");
+            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
         });
 
         it("should exit with exit code 1 without printing warnings if the quiet option is enabled and warning count exceeds threshold", async () => {
@@ -798,7 +762,7 @@ describe("cli", () => {
 
             assert.strictEqual(exitCode, 1);
             assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ESLint found too many warnings");
+            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
             assert.ok(log.info.notCalled); // didn't print warnings
         });
 
@@ -878,7 +842,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -896,7 +860,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -926,7 +890,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().once();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -961,7 +925,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -996,7 +960,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1012,7 +976,7 @@ describe("cli", () => {
             const fakeESLint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1041,7 +1005,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1051,7 +1015,7 @@ describe("cli", () => {
 
         });
 
-        it("should pass fixTypes to ESLint when --fix-type is passed", async () => {
+        it("should pass fixTypes to ec0lint when --fix-type is passed", async () => {
 
             const expectedESLintOptions = {
                 fix: true,
@@ -1067,7 +1031,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1100,7 +1064,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1135,7 +1099,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1169,7 +1133,7 @@ describe("cli", () => {
             fakeESLint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 
@@ -1184,7 +1148,7 @@ describe("cli", () => {
             const fakeESLint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./eslint": { ESLint: fakeESLint },
+                "./ec0lint": { ESLint: fakeESLint },
                 "./shared/logging": log
             });
 

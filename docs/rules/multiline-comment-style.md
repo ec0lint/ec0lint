@@ -16,13 +16,13 @@ This rule has a string option, which can have one of the following values:
 * `"bare-block"`: Disallows consecutive line comments in favor of block comments, and disallows block comments from having a `"*"` character before each line.
 * `"separate-lines"`: Disallows block comments in favor of consecutive line comments
 
-The rule always ignores directive comments such as `/* eslint-disable */`. Additionally, unless the mode is `"starred-block"`, the rule ignores JSDoc comments.
+The rule always ignores directive comments such as `/* ec0lint-disable */`. Additionally, unless the mode is `"starred-block"`, the rule ignores JSDoc comments.
 
 Examples of **incorrect** code for this rule with the default `"starred-block"` option:
 
 ```js
 
-/* eslint multiline-comment-style: ["error", "starred-block"] */
+/* ec0lint multiline-comment-style: ["error", "starred-block"] */
 
 // this line
 // calls foo()
@@ -53,7 +53,7 @@ foo();
 Examples of **correct** code for this rule with the default `"starred-block"` option:
 
 ```js
-/* eslint multiline-comment-style: ["error", "starred-block"] */
+/* ec0lint multiline-comment-style: ["error", "starred-block"] */
 
 /*
  * this line
@@ -67,7 +67,7 @@ foo();
 Examples of **incorrect** code for this rule with the `"bare-block"` option:
 
 ```js
-/* eslint multiline-comment-style: ["error", "bare-block"] */
+/* ec0lint multiline-comment-style: ["error", "bare-block"] */
 
 // this line
 // calls foo()
@@ -83,7 +83,7 @@ foo();
 Examples of **correct** code for this rule with the `"bare-block"` option:
 
 ```js
-/* eslint multiline-comment-style: ["error", "bare-block"] */
+/* ec0lint multiline-comment-style: ["error", "bare-block"] */
 
 /* this line
    calls foo() */
@@ -94,7 +94,7 @@ Examples of **incorrect** code for this rule with the `"separate-lines"` option:
 
 ```js
 
-/* eslint multiline-comment-style: ["error", "separate-lines"] */
+/* ec0lint multiline-comment-style: ["error", "separate-lines"] */
 
 /* This line
 calls foo() */
@@ -111,7 +111,7 @@ foo();
 Examples of **correct** code for this rule with the `"separate-lines"` option:
 
 ```js
-/* eslint multiline-comment-style: ["error", "separate-lines"] */
+/* ec0lint multiline-comment-style: ["error", "separate-lines"] */
 
 // This line
 // calls foo()

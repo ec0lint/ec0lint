@@ -155,16 +155,16 @@ ruleTester.run("spaced-comment", rule, {
             options: ["always", { markers: ["global"] }]
         },
         {
-            code: "/*eslint-env node*/",
-            options: ["always", { markers: ["eslint-env"] }]
+            code: "/*ec0lint-env node*/",
+            options: ["always", { markers: ["ec0lint-env"] }]
         },
         {
-            code: "/*eslint eqeqeq:0, curly: 2*/",
-            options: ["always", { markers: ["eslint"] }]
+            code: "/*ec0lint eqeqeq:0, curly: 2*/",
+            options: ["always", { markers: ["ec0lint"] }]
         },
         {
-            code: "/*eslint-disable no-alert, no-console */\nalert()\nconsole.log()\n/*eslint-enable no-alert */",
-            options: ["always", { markers: ["eslint-enable", "eslint-disable"] }]
+            code: "/*ec0lint-disable no-alert, no-console */\nalert()\nconsole.log()\n/*ec0lint-enable no-alert */",
+            options: ["always", { markers: ["ec0lint-enable", "ec0lint-disable"] }]
         },
 
         // misc. variations

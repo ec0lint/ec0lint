@@ -1,8 +1,8 @@
 ﻿{
     "private": true,
-    "name": "eslint-test",
+    "name": "ec0lint-test",
     "version": "0.0.0",
-    "eslintConfig": {
+    "ec0lintConfig": {
         "rules": {
             "semi": "error"
         }

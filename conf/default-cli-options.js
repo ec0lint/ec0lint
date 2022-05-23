@@ -9,7 +9,7 @@ module.exports = {
     configFile: null,
     baseConfig: false,
     rulePaths: [],
-    useEslintrc: true,
+    useEc0lintrc: true,
     envs: [],
     globals: [],
     extensions: null,
@@ -23,7 +23,7 @@ module.exports = {
      * it will always be used
      */
     cacheLocation: "",
-    cacheFile: ".eslintcache",
+    cacheFile: ".ec0lintcache",
     cacheStrategy: "metadata",
     fix: false,
     allowInlineConfig: true,

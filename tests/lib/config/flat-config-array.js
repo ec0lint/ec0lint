@@ -11,8 +11,6 @@
 
 const { FlatConfigArray } = require("../../../lib/config/flat-config-array");
 const assert = require("chai").assert;
-const allConfig = require("../../../conf/ec0lint-all");
-const recommendedConfig = require("../../../conf/eslint-recommended");
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -119,24 +117,6 @@ async function assertInvalidConfig(values, message) {
     }, message);
 }
 
-/**
- * Normalizes the rule configs to an array with severity to match
- * how Flat Config merges rule options.
- * @param {Object} rulesConfig The rules config portion of a config.
- * @returns {Array} The rules config object.
- */
-function normalizeRuleConfig(rulesConfig) {
-    const rulesConfigCopy = {
-        ...rulesConfig
-    };
-
-    for (const ruleId of Object.keys(rulesConfigCopy)) {
-        rulesConfigCopy[ruleId] = [2];
-    }
-
-    return rulesConfigCopy;
-}
-
 //-----------------------------------------------------------------------------
 // Tests
 //-----------------------------------------------------------------------------
@@ -181,26 +161,6 @@ describe("FlatConfigArray", () => {
 
         assert.notStrictEqual(base[0].languageOptions, config.languageOptions);
         assert.notStrictEqual(base[0].languageOptions.parserOptions, config.languageOptions.parserOptions, "parserOptions should be new object");
-    });
-
-    describe("Special configs", () => {
-        it("eslint:recommended is replaced with an actual config", async () => {
-            const configs = new FlatConfigArray(["eslint:recommended"], { basePath: __dirname });
-
-            await configs.normalize();
-            const config = configs.getConfig("foo.js");
-
-            assert.deepStrictEqual(config.rules, normalizeRuleConfig(recommendedConfig.rules));
-        });
-
-        it("eslint:all is replaced with an actual config", async () => {
-            const configs = new FlatConfigArray(["eslint:all"], { basePath: __dirname });
-
-            await configs.normalize();
-            const config = configs.getConfig("foo.js");
-
-            assert.deepStrictEqual(config.rules, normalizeRuleConfig(allConfig.rules));
-        });
     });
 
     describe("Config Properties", () => {
@@ -419,19 +379,19 @@ describe("FlatConfigArray", () => {
                     },
                     {
                         plugins: {
-                            markdown: {
+                            node: {
                                 processors: {
-                                    markdown: stubProcessor
+                                    node: stubProcessor
                                 }
                             }
                         },
-                        processor: "markdown/markdown"
+                        processor: "node/node"
                     }
                 ], {
                     plugins: {
-                        markdown: {
+                        node: {
                             processors: {
-                                markdown: stubProcessor
+                                node: stubProcessor
                             }
                         },
                         ...baseConfig.plugins
@@ -449,7 +409,7 @@ describe("FlatConfigArray", () => {
 
                 return assertMergedResult([
                     {
-                        processor: "markdown/markdown"
+                        processor: "node/node"
                     },
                     {
                         processor

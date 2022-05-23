@@ -1,4 +1,4 @@
-/*eslint-env node*/
+/*ec0lint-env node*/
 /*expected
 initial->s1_1->s1_2->s1_3->s1_4;
 s1_1->s1_4;

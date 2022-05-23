@@ -47,7 +47,7 @@ Additionally, the rule accepts an optional object option with an `"overrides"` k
 Examples of **incorrect** code for this rule with the default `"beside"` option:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "beside"] */
+/* ec0lint nonblock-statement-body-position: ["error", "beside"] */
 
 if (foo)
   bar();
@@ -69,7 +69,7 @@ while (foo)
 Examples of **correct** code for this rule with the default `"beside"` option:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "beside"] */
+/* ec0lint nonblock-statement-body-position: ["error", "beside"] */
 
 if (foo) bar();
 else baz();
@@ -90,7 +90,7 @@ if (foo) { // block statements are always allowed with this rule
 Examples of **incorrect** code for this rule with the `"below"` option:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "below"] */
+/* ec0lint nonblock-statement-body-position: ["error", "below"] */
 
 if (foo) bar();
 else baz();
@@ -105,7 +105,7 @@ do bar(); while (foo)
 Examples of **correct** code for this rule with the `"below"` option:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "below"] */
+/* ec0lint nonblock-statement-body-position: ["error", "below"] */
 
 if (foo)
   bar();
@@ -132,7 +132,7 @@ if (foo) {
 Examples of **incorrect** code for this rule with the `"beside", { "overrides": { "while": "below" } }` rule:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "beside", { "overrides": { "while": "below" } }] */
+/* ec0lint nonblock-statement-body-position: ["error", "beside", { "overrides": { "while": "below" } }] */
 
 if (foo)
   bar();
@@ -143,7 +143,7 @@ while (foo) bar();
 Examples of **correct** code for this rule with the `"beside", { "overrides": { "while": "below" } }` rule:
 
 ```js
-/* eslint nonblock-statement-body-position: ["error", "beside", { "overrides": { "while": "below" } }] */
+/* ec0lint nonblock-statement-body-position: ["error", "beside", { "overrides": { "while": "below" } }] */
 
 if (foo) bar();
 

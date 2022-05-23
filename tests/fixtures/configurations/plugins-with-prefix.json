@@ -1,6 +1,6 @@
 {
     "plugins": [
-        "eslint-plugin-example"
+        "ec0lint-plugin-example"
     ],
 
     "rules": {

@@ -5,4 +5,4 @@
 
 # The test fixtures are text files.
 /tests/fixtures/**/* text eol=lf
-/tests/fixtures/ignored-paths/crlf/.eslintignore text eol=crlf
+/tests/fixtures/ignored-paths/crlf/.ec0lintignore text eol=crlf

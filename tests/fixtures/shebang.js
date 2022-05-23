@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/*eslint no-process-exit:0*/
+/*ec0lint no-process-exit:0*/
 
 var cli = require("../lib/cli");
 var exitCode = cli.execute(Array.prototype.slice.call(process.argv, 2));

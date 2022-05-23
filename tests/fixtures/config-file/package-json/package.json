@@ -1,5 +1,5 @@
 {
-    "eslintConfig": {
+    "ec0lintConfig": {
         "env": {
             "es6": true
         }

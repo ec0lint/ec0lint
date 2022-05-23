@@ -202,22 +202,6 @@ describe("options", () => {
         });
     });
 
-    describe("--stdin", () => {
-        it("should return true for .stdin when passed", () => {
-            const currentOptions = options.parse("--stdin");
-
-            assert.isTrue(currentOptions.stdin);
-        });
-    });
-
-    describe("--stdin-filename", () => {
-        it("should return a string for .stdinFilename when passed", () => {
-            const currentOptions = options.parse("--stdin-filename test.js");
-
-            assert.strictEqual(currentOptions.stdinFilename, "test.js");
-        });
-    });
-
     describe("--global", () => {
         it("should return an array for a single occurrence", () => {
             const currentOptions = options.parse("--global foo");
@@ -255,42 +239,6 @@ describe("options", () => {
         });
     });
 
-    describe("--plugin", () => {
-        it("should return an array when passed a single occurrence", () => {
-            const currentOptions = options.parse("--plugin single");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 1);
-            assert.strictEqual(currentOptions.plugin[0], "single");
-        });
-
-        it("should return an array when passed a comma-delimited string", () => {
-            const currentOptions = options.parse("--plugin foo,bar");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 2);
-            assert.strictEqual(currentOptions.plugin[0], "foo");
-            assert.strictEqual(currentOptions.plugin[1], "bar");
-        });
-
-        it("should return an array when passed multiple times", () => {
-            const currentOptions = options.parse("--plugin foo --plugin bar");
-
-            assert.isArray(currentOptions.plugin);
-            assert.strictEqual(currentOptions.plugin.length, 2);
-            assert.strictEqual(currentOptions.plugin[0], "foo");
-            assert.strictEqual(currentOptions.plugin[1], "bar");
-        });
-    });
-
-    describe("--quiet", () => {
-        it("should return true for .quiet when passed", () => {
-            const currentOptions = options.parse("--quiet");
-
-            assert.isTrue(currentOptions.quiet);
-        });
-    });
-
     describe("--max-warnings", () => {
         it("should return correct value for .maxWarnings when passed", () => {
             const currentOptions = options.parse("--max-warnings 10");
@@ -324,31 +272,6 @@ describe("options", () => {
             const currentOptions = options.parse("--fix");
 
             assert.isTrue(currentOptions.fix);
-        });
-    });
-
-    describe("--fix-type", () => {
-        it("should return one value with --fix-type is passed", () => {
-            const currentOptions = options.parse("--fix-type problem");
-
-            assert.strictEqual(currentOptions.fixType.length, 1);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-        });
-
-        it("should return two values when --fix-type is passed twice", () => {
-            const currentOptions = options.parse("--fix-type problem --fix-type suggestion");
-
-            assert.strictEqual(currentOptions.fixType.length, 2);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-            assert.strictEqual(currentOptions.fixType[1], "suggestion");
-        });
-
-        it("should return two values when --fix-type is passed a comma-separated value", () => {
-            const currentOptions = options.parse("--fix-type problem,suggestion");
-
-            assert.strictEqual(currentOptions.fixType.length, 2);
-            assert.strictEqual(currentOptions.fixType[0], "problem");
-            assert.strictEqual(currentOptions.fixType[1], "suggestion");
         });
     });
 

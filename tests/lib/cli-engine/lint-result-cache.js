@@ -24,7 +24,7 @@ describe("LintResultCache", () => {
         __dirname,
         "../../fixtures/lint-result-cache"
     );
-    const cacheFileLocation = path.join(fixturePath, ".eslintcache");
+    const cacheFileLocation = path.join(fixturePath, ".ec0lintcache");
     const fileEntryCacheStubs = {};
 
     let LintResultCache,
@@ -147,8 +147,8 @@ describe("LintResultCache", () => {
         });
 
         describe("when calculating the hashing", () => {
-            it("contains eslint version during hashing", () => {
-                const version = "eslint-=-version";
+            it("contains ec0lint version during hashing", () => {
+                const version = "ec0lint-=-version";
                 const NewLintResultCache = proxyquire("../../../lib/cli-engine/lint-result-cache.js", {
                     "../../package.json": { version },
                     "./hash": hashStub

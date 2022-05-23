@@ -1,0 +1,6 @@
+{
+    "rules": "bad_configurations",
+    "extends": [
+        "ec0lint-config-test"
+    ]
+}

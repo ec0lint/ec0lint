@@ -9,7 +9,7 @@ This rule improves readability by enforcing lines between class members. It will
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always"]*/
+/* ec0lint lines-between-class-members: ["error", "always"]*/
 class MyClass {
   x;
   foo() {
@@ -24,7 +24,7 @@ class MyClass {
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always"]*/
+/* ec0lint lines-between-class-members: ["error", "always"]*/
 class MyClass {
   x;
 
@@ -41,7 +41,7 @@ class MyClass {
 Examples of additional **correct** code for this rule:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always"]*/
+/* ec0lint lines-between-class-members: ["error", "always"]*/
 class MyClass {
   x = 1
 
@@ -66,14 +66,14 @@ Object option:
 Examples of **incorrect** code for this rule with the string option:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always"]*/
+/* ec0lint lines-between-class-members: ["error", "always"]*/
 class Foo{
   x;
   bar(){}
   baz(){}
 }
 
-/* eslint lines-between-class-members: ["error", "never"]*/
+/* ec0lint lines-between-class-members: ["error", "never"]*/
 class Foo{
   x;
 
@@ -86,7 +86,7 @@ class Foo{
 Examples of **correct** code for this rule with the string option:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always"]*/
+/* ec0lint lines-between-class-members: ["error", "always"]*/
 class Foo{
   x;
 
@@ -95,7 +95,7 @@ class Foo{
   baz(){}
 }
 
-/* eslint lines-between-class-members: ["error", "never"]*/
+/* ec0lint lines-between-class-members: ["error", "never"]*/
 class Foo{
   x;
   bar(){}
@@ -106,7 +106,7 @@ class Foo{
 Examples of **correct** code for this rule with the object option:
 
 ```js
-/* eslint lines-between-class-members: ["error", "always", { "exceptAfterSingleLine": true }]*/
+/* ec0lint lines-between-class-members: ["error", "always", { "exceptAfterSingleLine": true }]*/
 class Foo{
   x; // single line class member
   bar(){} // single line class member

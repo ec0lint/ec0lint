@@ -1,0 +1,32 @@
+{
+  "name": "ec0lint-config-ec0lint",
+  "version": "0.0.8",
+  "author": "Malwina Kubas @malwinq",
+  "description": "Default ec0lint configuration for ec0lint projects",
+  "scripts": {
+    "test": "node ./index.js",
+    "prepublish": "npm test"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "default.yml"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ec0lint/ec0lint"
+  },
+  "homepage": "TBD",
+  "bugs": "https://github.com/ec0lint/ec0lint/issues/",
+  "keywords": [
+    "ec0lint",
+    "ec0lintconfig",
+    "ec0lint-config",
+    "eslint"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": "^10.12.0 || >=12.0.0"
+  }
+}

@@ -131,7 +131,7 @@ describe("Validator", () => {
         it("should do nothing with a valid eslint config", () => {
             validator.validate(
                 {
-                    $schema: "http://json.schemastore.org/eslintrc",
+                    $schema: "http://json.schemastore.org/ec0lintrc",
                     root: true,
                     globals: { globalFoo: "readonly" },
                     parser: "parserFoo",
@@ -262,7 +262,7 @@ describe("Validator", () => {
             it("should throw with an object", () => {
                 const fn = validator.validate.bind(null, { extends: {} }, null, ruleMapper);
 
-                assert.throws(fn, "ESLint configuration in null is invalid:\n\t- Property \"extends\" is the wrong type (expected string but got `{}`).\n\t- Property \"extends\" is the wrong type (expected array but got `{}`).\n\t- \"extends\" should match exactly one schema in oneOf. Value: {}.");
+                assert.throws(fn, "ec0lint configuration in null is invalid:\n\t- Property \"extends\" is the wrong type (expected string but got `{}`).\n\t- Property \"extends\" is the wrong type (expected array but got `{}`).\n\t- \"extends\" should match exactly one schema in oneOf. Value: {}.");
             });
         });
 
@@ -345,7 +345,7 @@ describe("Validator", () => {
             it("should disallow globals set to invalid values", () => {
                 assert.throws(
                     () => validator.validate({ globals: { foo: "AAAAA" } }, "tests", ruleMapper),
-                    "ESLint configuration of global 'foo' in tests is invalid:\n'AAAAA' is not a valid configuration for a global (use 'readonly', 'writable', or 'off')"
+                    "ec0lint configuration of global 'foo' in tests is invalid:\n'AAAAA' is not a valid configuration for a global (use 'readonly', 'writable', or 'off')"
                 );
             });
         });
@@ -362,13 +362,13 @@ describe("Validator", () => {
             it("should throw if override does not specify files", () => {
                 const fn = validator.validate.bind(null, { overrides: [{ rules: {} }] }, "tests", ruleMapper);
 
-                assert.throws(fn, "ESLint configuration in tests is invalid:\n\t- \"overrides[0]\" should have required property 'files'. Value: {\"rules\":{}}.\n");
+                assert.throws(fn, "ec0lint configuration in tests is invalid:\n\t- \"overrides[0]\" should have required property 'files'. Value: {\"rules\":{}}.\n");
             });
 
             it("should throw if override has an empty files array", () => {
                 const fn = validator.validate.bind(null, { overrides: [{ files: [] }] }, "tests", ruleMapper);
 
-                assert.throws(fn, "ESLint configuration in tests is invalid:\n\t- Property \"overrides[0].files\" is the wrong type (expected string but got `[]`).\n\t- \"overrides[0].files\" should NOT have fewer than 1 items. Value: [].\n\t- \"overrides[0].files\" should match exactly one schema in oneOf. Value: [].\n");
+                assert.throws(fn, "ec0lint configuration in tests is invalid:\n\t- Property \"overrides[0].files\" is the wrong type (expected string but got `[]`).\n\t- \"overrides[0].files\" should NOT have fewer than 1 items. Value: [].\n\t- \"overrides[0].files\" should match exactly one schema in oneOf. Value: [].\n");
             });
 
             it("should not throw if override has nested overrides", () => {
@@ -376,13 +376,13 @@ describe("Validator", () => {
             });
 
             it("should not throw if override extends", () => {
-                validator.validate({ overrides: [{ files: "*", extends: "eslint-recommended" }] }, "tests", ruleMapper);
+                validator.validate({ overrides: [{ files: "*", extends: "ec0lint-recommended" }] }, "tests", ruleMapper);
             });
 
             it("should throw if override tries to set root", () => {
                 const fn = validator.validate.bind(null, { overrides: [{ files: "*", root: "true" }] }, "tests", ruleMapper);
 
-                assert.throws(fn, "ESLint configuration in tests is invalid:\n\t- Unexpected top-level property \"overrides[0].root\".\n");
+                assert.throws(fn, "ec0lint configuration in tests is invalid:\n\t- Unexpected top-level property \"overrides[0].root\".\n");
             });
 
             describe("env", () => {

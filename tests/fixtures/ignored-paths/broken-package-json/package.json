@@ -1,11 +1,11 @@
 {
     "name": "mypackage",
     "version": "0.0.1",
-    "eslintConfig": {
+    "ec0lintConfig": {
         "env": {
             "browser": true,
             "node": true
         }
     }
-    "eslintIgnore": "hello.js"
+    "ec0lintIgnore": "hello.js"
 }

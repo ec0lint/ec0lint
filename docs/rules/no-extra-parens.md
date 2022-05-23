@@ -35,7 +35,7 @@ This rule has an object option for exceptions to the `"all"` option:
 Examples of **incorrect** code for this rule with the default `"all"` option:
 
 ```js
-/* eslint no-extra-parens: "error" */
+/* ec0lint no-extra-parens: "error" */
 
 a = (b * c);
 
@@ -63,7 +63,7 @@ class B {
 Examples of **correct** code for this rule with the default `"all"` option:
 
 ```js
-/* eslint no-extra-parens: "error" */
+/* ec0lint no-extra-parens: "error" */
 
 (0).toString();
 
@@ -97,7 +97,7 @@ class B {
 Examples of **correct** code for this rule with the `"all"` and `{ "conditionalAssign": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "conditionalAssign": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "conditionalAssign": false }] */
 
 while ((foo = bar())) {}
 
@@ -113,7 +113,7 @@ for (;(a = b););
 Examples of **correct** code for this rule with the `"all"` and `{ "returnAssign": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "returnAssign": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "returnAssign": false }] */
 
 function a(b) {
   return (b = 1);
@@ -133,7 +133,7 @@ b => b ? (c = d) : (c = e);
 Examples of **correct** code for this rule with the `"all"` and `{ "nestedBinaryExpressions": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "nestedBinaryExpressions": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "nestedBinaryExpressions": false }] */
 
 x = a || (b && c);
 x = a + (b * c);
@@ -145,7 +145,7 @@ x = (a * b) / c;
 Examples of **correct** code for this rule with the `all` and `{ "ignoreJSX": "all" }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { ignoreJSX: "all" }] */
+/* ec0lint no-extra-parens: ["error", "all", { ignoreJSX: "all" }] */
 const Component = (<div />)
 const Component = (
     <div
@@ -157,7 +157,7 @@ const Component = (
 Examples of **incorrect** code for this rule with the `all` and `{ "ignoreJSX": "multi-line" }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { ignoreJSX: "multi-line" }] */
+/* ec0lint no-extra-parens: ["error", "all", { ignoreJSX: "multi-line" }] */
 const Component = (<div />)
 const Component = (<div><p /></div>)
 ```
@@ -165,7 +165,7 @@ const Component = (<div><p /></div>)
 Examples of **correct** code for this rule with the `all` and `{ "ignoreJSX": "multi-line" }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { ignoreJSX: "multi-line" }] */
+/* ec0lint no-extra-parens: ["error", "all", { ignoreJSX: "multi-line" }] */
 const Component = (
     <div>
         <p />
@@ -181,7 +181,7 @@ const Component = (
 Examples of **incorrect** code for this rule with the `all` and `{ "ignoreJSX": "single-line" }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { ignoreJSX: "single-line" }] */
+/* ec0lint no-extra-parens: ["error", "all", { ignoreJSX: "single-line" }] */
 const Component = (
     <div>
         <p />
@@ -197,7 +197,7 @@ const Component = (
 Examples of **correct** code for this rule with the `all` and `{ "ignoreJSX": "single-line" }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { ignoreJSX: "single-line" }] */
+/* ec0lint no-extra-parens: ["error", "all", { ignoreJSX: "single-line" }] */
 const Component = (<div />)
 const Component = (<div><p /></div>)
 ```
@@ -207,7 +207,7 @@ const Component = (<div><p /></div>)
 Examples of **correct** code for this rule with the `"all"` and `{ "enforceForArrowConditionals": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "enforceForArrowConditionals": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "enforceForArrowConditionals": false }] */
 
 const b = a => 1 ? 2 : 3;
 const d = c => (1 ? 2 : 3);
@@ -218,7 +218,7 @@ const d = c => (1 ? 2 : 3);
 Examples of **correct** code for this rule with the `"all"` and `{ "enforceForSequenceExpressions": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "enforceForSequenceExpressions": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "enforceForSequenceExpressions": false }] */
 
 (a, b);
 
@@ -232,7 +232,7 @@ while ((val = foo(), val < 10));
 Examples of **correct** code for this rule with the `"all"` and `{ "enforceForNewInMemberExpressions": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "enforceForNewInMemberExpressions": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "enforceForNewInMemberExpressions": false }] */
 
 const foo = (new Bar()).baz;
 
@@ -246,7 +246,7 @@ const quux = (new Bar())[baz];
 Examples of **correct** code for this rule with the `"all"` and `{ "enforceForFunctionPrototypeMethods": false }` options:
 
 ```js
-/* eslint no-extra-parens: ["error", "all", { "enforceForFunctionPrototypeMethods": false }] */
+/* ec0lint no-extra-parens: ["error", "all", { "enforceForFunctionPrototypeMethods": false }] */
 
 const foo = (function () {}).call();
 
@@ -262,7 +262,7 @@ const quux = (function () {}.apply());
 Examples of **incorrect** code for this rule with the `"functions"` option:
 
 ```js
-/* eslint no-extra-parens: ["error", "functions"] */
+/* ec0lint no-extra-parens: ["error", "functions"] */
 
 ((function foo() {}))();
 
@@ -272,7 +272,7 @@ var y = (function () {return 1;});
 Examples of **correct** code for this rule with the `"functions"` option:
 
 ```js
-/* eslint no-extra-parens: ["error", "functions"] */
+/* ec0lint no-extra-parens: ["error", "functions"] */
 
 (0).toString();
 

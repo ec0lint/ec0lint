@@ -1,4 +1,4 @@
 
-/*eslint-env node*/
+/*ec0lint-env node*/
 
 console.log('bar');

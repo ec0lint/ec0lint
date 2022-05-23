@@ -1,0 +1,2 @@
+plugins:
+    ["example", "ec0lint-plugin-test"]

@@ -76,14 +76,14 @@ Examples of **incorrect** code for this rule with the `"always"` option:
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "block": { "balanced": true } }] */
+/* ec0lint spaced-comment: ["error", "always", { "block": { "balanced": true } }] */
 /* This is a comment with whitespace at the beginning but not the end*/
 ```
 
 Examples of **correct** code for this rule with the `"always"` option:
 
 ```js
-/* eslint spaced-comment: ["error", "always"] */
+/* ec0lint spaced-comment: ["error", "always"] */
 
 // This is a comment with a whitespace at the beginning
 
@@ -99,7 +99,7 @@ This comment has a newline
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always"] */
+/* ec0lint spaced-comment: ["error", "always"] */
 
 /**
 * I am jsdoc
@@ -146,7 +146,7 @@ Examples of **correct** code for this rule with the `"never"` option:
 Examples of **incorrect** code for this rule with the `"always"` option combined with `"exceptions"`:
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "block": { "exceptions": ["-"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "block": { "exceptions": ["-"] } }] */
 
 //--------------
 // Comment block
@@ -154,7 +154,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "exceptions": ["-", "+"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "exceptions": ["-", "+"] }] */
 
 //------++++++++
 // Comment block
@@ -162,7 +162,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "exceptions": ["-", "+"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "exceptions": ["-", "+"] }] */
 
 /*------++++++++*/
 /* Comment block */
@@ -170,7 +170,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "line": { "exceptions": ["-+"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "line": { "exceptions": ["-+"] } }] */
 
 /*-+-+-+-+-+-+-+*/
 // Comment block
@@ -178,7 +178,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "block": { "exceptions": ["*"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "block": { "exceptions": ["*"] } }] */
 
 /******** COMMENT *******/
 ```
@@ -186,7 +186,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 Examples of **correct** code for this rule with the `"always"` option combined with `"exceptions"`:
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "exceptions": ["-"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "exceptions": ["-"] }] */
 
 //--------------
 // Comment block
@@ -194,7 +194,7 @@ Examples of **correct** code for this rule with the `"always"` option combined w
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "line": { "exceptions": ["-"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "line": { "exceptions": ["-"] } }] */
 
 //--------------
 // Comment block
@@ -202,7 +202,7 @@ Examples of **correct** code for this rule with the `"always"` option combined w
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "exceptions": ["*"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "exceptions": ["*"] }] */
 
 /****************
  * Comment block
@@ -210,7 +210,7 @@ Examples of **correct** code for this rule with the `"always"` option combined w
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "exceptions": ["-+"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "exceptions": ["-+"] }] */
 
 //-+-+-+-+-+-+-+
 // Comment block
@@ -222,7 +222,7 @@ Examples of **correct** code for this rule with the `"always"` option combined w
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "block": { "exceptions": ["-+"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "block": { "exceptions": ["-+"] } }] */
 
 /*-+-+-+-+-+-+-+*/
 // Comment block
@@ -230,7 +230,7 @@ Examples of **correct** code for this rule with the `"always"` option combined w
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "block": { "exceptions": ["*"] } }] */
+/* ec0lint spaced-comment: ["error", "always", { "block": { "exceptions": ["*"] } }] */
 
 /***************/
 
@@ -244,7 +244,7 @@ COMMENT
 Examples of **incorrect** code for this rule with the `"always"` option combined with `"markers"`:
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "markers": ["/"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "markers": ["/"] }] */
 
 ///This is a comment with a marker but without whitespace
 ```
@@ -262,7 +262,7 @@ Examples of **incorrect** code for this rule with the `"always"` option combined
 Examples of **correct** code for this rule with the `"always"` option combined with `"markers"`:
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "markers": ["/"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "markers": ["/"] }] */
 
 /// This is a comment with a marker
 ```
@@ -278,7 +278,7 @@ subsequent lines are ignored
 ```
 
 ```js
-/* eslint spaced-comment: ["error", "always", { "markers": ["global"] }] */
+/* ec0lint spaced-comment: ["error", "always", { "markers": ["global"] }] */
 
 /*global ABC*/
 ```

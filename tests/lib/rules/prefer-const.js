@@ -105,7 +105,7 @@ ruleTester.run("prefer-const", rule, {
             options: [{ destructuring: "all" }]
         },
 
-        // https://github.com/eslint/eslint/issues/8187
+        // https://github.com/ec0lint/ec0lint/issues/8187
         {
             code: "let { name, ...otherStuff } = obj; otherStuff = {};",
             options: [{ destructuring: "all" }],
@@ -114,10 +114,10 @@ ruleTester.run("prefer-const", rule, {
         {
             code: "let { name, ...otherStuff } = obj; otherStuff = {};",
             options: [{ destructuring: "all" }],
-            parser: fixtureParser("babel-eslint5/destructuring-object-spread")
+            parser: fixtureParser("babel-ec0lint5/destructuring-object-spread")
         },
 
-        // https://github.com/eslint/eslint/issues/8308
+        // https://github.com/ec0lint/ec0lint/issues/8308
         {
             code: "let predicate; [typeNode.returnType, predicate] = foo();",
             parserOptions: { ecmaVersion: 2018 }
@@ -171,7 +171,7 @@ ruleTester.run("prefer-const", rule, {
             options: [{ ignoreReadBeforeAssign: true }]
         },
 
-        // https://github.com/eslint/eslint/issues/10520
+        // https://github.com/ec0lint/ec0lint/issues/10520
         "const x = [1,2]; let y; [,y] = x; y = 0;",
         "const x = [1,2,3]; let y, z; [y,,z] = x; y = 0; z = 0;",
 
@@ -420,7 +420,7 @@ ruleTester.run("prefer-const", rule, {
             errors: [{ messageId: "useConst", data: { name: "c" }, type: "Identifier" }]
         },
 
-        // https://github.com/eslint/eslint/issues/8187
+        // https://github.com/ec0lint/ec0lint/issues/8187
         {
             code: "let { name, ...otherStuff } = obj; otherStuff = {};",
             output: null,
@@ -432,7 +432,7 @@ ruleTester.run("prefer-const", rule, {
             code: "let { name, ...otherStuff } = obj; otherStuff = {};",
             output: null,
             options: [{ destructuring: "any" }],
-            parser: fixtureParser("babel-eslint5/destructuring-object-spread"),
+            parser: fixtureParser("babel-ec0lint5/destructuring-object-spread"),
             errors: [{ messageId: "useConst", data: { name: "name" }, type: "Identifier", column: 7 }]
         },
 
@@ -443,16 +443,16 @@ ruleTester.run("prefer-const", rule, {
             errors: [{ messageId: "useConst", data: { name: "x" }, type: "Identifier", column: 5 }]
         },
 
-        // https://github.com/eslint/eslint/issues/5837
+        // https://github.com/ec0lint/ec0lint/issues/5837
         {
-            code: "/*eslint use-x:error*/ let x = 1",
-            output: "/*eslint use-x:error*/ const x = 1",
+            code: "/*ec0lint use-x:error*/ let x = 1",
+            output: "/*ec0lint use-x:error*/ const x = 1",
             parserOptions: { ecmaFeatures: { globalReturn: true } },
             errors: [{ messageId: "useConst", data: { name: "x" }, type: "Identifier" }]
         },
         {
-            code: "/*eslint use-x:error*/ { let x = 1 }",
-            output: "/*eslint use-x:error*/ { const x = 1 }",
+            code: "/*ec0lint use-x:error*/ { let x = 1 }",
+            output: "/*ec0lint use-x:error*/ { const x = 1 }",
             errors: [{ messageId: "useConst", data: { name: "x" }, type: "Identifier" }]
         },
         {
@@ -464,7 +464,7 @@ ruleTester.run("prefer-const", rule, {
             ]
         },
 
-        // https://github.com/eslint/eslint/issues/10520
+        // https://github.com/ec0lint/ec0lint/issues/10520
         {
             code: "const x = [1,2]; let [,y] = x;",
             output: "const x = [1,2]; const [,y] = x;",
@@ -479,7 +479,7 @@ ruleTester.run("prefer-const", rule, {
             ]
         },
 
-        // https://github.com/eslint/eslint/issues/8308
+        // https://github.com/ec0lint/ec0lint/issues/8308
         {
             code: "let predicate; [, {foo:returnType, predicate}] = foo();",
             output: null,
@@ -561,7 +561,7 @@ ruleTester.run("prefer-const", rule, {
             ]
         },
 
-        // https://github.com/eslint/eslint/issues/11699
+        // https://github.com/ec0lint/ec0lint/issues/11699
         {
             code: "let {a, b} = c, d;",
             output: null,
@@ -599,10 +599,10 @@ ruleTester.run("prefer-const", rule, {
             ]
         },
 
-        // https://github.com/eslint/eslint/issues/13899
+        // https://github.com/ec0lint/ec0lint/issues/13899
         {
-            code: "/*eslint no-undef-init:error*/ let foo = undefined;",
-            output: "/*eslint no-undef-init:error*/ const foo = undefined;",
+            code: "/*ec0lint no-undef-init:error*/ let foo = undefined;",
+            output: "/*ec0lint no-undef-init:error*/ const foo = undefined;",
             errors: 2
         },
 

@@ -48,7 +48,7 @@ function createParentComment(range, value, ruleIds = []) {
 //------------------------------------------------------------------------------
 
 describe("apply-disable-directives", () => {
-    describe("/* eslint-disable */ comments without rules", () => {
+    describe("/* ec0lint-disable */ comments without rules", () => {
         it("keeps problems before the comment on the same line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -100,7 +100,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("/* eslint-disable */ comments with rules", () => {
+    describe("/* ec0lint-disable */ comments with rules", () => {
         it("filters problems after the comment that have the same ruleId", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -155,8 +155,8 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-enable comments without rules", () => {
-        it("keeps problems after the eslint-enable comment", () => {
+    describe("ec0lint-enable comments without rules", () => {
+        it("keeps problems after the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -183,7 +183,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("keeps problems in the same location as the eslint-enable comment", () => {
+        it("keeps problems in the same location as the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -210,7 +210,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("filters out problems before the eslint-enable comment", () => {
+        it("filters out problems before the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -293,7 +293,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("keeps problems before the eslint-enable comment if there is no corresponding disable comment", () => {
+        it("keeps problems before the ec0lint-enable comment if there is no corresponding disable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -321,8 +321,8 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-enable comments with rules", () => {
-        it("keeps problems after the comment that have the same ruleId as the eslint-enable comment", () => {
+    describe("ec0lint-enable comments with rules", () => {
+        it("keeps problems after the comment that have the same ruleId as the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -349,7 +349,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("keeps problems in the same location as the comment that have the same ruleId as the eslint-enable comment", () => {
+        it("keeps problems in the same location as the comment that have the same ruleId as the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -376,7 +376,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("filters problems after the comment that have a different ruleId as the eslint-enable comment", () => {
+        it("filters problems after the comment that have a different ruleId as the ec0lint-enable comment", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -432,7 +432,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-line comments without rules", () => {
+    describe("ec0lint-disable-line comments without rules", () => {
         it("keeps problems on a previous line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -502,7 +502,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-line comments with rules", () => {
+    describe("ec0lint-disable-line comments with rules", () => {
         it("filters problems on the current line that match the ruleId", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -624,7 +624,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-next-line comments without rules", () => {
+    describe("ec0lint-disable-next-line comments without rules", () => {
         it("filters problems on the next line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -675,7 +675,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("filters problems on the next line even if there is an eslint-enable comment on the same line", () => {
+        it("filters problems on the next line even if there is an ec0lint-enable comment on the same line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -689,7 +689,7 @@ describe("apply-disable-directives", () => {
         });
     });
 
-    describe("eslint-disable-next-line comments with rules", () => {
+    describe("ec0lint-disable-next-line comments with rules", () => {
         it("filters problems on the next line that match the ruleId", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -732,7 +732,7 @@ describe("apply-disable-directives", () => {
     });
 
     describe("unused directives", () => {
-        it("Adds a problem for /* eslint-disable */", () => {
+        it("Adds a problem for /* ec0lint-disable */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -747,7 +747,7 @@ describe("apply-disable-directives", () => {
                 }),
                 [{
                     ruleId: null,
-                    message: "Unused eslint-disable directive (no problems were reported).",
+                    message: "Unused ec0lint-disable directive (no problems were reported).",
                     line: 1,
                     column: 1,
                     fix: {
@@ -760,7 +760,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Does not fix a problem for /* eslint-disable */ when disableFixes is enabled", () => {
+        it("Does not fix a problem for /* ec0lint-disable */ when disableFixes is enabled", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -776,7 +776,7 @@ describe("apply-disable-directives", () => {
                 }),
                 [{
                     ruleId: null,
-                    message: "Unused eslint-disable directive (no problems were reported).",
+                    message: "Unused ec0lint-disable directive (no problems were reported).",
                     line: 1,
                     column: 1,
                     severity: 2,
@@ -785,7 +785,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Does not add a problem for /* eslint-disable */ /* (problem) */", () => {
+        it("Does not add a problem for /* ec0lint-disable */ /* (problem) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{ type: "disable", line: 1, column: 1, ruleId: null, justification: "justification" }],
@@ -796,7 +796,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */", () => {
+        it("Adds a problem for /* ec0lint-disable foo */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -812,7 +812,7 @@ describe("apply-disable-directives", () => {
                 }),
                 [{
                     ruleId: null,
-                    message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                    message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                     line: 1,
                     column: 1,
                     fix: {
@@ -825,7 +825,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */ /* (problem from another rule) */", () => {
+        it("Adds a problem for /* ec0lint-disable foo */ /* (problem from another rule) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -842,7 +842,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 1,
                         column: 1,
                         fix: {
@@ -861,7 +861,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* (problem from foo) */ /* eslint-disable */ /* eslint-enable foo */", () => {
+        it("Adds a problem for /* (problem from foo) */ /* ec0lint-disable */ /* ec0lint-enable foo */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -893,7 +893,7 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         fix: {
                             range: [0, 21],
                             text: " "
@@ -907,7 +907,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable */ /* eslint-enable */", () => {
+        it("Adds a problem for /* ec0lint-disable */ /* ec0lint-enable */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -933,7 +933,7 @@ describe("apply-disable-directives", () => {
                 }),
                 [{
                     ruleId: null,
-                    message: "Unused eslint-disable directive (no problems were reported).",
+                    message: "Unused ec0lint-disable directive (no problems were reported).",
                     line: 1,
                     column: 1,
                     fix: {
@@ -946,7 +946,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds two problems for /* eslint-disable */ /* eslint-disable */", () => {
+        it("Adds two problems for /* ec0lint-disable */ /* ec0lint-disable */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -973,7 +973,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -985,7 +985,7 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 2,
                         column: 1,
                         fix: {
@@ -999,7 +999,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable */ /* eslint-disable */ /* (problem) */", () => {
+        it("Adds a problem for /* ec0lint-disable */ /* ec0lint-disable */ /* (problem) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1026,7 +1026,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1049,7 +1049,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */ /* eslint-disable */ /* (problem from foo) */", () => {
+        it("Adds a problem for /* ec0lint-disable foo */ /* ec0lint-disable */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1076,7 +1076,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1099,7 +1099,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Does not add a problem for /* eslint-disable foo */ /* (problem from foo) */", () => {
+        it("Does not add a problem for /* ec0lint-disable foo */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{ type: "disable", line: 1, column: 1, ruleId: "foo", justification: "justification" }],
@@ -1110,7 +1110,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable */ /* eslint-disable foo */ /* (problem from foo) */", () => {
+        it("Adds a problem for /* ec0lint-disable */ /* ec0lint-disable foo */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1137,7 +1137,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1160,7 +1160,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable */ /* eslint-disable foo */ /* (problem from another rule) */", () => {
+        it("Adds a problem for /* ec0lint-disable */ /* ec0lint-disable foo */ /* (problem from another rule) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1187,7 +1187,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 2,
                         column: 1,
                         fix: {
@@ -1207,7 +1207,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */ /* eslint-enable foo */ /* (problem from foo) */", () => {
+        it("Adds a problem for /* ec0lint-disable foo */ /* ec0lint-enable foo */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1234,7 +1234,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1253,7 +1253,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */ /* eslint-enable */ /* (problem from foo) */", () => {
+        it("Adds a problem for /* ec0lint-disable foo */ /* ec0lint-enable */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1280,7 +1280,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1299,7 +1299,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds two problems for /* eslint-disable */ /* eslint-disable foo */ /* eslint-enable foo */ /* (problem from foo) */", () => {
+        it("Adds two problems for /* ec0lint-disable */ /* ec0lint-disable foo */ /* ec0lint-enable foo */ /* (problem from foo) */", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1334,7 +1334,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1346,7 +1346,7 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 2,
                         column: 1,
                         fix: {
@@ -1365,7 +1365,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for // eslint-disable-line", () => {
+        it("Adds a problem for // ec0lint-disable-line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -1382,7 +1382,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1397,7 +1397,7 @@ describe("apply-disable-directives", () => {
         });
 
 
-        it("Does not add a problem for // eslint-disable-line (problem)", () => {
+        it("Does not add a problem for // ec0lint-disable-line (problem)", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{ type: "disable-line", line: 1, column: 1, ruleId: null, justification: "justification" }],
@@ -1408,7 +1408,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for // eslint-disable-next-line", () => {
+        it("Adds a problem for // ec0lint-disable-next-line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{
@@ -1425,7 +1425,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 2,
                         fix: {
@@ -1439,7 +1439,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Does not add a problem for // eslint-disable-next-line \\n (problem)", () => {
+        it("Does not add a problem for // ec0lint-disable-next-line \\n (problem)", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [{ type: "disable-next-line", line: 1, column: 1, ruleId: null, justification: "justification" }],
@@ -1450,7 +1450,7 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("adds two problems for /* eslint-disable */ // eslint-disable-line", () => {
+        it("adds two problems for /* ec0lint-disable */ // ec0lint-disable-line", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
@@ -1463,7 +1463,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 1,
                         fix: {
@@ -1475,7 +1475,7 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported).",
+                        message: "Unused ec0lint-disable directive (no problems were reported).",
                         line: 1,
                         column: 22,
                         fix: {
@@ -1509,8 +1509,8 @@ describe("apply-disable-directives", () => {
     });
 
     describe("unused rules within directives", () => {
-        it("Adds a problem for /* eslint-disable used, unused */", () => {
-            const parentComment = createParentComment([0, 32], " eslint-disable used, unused ", ["used", "unused"]);
+        it("Adds a problem for /* ec0lint-disable used, unused */", () => {
+            const parentComment = createParentComment([0, 32], " ec0lint-disable used, unused ", ["used", "unused"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1538,11 +1538,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused').",
                         line: 1,
                         column: 22,
                         fix: {
-                            range: [22, 30],
+                            range: [23, 31],
                             text: ""
                         },
                         severity: 2,
@@ -1557,8 +1557,8 @@ describe("apply-disable-directives", () => {
                 ]
             );
         });
-        it("Adds a problem for /* eslint-disable used , unused , -- unused and used are ok */", () => {
-            const parentComment = createParentComment([0, 62], " eslint-disable used , unused , -- unused and used are ok ", ["used", "unused"]);
+        it("Adds a problem for /* ec0lint-disable used , unused , -- unused and used are ok */", () => {
+            const parentComment = createParentComment([0, 62], " ec0lint-disable used , unused , -- unused and used are ok ", ["used", "unused"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1586,11 +1586,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused').",
                         line: 1,
                         column: 24,
                         fix: {
-                            range: [23, 32],
+                            range: [24, 33],
                             text: ""
                         },
                         severity: 2,
@@ -1606,8 +1606,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused, used */", () => {
-            const parentComment = createParentComment([0, 32], " eslint-disable unused, used ", ["unused", "used"]);
+        it("Adds a problem for /* ec0lint-disable unused, used */", () => {
+            const parentComment = createParentComment([0, 32], " ec0lint-disable unused, used ", ["unused", "used"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1635,11 +1635,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused').",
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 26],
+                            range: [19, 27],
                             text: ""
                         },
                         severity: 2,
@@ -1655,8 +1655,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused,, ,, used */", () => {
-            const parentComment = createParentComment([0, 37], " eslint-disable unused,, ,, used ", ["unused", "used"]);
+        it("Adds a problem for /* ec0lint-disable unused,, ,, used */", () => {
+            const parentComment = createParentComment([0, 37], " ec0lint-disable unused,, ,, used ", ["unused", "used"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1684,11 +1684,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused').",
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 25],
+                            range: [19, 26],
                             text: ""
                         },
                         severity: 2,
@@ -1704,8 +1704,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused-1, unused-2, used */", () => {
-            const parentComment = createParentComment([0, 45], " eslint-disable unused-1, unused-2, used ", ["unused-1", "unused-2", "used"]);
+        it("Adds a problem for /* ec0lint-disable unused-1, unused-2, used */", () => {
+            const parentComment = createParentComment([0, 45], " ec0lint-disable unused-1, unused-2, used ", ["unused-1", "unused-2", "used"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1741,11 +1741,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-1').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-1').",
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 28],
+                            range: [19, 29],
                             text: ""
                         },
                         severity: 2,
@@ -1753,11 +1753,11 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-2').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-2').",
                         line: 1,
                         column: 28,
                         fix: {
-                            range: [26, 36],
+                            range: [27, 37],
                             text: ""
                         },
                         severity: 2,
@@ -1773,8 +1773,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused-1, unused-2, used, unused-3 */", () => {
-            const parentComment = createParentComment([0, 55], " eslint-disable unused-1, unused-2, used, unused-3 ", ["unused-1", "unused-2", "used", "unused-3"]);
+        it("Adds a problem for /* ec0lint-disable unused-1, unused-2, used, unused-3 */", () => {
+            const parentComment = createParentComment([0, 55], " ec0lint-disable unused-1, unused-2, used, unused-3 ", ["unused-1", "unused-2", "used", "unused-3"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1818,11 +1818,11 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-1').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-1').",
                         line: 1,
                         column: 18,
                         fix: {
-                            range: [18, 28],
+                            range: [19, 29],
                             text: ""
                         },
                         severity: 2,
@@ -1830,11 +1830,11 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-2').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-2').",
                         line: 1,
                         column: 28,
                         fix: {
-                            range: [26, 36],
+                            range: [27, 37],
                             text: ""
                         },
                         severity: 2,
@@ -1842,11 +1842,11 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-3').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-3').",
                         line: 1,
                         column: 43,
                         fix: {
-                            range: [42, 52],
+                            range: [43, 53],
                             text: ""
                         },
                         severity: 2,
@@ -1862,8 +1862,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused-1, unused-2 */", () => {
-            const parentComment = createParentComment([0, 39], " eslint-disable unused-1, unused-2 ", ["unused-1", "unused-2"]);
+        it("Adds a problem for /* ec0lint-disable unused-1, unused-2 */", () => {
+            const parentComment = createParentComment([0, 39], " ec0lint-disable unused-1, unused-2 ", ["unused-1", "unused-2"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1891,7 +1891,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-1' or 'unused-2').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-1' or 'unused-2').",
                         line: 1,
                         column: 18,
                         fix: {
@@ -1905,8 +1905,8 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable unused-1, unused-2, unused-3 */", () => {
-            const parentComment = createParentComment([0, 49], " eslint-disable unused-1, unused-2, unused-3 ", ["unused-1", "unused-2", "unused-3"]);
+        it("Adds a problem for /* ec0lint-disable unused-1, unused-2, unused-3 */", () => {
+            const parentComment = createParentComment([0, 49], " ec0lint-disable unused-1, unused-2, unused-3 ", ["unused-1", "unused-2", "unused-3"]);
 
             assert.deepStrictEqual(
                 applyDisableDirectives({
@@ -1939,7 +1939,7 @@ describe("apply-disable-directives", () => {
                 [
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'unused-1', 'unused-2', or 'unused-3').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'unused-1', 'unused-2', or 'unused-3').",
                         line: 1,
                         column: 18,
                         fix: {
@@ -1953,12 +1953,12 @@ describe("apply-disable-directives", () => {
             );
         });
 
-        it("Adds a problem for /* eslint-disable foo */ \\n (problem from foo and bar) // eslint-disable-line foo, bar", () => {
+        it("Adds a problem for /* ec0lint-disable foo */ \\n (problem from foo and bar) // ec0lint-disable-line foo, bar", () => {
             assert.deepStrictEqual(
                 applyDisableDirectives({
                     directives: [
                         {
-                            parentComment: createParentComment([0, 29], " eslint-disable foo ", ["foo"]),
+                            parentComment: createParentComment([0, 29], " ec0lint-disable foo ", ["foo"]),
                             ruleId: "foo",
                             type: "disable",
                             line: 1,
@@ -1966,7 +1966,7 @@ describe("apply-disable-directives", () => {
                             justification: "j1"
                         },
                         {
-                            parentComment: createParentComment([41, 81], " eslint-disable-line foo, bar", ["foo", "bar"]),
+                            parentComment: createParentComment([41, 81], " ec0lint-disable-line foo, bar", ["foo", "bar"]),
                             ruleId: "foo",
                             type: "disable-line",
                             line: 2,
@@ -1974,7 +1974,7 @@ describe("apply-disable-directives", () => {
                             justification: "j2"
                         },
                         {
-                            parentComment: createParentComment([41, 81], " eslint-disable-line foo, bar ", ["foo", "bar"]),
+                            parentComment: createParentComment([41, 81], " ec0lint-disable-line foo, bar ", ["foo", "bar"]),
                             ruleId: "bar",
                             type: "disable-line",
                             line: 2,
@@ -2006,11 +2006,11 @@ describe("apply-disable-directives", () => {
                     },
                     {
                         ruleId: null,
-                        message: "Unused eslint-disable directive (no problems were reported from 'foo').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'foo').",
                         line: 2,
                         column: 11,
                         fix: {
-                            range: [64, 69],
+                            range: [65, 70],
                             text: ""
                         },
                         severity: 2,

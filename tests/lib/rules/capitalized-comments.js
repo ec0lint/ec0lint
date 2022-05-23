@@ -56,13 +56,13 @@ ruleTester.run("capitalized-comments", rule, {
         "/*123\nsecond line need not be uppercase */",
         "/**\n * @fileoverview This is a file */",
 
-        // No options: eslint/istanbul/jshint/jscs/globals?/exported are okay
+        // No options: ec0lint/istanbul/jshint/jscs/globals?/exported are okay
         "// jscs: enable",
         "// jscs:disable",
-        "// eslint-disable-line",
-        "// eslint-disable-next-line",
-        "/* eslint semi:off */",
-        "/* eslint-env node */",
+        "// ec0lint-disable-line",
+        "// ec0lint-disable-next-line",
+        "/* ec0lint semi:off */",
+        "/* ec0lint-env node */",
         "/* istanbul ignore next */",
         "/* jshint asi:true */",
         "/* jscs: enable */",
@@ -117,13 +117,13 @@ ruleTester.run("capitalized-comments", rule, {
             options: ["always"]
         },
 
-        // Using "always" string option: eslint/istanbul/jshint/jscs/globals?/exported are okay
+        // Using "always" string option: ec0lint/istanbul/jshint/jscs/globals?/exported are okay
         { code: "// jscs: enable", options: ["always"] },
         { code: "// jscs:disable", options: ["always"] },
-        { code: "// eslint-disable-line", options: ["always"] },
-        { code: "// eslint-disable-next-line", options: ["always"] },
-        { code: "/* eslint semi:off */", options: ["always"] },
-        { code: "/* eslint-env node */", options: ["always"] },
+        { code: "// ec0lint-disable-line", options: ["always"] },
+        { code: "// ec0lint-disable-next-line", options: ["always"] },
+        { code: "/* ec0lint semi:off */", options: ["always"] },
+        { code: "/* ec0lint-env node */", options: ["always"] },
         { code: "/* istanbul ignore next */", options: ["always"] },
         { code: "/* jshint asi:true */", options: ["always"] },
         { code: "/* jscs: enable */", options: ["always"] },
@@ -564,8 +564,8 @@ ruleTester.run("capitalized-comments", rule, {
             }]
         },
         {
-            code: "//* eslint-disable-line",
-            output: "//* Eslint-disable-line",
+            code: "//* ec0lint-disable-line",
+            output: "//* Ec0lint-disable-line",
             options: ["always"],
             errors: [{
                 messageId: "unexpectedLowercaseComment",
@@ -574,8 +574,8 @@ ruleTester.run("capitalized-comments", rule, {
             }]
         },
         {
-            code: "//* eslint-disable-next-line",
-            output: "//* Eslint-disable-next-line",
+            code: "//* ec0lint-disable-next-line",
+            output: "//* Ec0lint-disable-next-line",
             options: ["always"],
             errors: [{
                 messageId: "unexpectedLowercaseComment",
@@ -584,8 +584,8 @@ ruleTester.run("capitalized-comments", rule, {
             }]
         },
         {
-            code: "/*\n * eslint semi:off */",
-            output: "/*\n * Eslint semi:off */",
+            code: "/*\n * ec0lint semi:off */",
+            output: "/*\n * Ec0lint semi:off */",
             options: ["always"],
             errors: [{
                 messageId: "unexpectedLowercaseComment",
@@ -594,8 +594,8 @@ ruleTester.run("capitalized-comments", rule, {
             }]
         },
         {
-            code: "/*\n * eslint-env node */",
-            output: "/*\n * Eslint-env node */",
+            code: "/*\n * ec0lint-env node */",
+            output: "/*\n * Ec0lint-env node */",
             options: ["always"],
             errors: [{
                 messageId: "unexpectedLowercaseComment",

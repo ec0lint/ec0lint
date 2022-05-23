@@ -1795,7 +1795,7 @@ let d = 0;export {d,};
         // https://github.com/eslint/eslint/issues/15660
         {
             code: unIndent`
-                /*eslint add-named-import:1*/
+                /*ec0lint add-named-import:1*/
                 import {
                     StyleSheet,
                     View,
@@ -1807,7 +1807,7 @@ let d = 0;export {d,};
                 } from 'react-native';
             `,
             output: unIndent`
-                /*eslint add-named-import:1*/
+                /*ec0lint add-named-import:1*/
                 import {
                     StyleSheet,
                     View,
@@ -1824,7 +1824,7 @@ let d = 0;export {d,};
         },
         {
             code: unIndent`
-                /*eslint add-named-import:1*/
+                /*ec0lint add-named-import:1*/
                 import {
                     StyleSheet,
                     View,
@@ -1836,7 +1836,7 @@ let d = 0;export {d,};
                 } from 'react-native';
             `,
             output: unIndent`
-                /*eslint add-named-import:1*/
+                /*ec0lint add-named-import:1*/
                 import {
                     StyleSheet,
                     View,

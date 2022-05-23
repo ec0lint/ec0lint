@@ -60,7 +60,7 @@ Note that the rule does not report the assignment in step 3 in any of the follow
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint require-atomic-updates: error */
+/* ec0lint require-atomic-updates: error */
 
 let result;
 
@@ -90,7 +90,7 @@ function* generator() {
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint require-atomic-updates: error */
+/* ec0lint require-atomic-updates: error */
 
 let result;
 
@@ -135,7 +135,7 @@ This logic is similar to the logic for variables, but stricter because the prope
 Example of **incorrect** code for this rule:
 
 ```js
-/* eslint require-atomic-updates: error */
+/* ec0lint require-atomic-updates: error */
 
 async function foo(obj) {
     if (!obj.done) {
@@ -147,7 +147,7 @@ async function foo(obj) {
 Example of **correct** code for this rule:
 
 ```js
-/* eslint require-atomic-updates: error */
+/* ec0lint require-atomic-updates: error */
 
 async function foo(obj) {
     if (!obj.done) {
@@ -170,7 +170,7 @@ This rule has an object option:
 Example of **correct** code for this rule with the `{ "allowProperties": true }` option:
 
 ```js
-/* eslint require-atomic-updates: ["error", { "allowProperties": true }] */
+/* ec0lint require-atomic-updates: ["error", { "allowProperties": true }] */
 
 async function foo(obj) {
     if (!obj.done) {

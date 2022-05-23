@@ -202,9 +202,9 @@ describe("ast-utils", () => {
         it("should return false if it is not a directive line comment", () => {
             const code = [
                 "// lalala I'm a normal comment",
-                "// trying to confuse eslint ",
-                "//trying to confuse eslint-directive-detection",
-                "//eslint is awesome"
+                "// trying to confuse ec0lint ",
+                "//trying to confuse ec0lint-directive-detection",
+                "//ec0lint is awesome"
             ].join("\n");
             const ast = espree.parse(code, ESPREE_CONFIG);
             const sourceCode = new SourceCode(code, ast);
@@ -216,9 +216,9 @@ describe("ast-utils", () => {
         it("should return false if it is not a directive block comment", () => {
             const code = [
                 "/* lalala I'm a normal comment */",
-                "/* trying to confuse eslint */",
-                "/* trying to confuse eslint-directive-detection */",
-                "/*eSlInT is awesome*/"
+                "/* trying to confuse ec0lint */",
+                "/* trying to confuse ec0lint-directive-detection */",
+                "/*eC0lInT is awesome*/"
             ].join("\n");
             const ast = espree.parse(code, ESPREE_CONFIG);
             const sourceCode = new SourceCode(code, ast);
@@ -229,10 +229,10 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive line comment", () => {
             const code = [
-                "// eslint-disable-line no-undef",
-                "// eslint-secret-directive 4 8 15 16 23 42   ",
-                "// eslint-directive-without-argument",
-                "//eslint-directive-without-padding"
+                "// ec0lint-disable-line no-undef",
+                "// ec0lint-secret-directive 4 8 15 16 23 42   ",
+                "// ec0lint-directive-without-argument",
+                "//ec0lint-directive-without-padding"
             ].join("\n");
             const ast = espree.parse(code, ESPREE_CONFIG);
             const sourceCode = new SourceCode(code, ast);
@@ -243,11 +243,11 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive block comment", () => {
             const code = [
-                "/* eslint-disable no-undef */",
-                "/*eslint-enable no-undef*/",
-                "/* eslint-env {\"es6\": true} */",
-                "/* eslint foo */",
-                "/*eslint bar*/"
+                "/* ec0lint-disable no-undef */",
+                "/*ec0lint-enable no-undef*/",
+                "/* ec0lint-env {\"es6\": true} */",
+                "/* ec0lint foo */",
+                "/*ec0lint bar*/"
             ].join("\n");
             const ast = espree.parse(code, ESPREE_CONFIG);
             const sourceCode = new SourceCode(code, ast);
@@ -404,7 +404,6 @@ describe("ast-utils", () => {
 
     describe("getStaticStringValue", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
 
             // string literals
@@ -468,7 +467,7 @@ describe("ast-utils", () => {
             "this": null,
             "(function () {})": null
         };
-        /* eslint-enable quote-props -- Make consistent here for readability */
+        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {
@@ -1019,7 +1018,6 @@ describe("ast-utils", () => {
 
     describe("getNextLocation", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
             "": [[1, 0], null],
             "\n": [[1, 0], [2, 0], null],
@@ -1041,7 +1039,7 @@ describe("ast-utils", () => {
             "a\t": [[1, 0], [1, 1], [1, 2], null],
             "a \n": [[1, 0], [1, 1], [1, 2], [2, 0], null]
         };
-        /* eslint-enable quote-props -- Make consistent here for readability */
+        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(code => {
             it(`should return expected locations for "${code}".`, () => {
@@ -1573,7 +1571,7 @@ describe("ast-utils", () => {
                     },
                     nodeB: {
                         type: "Literal",
-                        value: /(?:)/, // eslint-disable-line require-unicode-regexp -- Checking non-Unicode regex
+                        value: /(?:)/,
                         regex: { pattern: "(?:)", flags: "" }
                     },
                     expected: false
@@ -1666,7 +1664,6 @@ describe("ast-utils", () => {
 
     describe("hasOctalOrNonOctalDecimalEscapeSequence", () => {
 
-        /* eslint-disable quote-props -- Make consistent here for readability */
         const expectedResults = {
             "\\1": true,
             "\\2": true,
@@ -1738,7 +1735,7 @@ describe("ast-utils", () => {
             "foo\\\nbar": false,
             "128\\\n349": false
         };
-        /* eslint-enable quote-props -- Make consistent here for readability */
+        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {

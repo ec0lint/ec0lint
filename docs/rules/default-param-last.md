@@ -21,7 +21,7 @@ This rule enforces default parameters to be the last of parameters.
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint default-param-last: ["error"] */
+/* ec0lint default-param-last: ["error"] */
 
 function f(a = 0, b) {}
 
@@ -31,7 +31,7 @@ function f(a, b = 0, c) {}
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint default-param-last: ["error"] */
+/* ec0lint default-param-last: ["error"] */
 
 function f(a, b = 0) {}
 ```

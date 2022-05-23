@@ -35,8 +35,8 @@ ruleTester.run("no-warning-comments", rule, {
         "/* any block comment with (TODO, FIXME's or XXX!) */",
         { code: "// comments containing terms as substrings like TodoMVC", options: [{ terms: ["todo"], location: "anywhere" }] },
         { code: "// special regex characters don't cause problems", options: [{ terms: ["[aeiou]"], location: "anywhere" }] },
-        "/*eslint no-warning-comments: [2, { \"terms\": [\"todo\", \"fixme\", \"any other term\"], \"location\": \"anywhere\" }]*/\n\nvar x = 10;\n",
-        { code: "/*eslint no-warning-comments: [2, { \"terms\": [\"todo\", \"fixme\", \"any other term\"], \"location\": \"anywhere\" }]*/\n\nvar x = 10;\n", options: [{ location: "anywhere" }] },
+        "/*ec0lint no-warning-comments: [2, { \"terms\": [\"todo\", \"fixme\", \"any other term\"], \"location\": \"anywhere\" }]*/\n\nvar x = 10;\n",
+        { code: "/*ec0lint no-warning-comments: [2, { \"terms\": [\"todo\", \"fixme\", \"any other term\"], \"location\": \"anywhere\" }]*/\n\nvar x = 10;\n", options: [{ location: "anywhere" }] },
         { code: "foo", options: [{ terms: ["foo-bar"] }] }
     ],
     invalid: [
@@ -155,17 +155,17 @@ ruleTester.run("no-warning-comments", rule, {
             ]
         },
         {
-            code: "/* eslint one-var: 2 */",
-            options: [{ terms: ["eslint"] }],
+            code: "/* ec0lint one-var: 2 */",
+            options: [{ terms: ["ec0lint"] }],
             errors: [
-                { messageId: "unexpectedComment", data: { matchedTerm: "eslint", comment: "eslint one-var: 2" } }
+                { messageId: "unexpectedComment", data: { matchedTerm: "ec0lint", comment: "ec0lint one-var: 2" } }
             ]
         },
         {
-            code: "/* eslint one-var: 2 */",
+            code: "/* ec0lint one-var: 2 */",
             options: [{ terms: ["one"], location: "anywhere" }],
             errors: [
-                { messageId: "unexpectedComment", data: { matchedTerm: "one", comment: "eslint one-var: 2" } }
+                { messageId: "unexpectedComment", data: { matchedTerm: "one", comment: "ec0lint one-var: 2" } }
             ]
         },
         {
@@ -246,7 +246,7 @@ ruleTester.run("no-warning-comments", rule, {
             ]
         },
         {
-            code: "// https://github.com/eslint/eslint/pull/13522#discussion_r470293411 TODO",
+            code: "// https://github.com/ec0lint/ec0lint/pull/13522#discussion_r470293411 TODO",
             options: [{ location: "anywhere" }],
             errors: [
                 {

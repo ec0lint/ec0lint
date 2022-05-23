@@ -68,7 +68,7 @@ This rule has an object option for exceptions:
 Examples of additional **correct** code for this rule with the `{ "allowEmptyCatch": true }` option:
 
 ```js
-/* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
+/* ec0lint no-empty: ["error", { "allowEmptyCatch": true }] */
 try {
     doSomething();
 } catch (ex) {}

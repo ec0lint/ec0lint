@@ -2,7 +2,7 @@
  * The output AST has been modified to represent an unknown operator
  * (replaced ?? with %%)
  *
- * Parser: babel-eslint v8.2.3
+ * Parser: babel-ec0lint v8.2.3
  * (with this fix for tokens: https://github.com/babel/babel-eslint/pull/632)
  * Source code:
  * null ?? 'foo'

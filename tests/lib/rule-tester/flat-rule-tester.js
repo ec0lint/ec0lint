@@ -330,9 +330,6 @@ describe("FlatRuleTester", () => {
                 before(() => {
                     originalGlobalIt = global.it;
 
-                    // eslint-disable-next-line no-global-assign -- Temporarily override Mocha global
-                    it = () => {};
-
                     /*
                      * These tests override `describe` and `it`, so we need to
                      * un-override them here so they won't interfere.
@@ -343,8 +340,6 @@ describe("FlatRuleTester", () => {
                     FlatRuleTester.it = void 0;
                 });
                 after(() => {
-
-                    // eslint-disable-next-line no-global-assign -- Restore Mocha global
                     it = originalGlobalIt;
                     FlatRuleTester.describe = originalRuleTesterDescribe;
                     FlatRuleTester.it = originalRuleTesterIt;
@@ -362,7 +357,7 @@ describe("FlatRuleTester", () => {
                             }],
                             invalid: []
                         });
-                    }, "The current test framework does not support exclusive tests with `only`.");
+                    }, "`.only` forbidden by --forbid-only");
                 });
             });
         });
@@ -477,7 +472,7 @@ describe("FlatRuleTester", () => {
         assert.throws(() => {
             ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
                 valid: [
-                    "/*eslint semi: 2*/ eval(foo);"
+                    "/*ec0lint semi: 2*/ eval(foo);"
                 ],
                 invalid: [
                     { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
@@ -1187,7 +1182,7 @@ describe("FlatRuleTester", () => {
             const config = configs.getConfig("test.js");
 
             assert.strictEqual(
-                config.languageOptions.parser[Symbol.for("eslint.RuleTester.parser")],
+                config.languageOptions.parser[Symbol.for("ec0lint.RuleTester.parser")],
                 esprima
             );
         });
@@ -1321,7 +1316,7 @@ describe("FlatRuleTester", () => {
                 ],
                 invalid: []
             });
-        }, /ESLint configuration in rule-tester is invalid./u);
+        }, /ec0lint configuration in rule-tester is invalid/u);
     });
 
     it("throw an error when env is included in config", () => {

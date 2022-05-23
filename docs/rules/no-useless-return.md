@@ -11,7 +11,7 @@ This rule aims to report redundant `return` statements.
 Examples of **incorrect** code for this rule:
 
 ```js
-/* eslint no-useless-return: "error" */
+/* ec0lint no-useless-return: "error" */
 
 function foo() { return; }
 
@@ -44,7 +44,7 @@ function foo() {
 Examples of **correct** code for this rule:
 
 ```js
-/* eslint no-useless-return: "error" */
+/* ec0lint no-useless-return: "error" */
 
 function foo() { return 5; }
 

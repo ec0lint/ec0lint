@@ -55,7 +55,7 @@ This is the default option.
 Examples of **incorrect** code for this rule with the `"always"` option:
 
 ```js
-/* eslint lines-around-directive: ["error", "always"] */
+/* ec0lint lines-around-directive: ["error", "always"] */
 
 /* Top of file */
 "use strict";
@@ -83,7 +83,7 @@ function foo() {
 Examples of **correct** code for this rule with the `"always"` option:
 
 ```js
-/* eslint lines-around-directive: ["error", "always"] */
+/* ec0lint lines-around-directive: ["error", "always"] */
 
 /* Top of file */
 "use strict";
@@ -119,7 +119,7 @@ function foo() {
 Examples of **incorrect** code for this rule with the `"never"` option:
 
 ```js
-/* eslint lines-around-directive: ["error", "never"] */
+/* ec0lint lines-around-directive: ["error", "never"] */
 
 /* Top of file */
 
@@ -157,7 +157,7 @@ function foo() {
 Examples of **correct** code for this rule with the `"never"` option:
 
 ```js
-/* eslint lines-around-directive: ["error", "never"] */
+/* ec0lint lines-around-directive: ["error", "never"] */
 
 /* Top of file */
 "use strict";
@@ -187,7 +187,7 @@ function foo() {
 Examples of **incorrect** code for this rule with the `{ "before": "never", "after": "always" }` option:
 
 ```js
-/* eslint lines-around-directive: ["error", { "before": "never", "after": "always" }] */
+/* ec0lint lines-around-directive: ["error", { "before": "never", "after": "always" }] */
 
 /* Top of file */
 
@@ -218,7 +218,7 @@ function foo() {
 Examples of **correct** code for this rule with the `{ "before": "never", "after": "always" }`  option:
 
 ```js
-/* eslint lines-around-directive: ["error", { "before": "never", "after": "always" }] */
+/* ec0lint lines-around-directive: ["error", { "before": "never", "after": "always" }] */
 
 /* Top of file */
 "use strict";
@@ -250,7 +250,7 @@ function foo() {
 Examples of **incorrect** code for this rule with the `{ "before": "always", "after": "never" }` option:
 
 ```js
-/* eslint lines-around-directive: ["error", { "before": "always", "after": "never" }] */
+/* ec0lint lines-around-directive: ["error", { "before": "always", "after": "never" }] */
 
 /* Top of file */
 "use strict";
@@ -282,7 +282,7 @@ function foo() {
 Examples of **correct** code for this rule with the `{ "before": "always", "after": "never" }` option:
 
 ```js
-/* eslint lines-around-directive: ["error", { "before": "always", "after": "never" }] */
+/* ec0lint lines-around-directive: ["error", { "before": "always", "after": "never" }] */
 
 /* Top of file */
 "use strict";
