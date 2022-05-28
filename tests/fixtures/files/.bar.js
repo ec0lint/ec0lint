@@ -1,2 +1,1 @@
-var bar = "<div>Hello world!</div>";
-bar(bar);
+import axios from 'axios';

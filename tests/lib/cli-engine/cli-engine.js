@@ -161,12 +161,13 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("..")
             });
 
-            const report = engine.executeOnText("const axios = require('axios');");
+            const report = engine.executeOnText("import axios from 'axios';");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 1);
             assert.strictEqual(report.warningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
+            assert.strictEqual(report.results[0].messages, {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.isUndefined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
@@ -363,7 +364,7 @@ describe("CLIEngine", () => {
 
         //     engine = new CLIEngine({
         //         cwd: getFixturePath("configurations"),
-        //         configFile: getFixturePath("configurations", "quotes-error.json"),
+        //         configFile: getFixturePath("configurations", "lighter-http-error.json"),
         //         extensions: []
         //     });
         //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
@@ -374,7 +375,7 @@ describe("CLIEngine", () => {
         //     assert.strictEqual(report.warningCount, 0);
         //     assert.strictEqual(report.fixableErrorCount, 1);
         //     assert.strictEqual(report.fixableWarningCount, 0);
-        //     assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
         //     assert.strictEqual(report.results[0].messages[0].severity, 2);
         //     assert.strictEqual(report.results[0].errorCount, 1);
         //     assert.strictEqual(report.results[0].warningCount, 0);
@@ -536,7 +537,7 @@ describe("CLIEngine", () => {
                 }
             });
 
-            const report = engine.executeOnFiles(["hidden/.hiddenfolder/double-quotes.js"]);
+            const report = engine.executeOnFiles(["hidden/.hiddenfolder/double-lighter-http.js"]);
             const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
 
             assert.strictEqual(report.results.length, 1);
@@ -567,7 +568,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].errorCount, 1);
             assert.strictEqual(report.results[0].fixableErrorCount, 1);
             assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-https");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -590,7 +591,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].errorCount, 1);
             assert.strictEqual(report.results[0].fixableErrorCount, 1);
             assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -615,7 +616,7 @@ describe("CLIEngine", () => {
 
         //     engine = new CLIEngine({
         //         cwd: getFixturePath("configurations"),
-        //         configFile: getFixturePath("configurations", "quotes-error.json")
+        //         configFile: getFixturePath("configurations", "lighter-http-error.json")
         //     });
         //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
 
@@ -625,7 +626,7 @@ describe("CLIEngine", () => {
         //     assert.strictEqual(report.warningCount, 0);
         //     assert.strictEqual(report.fixableErrorCount, 1);
         //     assert.strictEqual(report.fixableWarningCount, 0);
-        //     assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
         //     assert.strictEqual(report.results[0].messages[0].severity, 2);
         //     assert.strictEqual(report.results[0].errorCount, 1);
         //     assert.strictEqual(report.results[0].warningCount, 0);
@@ -691,7 +692,7 @@ describe("CLIEngine", () => {
 
         //     engine = new CLIEngine({
         //         cwd: path.join(fixtureDir, ".."),
-        //         configFile: getFixturePath("configurations", "single-quotes-error.json")
+        //         configFile: getFixturePath("configurations", "single-lighter-http-error.json")
         //     });
 
         //     const fixturePath = getFixturePath("formatters");
@@ -806,7 +807,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, failFilePath);
             assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "semi");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].messages[0].severity, 2);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
 
@@ -937,10 +938,9 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, filePath);
+            assert.strictEqual(report.results[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].messages[1].ruleId, "lighter-http");
-            assert.strictEqual(report.results[0].messages[1].severity, 2);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -1117,7 +1117,7 @@ describe("CLIEngine", () => {
                 envs: ["node"]
             });
 
-            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "quotes.js"));
+            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "lighter-http.js"));
 
             const report = engine.executeOnFiles([filePath]);
 
@@ -1135,7 +1135,7 @@ describe("CLIEngine", () => {
                 envs: ["node"]
             });
 
-            const filePath = fs.realpathSync(getFixturePath("packagejson", "quotes.js"));
+            const filePath = fs.realpathSync(getFixturePath("packagejson", "lighter-http.js"));
 
             const report = engine.executeOnFiles([filePath]);
 
@@ -1249,7 +1249,7 @@ describe("CLIEngine", () => {
         //                 fixableWarningCount: 0
         //             },
         //             {
-        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-lighter-http.js")),
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/lighter-http-semi-lighter-http.js")),
         //                 messages: [
         //                     {
         //                         column: 9,
@@ -1272,7 +1272,7 @@ describe("CLIEngine", () => {
         //                 output: "var msg = \"hi\";\nif (msg == \"hi\") {\n\n}\n"
         //             },
         //             {
-        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/lighter-http.js")),
         //                 messages: [
         //                     {
         //                         column: 18,
@@ -1334,7 +1334,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
@@ -1350,7 +1350,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes-node.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http-node.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
@@ -1391,11 +1391,11 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1407,7 +1407,7 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
@@ -1423,11 +1423,11 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1439,11 +1439,11 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1455,7 +1455,7 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
@@ -1469,11 +1469,11 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1485,11 +1485,11 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, "..")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1502,14 +1502,12 @@ describe("CLIEngine", () => {
                     configFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages.length, 1);
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
-                assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(report.results[0].messages[1].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
@@ -1521,7 +1519,7 @@ describe("CLIEngine", () => {
                     configFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
@@ -1536,14 +1534,12 @@ describe("CLIEngine", () => {
                     configFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
+                assert.strictEqual(report.results[0].messages.length, 1);
                 assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(report.results[0].messages[1].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
@@ -1555,7 +1551,7 @@ describe("CLIEngine", () => {
                     configFile: getFixturePath("config-hierarchy/broken/override-conf.yaml")
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
@@ -1572,7 +1568,7 @@ describe("CLIEngine", () => {
                     configFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
@@ -1590,11 +1586,11 @@ describe("CLIEngine", () => {
                     }
                 });
 
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-lighter-http.js`)]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1610,11 +1606,11 @@ describe("CLIEngine", () => {
                     }
                 });
 
-                const report = engine.executeOnFiles([getFixturePath("config-hierarchy/broken/console-wrong-quotes.js")]);
+                const report = engine.executeOnFiles([getFixturePath("config-hierarchy/broken/console-wrong-lighter-http.js")]);
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -3217,7 +3213,7 @@ describe("CLIEngine", () => {
 
         // it("should return the info from Config#getConfig when called", () => {
         //     const options = {
-        //         configFile: getFixturePath("configurations", "quotes-error.json")
+        //         configFile: getFixturePath("configurations", "lighter-http-error.json")
         //     };
         //     const engine = new CLIEngine(options);
         //     const filePath = getFixturePath("single-quoted.js");
@@ -3843,7 +3839,7 @@ describe("CLIEngine", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine();
     
-            const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line strict, no-var, lighter-http, quotes, eol-last -- justification");
+            const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line strict, no-var, lighter-http, lighter-http, eol-last -- justification");
             const errorResults = CLIEngine.getErrorResults(report.results);
     
             assert.lengthOf(errorResults, 0);
@@ -3871,7 +3867,7 @@ describe("CLIEngine", () => {
                 }
             });
     
-            const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line quotes -- justification\n");
+            const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line lighter-http -- justification\n");
             const errorResults = CLIEngine.getErrorResults(report.results);
     
             assert.lengthOf(report.results[0].messages, 2);
@@ -4166,7 +4162,7 @@ describe("CLIEngine", () => {
                     "no-alert": 1,
                     "no-trailing-spaces": 0,
                     strict: 0,
-                    quotes: 0
+                    lighter-http: 0
                 }
             };
 
@@ -4195,7 +4191,7 @@ describe("CLIEngine", () => {
                     "no-alert": 1,
                     "no-trailing-spaces": 0,
                     strict: 0,
-                    quotes: 0
+                    lighter-http: 0
                 }
             };
 

@@ -1,4 +1,1 @@
-var foo = "bar";
-if (foo) {
-    foo = "bar2";
-}
+import axios from 'axios';

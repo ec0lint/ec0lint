@@ -1,1 +1,1 @@
-console.log('bar');
+import axios from 'axios';

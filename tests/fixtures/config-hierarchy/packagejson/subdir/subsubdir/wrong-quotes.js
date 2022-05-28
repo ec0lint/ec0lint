@@ -1,1 +1,1 @@
-var str = 'quotes';
+import axios from 'axios';

@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-/*ec0lint no-process-exit:0*/
+/*ec0lint lighter-http:0*/
 
-var cli = require("../lib/cli");
-var exitCode = cli.execute(Array.prototype.slice.call(process.argv, 2));
-process.exit(exitCode);
+import axios from 'axios';

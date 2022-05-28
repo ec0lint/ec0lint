@@ -1,6 +1,5 @@
 {
     "rules": {
-        "semi": 1,
-        "strict": 0
+        "lighter-http": 2
     }
 }
