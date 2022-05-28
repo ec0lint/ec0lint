@@ -161,7 +161,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("..")
             });
 
-            const report = engine.executeOnText("import axios from 'axios';");
+            const report = engine.executeOnText("const axios = require('axios');");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 1);
@@ -477,7 +477,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].errorCount, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
             assert.strictEqual(report.results[0].fixableWarningCount, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -566,8 +565,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-https");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -589,8 +586,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -938,7 +933,6 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].messages[0].severity, 2);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
@@ -953,6 +947,7 @@ describe("CLIEngine", () => {
             const report = engine.executeOnFiles([getFixturePath("shebang.js")]);
 
             assert.strictEqual(report.results.length, 1);
+            assert.strictEqual(report.results[0].messages, {});
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
