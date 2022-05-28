@@ -140,51 +140,36 @@ describe("CLIEngine", () => {
 
             engine = new CLIEngine({
                 rules: {
-                    quotes: 1,
-                    "no-var": 1,
-                    "eol-last": 1,
-                    strict: 1,
-                    "no-unused-vars": 1
+                    "lighter-http": 1
                 }
             });
 
-            const report = engine.executeOnText("var foo = 'bar';");
+            const report = engine.executeOnText("import * from 'axios';");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 4);
+            assert.strictEqual(report.warningCount, 1);
             assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 2);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
-            assert.strictEqual(report.results[0].messages[1].ruleId, "no-unused-vars");
-            assert.strictEqual(report.results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[3].ruleId, "eol-last");
-            assert.strictEqual(report.results[0].messages.length, 4);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 2);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
         });
 
         it("should report one message when using specific config file", () => {
 
             engine = new CLIEngine({
-                configFile: "fixtures/configurations/quotes-error.json",
+                configFile: "fixtures/configurations/http-error.json",
                 useEc0lintrc: false,
                 cwd: getFixturePath("..")
             });
 
-            const report = engine.executeOnText("var foo = 'bar';");
+            const report = engine.executeOnText("import * from 'axios';");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 1);
             assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.isUndefined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -204,12 +189,12 @@ describe("CLIEngine", () => {
         it("should return source code of file in `source` property when errors are present", () => {
             engine = new CLIEngine({
                 useEc0lintrc: false,
-                rules: { semi: 2 }
+                rules: { "lighter-http": 2 }
             });
 
-            const report = engine.executeOnText("var foo = 'bar'");
+            const report = engine.executeOnText("import * from 'axios';");
 
-            assert.strictEqual(report.results[0].source, "var foo = 'bar'");
+            assert.strictEqual(report.results[0].source, "import * from 'axios';");
         });
 
         // @scope for @scope/ec0lint-plugin

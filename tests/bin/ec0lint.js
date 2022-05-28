@@ -86,52 +86,52 @@ describe("bin/ec0lint.js", () => {
         it("has exit code 1 if a syntax error is thrown", () => assertExitCode(runESLint(["README.md"]), 1));
     });
 
-    describe("automatically fixing files", () => {
-        const fixturesPath = path.join(__dirname, "../fixtures/autofix-integration");
-        const tempFilePath = `${fixturesPath}/temp.js`;
-        const startingText = fs.readFileSync(`${fixturesPath}/left-pad.js`).toString();
-        const expectedFixedText = fs.readFileSync(`${fixturesPath}/left-pad-expected.js`).toString();
-        const expectedFixedTextQuiet = fs.readFileSync(`${fixturesPath}/left-pad-expected-quiet.js`).toString();
+    // describe("automatically fixing files", () => {
+    //     const fixturesPath = path.join(__dirname, "../fixtures/autofix-integration");
+    //     const tempFilePath = `${fixturesPath}/temp.js`;
+    //     const startingText = fs.readFileSync(`${fixturesPath}/left-pad.js`).toString();
+    //     const expectedFixedText = fs.readFileSync(`${fixturesPath}/left-pad-expected.js`).toString();
+    //     const expectedFixedTextQuiet = fs.readFileSync(`${fixturesPath}/left-pad-expected-quiet.js`).toString();
 
-        beforeEach(() => {
-            fs.writeFileSync(tempFilePath, startingText);
-        });
+    //     beforeEach(() => {
+    //         fs.writeFileSync(tempFilePath, startingText);
+    //     });
 
-        it("has exit code 0 and fixes a file if all rules can be fixed", () => {
-            const child = runESLint(["--fix", "--no-ec0lintrc", "--no-ignore", tempFilePath]);
-            const exitCodeAssertion = assertExitCode(child, 0);
-            const outputFileAssertion = awaitExit(child).then(() => {
-                assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedText);
-            });
+    //     it("has exit code 0 and fixes a file if all rules can be fixed", () => {
+    //         const child = runESLint(["--fix", "--no-ec0lintrc", "--no-ignore", tempFilePath]);
+    //         const exitCodeAssertion = assertExitCode(child, 0);
+    //         const outputFileAssertion = awaitExit(child).then(() => {
+    //             assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedText);
+    //         });
 
-            return Promise.all([exitCodeAssertion, outputFileAssertion]);
-        });
+    //         return Promise.all([exitCodeAssertion, outputFileAssertion]);
+    //     });
 
-        it("has exit code 0, fixes errors in a file, and does not report or fix warnings if --quiet and --fix are used", () => {
-            const child = runESLint(["--fix", "--quiet", "--no-ec0lintrc", "--no-ignore", tempFilePath]);
-            const exitCodeAssertion = assertExitCode(child, 0);
-            const stdoutAssertion = getOutput(child).then(output => assert.strictEqual(output.stdout, ""));
-            const outputFileAssertion = awaitExit(child).then(() => {
-                assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedTextQuiet);
-            });
+    //     it("has exit code 0, fixes errors in a file, and does not report or fix warnings if --quiet and --fix are used", () => {
+    //         const child = runESLint(["--fix", "--quiet", "--no-ec0lintrc", "--no-ignore", tempFilePath]);
+    //         const exitCodeAssertion = assertExitCode(child, 0);
+    //         const stdoutAssertion = getOutput(child).then(output => assert.strictEqual(output.stdout, ""));
+    //         const outputFileAssertion = awaitExit(child).then(() => {
+    //             assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedTextQuiet);
+    //         });
 
-            return Promise.all([exitCodeAssertion, stdoutAssertion, outputFileAssertion]);
-        });
+    //         return Promise.all([exitCodeAssertion, stdoutAssertion, outputFileAssertion]);
+    //     });
 
-        it("has exit code 1 and fixes a file if not all rules can be fixed", () => {
-            const child = runESLint(["--fix", "--no-ec0lintrc", "--no-ignore", "--rule", "max-len: [2, 10]", tempFilePath]);
-            const exitCodeAssertion = assertExitCode(child, 1);
-            const outputFileAssertion = awaitExit(child).then(() => {
-                assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedText);
-            });
+    //     it("has exit code 1 and fixes a file if not all rules can be fixed", () => {
+    //         const child = runESLint(["--fix", "--no-ec0lintrc", "--no-ignore", "--rule", "max-len: [2, 10]", tempFilePath]);
+    //         const exitCodeAssertion = assertExitCode(child, 1);
+    //         const outputFileAssertion = awaitExit(child).then(() => {
+    //             assert.strictEqual(fs.readFileSync(tempFilePath).toString(), expectedFixedText);
+    //         });
 
-            return Promise.all([exitCodeAssertion, outputFileAssertion]);
-        });
+    //         return Promise.all([exitCodeAssertion, outputFileAssertion]);
+    //     });
 
-        afterEach(() => {
-            fs.unlinkSync(tempFilePath);
-        });
-    });
+    //     afterEach(() => {
+    //         fs.unlinkSync(tempFilePath);
+    //     });
+    // });
 
     describe("cache files", () => {
         const CACHE_PATH = ".temp-ec0lintcache";
@@ -234,34 +234,34 @@ describe("bin/ec0lint.js", () => {
     });
 
     describe("handling crashes", () => {
-        it("prints the error message to stderr in the event of a crash", () => {
-            const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
-            const exitCodeAssertion = assertExitCode(child, 2);
-            const outputAssertion = getOutput(child).then(output => {
-                const expectedSubstring = "Syntax error in selector";
+        // it("prints the error message to stderr in the event of a crash", () => {
+        //     const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
+        //     const exitCodeAssertion = assertExitCode(child, 2);
+        //     const outputAssertion = getOutput(child).then(output => {
+        //         const expectedSubstring = "Syntax error in selector";
 
-                assert.strictEqual(output.stdout, "");
-                assert.include(output.stderr, expectedSubstring);
-            });
+        //         assert.strictEqual(output.stdout, "");
+        //         assert.include(output.stderr, expectedSubstring);
+        //     });
 
-            return Promise.all([exitCodeAssertion, outputAssertion]);
-        });
+        //     return Promise.all([exitCodeAssertion, outputAssertion]);
+        // });
 
-        it("prints the error message exactly once to stderr in the event of a crash", () => {
-            const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
-            const exitCodeAssertion = assertExitCode(child, 2);
-            const outputAssertion = getOutput(child).then(output => {
-                const expectedSubstring = "Syntax error in selector";
+        // it("prints the error message exactly once to stderr in the event of a crash", () => {
+        //     const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
+        //     const exitCodeAssertion = assertExitCode(child, 2);
+        //     const outputAssertion = getOutput(child).then(output => {
+        //         const expectedSubstring = "Syntax error in selector";
 
-                assert.strictEqual(output.stdout, "");
-                assert.include(output.stderr, expectedSubstring);
+        //         assert.strictEqual(output.stdout, "");
+        //         assert.include(output.stderr, expectedSubstring);
 
-                // The message should appear exactly once in stderr
-                assert.strictEqual(output.stderr.indexOf(expectedSubstring), output.stderr.lastIndexOf(expectedSubstring));
-            });
+        //         // The message should appear exactly once in stderr
+        //         assert.strictEqual(output.stderr.indexOf(expectedSubstring), output.stderr.lastIndexOf(expectedSubstring));
+        //     });
 
-            return Promise.all([exitCodeAssertion, outputAssertion]);
-        });
+        //     return Promise.all([exitCodeAssertion, outputAssertion]);
+        // });
 
         it("prints the error message pointing to line of code", () => {
             const invalidConfig = path.join(__dirname, "../fixtures/bin/.ec0lintrc.yml");

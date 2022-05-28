@@ -28,7 +28,7 @@ describe("ec0lint-all", () => {
     it("should return all rules", () => {
         const ruleNames = Object.keys(rules);
         const count = ruleNames.length;
-        const someRule = "yoda";
+        const someRule = "lighter-http";
 
         assert.include(ruleNames, someRule);
         assert.isAbove(count, 200);
