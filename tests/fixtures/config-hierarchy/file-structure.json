@@ -2,26 +2,26 @@
     "broken": {
         ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    lighter-http: 2\r\n",
         "add-conf.yaml": "rules:\r\n    semi: [1, \"never\"]\r\n",
-        "console-wrong-quotes-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
-        "console-wrong-quotes.js": "console.log('bar');\r\n",
+        "lighter-http-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
+        "lighter-http.js": "console.log('bar');\r\n",
         "override-conf.yaml": "rules:\r\n    quotes: 0\r\n",
         "override-env-conf.yaml": "extends: \"ec0lint:recommended\"\nenv:\n    node: true\nrules:\n    no-mixed-requires: 0\n",
         "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {}\r\n}\r\n",
         "plugins": {
             ".ec0lintrc": "plugins: \r\n    [\"example\"]\r\n    ",
-            "console-wrong-quotes.js": "console.log('bar');\r\n"
+            "lighter-http.js": "console.log('bar');\r\n"
         },
         "plugins2": {
             ".ec0lintrc": "plugins: \r\n    [\"example\", \"ec0lint-plugin-test\"]\r\n    ",
-            "console-wrong-quotes.js": "console.log('bar');\r\n"
+            "lighter-http.js": "console.log('bar');\r\n"
         },
         "process-exit.js": "process.exit(0);\r\n",
         "subbroken": {
             ".ec0lintrc": "rules:\r\n    no-console: 1\r\n    lighter-http: 2\r\n",
-            "console-wrong-quotes.js": "console.log('bar');\r\n",
+            "lighter-http.js": "console.log('bar');\r\n",
             "subsubbroken": {
                 ".ec0lintrc": "rules:\r\n    no-console: 0\r\n    quotes: [1, \"double\"]\r\n",
-                "console-wrong-quotes.js": "console.log('bar');\r\n"
+                "lighter-http.js": "console.log('bar');\r\n"
             }
         },
         "wrong-quotes.js": "// function is necessary to avoid any other errors\r\nfunction foo(bar) {\r\n    \"use strict\";\r\n    return bar;\r\n}\r\n\r\nfoo('bar');\r\n"

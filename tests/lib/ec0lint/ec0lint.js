@@ -1773,7 +1773,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 0);
@@ -1785,7 +1785,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes-node.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http-node.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 0);
@@ -1818,7 +1818,7 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
@@ -1831,7 +1831,7 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
@@ -1844,7 +1844,7 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
@@ -1908,7 +1908,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 2);
@@ -1924,7 +1924,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 0);
@@ -1936,7 +1936,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 2);
@@ -1952,7 +1952,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: getFixturePath("config-hierarchy/broken/override-conf.yaml")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
@@ -1966,7 +1966,7 @@ describe("ec0lint", () => {
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 0);
@@ -1983,7 +1983,7 @@ describe("ec0lint", () => {
                         }
                     }
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
@@ -2002,7 +2002,7 @@ describe("ec0lint", () => {
                         }
                     }
                 });
-                const results = await eslint.lintFiles([getFixturePath("config-hierarchy/broken/console-wrong-quotes.js")]);
+                const results = await eslint.lintFiles([getFixturePath("config-hierarchy/broken/lighter-http.js")]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
