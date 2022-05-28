@@ -240,11 +240,11 @@ describe("ec0lint", () => {
     
         it("should report the total and per file errors when using local cwd .ec0lintrc", async () => {
             eslint = new ESLint();
-            const results = await eslint.lintText("var foo = 'bar';");
+            const results = await eslint.lintText("const axios = require('axios');");
     
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-unused-vars");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(results[0].fixableErrorCount, 0);
             assert.strictEqual(results[0].fixableWarningCount, 0);
             assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
@@ -254,22 +254,15 @@ describe("ec0lint", () => {
             eslint = new ESLint({
                 overrideConfig: {
                     rules: {
-                        quotes: 1,
-                        "no-var": 1,
-                        "eol-last": 1,
-                        strict: 1,
-                        "no-unused-vars": 1
+                        "lighter-http": 1
                     }
                 }
             });
-            const results = await eslint.lintText("var foo = 'bar';");
+            const results = await eslint.lintText("const axios = require('axios');");
     
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].messages.length, 4);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-var");
-            assert.strictEqual(results[0].messages[1].ruleId, "no-unused-vars");
-            assert.strictEqual(results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[3].ruleId, "eol-last");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(results[0].fixableErrorCount, 0);
             assert.strictEqual(results[0].fixableWarningCount, 2);
             assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
@@ -277,15 +270,15 @@ describe("ec0lint", () => {
     
         it("should report one message when using specific config file", async () => {
             eslint = new ESLint({
-                overrideConfigFile: "fixtures/configurations/quotes-error.json",
+                overrideConfigFile: "fixtures/configurations/lighter-http-error.json",
                 useEc0lintrc: false,
                 cwd: getFixturePath("..")
             });
-            const results = await eslint.lintText("var foo = 'bar';");
+            const results = await eslint.lintText("const axios = require('axios');");
     
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(results[0].messages[0].output, void 0);
             assert.strictEqual(results[0].errorCount, 1);
             assert.strictEqual(results[0].fixableErrorCount, 1);
@@ -299,7 +292,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath()
             });
             const options = { filePath: "test.js" };
-            const results = await eslint.lintText("var foo = 'bar';", options);
+            const results = await eslint.lintText("const axios = require('axios');", options);
     
             assert.strictEqual(results[0].filePath, getFixturePath("test.js"));
         });
@@ -310,7 +303,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath("..")
             });
             const options = { filePath: "fixtures/passing.js", warnIgnored: true };
-            const results = await eslint.lintText("var bar = foo;", options);
+            const results = await eslint.lintText("const axios = require('axios');;", options);
     
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
@@ -348,7 +341,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath("..")
             });
             const options = { filePath: "fixtures/passing.js" };
-            const results = await eslint.lintText("var bar = foo;", options);
+            const results = await eslint.lintText("const axios = require('axios');;", options);
     
             // should not report anything because there are no errors
             assert.strictEqual(results.length, 0);
@@ -367,7 +360,7 @@ describe("ec0lint", () => {
                 }
             });
             const options = { filePath: "fixtures/passing.js" };
-            const results = await eslint.lintText("var bar = foo;", options);
+            const results = await eslint.lintText("const axios = require('axios');;", options);
     
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
@@ -376,36 +369,36 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages[0].output, void 0);
         });
     
-        it("should return a message and fixed text when in fix mode", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                fix: true,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "passing.js" };
-            const results = await eslint.lintText("var bar = foo", options);
+        // it("should return a message and fixed text when in fix mode", async () => {
+        //     eslint = new ESLint({
+        //         useEc0lintrc: false,
+        //         fix: true,
+        //         overrideConfig: {
+        //             rules: {
+        //                 "lighter-http": 2
+        //             }
+        //         },
+        //         ignore: false,
+        //         cwd: getFixturePath()
+        //     });
+        //     const options = { filePath: "passing.js" };
+        //     const results = await eslint.lintText("const axios = require('axios');", options);
     
-            assert.deepStrictEqual(results, [
-                {
-                    filePath: getFixturePath("passing.js"),
-                    messages: [],
-                    suppressedMessages: [],
-                    errorCount: 0,
-                    warningCount: 0,
-                    fatalErrorCount: 0,
-                    fixableErrorCount: 0,
-                    fixableWarningCount: 0,
-                    output: "var bar = foo;",
-                    usedDeprecatedRules: []
-                }
-            ]);
-        });
+        //     assert.deepStrictEqual(results, [
+        //         {
+        //             filePath: getFixturePath("passing.js"),
+        //             messages: [],
+        //             suppressedMessages: [],
+        //             errorCount: 0,
+        //             warningCount: 0,
+        //             fatalErrorCount: 0,
+        //             fixableErrorCount: 0,
+        //             fixableWarningCount: 0,
+        //             output: "const axios = require('axios');;",
+        //             usedDeprecatedRules: []
+        //         }
+        //     ]);
+        // });
     
         it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
             eslint = new ESLint({
@@ -567,7 +560,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath()
             });
             const options = { filePath: "passing.js" };
-            const results = await eslint.lintText("var bar = foo", options);
+            const results = await eslint.lintText("const axios = require('axios');", options);
 
             assert.deepStrictEqual(results, [
                 {
@@ -591,7 +584,7 @@ describe("ec0lint", () => {
                     fatalErrorCount: 0,
                     fixableErrorCount: 0,
                     fixableWarningCount: 0,
-                    source: "var bar = foo",
+                    source: "const axios = require('axios');",
                     usedDeprecatedRules: []
                 }
             ]);
@@ -611,7 +604,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath()
             });
             const options = { filePath: "test.js" };
-            const results = await eslint.lintText("var bar = foo", options);
+            const results = await eslint.lintText("const axios = require('axios');", options);
 
             assert.deepStrictEqual(results, [
                 {
@@ -632,7 +625,7 @@ describe("ec0lint", () => {
                     fatalErrorCount: 1,
                     fixableErrorCount: 0,
                     fixableWarningCount: 0,
-                    output: "var bar = foothis is a syntax error.",
+                    output: "const axios = require('axios');this is a syntax error.",
                     usedDeprecatedRules: []
                 }
             ]);
@@ -682,24 +675,24 @@ describe("ec0lint", () => {
             eslint = new ESLint({
                 useEc0lintrc: false,
                 overrideConfig: {
-                    rules: { semi: 2 }
+                    rules: { "lighter-http": 2 }
                 }
             });
-            const results = await eslint.lintText("var foo = 'bar'");
+            const results = await eslint.lintText("const axios = require('axios')");
 
-            assert.strictEqual(results[0].source, "var foo = 'bar'");
+            assert.strictEqual(results[0].source, "const axios = require('axios')");
         });
 
         it("should return source code of file in `source` property when warnings are present", async () => {
             eslint = new ESLint({
                 useEc0lintrc: false,
                 overrideConfig: {
-                    rules: { semi: 1 }
+                    rules: { "lighter-http": 1 }
                 }
             });
-            const results = await eslint.lintText("var foo = 'bar'");
+            const results = await eslint.lintText("const axios = require('axios')");
 
-            assert.strictEqual(results[0].source, "var foo = 'bar'");
+            assert.strictEqual(results[0].source, "const axios = require('axios')");
         });
 
 
@@ -707,10 +700,10 @@ describe("ec0lint", () => {
             eslint = new ESLint({
                 useEc0lintrc: false,
                 overrideConfig: {
-                    rules: { semi: 2 }
+                    rules: { "lighter-http": 2 }
                 }
             });
-            const results = await eslint.lintText("var foo = 'bar';");
+            const results = await eslint.lintText("const axios = require('axios');");
 
             assert.strictEqual(results[0].messages.length, 0);
             assert.strictEqual(results[0].source, void 0);
@@ -722,8 +715,8 @@ describe("ec0lint", () => {
                 fix: true,
                 overrideConfig: {
                     rules: {
-                        semi: 2,
-                        "no-unused-vars": 2
+                        "lighter-http": 2,
+                        "lighter-http": 2
                     }
                 }
             });
@@ -737,10 +730,10 @@ describe("ec0lint", () => {
             eslint = new ESLint({
                 useEc0lintrc: false,
                 overrideConfig: {
-                    rules: { semi: 2 }
+                    rules: { "lighter-http": 2 }
                 }
             });
-            const results = await eslint.lintText("var bar = foothis is a syntax error.\n return bar;");
+            const results = await eslint.lintText("const axios = require('axios');this is a syntax error.\n return bar;");
 
             assert.deepStrictEqual(results, [
                 {
@@ -761,7 +754,7 @@ describe("ec0lint", () => {
                     fatalErrorCount: 1,
                     fixableErrorCount: 0,
                     fixableWarningCount: 0,
-                    source: "var bar = foothis is a syntax error.\n return bar;",
+                    source: "const axios = require('axios');this is a syntax error.\n return bar;",
                     usedDeprecatedRules: []
                 }
             ]);
@@ -773,7 +766,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath(),
                 ignore: false
             });
-            const results = await eslint.lintText("var bar = foo;", { filePath: "node_modules/passing.js", warnIgnored: true });
+            const results = await eslint.lintText("const axios = require('axios');;", { filePath: "node_modules/passing.js", warnIgnored: true });
             const expectedMsg = "File ignored by default. Use \"--ignore-pattern '!node_modules/*'\" to override.";
 
             assert.strictEqual(results.length, 1);
@@ -955,14 +948,14 @@ describe("ec0lint", () => {
         // it("should fall back to defaults when extensions is set to an empty array", async () => {
         //     eslint = new ESLint({
         //         cwd: getFixturePath("configurations"),
-        //         overrideConfigFile: getFixturePath("configurations", "quotes-error.json"),
+        //         overrideConfigFile: getFixturePath("configurations", "lighter-http-error.json"),
         //         extensions: []
         //     });
         //     const results = await eslint.lintFiles([getFixturePath("single-quoted.js")]);
 
         //     assert.strictEqual(results.length, 1);
         //     assert.strictEqual(results[0].messages.length, 1);
-        //     assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
         //     assert.strictEqual(results[0].messages[0].severity, 2);
         //     assert.strictEqual(results[0].errorCount, 1);
         //     assert.strictEqual(results[0].warningCount, 0);
@@ -1111,7 +1104,7 @@ describe("ec0lint", () => {
                     }
                 }
             });
-            const results = await eslint.lintFiles(["hidden/.hiddenfolder/double-quotes.js"]);
+            const results = await eslint.lintFiles(["hidden/.hiddenfolder/double-lighter-http.js"]);
             const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
 
             assert.strictEqual(results.length, 1);
@@ -1141,7 +1134,7 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].errorCount, 1);
             assert.strictEqual(results[0].fixableErrorCount, 1);
             assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
         });
 
         it("should check .hidden files if they are unignored with an --ignore-pattern", async () => {
@@ -1163,7 +1156,7 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].errorCount, 1);
             assert.strictEqual(results[0].fixableErrorCount, 1);
             assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
         });
 
         it("should report zero messages when given a pattern with a .js and a .js2 file", async () => {
@@ -1182,13 +1175,13 @@ describe("ec0lint", () => {
         // it("should return one error message when given a config with rules with options and severity level set to error", async () => {
         //     eslint = new ESLint({
         //         cwd: getFixturePath("configurations"),
-        //         overrideConfigFile: getFixturePath("configurations", "quotes-error.json")
+        //         overrideConfigFile: getFixturePath("configurations", "lighter-http-error.json")
         //     });
         //     const results = await eslint.lintFiles([getFixturePath("single-quoted.js")]);
 
         //     assert.strictEqual(results.length, 1);
         //     assert.strictEqual(results[0].messages.length, 1);
-        //     assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
         //     assert.strictEqual(results[0].messages[0].severity, 2);
         //     assert.strictEqual(results[0].errorCount, 1);
         //     assert.strictEqual(results[0].warningCount, 0);
@@ -1293,7 +1286,7 @@ describe("ec0lint", () => {
                 ignore: false,
                 overrideConfig: {
                     rules: {
-                        semi: 2
+                        "lighter-http": 2
                     }
                 }
             });
@@ -1562,7 +1555,7 @@ describe("ec0lint", () => {
                     env: { node: true }
                 }
             });
-            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "quotes.js"));
+            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "lighter-http.js"));
             const results = await eslint.lintFiles([filePath]);
 
             assert.strictEqual(results.length, 1);
@@ -1578,7 +1571,7 @@ describe("ec0lint", () => {
                     env: { node: true }
                 }
             });
-            const filePath = fs.realpathSync(getFixturePath("packagejson", "quotes.js"));
+            const filePath = fs.realpathSync(getFixturePath("packagejson", "lighter-http.js"));
             const results = await eslint.lintFiles([filePath]);
 
             assert.strictEqual(results.length, 1);
@@ -1690,7 +1683,7 @@ describe("ec0lint", () => {
         //                 usedDeprecatedRules: []
         //             },
         //             {
-        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-lighter-http.js")),
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/lighter-http-semi-lighter-http.js")),
         //                 messages: [
         //                     {
         //                         column: 9,
@@ -1714,7 +1707,7 @@ describe("ec0lint", () => {
         //                 usedDeprecatedRules: []
         //             },
         //             {
-        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/lighter-http.js")),
         //                 messages: [
         //                     {
         //                         column: 18,
@@ -1822,7 +1815,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 2);
             });
 
@@ -1848,7 +1841,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 1);
             });
 
@@ -1857,11 +1850,11 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 1);
             });
 
@@ -1870,7 +1863,7 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 0);
@@ -1881,11 +1874,11 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 2);
             });
 
@@ -1894,11 +1887,11 @@ describe("ec0lint", () => {
                 eslint = new ESLint({
                     cwd: path.join(fixtureDir, "..")
                 });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-quotes.js`)]);
+                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-lighter-http.js`)]);
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 2);
             });
 
@@ -1912,7 +1905,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 2);
                 assert.strictEqual(results[0].messages[1].ruleId, "semi");
                 assert.strictEqual(results[0].messages[1].severity, 1);
@@ -1979,7 +1972,7 @@ describe("ec0lint", () => {
                     overrideConfigFile: getFixturePath("config-hierarchy/broken/override-conf.yaml"),
                     overrideConfig: {
                         rules: {
-                            quotes: [1, "double"]
+                            "lighter-http": [1, "double"]
                         }
                     }
                 });
@@ -1987,7 +1980,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 1);
             });
 
@@ -1998,7 +1991,7 @@ describe("ec0lint", () => {
                     overrideConfigFile: getFixturePath("/config-hierarchy/broken/override-conf.yaml"),
                     overrideConfig: {
                         rules: {
-                            quotes: [1, "double"]
+                            "lighter-http": 1
                         }
                     }
                 });
@@ -2006,7 +1999,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(results.length, 1);
                 assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+                assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].messages[0].severity, 1);
             });
         });
@@ -2221,7 +2214,7 @@ describe("ec0lint", () => {
                         overrideConfig: {
                             rules: {
                                 "lighter-http": 0,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         },
                         extensions: ["js"],
@@ -2249,7 +2242,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2297,7 +2290,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2328,7 +2321,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 2,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2356,7 +2349,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2385,7 +2378,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2414,7 +2407,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"],
@@ -2456,7 +2449,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2491,7 +2484,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2535,7 +2528,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2574,7 +2567,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2582,7 +2575,7 @@ describe("ec0lint", () => {
 
                 assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
-                await eslint.lintText("var foo = 'bar';");
+                await eslint.lintText("const axios = require('axios');");
 
                 assert(shell.test("-f", cacheLocation), "the cache for ec0lint still exists");
             });
@@ -2597,7 +2590,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2605,7 +2598,7 @@ describe("ec0lint", () => {
 
                 assert(shell.test("-f", cacheLocation), "the cache for ec0lint exists");
 
-                await eslint.lintText("var bar = foo;", { filePath: "fixtures/passing.js" });
+                await eslint.lintText("const axios = require('axios');;", { filePath: "fixtures/passing.js" });
 
                 assert(shell.test("-f", cacheLocation), "the cache for ec0lint still exists");
             });
@@ -2621,7 +2614,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2645,7 +2638,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         rules: {
                             "lighter-http": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js"]
@@ -2676,7 +2669,7 @@ describe("ec0lint", () => {
                         overrideConfig: {
                             rules: {
                                 "lighter-http": 0,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         },
                         extensions: ["js"],
@@ -2716,7 +2709,7 @@ describe("ec0lint", () => {
                         overrideConfig: {
                             rules: {
                                 "lighter-http": 0,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         },
                         extensions: ["js"]
@@ -2755,7 +2748,7 @@ describe("ec0lint", () => {
                         overrideConfig: {
                             rules: {
                                 "lighter-http": 0,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         },
                         extensions: ["js"]
@@ -2796,7 +2789,7 @@ describe("ec0lint", () => {
                         overrideConfig: {
                             rules: {
                                 "lighter-http": 0,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         },
                         extensions: ["js"]
@@ -2845,7 +2838,7 @@ describe("ec0lint", () => {
                         plugins: ["test-processor"],
                         rules: {
                             "lighter-http": 2,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js", "txt"],
@@ -2937,7 +2930,7 @@ describe("ec0lint", () => {
                         plugins: ["test-processor"],
                         rules: {
                             "lighter-http": 2,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js", "txt"],
@@ -2975,7 +2968,7 @@ describe("ec0lint", () => {
                             files: ["**/*.txt/*.txt"],
                             rules: {
                                 "lighter-http": 2,
-                                "no-unused-vars": 2
+                                "lighter-http": 2
                             }
                         }]
                     },
@@ -3065,7 +3058,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(ret.length, 1);
                 assert.strictEqual(ret[0].messages.length, 1);
-                assert.strictEqual(ret[0].messages[0].ruleId, "no-unused-vars");
+                assert.strictEqual(ret[0].messages[0].ruleId, "lighter-http");
             });
         });
 
@@ -3643,7 +3636,7 @@ describe("ec0lint", () => {
     describe("calculateConfigForFile", () => {
         // it("should return the info from Config#getConfig when called", async () => {
         //     const options = {
-        //         overrideConfigFile: getFixturePath("configurations", "quotes-error.json")
+        //         overrideConfigFile: getFixturePath("configurations", "lighter-http-error.json")
         //     };
         //     const engine = new ESLint(options);
         //     const filePath = getFixturePath("single-quoted.js");
@@ -4298,24 +4291,24 @@ describe("ec0lint", () => {
         // it("should report 5 error messages when looking for errors only", async () => {
         //     process.chdir(originalDir);
         //     const engine = new ESLint();
-        //     const results = await engine.lintText("var foo = 'bar';");
+        //     const results = await engine.lintText("const axios = require('axios');");
         //     const errorResults = ESLint.getErrorResults(results);
         //
         //     assert.strictEqual(errorResults[0].messages.length, 1);
         //     assert.strictEqual(errorResults[0].errorCount, 1);
         //     assert.strictEqual(errorResults[0].fixableErrorCount, 0);
         //     assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-        //     assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
+        //     assert.strictEqual(errorResults[0].messages[0].ruleId, "lighter-http");
         // });
 
         it("should not mutate passed report parameter", async () => {
             process.chdir(originalDir);
             const engine = new ESLint({
                 overrideConfig: {
-                    rules: { quotes: [1, "double"] }
+                    rules: { "lighter-http": 1 }
                 }
             });
-            const results = await engine.lintText("var foo = 'bar';");
+            const results = await engine.lintText("const axios = require('axios');");
             const reportResultsLength = results[0].messages.length;
 
             ESLint.getErrorResults(results);
@@ -4327,7 +4320,7 @@ describe("ec0lint", () => {
         // it("should report a warningCount of 0 when looking for errors only", async () => {
         //     process.chdir(originalDir);
         //     const engine = new ESLint();
-        //     const results = await engine.lintText("var foo = 'bar';");
+        //     const results = await engine.lintText("const axios = require('axios');");
         //     const errorResults = ESLint.getErrorResults(results);
         //
         //     assert.strictEqual(errorResults[0].warningCount, 0);
@@ -4343,7 +4336,7 @@ describe("ec0lint", () => {
                 filePath: "fixtures/passing.js",
                 warnIgnored: true
             };
-            const results = await engine.lintText("var bar = foo;", options);
+            const results = await engine.lintText("const axios = require('axios');;", options);
             const errorReport = ESLint.getErrorResults(results);
 
             assert.strictEqual(errorReport.length, 0);
@@ -4363,11 +4356,11 @@ describe("ec0lint", () => {
                     rules: { "lighter-http": 2 }
                 }
             });
-            const results = await engine.lintText("var foo = 'bar';");
+            const results = await engine.lintText("const axios = require('axios');");
             const errorResults = ESLint.getErrorResults(results);
 
             assert.strictEqual(errorResults[0].messages.length, 1);
-            assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
+            assert.strictEqual(errorResults[0].source, "const axios = require('axios');");
         });
 
         it("should contain `output` property after fixes", async () => {
@@ -4377,7 +4370,7 @@ describe("ec0lint", () => {
                 fix: true,
                 overrideConfig: {
                     rules: {
-                        semi: 2,
+                        "lighter-http": 2,
                         "lighter-http": 2
                     }
                 }
@@ -4406,7 +4399,7 @@ describe("ec0lint", () => {
                 useEc0lintrc: false,
                 overrideConfig: {
                     rules: {
-                        semi: 2
+                        "lighter-http": 2
                     }
                 }
             });
@@ -4422,7 +4415,7 @@ describe("ec0lint", () => {
                 useEc0lintrc: false,
                 overrideConfig: {
                     rules: {
-                        semi: 2
+                        "lighter-http": 2
                     }
                 }
             });
@@ -4438,7 +4431,7 @@ describe("ec0lint", () => {
                 useEc0lintrc: false,
                 overrideConfig: {
                     rules: {
-                        semi: 2,
+                        "lighter-http": 2,
                         "lighter-http": 2
                     }
                 }
@@ -4448,7 +4441,7 @@ describe("ec0lint", () => {
             const rulesMeta = engine.getRulesMetaForResults(results);
 
             assert.strictEqual(rulesMeta.semi, coreRules.get("semi").meta);
-            assert.strictEqual(rulesMeta.quotes, coreRules.get("quotes").meta);
+            assert.strictEqual(rulesMeta.lighter-http, coreRules.get("lighter-http").meta);
         });
     });
 
@@ -4531,11 +4524,7 @@ describe("ec0lint", () => {
                 overrideConfig: {
                     env: { browser: true },
                     rules: {
-                        "eol-last": 0,
-                        "no-alert": 1,
-                        "no-trailing-spaces": 0,
-                        strict: 0,
-                        quotes: 0
+                        "lighter-http": 0
                     }
                 }
             };
@@ -4558,11 +4547,7 @@ describe("ec0lint", () => {
                 overrideConfig: {
                     env: { browser: true },
                     rules: {
-                        "eol-last": 0,
-                        "no-alert": 1,
-                        "no-trailing-spaces": 0,
-                        strict: 0,
-                        quotes: 0
+                        "lighter-http": 0
                     }
                 }
             };
