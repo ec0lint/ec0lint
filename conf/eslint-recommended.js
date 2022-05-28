@@ -15,6 +15,7 @@ module.exports = {
         "constructor-super": "error",
         "for-direction": "error",
         "getter-return": "error",
+        "lighter-http": "error",
         "no-async-promise-executor": "error",
         "no-case-declarations": "error",
         "no-class-assign": "error",
