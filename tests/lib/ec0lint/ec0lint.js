@@ -4304,18 +4304,19 @@ describe("ec0lint", () => {
     });
 
     describe("getErrorResults()", () => {
-        it("should report 5 error messages when looking for errors only", async () => {
-            process.chdir(originalDir);
-            const engine = new ESLint();
-            const results = await engine.lintText("var foo = 'bar';");
-            const errorResults = ESLint.getErrorResults(results);
-
-            assert.strictEqual(errorResults[0].messages.length, 1);
-            assert.strictEqual(errorResults[0].errorCount, 1);
-            assert.strictEqual(errorResults[0].fixableErrorCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-            assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
-        });
+        // TODO after adding the first rule
+        // it("should report 5 error messages when looking for errors only", async () => {
+        //     process.chdir(originalDir);
+        //     const engine = new ESLint();
+        //     const results = await engine.lintText("var foo = 'bar';");
+        //     const errorResults = ESLint.getErrorResults(results);
+        //
+        //     assert.strictEqual(errorResults[0].messages.length, 1);
+        //     assert.strictEqual(errorResults[0].errorCount, 1);
+        //     assert.strictEqual(errorResults[0].fixableErrorCount, 0);
+        //     assert.strictEqual(errorResults[0].fixableWarningCount, 0);
+        //     assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
+        // });
 
         it("should not mutate passed report parameter", async () => {
             process.chdir(originalDir);
@@ -4332,15 +4333,16 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages.length, reportResultsLength);
         });
 
-        it("should report a warningCount of 0 when looking for errors only", async () => {
-            process.chdir(originalDir);
-            const engine = new ESLint();
-            const results = await engine.lintText("var foo = 'bar';");
-            const errorResults = ESLint.getErrorResults(results);
-
-            assert.strictEqual(errorResults[0].warningCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-        });
+        // TODO after adding the first rule
+        // it("should report a warningCount of 0 when looking for errors only", async () => {
+        //     process.chdir(originalDir);
+        //     const engine = new ESLint();
+        //     const results = await engine.lintText("var foo = 'bar';");
+        //     const errorResults = ESLint.getErrorResults(results);
+        //
+        //     assert.strictEqual(errorResults[0].warningCount, 0);
+        //     assert.strictEqual(errorResults[0].fixableWarningCount, 0);
+        // });
 
         it("should return 0 error or warning messages even when the file has warnings", async () => {
             const engine = new ESLint({
