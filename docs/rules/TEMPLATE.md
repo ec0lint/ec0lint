@@ -6,10 +6,10 @@ rule description
 
 CO2 saving or sample savings (depending on the rule) with size information
 
-### Examples
+## Examples
 
 couple of examples
 
-### Options
+## Options
 
 options available

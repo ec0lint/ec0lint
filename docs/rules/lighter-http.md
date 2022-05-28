@@ -5,9 +5,18 @@ Disallows to use libraries like: axios, got, request, make-fetch-happen, superag
 Importing large sets of packages, which are doing exactly same work like fetch, takes large amount of disk space.
 Fetch API is build-in functionality, so it's always hereabouts.
 
-## Rule Details
+## CO2 reduction
 
-This rule disallows to use libraries other than fetch.
+The weight of each of the libraries:
+* axios:
+* got:
+* request:
+* make-fetch-happen:
+* superagent:
+* needle:
+* simple-get:
+
+## Examples
 
 Examples of **incorrect** code for this rule:
 
@@ -45,4 +54,4 @@ fetch('https://api.github.com/orgs/nodejs')
 
 ## When Not To Use It
 
-If you by default will use fetch to http requests.
+If you will by default use fetch to http requests.

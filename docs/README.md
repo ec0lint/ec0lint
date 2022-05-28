@@ -1,6 +1,6 @@
 # ec0lint Documentation
 
-<!-- ## [User Guide](user-guide) TBD -->
+<!-- ## [User Guide](user-guide) TODO -->
 
 ## [Rules Documentation](rules)
 
