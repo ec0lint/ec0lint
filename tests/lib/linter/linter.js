@@ -1179,7 +1179,7 @@ describe("Linter", () => {
         const code = "var answer = 6 * 7";
 
         it("should be configurable by only setting the integer value", () => {
-            const rule = "semi",
+            const rule = "lighter-http",
                 config = { rules: {} };
 
             config.rules[rule] = 1;
@@ -1194,7 +1194,7 @@ describe("Linter", () => {
         });
 
         it("should be configurable by only setting the string value", () => {
-            const rule = "semi",
+            const rule = "lighter-http",
                 config = { rules: {} };
 
             config.rules[rule] = "warn";
@@ -1210,7 +1210,7 @@ describe("Linter", () => {
         });
 
         it("should be configurable by passing in values as an array", () => {
-            const rule = "semi",
+            const rule = "lighter-http",
                 config = { rules: {} };
 
             config.rules[rule] = [1];
@@ -1225,7 +1225,7 @@ describe("Linter", () => {
         });
 
         it("should be configurable by passing in string value as an array", () => {
-            const rule = "semi",
+            const rule = "lighter-http",
                 config = { rules: {} };
 
             config.rules[rule] = ["warn"];
@@ -1241,7 +1241,7 @@ describe("Linter", () => {
         });
 
         it("should not be configurable by setting other value", () => {
-            const rule = "semi",
+            const rule = "lighter-http",
                 config = { rules: {} };
 
             config.rules[rule] = "1";
@@ -3185,12 +3185,12 @@ var a = "test2";
 
     //     it("should preserve line numbers", () => {
     //         const code = "#!bin/program\n\nvar foo;;";
-    //         const config = { rules: { "no-extra-semi": 1 } };
+    //         const config = { rules: { "no-extra-lighter-http": 1 } };
     //         const messages = linter.verify(code, config);
     //         const suppressedMessages = linter.getSuppressedMessages();
 
     //         assert.strictEqual(messages.length, 1);
-    //         assert.strictEqual(messages[0].ruleId, "no-extra-semi");
+    //         assert.strictEqual(messages[0].ruleId, "no-extra-lighter-http");
     //         assert.strictEqual(messages[0].nodeType, "EmptyStatement");
     //         assert.strictEqual(messages[0].line, 3);
 
@@ -3945,7 +3945,7 @@ var a = "test2";
             const config = {
                 reportUnusedDisableDirectives: true,
                 rules: {
-                    "lighter-http": 1
+                    "lighter-http": 2
                 }
             };
 
@@ -6689,7 +6689,7 @@ var a = "test2";
     //     it("Fixes the code", () => {
     //         const messages = linter.verifyAndFix("var a", {
     //             rules: {
-    //                 semi: 2
+    //                 lighter-http: 2
     //             }
     //         }, { filename: "test.js" });
 
@@ -6700,7 +6700,7 @@ var a = "test2";
     //     it("does not require a third argument", () => {
     //         const fixResult = linter.verifyAndFix("var a", {
     //             rules: {
-    //                 semi: 2
+    //                 lighter-http: 2
     //             }
     //         });
 
@@ -6714,7 +6714,7 @@ var a = "test2";
         // it("does not include suggestions in autofix results", () => {
         //     const fixResult = linter.verifyAndFix("var foo = /\\#/", {
         //         rules: {
-        //             semi: 2,
+        //             lighter-http: 2,
         //             "no-useless-escape": 2
         //         }
         //     });
@@ -6727,7 +6727,7 @@ var a = "test2";
         // it("does not apply autofixes when fix argument is `false`", () => {
         //     const fixResult = linter.verifyAndFix("var a", {
         //         rules: {
-        //             semi: 2
+        //             lighter-http: 2
         //         }
         //     }, { fix: false });
 
@@ -10500,7 +10500,7 @@ describe("Linter with FlatConfigArray", () => {
         describe("Rule Severity", () => {
 
             it("rule should run as warning when set to 1 with a config array", () => {
-                const ruleId = "semi",
+                const ruleId = "lighter-http",
                     configs = createFlatConfigArray({
                         files: ["**/*.js"],
                         rules: {
@@ -10519,7 +10519,7 @@ describe("Linter with FlatConfigArray", () => {
             });
 
             it("rule should run as warning when set to 1 with a plain array", () => {
-                const ruleId = "semi",
+                const ruleId = "lighter-http",
                     configs = [{
                         files: ["**/*.js"],
                         rules: {
@@ -10537,7 +10537,7 @@ describe("Linter with FlatConfigArray", () => {
             });
 
             it("rule should run as warning when set to 1 with an object", () => {
-                const ruleId = "semi",
+                const ruleId = "lighter-http",
                     config = {
                         files: ["**/*.js"],
                         rules: {
@@ -12260,14 +12260,14 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "const axios = require('axios') // ec0lint-disable-line lighter-http, quotes, semi",
+                        "const axios = require('axios') // ec0lint-disable-line lighter-http, quotes, lighter-http",
                         "console.log('test'); // ec0lint-disable-line"
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
                             quotes: [1, "double"],
-                            semi: [1, "always"],
+                            lighter-http: [1, "always"],
                             "lighter-http": 1
                         }
                     };
@@ -12281,14 +12281,14 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "const axios = require('axios') /* ec0lint-disable-line lighter-http, quotes, semi */",
+                        "const axios = require('axios') /* ec0lint-disable-line lighter-http, quotes, lighter-http */",
                         "console.log('test'); /* ec0lint-disable-line */"
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
                             quotes: [1, "double"],
-                            semi: [1, "always"],
+                            lighter-http: [1, "always"],
                             "lighter-http": 1
                         }
                     };
@@ -12647,7 +12647,7 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            semi: [1, "never"],
+                            lighter-http: [1, "never"],
                             quotes: [1, "single"],
                             "lighter-http": 1,
                             "lighter-http": 1
@@ -12662,7 +12662,7 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 3);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-                    assert.strictEqual(suppressedMessages[2].ruleId, "semi");
+                    assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
@@ -12715,22 +12715,19 @@ var a = "test2";
                 it("should not ignore violations if comment is of the type hashbang", () => {
                     const code = [
                         "#! ec0lint-disable-next-line lighter-http",
-                        "const axios = require('axios');",
-                        "console.log('test');"
+                        "console.log('test');",
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 2);
+                    assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "lighter-http");
-
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
             });
@@ -13551,8 +13548,8 @@ var a = "test2";
                                 line: 1,
                                 column: 1,
                                 fix: {
-                                    range: [37, 51],
-                                    text: ""
+                                    range: [0, 42],
+                                    text: " "
                                 },
                                 severity: 1,
                                 nodeType: null
@@ -13592,8 +13589,8 @@ var a = "test2";
                                 line: 2,
                                 column: 21,
                                 fix: {
-                                    range: [58, 72],
-                                    text: ""
+                                    range: [21, 247],
+                                    text: " "
                                 },
                                 severity: 1,
                                 nodeType: null
@@ -14590,7 +14587,7 @@ var a = "test2";
     //     it("Fixes the code", () => {
     //         const messages = linter.verifyAndFix("var a", {
     //             rules: {
-    //                 semi: 2
+    //                 lighter-http: 2
     //             }
     //         }, { filename: "test.js" });
     //         const suppressedMessages = linter.getSuppressedMessages();
@@ -14604,7 +14601,7 @@ var a = "test2";
         // it("does not require a third argument", () => {
         //     const fixResult = linter.verifyAndFix("var a", {
         //         rules: {
-        //             semi: 2
+        //             lighter-http: 2
         //         }
         //     });
         //     const suppressedMessages = linter.getSuppressedMessages();
@@ -14621,7 +14618,7 @@ var a = "test2";
         // it("does not include suggestions in autofix results", () => {
         //     const fixResult = linter.verifyAndFix("var foo = /\\#/", {
         //         rules: {
-        //             semi: 2,
+        //             lighter-http: 2,
         //             "no-useless-escape": 2
         //         }
         //     });
