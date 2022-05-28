@@ -225,7 +225,7 @@ describe("Linter", () => {
         });
 
         it("should have a suppressed message", () => {
-            const code = "/* ec0lint-disable lighter-http -- justification */\nimport * from 'axios';";
+            const code = "/* ec0lint-disable lighter-http -- justification */\nconst axios = require('axios');";
             const config = {
                 rules: { "lighter-http": 1 }
             };
@@ -247,7 +247,7 @@ describe("Linter", () => {
                 "/* ec0lint-disable lighter-http --- j1",
                 " * --- j2",
                 " */",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = {
                 rules: { "lighter-http": 1 }
@@ -269,7 +269,7 @@ describe("Linter", () => {
             const code = [
                 "/* ec0lint-disable -- j1 */",
                 "// ec0lint-disable-next-line -- j2",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = {
                 rules: { "lighter-http": 1 }
@@ -293,7 +293,7 @@ describe("Linter", () => {
         it("should not report a lint message", () => {
             const code = [
                 "/* ec0lint-disable -- j1 */",
-                "import * from 'axios'; // ec0lint-disable-line -- j2"
+                "const axios = require('axios'); // ec0lint-disable-line -- j2"
             ].join("\n");
             const config = {
                 rules: { "lighter-http": 1 }
@@ -317,7 +317,7 @@ describe("Linter", () => {
         it("should have a suppressed message with multiple suppressions", () => {
             const code = [
                 "/* ec0lint-disable lighter-http -- j1 */",
-                "import * from 'axios'; // ec0lint-disable-line lighter-http -- j3"
+                "const axios = require('axios'); // ec0lint-disable-line lighter-http -- j3"
             ].join("\n");
             const config = {
                 rules: { "lighter-http": 1 }
@@ -1764,7 +1764,7 @@ describe("Linter", () => {
     describe("when evaluating code with comments to enable rules", () => {
 
         it("should report a violation", () => {
-            const code = "/*ec0lint lighter-http:1*/ import * from 'axios';";
+            const code = "/*ec0lint lighter-http:1*/ const axios = require('axios');";
             const config = { rules: {} };
 
             const messages = linter.verify(code, config, filename);
@@ -1850,7 +1850,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with invalid comments to enable rules", () => {
         it("should report a violation when the config is not a valid rule configuration", () => {
-            const messages = linter.verify("/*ec0lint lighter-http:true*/ import * from 'axios';", {});
+            const messages = linter.verify("/*ec0lint lighter-http:true*/ const axios = require('axios');", {});
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -1897,7 +1897,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to disable rules", () => {
-        const code = "/*ec0lint lighter-http:0*/ import * from 'axios';";
+        const code = "/*ec0lint lighter-http:0*/ const axios = require('axios');";
 
         it("should not report a violation", () => {
             const config = { rules: { "lighter-http": 1 } };
@@ -1969,7 +1969,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable multiple rules", () => {
-        const code = "/*ec0lint lighter-http:1*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1*/ const axios = require('axios'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: {} };
@@ -1986,7 +1986,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable and disable multiple rules", () => {
-        const code = "/*ec0lint lighter-http:1 lighter-http:0*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1 lighter-http:0*/ const axios = require('axios'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 0 } };
@@ -2095,9 +2095,9 @@ describe("Linter", () => {
 
             const code = [
                 "/*ec0lint-disable */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "/*ec0lint-enable */",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = { rules: { "lighter-http": 1 } };
 
@@ -2119,8 +2119,8 @@ describe("Linter", () => {
         it("should not report a violation", () => {
             const code = [
                 "/*ec0lint-disable */",
-                "import * from 'axios';",
-                "import * from 'axios';"
+                "const axios = require('axios');",
+                "const axios = require('axios');"
             ].join("\n");
             const config = { rules: { "lighter-http": 1 } };
 
@@ -2138,10 +2138,10 @@ describe("Linter", () => {
 
         it("should not report a violation", () => {
             const code = [
-                "                    import * from 'axios';/*ec0lint-disable */\n",
-                "import * from 'axios';",
-                "                                         import * from 'axios';\n",
-                "/*ec0lint-enable */import * from 'axios';"
+                "                    const axios = require('axios');/*ec0lint-disable */\n",
+                "const axios = require('axios');",
+                "                                         const axios = require('axios');\n",
+                "/*ec0lint-enable */const axios = require('axios');"
             ].join("");
             const config = { rules: { "lighter-http": 1 } };
 
@@ -2161,11 +2161,11 @@ describe("Linter", () => {
 
             const code = [
                 "/*ec0lint-disable */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "/*ec0lint-disable */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "/*ec0lint-enable*/",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "/*ec0lint-enable*/"
             ].join("\n");
 
@@ -2216,7 +2216,7 @@ describe("Linter", () => {
         describe("ec0lint-disable-line", () => {
             it("should report a violation", () => {
                 const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                     "console.log('test');" // here
                 ].join("\n");
                 const config = {
@@ -2237,9 +2237,9 @@ describe("Linter", () => {
 
             it("should report a violation", () => {
                 const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                     "console.log('test'); // ec0lint-disable-line lighter-http",
-                    "import * from 'axios';" // here
+                    "const axios = require('axios');" // here
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2279,7 +2279,7 @@ describe("Linter", () => {
 
             it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                 const code = [
-                    "import * from 'axios'; /* ec0lint-disable-line ",
+                    "const axios = require('axios'); /* ec0lint-disable-line ",
                     "lighter-http */"
                 ].join("\n");
                 const config = {
@@ -2319,8 +2319,8 @@ describe("Linter", () => {
 
             it("should not report a violation for ec0lint-disable-line in block comment", () => {
                 const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                    "import * from 'axios'; /*ec0lint-disable-line lighter-http*/"
+                    "const axios = require('axios'); // ec0lint-disable-line lighter-http",
+                    "const axios = require('axios'); /*ec0lint-disable-line lighter-http*/"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2340,7 +2340,7 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                     "console.log('test'); // ec0lint-disable-line lighter-http"
                 ].join("\n");
                 const config = {
@@ -2362,7 +2362,7 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2383,7 +2383,7 @@ describe("Linter", () => {
             it("should ignore violation of specified rule on next line", () => {
                 const code = [
                     "// ec0lint-disable-next-line lighter-http",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2405,7 +2405,7 @@ describe("Linter", () => {
             it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
                     "/* ec0lint-disable-next-line lighter-http */",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2426,7 +2426,7 @@ describe("Linter", () => {
             it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
                     "/* ec0lint-disable-next-line lighter-http */",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2445,7 +2445,7 @@ describe("Linter", () => {
             it("should not ignore violation if code is not on next line", () => {
                 const code = [
                     "/* ec0lint-disable-next-line",
-                    "lighter-http */import * from 'axios';"
+                    "lighter-http */const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2465,7 +2465,7 @@ describe("Linter", () => {
                 const code = [
                     "/* ec0lint-disable-next-line",
                     "lighter-http */",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2484,7 +2484,7 @@ describe("Linter", () => {
             it("should ignore violations only of specified rule", () => {
                 const code = [
                     "// ec0lint-disable-next-line lighter-http",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2506,7 +2506,7 @@ describe("Linter", () => {
             it("should ignore violations of multiple rules when specified", () => {
                 const code = [
                     "// ec0lint-disable-next-line lighter-http, quotes",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2533,7 +2533,7 @@ describe("Linter", () => {
                     "lighter-http,",
                     "quotes",
                     "*/",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2552,7 +2552,7 @@ describe("Linter", () => {
             it("should ignore violations of multiple rules when specified in mixed comments", () => {
                 const code = [
                     "/* ec0lint-disable-next-line lighter-http */ // ec0lint-disable-next-line quotes",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2575,7 +2575,7 @@ describe("Linter", () => {
                     "/* ec0lint-disable-next-line",
                     "lighter-http",
                     "*/ // ec0lint-disable-next-line quotes",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2591,7 +2591,7 @@ describe("Linter", () => {
             it("should ignore violations of only the specified rule on next line", () => {
                 const code = [
                     "// ec0lint-disable-next-line quotes",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2614,9 +2614,9 @@ describe("Linter", () => {
 
             it("should ignore violations of specified rule on next line only", () => {
                 const code = [
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "// ec0lint-disable-next-line lighter-http",
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
@@ -2639,7 +2639,7 @@ describe("Linter", () => {
             it("should ignore all rule violations on next line if none specified", () => {
                 const code = [
                     "// ec0lint-disable-next-line",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2658,9 +2658,9 @@ describe("Linter", () => {
 
             it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
-                    "import * from 'axios';",
+                    "const axios = require('axios');",
                     "/* ec0lint-disable-next-line lighter-http */",
-                    "import * from 'axios';"
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2682,7 +2682,7 @@ describe("Linter", () => {
                     "/* ec0lint-disable-next-line",
                     "*",
                     "*/",
-                    "import * from 'axios';" // here
+                    "const axios = require('axios');" // here
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2702,7 +2702,7 @@ describe("Linter", () => {
             it("should not ignore violations if comment is of the type hashbang", () => {
                 const code = [
                     "#! ec0lint-disable-next-line",
-                    "import * from 'axios';" 
+                    "const axios = require('axios');" 
                 ].join("\n");
                 const config = {
                     rules: {
@@ -2726,7 +2726,7 @@ describe("Linter", () => {
         it("should report a violation", () => {
             const code = [
                 "/*ec0lint-disable lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');" // here
             ].join("\n");
             const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -2797,11 +2797,11 @@ describe("Linter", () => {
         it("should report a violation", () => {
             const code = [
                 "/*ec0lint-disable lighter-http, lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
                 "/*ec0lint-enable*/",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');" // here
             ].join("\n");
             const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -2825,11 +2825,11 @@ describe("Linter", () => {
         it("should report a violation", () => {
             const code = [
                 "/*ec0lint-disable lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
                 "/*ec0lint-enable lighter-http */",
 
-                "import * from 'axios';" // here
+                "const axios = require('axios');" // here
             ].join("\n");
             const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
@@ -2850,11 +2850,11 @@ describe("Linter", () => {
         it("should report a violation", () => {
             const code = [
                 "/*ec0lint-disable lighter-http, lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
                 "/*ec0lint-enable lighter-http*/",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');"
             ].join("\n");
             const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -2881,16 +2881,16 @@ describe("Linter", () => {
                 "/*ec0lint-disable lighter-http */",
 
                 "/*ec0lint-disable lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
                 "/*ec0lint-enable */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');", // here
 
                 "/*ec0lint-enable */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');", // here
 
                 "/*ec0lint-enable*/"
@@ -2920,17 +2920,17 @@ describe("Linter", () => {
         it("should report a violation", () => {
             const code = [
                 "/*ec0lint-disable lighter-http, lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
 
                 "/*ec0lint-enable lighter-http */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');",
 
                 "/*ec0lint-enable lighter-http */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');", // here
                 "/*ec0lint-enable lighter-http */"
             ].join("\n");
@@ -2959,17 +2959,17 @@ describe("Linter", () => {
         it("should report a violation when severity is warn", () => {
             const code = [
                 "/*ec0lint-disable lighter-http, lighter-http */",
-                "import * from 'axios';",
+                "const axios = require('axios');",
                 "console.log('test');",
 
                 "/*ec0lint-enable lighter-http */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');",
 
                 "/*ec0lint-enable lighter-http */",
 
-                "import * from 'axios';", // here
+                "const axios = require('axios');", // here
                 "console.log('test');", // here
                 "/*ec0lint-enable lighter-http */"
             ].join("\n");
@@ -2997,7 +2997,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-        const code = "/*ec0lint lighter-http:1, lighter-http:0*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1, lighter-http:0*/ const axios = require('axios'); console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
@@ -3014,7 +3014,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule", () => {
-        const code = "/*ec0lint quotes:[2, \"double\"]*/ import * from 'axios';";
+        const code = "/*ec0lint quotes:[2, \"double\"]*/ const axios = require('axios');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 2 } };
@@ -3032,7 +3032,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-        const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ import * from 'axios';";
+        const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ const axios = require('axios');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 2 } };
@@ -3051,7 +3051,7 @@ describe("Linter", () => {
 
     describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
         it("should report a violation", () => {
-            const code = "/*ec0lint lighter-http:'1'*/ import * from 'axios';";
+            const code = "/*ec0lint lighter-http:'1'*/ const axios = require('axios');";
 
             const config = { rules: { "lighter-http": 1 } };
 
@@ -3078,7 +3078,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation", () => {
-            const code = "/*ec0lint lighter-http:abc*/ import * from 'axios';";
+            const code = "/*ec0lint lighter-http:abc*/ const axios = require('axios');";
 
             const config = { rules: { "lighter-http": 1 } };
 
@@ -3105,7 +3105,7 @@ describe("Linter", () => {
         });
 
         it("should report a violation", () => {
-            const code = "/*ec0lint lighter-http:0 2*/ import * from 'axios';";
+            const code = "/*ec0lint lighter-http:0 2*/ const axios = require('axios');";
 
             const config = { rules: { "lighter-http": 1 } };
 
@@ -3135,7 +3135,7 @@ describe("Linter", () => {
     describe("when evaluating code with comments which have colon in its value", () => {
         const code = String.raw`
 /* ec0lint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
-import * from 'axios';
+const axios = require('axios');
 `;
 
         it("should not parse errors, should report a violation", () => {
@@ -3535,7 +3535,7 @@ var a = "test2";
     describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
         it("should report a violation for disabling rules", () => {
             const code = [
-                "import * from 'axios'; // ec0lint-disable-line lighter-http"
+                "const axios = require('axios'); // ec0lint-disable-line lighter-http"
             ].join("\n");
             const config = {
                 rules: {
@@ -3593,7 +3593,7 @@ var a = "test2";
         it("should report a violation for ec0lint-disable", () => {
             const code = [
                 "/* ec0lint-disable */",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = {
                 rules: {
@@ -3616,7 +3616,7 @@ var a = "test2";
         it("should not report a violation for rule changes", () => {
             const code = [
                 "/*ec0lint lighter-http:2*/",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = {
                 rules: {
@@ -3636,7 +3636,7 @@ var a = "test2";
 
         it("should report a violation for disable-line", () => {
             const code = [
-                "import * from 'axios'; // ec0lint-disable-line"
+                "const axios = require('axios'); // ec0lint-disable-line"
             ].join("\n");
             const config = {
                 rules: {
@@ -3809,7 +3809,7 @@ var a = "test2";
         it("reports problems for multiple ec0lint-disable comments, including unused ones", () => {
             const code = [
                 "/* ec0lint-disable lighter-http -- j1 */",
-                "import * from 'axios'; //ec0lint-disable-line lighter-http -- j2"
+                "const axios = require('axios'); //ec0lint-disable-line lighter-http -- j2"
             ].join("\n");
             const config = {
                 rules: {
@@ -3827,7 +3827,7 @@ var a = "test2";
         it("reports problems for ec0lint-disable-line and ec0lint-disable-next-line comments, including unused ones", () => {
             const code = [
                 "// ec0lint-disable-next-line lighter-http -- j1 */",
-                "import * from 'axios'; //ec0lint-disable-line lighter-http -- j2"
+                "const axios = require('axios'); //ec0lint-disable-line lighter-http -- j2"
             ].join("\n");
             const config = {
                 rules: {
@@ -3941,7 +3941,7 @@ var a = "test2";
         });
 
         it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-            const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, lighter-http";
+            const code = "const axios = require('axios'); // ec0lint-disable-line lighter-http, lighter-http";
             const config = {
                 reportUnusedDisableDirectives: true,
                 rules: {
@@ -4539,7 +4539,7 @@ var a = "test2";
     describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
         it("should not report a violation", () => {
             const code = [
-                "import * from 'axios'; // ec0lint-disable-line lighter-http"
+                "const axios = require('axios'); // ec0lint-disable-line lighter-http"
             ].join("\n");
             const config = {
                 rules: {
@@ -4662,7 +4662,7 @@ var a = "test2";
 
         it("should report warnings in order by line and column when called", () => {
 
-            const code = "foo()\n    import * from 'axios'";
+            const code = "foo()\n    const axios = require('axios')";
             const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
@@ -5349,7 +5349,7 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*global*/'.", () => {
                 const messages = linter.verify(`
                     /*global aaa -- bbb */
-                    import * from 'axios'
+                    const axios = require('axios')
                     var bbb = {}
                 `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5375,7 +5375,7 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*globals*/'.", () => {
                 const messages = linter.verify(`
                     /*globals aaa -- bbb */
-                    import * from 'axios'
+                    const axios = require('axios')
                     var bbb = {}
                 `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5401,7 +5401,7 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
                 const messages = linter.verify(`
                     /*exported aaa -- bbb */
-                    import * from 'axios'
+                    const axios = require('axios')
                     var bbb = {}
                 `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
@@ -5428,8 +5428,8 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                 const messages = linter.verify(`
                     /*ec0lint-disable lighter-http -- lighter-http */
-                    import * from 'axios'
-                    import * from 'axios'
+                    const axios = require('axios')
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5468,8 +5468,8 @@ var a = "test2";
                 const messages = linter.verify(`
                     /*ec0lint-disable lighter-http, lighter-http */
                     /*ec0lint-enable lighter-http -- lighter-http */
-                    import * from 'axios'
-                    import * from 'axios'
+                    const axios = require('axios')
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5506,8 +5506,8 @@ var a = "test2";
 
             it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                 const messages = linter.verify(`
-                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
-                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                    const axios = require('axios') //ec0lint-disable-line lighter-http -- lighter-http
+                    const axios = require('axios') //ec0lint-disable-line lighter-http -- lighter-http
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5544,8 +5544,8 @@ var a = "test2";
 
             it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                 const messages = linter.verify(`
-                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
-                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                    const axios = require('axios') /*ec0lint-disable-line lighter-http -- lighter-http */
+                    const axios = require('axios') /*ec0lint-disable-line lighter-http -- lighter-http */
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5583,9 +5583,9 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                 const messages = linter.verify(`
                     //ec0lint-disable-next-line lighter-http -- lighter-http
-                    import * from 'axios'
+                    const axios = require('axios')
                     //ec0lint-disable-next-line lighter-http -- lighter-http
-                    import * from 'axios'
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -5623,9 +5623,9 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                 const messages = linter.verify(`
                     /*ec0lint-disable-next-line lighter-http -- lighter-http */
-                    import * from 'axios'
+                    const axios = require('axios')
                     /*ec0lint-disable-next-line lighter-http -- lighter-http */
-                    import * from 'axios'
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
@@ -8365,7 +8365,7 @@ describe("Linter with FlatConfigArray", () => {
         });
 
         describe("rules", () => {
-            const code = "import * from 'axios';";
+            const code = "const axios = require('axios');";
 
             it("should be configurable by only setting the integer value", () => {
                 const rule = "lighter-http",
@@ -8456,7 +8456,7 @@ describe("Linter with FlatConfigArray", () => {
 
         it("should report warnings in order by line and column when called", () => {
 
-            const code = "foo()\n    import * from 'axios'";
+            const code = "foo()\n    const axios = require('axios')";
             const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
@@ -10560,12 +10560,12 @@ describe("Linter with FlatConfigArray", () => {
             const code = "#!bin/program\n\nvar foo;;";
 
             it("should preserve line numbers", () => {
-                const config = { rules: { "no-extra-semi": 1 } };
+                const config = { rules: { "lighter-http": 1 } };
                 const messages = linter.verify(code, config);
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-extra-semi");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
                 assert.strictEqual(messages[0].nodeType, "EmptyStatement");
                 assert.strictEqual(messages[0].line, 3);
 
@@ -11182,7 +11182,7 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to enable rules", () => {
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint lighter-http:1*/ import * from 'axios';";
+                        const code = "/*ec0lint lighter-http:1*/ const axios = require('axios');";
                         const config = { rules: {} };
 
                         const messages = linter.verify(code, config, filename);
@@ -11281,7 +11281,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with invalid comments to enable rules", () => {
                     it("should report a violation when the config is not a valid rule configuration", () => {
-                        const messages = linter.verify("/*ec0lint lighter-http:true*/ import * from 'axios';", {});
+                        const messages = linter.verify("/*ec0lint lighter-http:true*/ const axios = require('axios');", {});
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.deepStrictEqual(
@@ -11331,7 +11331,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const config = { rules: { "lighter-http": 1 } };
-                        const messages = linter.verify("/*ec0lint lighter-http:0*/ import * from 'axios';", config, filename);
+                        const messages = linter.verify("/*ec0lint lighter-http:0*/ const axios = require('axios');", config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 0);
@@ -11390,7 +11390,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 lighter-http:1*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 lighter-http:1*/ const axios = require('axios'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: {} };
@@ -11408,7 +11408,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 lighter-http:0*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 lighter-http:0*/ const axios = require('axios'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
@@ -11553,9 +11553,9 @@ describe("Linter with FlatConfigArray", () => {
 
                         const code = [
                             "/*ec0lint-disable */",
-                            "import * from 'axios';",
+                            "const axios = require('axios');",
                             "/*ec0lint-enable */",
-                            "import * from 'axios';"
+                            "const axios = require('axios');"
                         ].join("\n");
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11575,8 +11575,8 @@ describe("Linter with FlatConfigArray", () => {
                     it("should not report a violation", () => {
                         const code = [
                             "/*ec0lint-disable */",
-                            "import * from 'axios';",
-                            "import * from 'axios';"
+                            "const axios = require('axios');",
+                            "const axios = require('axios');"
                         ].join("\n");
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11589,10 +11589,10 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("should not report a violation", () => {
                         const code = [
-                            "                    import * from 'axios';/*ec0lint-disable */\n",
-                            "import * from 'axios';",
-                            "                                         import * from 'axios';\n",
-                            "/*ec0lint-enable */import * from 'axios';"
+                            "                    const axios = require('axios');/*ec0lint-disable */\n",
+                            "const axios = require('axios');",
+                            "                                         const axios = require('axios');\n",
+                            "/*ec0lint-enable */const axios = require('axios');"
                         ].join("");
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11612,11 +11612,11 @@ describe("Linter with FlatConfigArray", () => {
 
                         const code = [
                             "/*ec0lint-disable */",
-                            "import * from 'axios';",
+                            "const axios = require('axios');",
                             "/*ec0lint-disable */",
-                            "import * from 'axios';",
+                            "const axios = require('axios');",
                             "/*ec0lint-enable*/",
-                            "import * from 'axios';",
+                            "const axios = require('axios');",
                             "/*ec0lint-enable*/"
                         ].join("\n");
 
@@ -11667,7 +11667,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-                    const code = "/*ec0lint lighter-http:1, lighter-http:0*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1, lighter-http:0*/ const axios = require('axios'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
@@ -11684,7 +11684,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule", () => {
-                    const code = "/*ec0lint quotes:[2, \"double\"]*/ import * from 'axios';";
+                    const code = "/*ec0lint quotes:[2, \"double\"]*/ const axios = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 2 } };
@@ -11702,7 +11702,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ import * from 'axios';";
+                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ const axios = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 2 } };
@@ -11721,7 +11721,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
                     it("should report a violation", () => {
-                        const code = "/*ec0lint lighter-http:'1'*/ import * from 'axios';";
+                        const code = "/*ec0lint lighter-http:'1'*/ const axios = require('axios');";
 
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11748,7 +11748,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint lighter-http:abc*/ import * from 'axios';";
+                        const code = "/*ec0lint lighter-http:abc*/ const axios = require('axios');";
 
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11775,7 +11775,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint lighter-http:0 2*/ import * from 'axios';";
+                        const code = "/*ec0lint lighter-http:0 2*/ const axios = require('axios');";
 
                         const config = { rules: { "lighter-http": 1 } };
 
@@ -11805,7 +11805,7 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments which have colon in its value", () => {
                     const code = String.raw`
 /* ec0lint max-len: [2, 100, 2, {ignoreUrls: true, ignorePattern: "data:image\\/|\\s*require\\s*\\(|^\\s*loader\\.lazy|-\\*-"}] */
-import * from 'axios';
+const axios = require('axios');
 `;
 
                     it("should not parse errors, should report a violation", () => {
@@ -11857,7 +11857,7 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');" // here
                     ].join("\n");
                     const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -11890,11 +11890,11 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http, lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');",
                         "/*ec0lint-enable*/",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');" // here
                     ].join("\n");
                     const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -11918,10 +11918,10 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');", // here
                         "/*ec0lint-enable lighter-http */",
-                        "import * from 'axios';"
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
@@ -11942,11 +11942,11 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http, lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');",
                         "/*ec0lint-enable lighter-http*/",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');"
                     ].join("\n");
                     const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
@@ -11973,16 +11973,16 @@ var a = "test2";
                         "/*ec0lint-disable lighter-http */",
 
                         "/*ec0lint-disable lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');",
                         "/*ec0lint-enable */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');", // here
 
                         "/*ec0lint-enable */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');", // here
 
                         "/*ec0lint-enable*/"
@@ -12012,17 +12012,17 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http, lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');",
 
                         "/*ec0lint-enable lighter-http */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');",
 
                         "/*ec0lint-enable lighter-http */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');", // here
                         "/*ec0lint-enable lighter-http */"
                     ].join("\n");
@@ -12051,17 +12051,17 @@ var a = "test2";
                 it("should report a violation when severity is warn", () => {
                     const code = [
                         "/*ec0lint-disable lighter-http, lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');",
 
                         "/*ec0lint-enable lighter-http */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');",
 
                         "/*ec0lint-enable lighter-http */",
 
-                        "import * from 'axios';", // here
+                        "const axios = require('axios');", // here
                         "console.log('test');", // here
                         "/*ec0lint-enable lighter-http */"
                     ].join("\n");
@@ -12114,7 +12114,7 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                        "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                         "console.log('test');" // here
                     ].join("\n");
                     const config = {
@@ -12138,9 +12138,9 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                        "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                         "console.log('test'); // ec0lint-disable-line lighter-http",
-                        "import * from 'axios';" // here
+                        "const axios = require('axios');" // here
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12186,7 +12186,7 @@ var a = "test2";
 
                 it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
-                        "import * from 'axios'; /* ec0lint-disable-line ",
+                        "const axios = require('axios'); /* ec0lint-disable-line ",
                         "lighter-http */"
                     ].join("\n");
                     const config = {
@@ -12226,8 +12226,8 @@ var a = "test2";
 
                 it("should not report a violation for ec0lint-disable-line in block comment", () => {
                     const code = [
-                        "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                        "import * from 'axios'; /*ec0lint-disable-line lighter-http*/"
+                        "const axios = require('axios'); // ec0lint-disable-line lighter-http",
+                        "const axios = require('axios'); /*ec0lint-disable-line lighter-http*/"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12244,7 +12244,7 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                        "const axios = require('axios'); // ec0lint-disable-line lighter-http",
                         "console.log('test'); // ec0lint-disable-line lighter-http"
                     ].join("\n");
                     const config = {
@@ -12263,7 +12263,7 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "import * from 'axios' // ec0lint-disable-line lighter-http, quotes, semi",
+                        "const axios = require('axios') // ec0lint-disable-line lighter-http, quotes, semi",
                         "console.log('test'); // ec0lint-disable-line"
                     ].join("\n");
                     const config = {
@@ -12284,7 +12284,7 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "import * from 'axios' /* ec0lint-disable-line lighter-http, quotes, semi */",
+                        "const axios = require('axios') /* ec0lint-disable-line lighter-http, quotes, semi */",
                         "console.log('test'); /* ec0lint-disable-line */"
                     ].join("\n");
                     const config = {
@@ -12305,7 +12305,7 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
-                        " import * from 'axios'; /* ec0lint-disable-line lighter-http */ // ec0lint-disable-line quotes"
+                        " const axios = require('axios'); /* ec0lint-disable-line lighter-http */ // ec0lint-disable-line quotes"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12346,7 +12346,7 @@ var a = "test2";
                 it("should ignore violation of specified rule on next line", () => {
                     const code = [
                         "// ec0lint-disable-next-line lighter-http",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12368,7 +12368,7 @@ var a = "test2";
                 it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
                         "/* ec0lint-disable-next-line lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12389,7 +12389,7 @@ var a = "test2";
                 it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
                         "/* ec0lint-disable-next-line lighter-http */",
-                        "import * from 'axios';"
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12408,7 +12408,7 @@ var a = "test2";
                 it("should not ignore violation if code is not on next line", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "lighter-http */import * from 'axios';"
+                        "lighter-http */const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12428,7 +12428,7 @@ var a = "test2";
                     const code = [
                         "/* ec0lint-disable-next-line",
                         "lighter-http */",
-                        "import * from 'axios';"
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12451,7 +12451,7 @@ var a = "test2";
                         description on why this exception is seen as appropriate but past a
                         comfortable reading line length
                     */
-                   import * from 'axios';
+                   const axios = require('axios');
                     `;
                     const config = {
                         rules: {
@@ -12470,7 +12470,7 @@ var a = "test2";
                 it("should ignore violations only of specified rule", () => {
                     const code = [
                         "// ec0lint-disable-next-line lighter-http",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12493,7 +12493,7 @@ var a = "test2";
                     const code = [
                         "/* ec0lint-disable-next-line",
                         "lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12512,7 +12512,7 @@ var a = "test2";
                 it("should ignore violations of multiple rules when specified", () => {
                     const code = [
                         "// ec0lint-disable-next-line lighter-http, quotes",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12539,7 +12539,7 @@ var a = "test2";
                         "lighter-http,",
                         "quotes",
                         "*/",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12558,7 +12558,7 @@ var a = "test2";
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
                         "/* ec0lint-disable-next-line lighter-http */ // ec0lint-disable-next-line quotes",
-                        "import * from 'axios';"
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12581,7 +12581,7 @@ var a = "test2";
                         "/* ec0lint-disable-next-line",
                         "lighter-http",
                         "*/ // ec0lint-disable-next-line quotes",
-                        "import * from 'axios';"
+                        "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
@@ -12597,7 +12597,7 @@ var a = "test2";
                 it("should ignore violations of only the specified rule on next line", () => {
                     const code = [
                         "// ec0lint-disable-next-line quotes",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12620,9 +12620,9 @@ var a = "test2";
 
                 it("should ignore violations of specified rule on next line only", () => {
                     const code = [
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "// ec0lint-disable-next-line lighter-http",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12645,7 +12645,7 @@ var a = "test2";
                 it("should ignore all rule violations on next line if none specified", () => {
                     const code = [
                         "// ec0lint-disable-next-line",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test')"
                     ].join("\n");
                     const config = {
@@ -12670,9 +12670,9 @@ var a = "test2";
 
                 it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "/* ec0lint-disable-next-line lighter-http */",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12718,7 +12718,7 @@ var a = "test2";
                 it("should not ignore violations if comment is of the type hashbang", () => {
                     const code = [
                         "#! ec0lint-disable-next-line lighter-http",
-                        "import * from 'axios';",
+                        "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -12772,7 +12772,7 @@ var a = "test2";
                 it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
                     const messages = linter.verify(`
                     /*exported aaa -- bbb */
-                    import * from 'axios'
+                    const axios = require('axios')
                     var bbb = {}
                 `, {
                         languageOptions: {
@@ -12804,7 +12804,7 @@ var a = "test2";
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                     const messages = linter.verify(`
                     /*ec0lint-disable lighter-http */
-                    import * from 'axios';
+                    const axios = require('axios');
                 `, { rules: { "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12834,8 +12834,8 @@ var a = "test2";
                     const messages = linter.verify(`
                     /*ec0lint-disable lighter-http, lighter-http */
                     /*ec0lint-enable lighter-http -- lighter-http */
-                    import * from 'axios'
-                    import * from 'axios'
+                    const axios = require('axios')
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12872,8 +12872,8 @@ var a = "test2";
 
                 it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                     const messages = linter.verify(`
-                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
-                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                    const axios = require('axios') //ec0lint-disable-line lighter-http -- lighter-http
+                    const axios = require('axios') //ec0lint-disable-line lighter-http -- lighter-http
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12910,8 +12910,8 @@ var a = "test2";
 
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                     const messages = linter.verify(`
-                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
-                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                    const axios = require('axios') /*ec0lint-disable-line lighter-http -- lighter-http */
+                    const axios = require('axios') /*ec0lint-disable-line lighter-http -- lighter-http */
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12949,9 +12949,9 @@ var a = "test2";
                 it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                     const messages = linter.verify(`
                     //ec0lint-disable-next-line lighter-http -- lighter-http
-                    import * from 'axios'
+                    const axios = require('axios')
                     //ec0lint-disable-next-line lighter-http -- lighter-http
-                    import * from 'axios'
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12989,9 +12989,9 @@ var a = "test2";
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                     const messages = linter.verify(`
                     /*ec0lint-disable-next-line lighter-http -- lighter-http */
-                    import * from 'axios'
+                    const axios = require('axios')
                     /*ec0lint-disable-next-line lighter-http -- lighter-http */
-                    import * from 'axios'
+                    const axios = require('axios')
                 `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -13120,7 +13120,7 @@ var a = "test2";
                 describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
                     it("should report a violation for disabling rules", () => {
                         const code = [
-                            "import * from 'axios'; // ec0lint-disable-line lighter-http"
+                            "const axios = require('axios'); // ec0lint-disable-line lighter-http"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13181,7 +13181,7 @@ var a = "test2";
                     it("should report a violation for ec0lint-disable", () => {
                         const code = [
                             "/* ec0lint-disable */",
-                            "import * from 'axios';"
+                            "const axios = require('axios');"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13204,7 +13204,7 @@ var a = "test2";
                     it("should not report a violation for rule changes", () => {
                         const code = [
                             "/*ec0lint lighter-http:2*/",
-                            "import * from 'axios';"
+                            "const axios = require('axios');"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13224,7 +13224,7 @@ var a = "test2";
 
                     it("should report a violation for disable-line", () => {
                         const code = [
-                            "import * from 'axios'; // ec0lint-disable-line"
+                            "const axios = require('axios'); // ec0lint-disable-line"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13313,7 +13313,7 @@ var a = "test2";
                 describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
                     it("should not report a violation", () => {
                         const code = [
-                            "import * from 'axios'; // ec0lint-disable-line lighter-http"
+                            "const axios = require('axios'); // ec0lint-disable-line lighter-http"
                         ].join("\n");
                         const config = {
                             rules: {
@@ -13442,7 +13442,7 @@ var a = "test2";
                 });
 
                 it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-                    const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, lighter-http";
+                    const code = "const axios = require('axios'); // ec0lint-disable-line lighter-http, lighter-http";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
@@ -13530,7 +13530,7 @@ var a = "test2";
                 });
 
                 it("reports problems for partially unused ec0lint-disable-next-line comments (in config)", () => {
-                    const code = "// ec0lint-disable-next-line lighter-http, lighter-http \nimport * from 'axios';";
+                    const code = "// ec0lint-disable-next-line lighter-http, lighter-http \nconst axios = require('axios');";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
@@ -13571,7 +13571,7 @@ var a = "test2";
                      * Here's a very long description about why this configuration is necessary
                      * along with some additional information
                     **/
-                    import * from 'axios';
+                    const axios = require('axios');
                     `;
                     const config = {
                         linterOptions: {
@@ -14509,7 +14509,7 @@ var a = "test2";
         });
 
         it("should have a suppressed message", () => {
-            const code = "/* ec0lint-disable lighter-http -- justification */\nimport * from 'axios';";
+            const code = "/* ec0lint-disable lighter-http -- justification */\nconst axios = require('axios');";
             const config = {
                 rules: { "lighter-http": 1 }
             };
@@ -14531,7 +14531,7 @@ var a = "test2";
                 "/* ec0lint-disable lighter-http -- j1",
                 " * j2",
                 " */",
-                "import * from 'axios';"
+                "const axios = require('axios');"
             ].join("\n");
             const config = {
                 rules: { "lighter-http": 1 }
