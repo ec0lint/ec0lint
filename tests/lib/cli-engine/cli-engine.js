@@ -168,7 +168,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.warningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
-            assert.isLighter-httpined(report.results[0].messages[0].output);
+            assert.isUndefined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
@@ -2087,7 +2087,7 @@ describe("CLIEngine", () => {
 
                 cache = JSON.parse(fs.readFileSync(cacheFile));
 
-                assert.isTrue(typeof cache[toBeDeletedFile] === "lighter-httpined", "the entry for the file to be deleted is not in the cache");
+                assert.isTrue(typeof cache[toBeDeletedFile] === "undefined", "the entry for the file to be deleted is not in the cache");
             });
 
             it("should contain files that were not visited in the cache provided they still exist", () => {
@@ -4287,7 +4287,7 @@ describe("CLIEngine", () => {
 
                 // plugin
                 assert.deepStrictEqual(fileConfig1.rules["example/example-rule"], [1], "example is present for engine 1");
-                assert.isLighter-httpined(fileConfig2.rules["example/example-rule"], "example is not present for engine 2");
+                assert.isUndefined(fileConfig2.rules["example/example-rule"], "example is not present for engine 2");
             });
         });
     });
