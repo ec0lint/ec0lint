@@ -1,2 +1,2 @@
 /* ec0lint-env es6 */
-import axios from 'axios';
+const axios = require('axios');

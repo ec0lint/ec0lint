@@ -167,7 +167,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.errorCount, 1);
             assert.strictEqual(report.warningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.isUndefined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
@@ -565,7 +564,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-https");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -587,7 +585,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });

@@ -2890,8 +2890,7 @@ describe("ec0lint", () => {
                     overrideConfig: {
                         plugins: ["test-processor"],
                         rules: {
-                            "lighter-http": 2,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         }
                     },
                     extensions: ["js", "txt"],
@@ -2914,7 +2913,7 @@ describe("ec0lint", () => {
                 });
                 const results = await eslint.lintFiles([getFixturePath("processors", "test", "test-processor.txt")]);
 
-                assert.strictEqual(results[0].messages[0].message, "'b' is defined but never used.");
+                assert.strictEqual(results[0].messages[0].message, "Do not import axios. Use fetch instead (you can find examples on www.ec0lint.com).");
                 assert.strictEqual(results[0].messages[0].ruleId, "post-processed");
             });
 
