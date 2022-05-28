@@ -622,7 +622,7 @@ describe("cli", () => {
 
         it("should only print error", async () => {
             const filePath = getFixturePath("lighter-http.js");
-            const cliArgs = `--no-ignore --quiet  -f compact --rule 'lighter-http: 1' ${filePath}`;
+            const cliArgs = `--no-ignore --quiet  -f compact --rule 'lighter-http: 2' ${filePath}`;
 
             await cli.execute(cliArgs);
 

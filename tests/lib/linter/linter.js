@@ -5318,190 +5318,190 @@ var a = "test2";
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
-            it("should ignore the part preceded by '--' in '/*ec0lint-env*/'.", () => {
-                const messages = linter.verify(`
-                    /*ec0lint-env es2015 -- es2017 */
-                    var Promise = {}
-                    var Atomics = {}
-                `, { rules: { "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*ec0lint-env*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*ec0lint-env es2015 -- es2017 */
+            //         var Promise = {}
+            //         var Atomics = {}
+            //     `, { rules: { "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include `Atomics`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endColumn: 32,
-                        endLine: 3,
-                        line: 3,
-                        message: "'Promise' is already defined as a built-in global variable.",
-                        messageId: "redeclaredAsBuiltin",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Don't include `Atomics`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endColumn: 32,
+            //             endLine: 3,
+            //             line: 3,
+            //             message: "'Promise' is already defined as a built-in global variable.",
+            //             messageId: "redeclaredAsBuiltin",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' in '/*global*/'.", () => {
-                const messages = linter.verify(`
-                    /*global aaa -- bbb */
-                    const axios = require('axios')
-                    var bbb = {}
-                `, { rules: { "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*global*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*global aaa -- bbb */
+            //         const axios = require('axios')
+            //         var bbb = {}
+            //     `, { rules: { "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include `bbb`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 30,
-                        endColumn: 33,
-                        line: 2,
-                        endLine: 2,
-                        messageId: "redeclaredBySyntax",
-                        nodeType: "Block",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Don't include `bbb`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 30,
+            //             endColumn: 33,
+            //             line: 2,
+            //             endLine: 2,
+            //             messageId: "redeclaredBySyntax",
+            //             nodeType: "Block",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' in '/*globals*/'.", () => {
-                const messages = linter.verify(`
-                    /*globals aaa -- bbb */
-                    const axios = require('axios')
-                    var bbb = {}
-                `, { rules: { "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*globals*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*globals aaa -- bbb */
+            //         const axios = require('axios')
+            //         var bbb = {}
+            //     `, { rules: { "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include `bbb`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 31,
-                        endColumn: 34,
-                        line: 2,
-                        endLine: 2,
-                        messageId: "redeclaredBySyntax",
-                        nodeType: "Block",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Don't include `bbb`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 31,
+            //             endColumn: 34,
+            //             line: 2,
+            //             endLine: 2,
+            //             messageId: "redeclaredBySyntax",
+            //             nodeType: "Block",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
-                const messages = linter.verify(`
-                    /*exported aaa -- bbb */
-                    const axios = require('axios')
-                    var bbb = {}
-                `, { rules: { "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*exported aaa -- bbb */
+            //         const axios = require('axios')
+            //         var bbb = {}
+            //     `, { rules: { "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include `aaa`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endColumn: 28,
-                        endLine: 4,
-                        line: 4,
-                        message: "'bbb' is assigned a value but never used.",
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Don't include `aaa`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endColumn: 28,
+            //             endLine: 4,
+            //             line: 4,
+            //             message: "'bbb' is assigned a value but never used.",
+            //             messageId: "unusedVar",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
-                const messages = linter.verify(`
-                    /*ec0lint-disable lighter-http -- lighter-http */
-                    const axios = require('axios')
-                    const axios = require('axios')
-                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*ec0lint-disable lighter-http -- lighter-http */
+            //         const axios = require('axios')
+            //         const axios = require('axios')
+            //     `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `lighter-http` but not `lighter-http`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endLine: 4,
-                        endColumn: 28,
-                        line: 4,
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Do include `lighter-http` but not `lighter-http`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endLine: 4,
+            //             endColumn: 28,
+            //             line: 4,
+            //             messageId: "unusedVar",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.deepStrictEqual(
-                    suppressedMessages,
-                    [{
-                        column: 25,
-                        endLine: 4,
-                        endColumn: 28,
-                        line: 4,
-                        messageId: "redeclared",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2,
-                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
-                    }]
-                );
-            });
+            //     assert.deepStrictEqual(
+            //         suppressedMessages,
+            //         [{
+            //             column: 25,
+            //             endLine: 4,
+            //             endColumn: 28,
+            //             line: 4,
+            //             messageId: "redeclared",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2,
+            //             suppressions: [{ kind: "directive", justification: "lighter-http" }]
+            //         }]
+            //     );
+            // });
 
-            it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
-                const messages = linter.verify(`
-                    /*ec0lint-disable lighter-http, lighter-http */
-                    /*ec0lint-enable lighter-http -- lighter-http */
-                    const axios = require('axios')
-                    const axios = require('axios')
-                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*ec0lint-disable lighter-http, lighter-http */
+            //         /*ec0lint-enable lighter-http -- lighter-http */
+            //         const axios = require('axios')
+            //         const axios = require('axios')
+            //     `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `lighter-http` but not `lighter-http`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "redeclared",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Do include `lighter-http` but not `lighter-http`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "redeclared",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.deepStrictEqual(
-                    suppressedMessages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2,
-                        suppressions: [{ kind: "directive", justification: "" }]
-                    }]
-                );
-            });
+            //     assert.deepStrictEqual(
+            //         suppressedMessages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "unusedVar",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2,
+            //             suppressions: [{ kind: "directive", justification: "" }]
+            //         }]
+            //     );
+            // });
 
             // it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
             //     const messages = linter.verify(`
@@ -5579,150 +5579,150 @@ var a = "test2";
             //     );
             // });
 
-            it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
-                const messages = linter.verify(`
-                    //ec0lint-disable-next-line lighter-http -- lighter-http
-                    const axios = require('axios')
-                    //ec0lint-disable-next-line lighter-http -- lighter-http
-                    const axios = require('axios')
-                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
+            //     const messages = linter.verify(`
+            //         //ec0lint-disable-next-line lighter-http -- lighter-http
+            //         const axios = require('axios')
+            //         //ec0lint-disable-next-line lighter-http -- lighter-http
+            //         const axios = require('axios')
+            //     `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `lighter-http` but not `lighter-http`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Do include `lighter-http` but not `lighter-http`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "unusedVar",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.deepStrictEqual(
-                    suppressedMessages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "redeclared",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2,
-                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
-                    }]
-                );
-            });
+            //     assert.deepStrictEqual(
+            //         suppressedMessages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "redeclared",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2,
+            //             suppressions: [{ kind: "directive", justification: "lighter-http" }]
+            //         }]
+            //     );
+            // });
 
-            it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
-                const messages = linter.verify(`
-                    /*ec0lint-disable-next-line lighter-http */
-                    const axios = require('axios')
-                    /*ec0lint-disable-next-line lighter-http */
-                    const axios = require('axios')
-                `, { rules: { "lighter-http": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
+            // it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
+            //     const messages = linter.verify(`
+            //         /*ec0lint-disable-next-line lighter-http */
+            //         const axios = require('axios')
+            //         /*ec0lint-disable-next-line lighter-http */
+            //         const axios = require('axios')
+            //     `, { rules: { "lighter-http": "error" } });
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `lighter-http` but not `lighter-http`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2
-                    }]
-                );
+            //     // Do include `lighter-http` but not `lighter-http`
+            //     assert.deepStrictEqual(
+            //         messages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "unusedVar",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2
+            //         }]
+            //     );
 
-                assert.deepStrictEqual(
-                    suppressedMessages,
-                    [{
-                        column: 25,
-                        endLine: 5,
-                        endColumn: 28,
-                        line: 5,
-                        messageId: "redeclared",
-                        nodeType: "Identifier",
-                        ruleId: "lighter-http",
-                        severity: 2,
-                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
-                    }]
-                );
-            });
+            //     assert.deepStrictEqual(
+            //         suppressedMessages,
+            //         [{
+            //             column: 25,
+            //             endLine: 5,
+            //             endColumn: 28,
+            //             line: 5,
+            //             messageId: "redeclared",
+            //             nodeType: "Identifier",
+            //             ruleId: "lighter-http",
+            //             severity: 2,
+            //             suppressions: [{ kind: "directive", justification: "lighter-http" }]
+            //         }]
+            //     );
+            // });
 
-            it("should not ignore the part preceded by '--' if the '--' is not surrounded by whitespaces.", () => {
-                const rule = sinon.stub().returns({});
+            // it("should not ignore the part preceded by '--' if the '--' is not surrounded by whitespaces.", () => {
+            //     const rule = sinon.stub().returns({});
 
-                linter.defineRule("a--rule", { create: rule });
-                const messages = linter.verify(`
-                    /*ec0lint a--rule:error */
-                    console.log("hello")
-                `, {});
-                const suppressedMessages = linter.getSuppressedMessages();
+            //     linter.defineRule("a--rule", { create: rule });
+            //     const messages = linter.verify(`
+            //         /*ec0lint a--rule:error */
+            //         console.log("hello")
+            //     `, {});
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include syntax error of the comment.
-                assert.deepStrictEqual(messages, []);
+            //     // Don't include syntax error of the comment.
+            //     assert.deepStrictEqual(messages, []);
 
-                // Use `a--rule`.
-                assert.strictEqual(rule.callCount, 1);
+            //     // Use `a--rule`.
+            //     assert.strictEqual(rule.callCount, 1);
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' even if the '--' is longer than 2.", () => {
-                const aaa = sinon.stub().returns({});
-                const bbb = sinon.stub().returns({});
+            // it("should ignore the part preceded by '--' even if the '--' is longer than 2.", () => {
+            //     const aaa = sinon.stub().returns({});
+            //     const bbb = sinon.stub().returns({});
 
-                linter.defineRule("aaa", { create: aaa });
-                linter.defineRule("bbb", { create: bbb });
-                const messages = linter.verify(`
-                    /*ec0lint aaa:error -------- bbb:error */
-                    console.log("hello")
-                `, {});
-                const suppressedMessages = linter.getSuppressedMessages();
+            //     linter.defineRule("aaa", { create: aaa });
+            //     linter.defineRule("bbb", { create: bbb });
+            //     const messages = linter.verify(`
+            //         /*ec0lint aaa:error -------- bbb:error */
+            //         console.log("hello")
+            //     `, {});
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include syntax error of the comment.
-                assert.deepStrictEqual(messages, []);
+            //     // Don't include syntax error of the comment.
+            //     assert.deepStrictEqual(messages, []);
 
-                // Use only `aaa`.
-                assert.strictEqual(aaa.callCount, 1);
-                assert.strictEqual(bbb.callCount, 0);
+            //     // Use only `aaa`.
+            //     assert.strictEqual(aaa.callCount, 1);
+            //     assert.strictEqual(bbb.callCount, 0);
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
 
-            it("should ignore the part preceded by '--' with line breaks.", () => {
-                const aaa = sinon.stub().returns({});
-                const bbb = sinon.stub().returns({});
+            // it("should ignore the part preceded by '--' with line breaks.", () => {
+            //     const aaa = sinon.stub().returns({});
+            //     const bbb = sinon.stub().returns({});
 
-                linter.defineRule("aaa", { create: aaa });
-                linter.defineRule("bbb", { create: bbb });
-                const messages = linter.verify(`
-                    /*ec0lint aaa:error
-                        --------
-                        bbb:error */
-                    console.log("hello")
-                `, {});
-                const suppressedMessages = linter.getSuppressedMessages();
+            //     linter.defineRule("aaa", { create: aaa });
+            //     linter.defineRule("bbb", { create: bbb });
+            //     const messages = linter.verify(`
+            //         /*ec0lint aaa:error
+            //             --------
+            //             bbb:error */
+            //         console.log("hello")
+            //     `, {});
+            //     const suppressedMessages = linter.getSuppressedMessages();
 
-                // Don't include syntax error of the comment.
-                assert.deepStrictEqual(messages, []);
+            //     // Don't include syntax error of the comment.
+            //     assert.deepStrictEqual(messages, []);
 
-                // Use only `aaa`.
-                assert.strictEqual(aaa.callCount, 1);
-                assert.strictEqual(bbb.callCount, 0);
+            //     // Use only `aaa`.
+            //     assert.strictEqual(aaa.callCount, 1);
+            //     assert.strictEqual(bbb.callCount, 0);
 
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
+            //     assert.strictEqual(suppressedMessages.length, 0);
+            // });
         });
     });
 
@@ -12662,7 +12662,7 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1
+                            "lighter-http": 2
                         }
                     };
                     const messages = linter.verify(code, config, filename);
