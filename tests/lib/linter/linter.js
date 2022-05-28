@@ -104,7 +104,7 @@ describe("Linter", () => {
             const spy = sinon.spy();
 
             linter.defineRule("checker", () => ({ newListener: spy }));
-            linter.verify("foo", { rules: { checker: "error", "no-undef": "error" } });
+            linter.verify("foo", { rules: { checker: "error", "lighter-http": "error" } });
             assert(spy.notCalled);
         });
 
@@ -3377,7 +3377,7 @@ var a = "test2";
         it("should report a violation when using typed array", () => {
             const code = "var array = new Uint8Array();";
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3389,7 +3389,7 @@ var a = "test2";
         it("should report a violation when using Promise", () => {
             const code = "new Promise();";
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3403,13 +3403,13 @@ var a = "test2";
         it("should not support legacy config", () => {
             const code = "/*jshint mocha:true */ describe();";
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-undef");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(messages[0].nodeType, "Identifier");
             assert.strictEqual(messages[0].line, 1);
 
@@ -3419,7 +3419,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = "/*ec0lint-env es6 */ new Promise();";
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3435,7 +3435,7 @@ var a = "test2";
                 "/*ec0lint-env browser,\nes6 */ window;Promise;",
                 "/*ec0lint-env\nbrowser,es6 */ window;Promise;"
             ];
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             for (const code of codes) {
                 const messages = linter.verify(code, config, filename);
@@ -3450,7 +3450,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = `/*${ESLINT_ENV} mocha,node */ require();describe();`;
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3462,7 +3462,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = "/*ec0lint-env mocha */ suite();test();";
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3474,7 +3474,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = `/*${ESLINT_ENV} amd */ define();require();`;
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3486,7 +3486,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = `/*${ESLINT_ENV} jasmine */ expect();spyOn();`;
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3498,7 +3498,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = `/*globals require: true */ /*${ESLINT_ENV} node */ require = 1;`;
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3522,7 +3522,7 @@ var a = "test2";
         it("should not report a violation", () => {
             const code = `/*ec0lint no-process-exit: 0 */ /*${ESLINT_ENV} node */ process.exit();`;
 
-            const config = { rules: { "no-undef": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3662,14 +3662,14 @@ var a = "test2";
             ].join("\n");
             const config = {
                 rules: {
-                    "no-undef": 2
+                    "lighter-http": 2
                 }
             };
             const messages = linter.verify(code, config, { allowInlineConfig: false });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-undef");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
 
             assert.strictEqual(suppressedMessages.length, 0);
         });
@@ -3844,13 +3844,13 @@ var a = "test2";
 
         it("reports problems for multiple unused ec0lint-disable comments with mutliple ruleIds", () => {
             const code = [
-                "/* ec0lint no-undef: 2, no-void: 2 */",
-                "/* ec0lint-disable no-undef -- j1 */",
-                "void foo; //ec0lint-disable-line no-undef, no-void -- j2"
+                "/* ec0lint lighter-http: 2, no-void: 2 */",
+                "/* ec0lint-disable lighter-http -- j1 */",
+                "void foo; //ec0lint-disable-line lighter-http, no-void -- j2"
             ].join("\n");
             const config = {
                 rules: {
-                    "no-undef": 2,
+                    "lighter-http": 2,
                     "no-void": 2
                 }
             };
@@ -3861,7 +3861,7 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 2);
             assert.strictEqual(suppressedMessages[0].ruleId, "no-void");
             assert.strictEqual(suppressedMessages[0].suppressions.length, 1);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-undef");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].suppressions.length, 2);
         });
 
@@ -4663,7 +4663,7 @@ var a = "test2";
         it("should report warnings in order by line and column when called", () => {
 
             const code = "foo()\n    import * from 'axios'";
-            const config = { rules: { "no-mixed-spaces-and-tabs": 1, "eol-last": 1, semi: [1, "always"] } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -5208,7 +5208,7 @@ var a = "test2";
         });
 
         it("should report a linting error when a global is set to an invalid value", () => {
-            const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "no-undef": "error" } });
+            const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "lighter-http": "error" } });
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(results, [
@@ -5223,7 +5223,7 @@ var a = "test2";
                     nodeType: null
                 },
                 {
-                    ruleId: "no-undef",
+                    ruleId: "lighter-http",
                     messageId: "undef",
                     severity: 2,
                     message: "'foo' is not defined.",
@@ -7220,13 +7220,13 @@ describe("Linter with FlatConfigArray", () => {
                             sourceType: "script"
                         },
                         rules: {
-                            "no-undef": "error"
+                            "lighter-http": "error"
                         }
                     });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http", "The linting error should be lighter-http.");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -7238,13 +7238,13 @@ describe("Linter with FlatConfigArray", () => {
                             sourceType: "script"
                         },
                         rules: {
-                            "no-undef": "error"
+                            "lighter-http": "error"
                         }
                     });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http", "The linting error should be lighter-http.");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -7255,7 +7255,7 @@ describe("Linter with FlatConfigArray", () => {
                             ecmaVersion: 6
                         },
                         rules: {
-                            "no-undef": "error"
+                            "lighter-http": "error"
                         }
                     });
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -7476,13 +7476,13 @@ describe("Linter with FlatConfigArray", () => {
                             ecmaVersion: 6
                         },
                         rules: {
-                            "no-undef": "error"
+                            "lighter-http": "error"
                         }
                     });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http", "The linting error should be lighter-http.");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -8457,7 +8457,7 @@ describe("Linter with FlatConfigArray", () => {
         it("should report warnings in order by line and column when called", () => {
 
             const code = "foo()\n    import * from 'axios'";
-            const config = { rules: { "no-mixed-spaces-and-tabs": 1, "eol-last": 1, semi: [1, "always"] } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -8553,7 +8553,7 @@ describe("Linter with FlatConfigArray", () => {
                     },
                     rules: {
                         "test/checker": "error",
-                        "no-undef": "error"
+                        "lighter-http": "error"
                     }
                 };
 
@@ -10984,7 +10984,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 it("should report a linting error when a global is set to an invalid value", () => {
-                    const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "no-undef": "error" } });
+                    const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.deepStrictEqual(results, [
@@ -10999,7 +10999,7 @@ describe("Linter with FlatConfigArray", () => {
                             nodeType: null
                         },
                         {
-                            ruleId: "no-undef",
+                            ruleId: "lighter-http",
                             messageId: "undef",
                             severity: 2,
                             message: "'foo' is not defined.",
