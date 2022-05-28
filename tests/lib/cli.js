@@ -151,7 +151,7 @@ describe("cli", () => {
         it("should load the local config file", async () => {
 
             // Mock CWD
-            process.eslintCwd = getFixturePath("configurations", "single-quotes");
+            process.eslintCwd = getFixturePath("configurations", "lighter-http");
 
             await cli.execute(code);
 
@@ -162,7 +162,7 @@ describe("cli", () => {
     // describe("when given a config with rules with options and severity level set to error", () => {
     //     it("should exit with an error status (1)", async () => {
     //         const configPath = getFixturePath("configurations", "quotes-error.json");
-    //         const filePath = getFixturePath("single-quoted.js");
+    //         const filePath = getFixturePath("lighter-http.js");
     //         const code = `--no-ignore --config ${configPath} ${filePath}`;
 
     //         const exitStatus = await cli.execute(code);
@@ -564,7 +564,7 @@ describe("cli", () => {
 
     describe("when executing with no-ec0lintrc flag", () => {
         it("should ignore a local config file", async () => {
-            const filePath = getFixturePath("ec0lintrc", "quotes.js");
+            const filePath = getFixturePath("ec0lintrc", "lighter-http.js");
             const exit = await cli.execute(`--no-ec0lintrc --no-ignore ${filePath}`);
 
             assert.isTrue(log.info.notCalled);
@@ -574,7 +574,7 @@ describe("cli", () => {
 
     describe("when executing without no-ec0lintrc flag", () => {
         it("should load a local config file", async () => {
-            const filePath = getFixturePath("ec0lintrc", "quotes.js");
+            const filePath = getFixturePath("ec0lintrc", "lighter-http.js");
             const exit = await cli.execute(`--no-ignore ${filePath}`);
 
             assert.isTrue(log.info.calledOnce);
@@ -582,35 +582,35 @@ describe("cli", () => {
         });
     });
 
-    describe("when executing with global flag", () => {
-        it("should default defined variables to read-only", async () => {
-            const filePath = getFixturePath("undef.js");
-            const exit = await cli.execute(`--global baz,bat --no-ignore --rule no-global-assign:2 ${filePath}`);
+    // describe("when executing with global flag", () => {
+    //     it("should default defined variables to read-only", async () => {
+    //         const filePath = getFixturePath("undef.js");
+    //         const exit = await cli.execute(`--global baz,bat --no-ignore --rule no-global-assign:2 ${filePath}`);
 
-            assert.isTrue(log.info.calledOnce);
-            assert.strictEqual(exit, 1);
-        });
+    //         assert.isTrue(log.info.calledOnce);
+    //         assert.strictEqual(exit, 1);
+    //     });
 
-        it("should allow defining writable global variables", async () => {
-            const filePath = getFixturePath("undef.js");
-            const exit = await cli.execute(`--global baz:false,bat:true --no-ignore ${filePath}`);
+    //     it("should allow defining writable global variables", async () => {
+    //         const filePath = getFixturePath("undef.js");
+    //         const exit = await cli.execute(`--global baz:false,bat:true --no-ignore ${filePath}`);
 
-            assert.isTrue(log.info.notCalled);
-            assert.strictEqual(exit, 0);
-        });
+    //         assert.isTrue(log.info.notCalled);
+    //         assert.strictEqual(exit, 0);
+    //     });
 
-        it("should allow defining variables with multiple flags", async () => {
-            const filePath = getFixturePath("undef.js");
-            const exit = await cli.execute(`--global baz --global bat:true --no-ignore ${filePath}`);
+    //     it("should allow defining variables with multiple flags", async () => {
+    //         const filePath = getFixturePath("undef.js");
+    //         const exit = await cli.execute(`--global baz --global bat:true --no-ignore ${filePath}`);
 
-            assert.isTrue(log.info.notCalled);
-            assert.strictEqual(exit, 0);
-        });
-    });
+    //         assert.isTrue(log.info.notCalled);
+    //         assert.strictEqual(exit, 0);
+    //     });
+    // });
 
     describe("when supplied with rule flag and severity level set to error", () => {
         it("should exit with an error status (2)", async () => {
-            const filePath = getFixturePath("single-quoted.js");
+            const filePath = getFixturePath("lighter-http.js");
             const code = `--no-ignore --rule 'lighter-http: 2' ${filePath}`;
             const exitStatus = await cli.execute(code);
 
@@ -621,7 +621,7 @@ describe("cli", () => {
     describe("when the quiet option is enabled", () => {
 
         it("should only print error", async () => {
-            const filePath = getFixturePath("single-quoted.js");
+            const filePath = getFixturePath("lighter-http.js");
             const cliArgs = `--no-ignore --quiet  -f compact --rule 'lighter-http: 1' ${filePath}`;
 
             await cli.execute(cliArgs);
@@ -635,8 +635,8 @@ describe("cli", () => {
         });
 
         it("should print nothing if there are no errors", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--quiet  -f compact --rule 'quotes: [1, double]' --rule 'lighter-http: 1' ${filePath}`;
+            const filePath = getFixturePath("lighter-http.js");
+            const cliArgs = `--quiet  -f compact --rule 'lighter-http: 1' --rule 'lighter-http: 1' ${filePath}`;
 
             await cli.execute(cliArgs);
 
@@ -650,8 +650,8 @@ describe("cli", () => {
         });
 
         it("should write the file and create dirs if they don't exist", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
+            const filePath = getFixturePath("lighter-http.js");
+            const code = `--no-ignore --rule 'lighter-http: 1' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             await cli.execute(code);
 
@@ -660,8 +660,8 @@ describe("cli", () => {
         });
 
         it("should return an error if the path is a directory", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output ${filePath}`;
+            const filePath = getFixturePath("lighter-http.js");
+            const code = `--no-ignore --rule 'lighter-http: 1' --o tests/output ${filePath}`;
 
             fs.mkdirSync("tests/output");
 
@@ -673,8 +673,8 @@ describe("cli", () => {
         });
 
         it("should return an error if the path could not be written to", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
+            const filePath = getFixturePath("lighter-http.js");
+            const code = `--no-ignore --rule 'lighter-http: 1' --o tests/output/ec0lint-output.txt ${filePath}`;
 
             fs.writeFileSync("tests/output", "foo");
 
