@@ -168,7 +168,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.warningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
-            assert.isUndefined(report.results[0].messages[0].output);
+            assert.isLighter-httpined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
@@ -366,7 +366,7 @@ describe("CLIEngine", () => {
         //         configFile: getFixturePath("configurations", "lighter-http-error.json"),
         //         extensions: []
         //     });
-        //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
+        //     const report = engine.executeOnFiles([getFixturePath("lighter-http.js")]);
 
         //     assert.strictEqual(report.results.length, 1);
         //     assert.strictEqual(report.results[0].messages.length, 1);
@@ -612,7 +612,7 @@ describe("CLIEngine", () => {
         //         cwd: getFixturePath("configurations"),
         //         configFile: getFixturePath("configurations", "lighter-http-error.json")
         //     });
-        //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
+        //     const report = engine.executeOnFiles([getFixturePath("lighter-http.js")]);
 
         //     assert.strictEqual(report.results.length, 1);
         //     assert.strictEqual(report.results[0].messages.length, 1);
@@ -880,12 +880,12 @@ describe("CLIEngine", () => {
 
         it("should throw an error when all given files are ignored via ignore-pattern", () => {
             engine = new CLIEngine({
-                ignorePattern: "tests/fixtures/single-quoted.js"
+                ignorePattern: "tests/fixtures/lighter-http.js"
             });
 
             assert.throws(() => {
-                engine.executeOnFiles(["tests/fixtures/*-quoted.js"]);
-            }, "All files matched by 'tests/fixtures/*-quoted.js' are ignored.");
+                engine.executeOnFiles(["tests/fixtures/*-lighter-http.js"]);
+            }, "All files matched by 'tests/fixtures/*-lighter-http.js' are ignored.");
         });
 
         it("should return a warning when an explicitly given file is ignored", () => {
@@ -925,7 +925,7 @@ describe("CLIEngine", () => {
                 }
             });
 
-            const filePath = fs.realpathSync(getFixturePath("undef.js"));
+            const filePath = fs.realpathSync(getFixturePath("lighter-http.js"));
 
             const report = engine.executeOnFiles([filePath]);
 
@@ -1272,7 +1272,7 @@ describe("CLIEngine", () => {
         //                         line: 1,
         //                         endColumn: 21,
         //                         endLine: 1,
-        //                         messageId: "undef",
+        //                         messageId: "lighter-http",
         //                         message: "'foo' is not defined.",
         //                         nodeType: "Identifier",
         //                         ruleId: "lighter-http",
@@ -2087,7 +2087,7 @@ describe("CLIEngine", () => {
 
                 cache = JSON.parse(fs.readFileSync(cacheFile));
 
-                assert.isTrue(typeof cache[toBeDeletedFile] === "undefined", "the entry for the file to be deleted is not in the cache");
+                assert.isTrue(typeof cache[toBeDeletedFile] === "lighter-httpined", "the entry for the file to be deleted is not in the cache");
             });
 
             it("should contain files that were not visited in the cache provided they still exist", () => {
@@ -3210,7 +3210,7 @@ describe("CLIEngine", () => {
         //         configFile: getFixturePath("configurations", "lighter-http-error.json")
         //     };
         //     const engine = new CLIEngine(options);
-        //     const filePath = getFixturePath("single-quoted.js");
+        //     const filePath = getFixturePath("lighter-http.js");
 
         //     const actualConfig = engine.getConfigForFile(filePath);
         //     const expectedConfig = new CascadingConfigArrayFactory({ specificConfigPath: options.configFile })
@@ -3258,7 +3258,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath()
             });
 
-            assert.isTrue(engine.isPathIgnored("undef.js"));
+            assert.isTrue(engine.isPathIgnored("lighter-http.js"));
             assert.isFalse(engine.isPathIgnored("passing.js"));
         });
 
@@ -3269,7 +3269,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath()
             });
 
-            assert.isFalse(engine.isPathIgnored("undef.js"));
+            assert.isFalse(engine.isPathIgnored("lighter-http.js"));
         });
 
         it("should return true for default ignores even if ignoring is disabled", () => {
@@ -3383,7 +3383,7 @@ describe("CLIEngine", () => {
                 // Default ignore patterns should not inadvertently ignore files in parent directories
                 const engine = new CLIEngine({ cwd: getFixturePath("ignored-paths", "no-ignore-file") });
 
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
             });
         });
 
@@ -3473,23 +3473,23 @@ describe("CLIEngine", () => {
 
             it("should return true for file matching an ignore pattern exactly", () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new CLIEngine({ ignorePattern: "undef.js", cwd });
+                const engine = new CLIEngine({ ignorePattern: "lighter-http.js", cwd });
 
-                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
             });
 
             it("should return false for file matching an invalid ignore pattern with leading './'", () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new CLIEngine({ ignorePattern: "./undef.js", cwd });
+                const engine = new CLIEngine({ ignorePattern: "./lighter-http.js", cwd });
 
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
             });
 
             it("should return false for file in subfolder of cwd matching an ignore pattern with leading '/'", () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new CLIEngine({ ignorePattern: "/undef.js", cwd });
+                const engine = new CLIEngine({ ignorePattern: "/lighter-http.js", cwd });
 
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "subdir", "undef.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "subdir", "lighter-http.js")));
             });
 
             it("should return true for file matching a child of an ignore pattern", () => {
@@ -3574,7 +3574,7 @@ describe("CLIEngine", () => {
                 const ignorePath = getFixturePath("ignored-paths", "custom-name", "ignore-file");
                 const engine = new CLIEngine({ ignorePath, cwd });
 
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
             });
 
             it("should resolve relative paths from CWD", () => {
@@ -3582,8 +3582,8 @@ describe("CLIEngine", () => {
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreForDifferentCwd");
                 const engine = new CLIEngine({ ignorePath, cwd });
 
-                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/undef.js")));
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/lighter-http.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
             });
 
             it("should resolve relative paths from CWD when it's in a child directory", () => {
@@ -3591,8 +3591,8 @@ describe("CLIEngine", () => {
                 const ignorePath = getFixturePath("ignored-paths", "subdir/.ec0lintignoreInChildDir");
                 const engine = new CLIEngine({ ignorePath, cwd });
 
-                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/undef.js")));
-                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
+                assert(!engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/lighter-http.js")));
+                assert(engine.isPathIgnored(getFixturePath("ignored-paths", "lighter-http.js")));
                 assert(engine.isPathIgnored(getFixturePath("ignored-paths", "foo.js")));
                 assert(engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/foo.js")));
 
@@ -4250,7 +4250,7 @@ describe("CLIEngine", () => {
     describe("mutability", () => {
         describe("plugins", () => {
             it("Loading plugin in one instance doesn't mutate to another instance", () => {
-                const filePath = getFixturePath("single-quoted.js");
+                const filePath = getFixturePath("lighter-http.js");
                 const engine1 = cliEngineWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
@@ -4272,7 +4272,7 @@ describe("CLIEngine", () => {
 
         describe("rules", () => {
             it("Loading rules in one instance doesn't mutate to another instance", () => {
-                const filePath = getFixturePath("single-quoted.js");
+                const filePath = getFixturePath("lighter-http.js");
                 const engine1 = new CLIEngine({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
@@ -4287,7 +4287,7 @@ describe("CLIEngine", () => {
 
                 // plugin
                 assert.deepStrictEqual(fileConfig1.rules["example/example-rule"], [1], "example is present for engine 1");
-                assert.isUndefined(fileConfig2.rules["example/example-rule"], "example is not present for engine 2");
+                assert.isLighter-httpined(fileConfig2.rules["example/example-rule"], "example is not present for engine 2");
             });
         });
     });
