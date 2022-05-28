@@ -2374,15 +2374,12 @@ describe("Linter", () => {
 
             it("should not report a violation", () => {
                 const code = [
-                    "alert('test') // ec0lint-disable-line no-alert, quotes, semi",
-                    "console.log('test'); // ec0lint-disable-line"
+                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "console.log('test');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "no-alert": 1,
-                        quotes: [1, "double"],
-                        semi: [1, "always"],
-                        "no-console": 1
+                        "lighter-https": 1
                     }
                 };
 
@@ -2390,47 +2387,7 @@ describe("Linter", () => {
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 0);
-                assert.strictEqual(suppressedMessages.length, 5);
-            });
-
-            it("should not report a violation", () => {
-                const code = [
-                    "alert('test') /* ec0lint-disable-line no-alert, quotes, semi */",
-                    "console.log('test'); /* ec0lint-disable-line */"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "double"],
-                        semi: [1, "always"],
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-                assert.strictEqual(suppressedMessages.length, 5);
-            });
-
-            it("should ignore violations of multiple rules when specified in mixed comments", () => {
-                const code = [
-                    " alert(\"test\"); /* ec0lint-disable-line no-alert */ // ec0lint-disable-line quotes"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"]
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                assert.strictEqual(suppressedMessages.length, 1);
             });
         });
 
@@ -2694,15 +2651,11 @@ describe("Linter", () => {
             it("should ignore all rule violations on next line if none specified", () => {
                 const code = [
                     "// ec0lint-disable-next-line",
-                    "alert(\"test\");",
-                    "console.log('test')"
+                    "import * from 'axios';"
                 ].join("\n");
                 const config = {
                     rules: {
-                        semi: [1, "never"],
-                        quotes: [1, "single"],
-                        "no-alert": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2711,34 +2664,29 @@ describe("Linter", () => {
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].ruleId, "no-console");
 
-                assert.strictEqual(suppressedMessages.length, 3);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-                assert.strictEqual(suppressedMessages[2].ruleId, "semi");
+                assert.strictEqual(suppressedMessages.length, 1);
+                assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
 
             it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
                 const code = [
-                    "alert('test');",
-                    "/* ec0lint-disable-next-line no-alert */",
-                    "alert('test');",
-                    "console.log('test');"
+                    "import * from 'axios';",
+                    "/* ec0lint-disable-next-line lighter-http */",
+                    "import * from 'axios';"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "no-alert": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages.length, 1);
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
 
             it("should report a violation", () => {
@@ -2746,42 +2694,39 @@ describe("Linter", () => {
                     "/* ec0lint-disable-next-line",
                     "*",
                     "*/",
-                    "console.log('test');" // here
+                    "import * from 'axios';" // here
                 ].join("\n");
                 const config = {
                     rules: {
-                        "no-alert": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
 
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages.length, 1);
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
             it("should not ignore violations if comment is of the type hashbang", () => {
                 const code = [
-                    "#! ec0lint-disable-next-line no-alert",
-                    "alert('test');",
-                    "console.log('test');"
+                    "#! ec0lint-disable-next-line",
+                    "import * from 'axios';" 
                 ].join("\n");
                 const config = {
                     rules: {
-                        "no-alert": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
+
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages.length, 1);
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 0);
             });
@@ -3252,55 +3197,55 @@ var a = "test2";
         });
     });
 
-    describe("when evaluating a file with a hashbang", () => {
+    // describe("when evaluating a file with a hashbang", () => {
 
-        it("should preserve line numbers", () => {
-            const code = "#!bin/program\n\nvar foo;;";
-            const config = { rules: { "no-extra-semi": 1 } };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
+    //     it("should preserve line numbers", () => {
+    //         const code = "#!bin/program\n\nvar foo;;";
+    //         const config = { rules: { "no-extra-semi": 1 } };
+    //         const messages = linter.verify(code, config);
+    //         const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-extra-semi");
-            assert.strictEqual(messages[0].nodeType, "EmptyStatement");
-            assert.strictEqual(messages[0].line, 3);
+    //         assert.strictEqual(messages.length, 1);
+    //         assert.strictEqual(messages[0].ruleId, "no-extra-semi");
+    //         assert.strictEqual(messages[0].nodeType, "EmptyStatement");
+    //         assert.strictEqual(messages[0].line, 3);
 
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
+    //         assert.strictEqual(suppressedMessages.length, 0);
+    //     });
 
-        it("should have a comment with the hashbang in it", () => {
-            const code = "#!bin/program\n\nvar foo;;";
-            const config = { rules: { checker: "error" } };
-            const spy = sinon.spy(context => {
-                const comments = context.getAllComments();
+    //     it("should have a comment with the hashbang in it", () => {
+    //         const code = "#!bin/program\n\nvar foo;;";
+    //         const config = { rules: { checker: "error" } };
+    //         const spy = sinon.spy(context => {
+    //             const comments = context.getAllComments();
 
-                assert.strictEqual(comments.length, 1);
-                assert.strictEqual(comments[0].type, "Shebang");
-                return {};
-            });
+    //             assert.strictEqual(comments.length, 1);
+    //             assert.strictEqual(comments[0].type, "Shebang");
+    //             return {};
+    //         });
 
-            linter.defineRule("checker", spy);
-            linter.verify(code, config);
-            assert(spy.calledOnce);
-        });
+    //         linter.defineRule("checker", spy);
+    //         linter.verify(code, config);
+    //         assert(spy.calledOnce);
+    //     });
 
-        it("should comment hashbang without breaking offset", () => {
-            const code = "#!/usr/bin/env node\n'123';";
-            const config = { rules: { checker: "error" } };
-            let spy;
+    //     it("should comment hashbang without breaking offset", () => {
+    //         const code = "#!/usr/bin/env node\n'123';";
+    //         const config = { rules: { checker: "error" } };
+    //         let spy;
 
-            linter.defineRule("checker", context => {
-                spy = sinon.spy(node => {
-                    assert.strictEqual(context.getSource(node), "'123';");
-                });
-                return { ExpressionStatement: spy };
-            });
+    //         linter.defineRule("checker", context => {
+    //             spy = sinon.spy(node => {
+    //                 assert.strictEqual(context.getSource(node), "'123';");
+    //             });
+    //             return { ExpressionStatement: spy };
+    //         });
 
-            linter.verify(code, config);
-            assert(spy && spy.calledOnce);
-        });
+    //         linter.verify(code, config);
+    //         assert(spy && spy.calledOnce);
+    //     });
 
-    });
+    // });
 
     describe("when evaluating broken code", () => {
         const code = BROKEN_TEST_CODE;
@@ -6797,28 +6742,28 @@ var a = "test2";
             });
         });
 
-        it("does not include suggestions in autofix results", () => {
-            const fixResult = linter.verifyAndFix("var foo = /\\#/", {
-                rules: {
-                    semi: 2,
-                    "no-useless-escape": 2
-                }
-            });
+        // it("does not include suggestions in autofix results", () => {
+        //     const fixResult = linter.verifyAndFix("var foo = /\\#/", {
+        //         rules: {
+        //             semi: 2,
+        //             "no-useless-escape": 2
+        //         }
+        //     });
 
-            assert.strictEqual(fixResult.output, "var foo = /\\#/;");
-            assert.strictEqual(fixResult.fixed, true);
-            assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
-        });
+        //     assert.strictEqual(fixResult.output, "var foo = /\\#/;");
+        //     assert.strictEqual(fixResult.fixed, true);
+        //     assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
+        // });
 
-        it("does not apply autofixes when fix argument is `false`", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { fix: false });
+        // it("does not apply autofixes when fix argument is `false`", () => {
+        //     const fixResult = linter.verifyAndFix("var a", {
+        //         rules: {
+        //             semi: 2
+        //         }
+        //     }, { fix: false });
 
-            assert.strictEqual(fixResult.fixed, false);
-        });
+        //     assert.strictEqual(fixResult.fixed, false);
+        // });
 
         it("stops fixing after 10 passes", () => {
 
@@ -14754,50 +14699,50 @@ var a = "test2";
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("does not require a third argument", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
+        // it("does not require a third argument", () => {
+        //     const fixResult = linter.verifyAndFix("var a", {
+        //         rules: {
+        //             semi: 2
+        //         }
+        //     });
+        //     const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.deepStrictEqual(fixResult, {
-                fixed: true,
-                messages: [],
-                output: "var a;"
-            });
+        //     assert.deepStrictEqual(fixResult, {
+        //         fixed: true,
+        //         messages: [],
+        //         output: "var a;"
+        //     });
 
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
+        //     assert.strictEqual(suppressedMessages.length, 0);
+        // });
 
-        it("does not include suggestions in autofix results", () => {
-            const fixResult = linter.verifyAndFix("var foo = /\\#/", {
-                rules: {
-                    semi: 2,
-                    "no-useless-escape": 2
-                }
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
+        // it("does not include suggestions in autofix results", () => {
+        //     const fixResult = linter.verifyAndFix("var foo = /\\#/", {
+        //         rules: {
+        //             semi: 2,
+        //             "no-useless-escape": 2
+        //         }
+        //     });
+        //     const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(fixResult.output, "var foo = /\\#/;");
-            assert.strictEqual(fixResult.fixed, true);
-            assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
+        //     assert.strictEqual(fixResult.output, "var foo = /\\#/;");
+        //     assert.strictEqual(fixResult.fixed, true);
+        //     assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
 
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
+        //     assert.strictEqual(suppressedMessages.length, 0);
+        // });
 
-        it("does not apply autofixes when fix argument is `false`", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { fix: false });
-            const suppressedMessages = linter.getSuppressedMessages();
+        // it("does not apply autofixes when fix argument is `false`", () => {
+        //     const fixResult = linter.verifyAndFix("var a", {
+        //         rules: {
+        //             "lighter-http": 2
+        //         }
+        //     }, { fix: false });
+        //     const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(fixResult.fixed, false);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
+        //     assert.strictEqual(fixResult.fixed, false);
+        //     assert.strictEqual(suppressedMessages.length, 0);
+        // });
 
         it("stops fixing after 10 passes", () => {
 

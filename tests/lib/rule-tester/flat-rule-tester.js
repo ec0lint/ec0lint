@@ -467,19 +467,19 @@ describe("FlatRuleTester", () => {
         });
     });
 
-    it("should throw correct error when valid code is invalid and enables other core rule", () => {
+    // it("should throw correct error when valid code is invalid and enables other core rule", () => {
 
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "/*ec0lint semi: 2*/ eval(foo);"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-                ]
-            });
-        }, /Should have no errors but had 1/u);
-    });
+    //     assert.throws(() => {
+    //         ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
+    //             valid: [
+    //                 "/*ec0lint semi: 2*/ eval(foo);"
+    //             ],
+    //             invalid: [
+    //                 { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
+    //             ]
+    //         });
+    //     }, /Should have no errors but had 1/u);
+    // });
 
     it("should throw an error when valid code is invalid", () => {
 

@@ -90,8 +90,8 @@ describe("rules", () => {
         it("should iterate all rules", () => {
             const allRules = new Map(rules);
 
-            assert.isAbove(allRules.size, 230);
-            assert.isObject(allRules.get("no-alert"));
+            assert.isAbove(allRules.size, 1);
+            assert.isObject(allRules.get("lighter-http"));
         });
     });
 });
