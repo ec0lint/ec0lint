@@ -12564,9 +12564,9 @@ var a = "test2";
 
                 it("should ignore violations of specified rule on next line only", () => {
                     const code = [
-                        "const axios = require('axios');",
+                        "/* ec0lint-env es6 */ const axios = require('axios');",
                         "// ec0lint-disable-next-line lighter-http",
-                        "const axios = require('axios');",
+                        "/* ec0lint-env es6 */ const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
@@ -13394,8 +13394,8 @@ var a = "test2";
                                 line: 1,
                                 column: 16,
                                 fix: {
-                                    range: [47, 61],
-                                    text: ""
+                                    range: [28, 64],
+                                    text: " "
                                 },
                                 severity: 1,
                                 nodeType: null
