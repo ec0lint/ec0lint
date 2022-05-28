@@ -4158,11 +4158,7 @@ describe("CLIEngine", () => {
                 useEc0lintrc: false,
                 allowInlineConfig: false,
                 rules: {
-                    "eol-last": 0,
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    lighter-http: 0
+                    "lighter-http": 0
                 }
             };
 
@@ -4187,11 +4183,7 @@ describe("CLIEngine", () => {
 
                 // allowInlineConfig: true is the default
                 rules: {
-                    "eol-last": 0,
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    lighter-http: 0
+                    "lighter-http": 0
                 }
             };
 
