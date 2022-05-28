@@ -5699,7 +5699,7 @@ describe("ec0lint", () => {
                                 files: "*",
                                 excludedFiles: "foo/*.js",
                                 rules: {
-                                    lighter-http: "error"
+                                    "lighter-http": "error"
                                 }
                             }
                         ]
@@ -5783,7 +5783,7 @@ describe("ec0lint", () => {
                     "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
                         rules: {
-                            lighter-http: "error"
+                            "lighter-http": "error"
                         }
                     }),
                     "node_modules/myconf/foo/test.js": "a == b",
