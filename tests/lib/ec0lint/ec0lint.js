@@ -5612,7 +5612,7 @@ describe("ec0lint", () => {
                             {
                                 files: "foo/*.js",
                                 rules: {
-                                    lighter-http: "error"
+                                    "lighter-http": "error"
                                 }
                             }
                         ]

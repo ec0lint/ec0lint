@@ -5275,7 +5275,7 @@ describe("CLIEngine", () => {
                             {
                                 files: "foo/*.js",
                                 rules: {
-                                    lighter-http: "error"
+                                    "lighter-http": "error"
                                 }
                             }
                         ]
