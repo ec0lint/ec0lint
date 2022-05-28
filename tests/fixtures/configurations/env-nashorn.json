@@ -3,6 +3,6 @@
     "nashorn": true
   },
   "rules": {
-    "ligher-http": 2
+    "lighter-http": 2
   }
 }
