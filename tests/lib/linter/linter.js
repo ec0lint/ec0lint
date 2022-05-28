@@ -1796,7 +1796,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { "lighter-http": 2 } };
-            const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
+            const codeA = "/*ec0lint lighter-http: 0*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
             let messages = linter.verify(codeA, config, filename, false);
             let suppressedMessages = linter.getSuppressedMessages();
@@ -1813,7 +1813,7 @@ describe("Linter", () => {
 
         it("rules should not change initial config", () => {
             const config = { rules: { "lighter-http": 2 } };
-            const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
+            const codeA = "/*ec0lint lighter-http: [0, \"single\"]*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
 
             let messages = linter.verify(codeA, config, filename, false);
@@ -2345,7 +2345,6 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
                         "lighter-http": 1
                     }
                 };
@@ -2355,9 +2354,8 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 0);
 
-                assert.strictEqual(suppressedMessages.length, 2);
+                assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             });
 
             it("should not report a violation", () => {
@@ -2388,16 +2386,13 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
                         "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "lighter-http");
-
+                assert.strictEqual(messages.length, 0);
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
@@ -2410,16 +2405,13 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
                         "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "lighter-http");
-
+                assert.strictEqual(messages.length, 0);
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
@@ -2489,7 +2481,6 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
                         "lighter-http": 1
                     }
                 };
@@ -2498,48 +2489,39 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 2);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
             it("should ignore violations of multiple rules when specified", () => {
                 const code = [
-                    "// ec0lint-disable-next-line lighter-http, quotes",
-                    "const axios = require('axios');",
-                    "console.log('test');"
+                    "// ec0lint-disable-next-line lighter-http",
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        quotes: [1, "single"],
                         "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "lighter-http");
-
-                assert.strictEqual(suppressedMessages.length, 2);
+                assert.strictEqual(messages.length, 0);
+                assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
             });
 
             it("should ignore violations of multiple rules when specified in multiple lines", () => {
                 const code = [
                     "/* ec0lint-disable-next-line",
                     "lighter-http,",
-                    "quotes",
+                    "lighter-http",
                     "*/",
                     "const axios = require('axios');",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        quotes: [1, "single"],
                         "lighter-http": 1
                     }
                 };
@@ -2551,13 +2533,12 @@ describe("Linter", () => {
 
             it("should ignore violations of multiple rules when specified in mixed comments", () => {
                 const code = [
-                    "/* ec0lint-disable-next-line lighter-http */ // ec0lint-disable-next-line quotes",
+                    "/* ec0lint-disable-next-line lighter-http */ // ec0lint-disable-next-line lighter-http",
                     "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        quotes: [1, "single"]
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2565,22 +2546,20 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 0);
 
-                assert.strictEqual(suppressedMessages.length, 2);
+                assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
             });
 
             it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
                 const code = [
                     "/* ec0lint-disable-next-line",
                     "lighter-http",
-                    "*/ // ec0lint-disable-next-line quotes",
+                    "*/ // ec0lint-disable-next-line lighter-http",
                     "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        quotes: [1, "single"]
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2590,26 +2569,20 @@ describe("Linter", () => {
 
             it("should ignore violations of only the specified rule on next line", () => {
                 const code = [
-                    "// ec0lint-disable-next-line quotes",
-                    "const axios = require('axios');",
-                    "console.log('test');"
+                    "// ec0lint-disable-next-line lighter-http",
+                    "const axios = require('axios');"
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        quotes: [1, "single"],
                         "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "lighter-http");
-
+                assert.strictEqual(messages.length, 0);
                 assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
+                assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
 
             it("should ignore violations of specified rule on next line only", () => {
@@ -2621,16 +2594,14 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        "lighter-http": 1
+                        "lighter-http": 2
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                assert.strictEqual(messages.length, 2);
+                assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2781,11 +2752,11 @@ describe("Linter", () => {
 
         it("should report no violation", () => {
             const code = [
-                "/* ec0lint-disable quotes */",
+                "/* ec0lint-disable lighter-http */",
                 "console.log(\"foo\");",
-                "/* ec0lint-enable quotes */"
+                "/* ec0lint-enable lighter-http */"
             ].join("\n");
-            const config = { rules: { quotes: 2 } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3014,7 +2985,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule", () => {
-        const code = "/*ec0lint quotes:[2, \"double\"]*/ const axios = require('axios');";
+        const code = "/*ec0lint lighter-http:[2, \"double\"]*/ const axios = require('axios');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 2 } };
@@ -3023,7 +2994,7 @@ describe("Linter", () => {
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "quotes");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(messages[0].message, "Strings must use doublequote.");
             assert.include(messages[0].nodeType, "Literal");
 
@@ -3032,7 +3003,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-        const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ const axios = require('axios');";
+        const code = "/*ec0lint lighter-http:[\"error\", \"double\"]*/ const axios = require('axios');";
 
         it("should report a violation", () => {
             const config = { rules: { "lighter-http": 2 } };
@@ -3041,7 +3012,7 @@ describe("Linter", () => {
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "quotes");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(messages[0].message, "Strings must use doublequote.");
             assert.include(messages[0].nodeType, "Literal");
 
@@ -11223,7 +11194,7 @@ describe("Linter with FlatConfigArray", () => {
                             },
                             rules: { "lighter-http": 2 }
                         };
-                        const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
+                        const codeA = "/*ec0lint lighter-http: 0*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11240,7 +11211,7 @@ describe("Linter with FlatConfigArray", () => {
 
                     it("rules should not change initial config", () => {
                         const config = { rules: { "lighter-http": 2 } };
-                        const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
+                        const codeA = "/*ec0lint lighter-http: [0, \"single\"]*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11681,7 +11652,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule", () => {
-                    const code = "/*ec0lint quotes:[2, \"double\"]*/ const axios = require('axios');";
+                    const code = "/*ec0lint lighter-http:[2, \"double\"]*/ const axios = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 2 } };
@@ -11690,7 +11661,7 @@ describe("Linter with FlatConfigArray", () => {
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "quotes");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
                         assert.strictEqual(messages[0].message, "Strings must use doublequote.");
                         assert.include(messages[0].nodeType, "Literal");
 
@@ -11699,7 +11670,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ const axios = require('axios');";
+                    const code = "/*ec0lint lighter-http:[\"error\", \"double\"]*/ const axios = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { "lighter-http": 2 } };
@@ -11708,7 +11679,7 @@ describe("Linter with FlatConfigArray", () => {
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "quotes");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
                         assert.strictEqual(messages[0].message, "Strings must use doublequote.");
                         assert.include(messages[0].nodeType, "Literal");
 
@@ -11871,11 +11842,11 @@ var a = "test2";
 
                 it("should report no violation", () => {
                     const code = [
-                        "/* ec0lint-disable quotes */",
+                        "/* ec0lint-disable lighter-http */",
                         "console.log(\"foo\");",
-                        "/* ec0lint-enable quotes */"
+                        "/* ec0lint-enable lighter-http */"
                     ].join("\n");
-                    const config = { rules: { quotes: 2 } };
+                    const config = { rules: { "lighter-http": 2 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12260,7 +12231,7 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "const axios = require('axios') // ec0lint-disable-line lighter-http, quotes, lighter-http",
+                        "const axios = require('axios') // ec0lint-disable-line lighter-http, lighter-http, lighter-http",
                         "console.log('test'); // ec0lint-disable-line"
                     ].join("\n");
                     const config = {
@@ -12278,7 +12249,7 @@ var a = "test2";
 
                 it("should not report a violation", () => {
                     const code = [
-                        "const axios = require('axios') /* ec0lint-disable-line lighter-http, quotes, lighter-http */",
+                        "const axios = require('axios') /* ec0lint-disable-line lighter-http, lighter-http, lighter-http */",
                         "console.log('test'); /* ec0lint-disable-line */"
                     ].join("\n");
                     const config = {
@@ -12296,12 +12267,11 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
-                        " const axios = require('axios'); /* ec0lint-disable-line lighter-http */ // ec0lint-disable-line quotes"
+                        " const axios = require('axios'); /* ec0lint-disable-line lighter-http */ // ec0lint-disable-line lighter-http"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"]
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12309,9 +12279,8 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 0);
 
-                    assert.strictEqual(suppressedMessages.length, 2);
+                    assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should report no violation", () => {
@@ -12502,41 +12471,33 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified", () => {
                     const code = [
-                        "// ec0lint-disable-next-line lighter-http, quotes",
+                        "// ec0lint-disable-next-line lighter-http",
                         "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"],
                             "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-
-                    assert.strictEqual(suppressedMessages.length, 2);
+                    assert.strictEqual(messages.length, 0);
+                    assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should ignore violations of multiple rules when specified in multiple lines", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "lighter-http,",
-                        "quotes",
+                        "lighter-http",
                         "*/",
                         "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"],
                             "lighter-http": 1
                         }
                     };
@@ -12548,13 +12509,12 @@ var a = "test2";
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
                     const code = [
-                        "/* ec0lint-disable-next-line lighter-http */ // ec0lint-disable-next-line quotes",
+                        "/* ec0lint-disable-next-line lighter-http */",
                         "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"]
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12562,22 +12522,20 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 0);
 
-                    assert.strictEqual(suppressedMessages.length, 2);
+                    assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
                         "lighter-http",
-                        "*/ // ec0lint-disable-next-line quotes",
+                        "*/ // ec0lint-disable-next-line lighter-http",
                         "const axios = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"]
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12587,26 +12545,21 @@ var a = "test2";
 
                 it("should ignore violations of only the specified rule on next line", () => {
                     const code = [
-                        "// ec0lint-disable-next-line quotes",
+                        "// ec0lint-disable-next-line lighter-http",
                         "const axios = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"],
                             "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "lighter-http");
-
+                    assert.strictEqual(messages.length, 0);
                     assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations of specified rule on next line only", () => {
@@ -12618,16 +12571,14 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 2);
+                    assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12647,10 +12598,9 @@ var a = "test2";
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
+                    assert.strictEqual(messages.length, 0);
+                    assert.strictEqual(suppressedMessages.length, 1);
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
@@ -12668,7 +12618,7 @@ var a = "test2";
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 0);
+                    assert.strictEqual(messages.length, 1);
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
@@ -12678,11 +12628,11 @@ var a = "test2";
                         "/* ec0lint-disable-next-line",
                         "*",
                         "*/",
-                        "console.log('test');" // here
+                        "import axios from 'axios';" // here
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1
+                            "lighter-http": 2
                         }
                     };
 
@@ -13419,13 +13369,12 @@ var a = "test2";
                 });
 
                 it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-                    const code = "const axios = require('axios'); // ec0lint-disable-line lighter-http, lighter-http";
+                    const code = "const abc = require('abc'); // ec0lint-disable-line lighter-http";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
                         },
                         rules: {
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
