@@ -236,21 +236,21 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.suppressedMessages.length, 0);
             });
         });
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                useEc0lintrc: false,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
-            });
+        // it("should warn when deprecated rules are found in a config", () => {
+        //     engine = new CLIEngine({
+        //         cwd: originalDir,
+        //         useEc0lintrc: false,
+        //         configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
+        //     });
 
-            const report = engine.executeOnText("foo");
+        //     const report = engine.executeOnText("foo");
 
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.deepStrictEqual(
+        //         report.usedDeprecatedRules,
+        //         [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
+        //     );
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
     });
 
     describe("executeOnFiles()", () => {
@@ -359,29 +359,29 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should fall back to defaults when extensions is set to an empty array", () => {
+        // it("should fall back to defaults when extensions is set to an empty array", () => {
 
-            engine = new CLIEngine({
-                cwd: getFixturePath("configurations"),
-                configFile: getFixturePath("configurations", "quotes-error.json"),
-                extensions: []
-            });
-            const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
+        //     engine = new CLIEngine({
+        //         cwd: getFixturePath("configurations"),
+        //         configFile: getFixturePath("configurations", "quotes-error.json"),
+        //         extensions: []
+        //     });
+        //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
 
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.errorCount, 1);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.strictEqual(report.results.length, 1);
+        //     assert.strictEqual(report.results[0].messages.length, 1);
+        //     assert.strictEqual(report.errorCount, 1);
+        //     assert.strictEqual(report.warningCount, 0);
+        //     assert.strictEqual(report.fixableErrorCount, 1);
+        //     assert.strictEqual(report.fixableWarningCount, 0);
+        //     assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(report.results[0].messages[0].severity, 2);
+        //     assert.strictEqual(report.results[0].errorCount, 1);
+        //     assert.strictEqual(report.results[0].warningCount, 0);
+        //     assert.strictEqual(report.results[0].fixableErrorCount, 1);
+        //     assert.strictEqual(report.results[0].fixableWarningCount, 0);
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
 
         it("should report zero messages when given a directory with a .js and a .js2 file", () => {
 
@@ -467,7 +467,7 @@ describe("CLIEngine", () => {
             engine = new CLIEngine({
                 cwd: getFixturePath("cli-engine"),
                 rules: {
-                    quotes: [2, "single"]
+                    "lighter-http": 2
                 }
             });
 
@@ -510,7 +510,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath(".."),
                 useEc0lintrc: false,
                 rules: {
-                    quotes: [2, "single"]
+                    "lighter-http": 2
                 }
             });
 
@@ -532,7 +532,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("cli-engine"),
                 useEc0lintrc: false,
                 rules: {
-                    quotes: [2, "single"]
+                    "lighter-http": 2
                 }
             });
 
@@ -556,7 +556,7 @@ describe("CLIEngine", () => {
                 ignore: false,
                 useEc0lintrc: false,
                 rules: {
-                    quotes: [2, "single"]
+                    "lighter-http": 2
                 }
             });
 
@@ -579,7 +579,7 @@ describe("CLIEngine", () => {
                 useEc0lintrc: false,
                 ignorePattern: "!.hidden*",
                 rules: {
-                    quotes: [2, "single"]
+                    "lighter-http": 2
                 }
             });
 
@@ -611,28 +611,28 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[1].suppressedMessages.length, 0);
         });
 
-        it("should return one error message when given a config with rules with options and severity level set to error", () => {
+        // it("should return one error message when given a config with rules with options and severity level set to error", () => {
 
-            engine = new CLIEngine({
-                cwd: getFixturePath("configurations"),
-                configFile: getFixturePath("configurations", "quotes-error.json")
-            });
-            const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
+        //     engine = new CLIEngine({
+        //         cwd: getFixturePath("configurations"),
+        //         configFile: getFixturePath("configurations", "quotes-error.json")
+        //     });
+        //     const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
 
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.errorCount, 1);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.strictEqual(report.results.length, 1);
+        //     assert.strictEqual(report.results[0].messages.length, 1);
+        //     assert.strictEqual(report.errorCount, 1);
+        //     assert.strictEqual(report.warningCount, 0);
+        //     assert.strictEqual(report.fixableErrorCount, 1);
+        //     assert.strictEqual(report.fixableWarningCount, 0);
+        //     assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
+        //     assert.strictEqual(report.results[0].messages[0].severity, 2);
+        //     assert.strictEqual(report.results[0].errorCount, 1);
+        //     assert.strictEqual(report.results[0].warningCount, 0);
+        //     assert.strictEqual(report.results[0].fixableErrorCount, 1);
+        //     assert.strictEqual(report.results[0].fixableWarningCount, 0);
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
 
         it("should return 3 messages when given a config file and a directory of 3 valid files", () => {
 
@@ -687,47 +687,47 @@ describe("CLIEngine", () => {
         });
 
 
-        it("should return the total number of errors when given multiple files", () => {
+        // it("should return the total number of errors when given multiple files", () => {
 
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                configFile: getFixturePath("configurations", "single-quotes-error.json")
-            });
+        //     engine = new CLIEngine({
+        //         cwd: path.join(fixtureDir, ".."),
+        //         configFile: getFixturePath("configurations", "single-quotes-error.json")
+        //     });
 
-            const fixturePath = getFixturePath("formatters");
-            const report = engine.executeOnFiles([fixturePath]);
+        //     const fixturePath = getFixturePath("formatters");
+        //     const report = engine.executeOnFiles([fixturePath]);
 
-            assert.strictEqual(report.errorCount, 6);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 6);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results.length, 5);
-            assert.strictEqual(path.relative(fixturePath, report.results[0].filePath), "async.js");
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[1].filePath), "broken.js");
-            assert.strictEqual(report.results[1].errorCount, 0);
-            assert.strictEqual(report.results[1].warningCount, 0);
-            assert.strictEqual(report.results[1].fixableErrorCount, 0);
-            assert.strictEqual(report.results[1].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[2].filePath), "cwd.js");
-            assert.strictEqual(report.results[2].errorCount, 0);
-            assert.strictEqual(report.results[2].warningCount, 0);
-            assert.strictEqual(report.results[2].fixableErrorCount, 0);
-            assert.strictEqual(report.results[2].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[3].filePath), "simple.js");
-            assert.strictEqual(report.results[3].errorCount, 3);
-            assert.strictEqual(report.results[3].warningCount, 0);
-            assert.strictEqual(report.results[3].fixableErrorCount, 3);
-            assert.strictEqual(report.results[3].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[4].filePath), path.join("test", "simple.js"));
-            assert.strictEqual(report.results[4].errorCount, 3);
-            assert.strictEqual(report.results[4].warningCount, 0);
-            assert.strictEqual(report.results[4].fixableErrorCount, 3);
-            assert.strictEqual(report.results[4].fixableWarningCount, 0);
-        });
+        //     assert.strictEqual(report.errorCount, 6);
+        //     assert.strictEqual(report.warningCount, 0);
+        //     assert.strictEqual(report.fixableErrorCount, 6);
+        //     assert.strictEqual(report.fixableWarningCount, 0);
+        //     assert.strictEqual(report.results.length, 5);
+        //     assert.strictEqual(path.relative(fixturePath, report.results[0].filePath), "async.js");
+        //     assert.strictEqual(report.results[0].errorCount, 0);
+        //     assert.strictEqual(report.results[0].warningCount, 0);
+        //     assert.strictEqual(report.results[0].fixableErrorCount, 0);
+        //     assert.strictEqual(report.results[0].fixableWarningCount, 0);
+        //     assert.strictEqual(path.relative(fixturePath, report.results[1].filePath), "broken.js");
+        //     assert.strictEqual(report.results[1].errorCount, 0);
+        //     assert.strictEqual(report.results[1].warningCount, 0);
+        //     assert.strictEqual(report.results[1].fixableErrorCount, 0);
+        //     assert.strictEqual(report.results[1].fixableWarningCount, 0);
+        //     assert.strictEqual(path.relative(fixturePath, report.results[2].filePath), "cwd.js");
+        //     assert.strictEqual(report.results[2].errorCount, 0);
+        //     assert.strictEqual(report.results[2].warningCount, 0);
+        //     assert.strictEqual(report.results[2].fixableErrorCount, 0);
+        //     assert.strictEqual(report.results[2].fixableWarningCount, 0);
+        //     assert.strictEqual(path.relative(fixturePath, report.results[3].filePath), "simple.js");
+        //     assert.strictEqual(report.results[3].errorCount, 3);
+        //     assert.strictEqual(report.results[3].warningCount, 0);
+        //     assert.strictEqual(report.results[3].fixableErrorCount, 3);
+        //     assert.strictEqual(report.results[3].fixableWarningCount, 0);
+        //     assert.strictEqual(path.relative(fixturePath, report.results[4].filePath), path.join("test", "simple.js"));
+        //     assert.strictEqual(report.results[4].errorCount, 3);
+        //     assert.strictEqual(report.results[4].warningCount, 0);
+        //     assert.strictEqual(report.results[4].fixableErrorCount, 3);
+        //     assert.strictEqual(report.results[4].fixableWarningCount, 0);
+        // });
 
         it("should process when file is given by not specifying extensions", () => {
 
@@ -856,7 +856,7 @@ describe("CLIEngine", () => {
                 ignorePath: getFixturePath("cli-engine", "nested_node_modules", ".ec0lintignore"),
                 useEc0lintrc: false,
                 rules: {
-                    quotes: [2, "double"]
+                    "lighter-http": 2
                 },
                 cwd: getFixturePath("cli-engine", "nested_node_modules")
             });
@@ -876,7 +876,7 @@ describe("CLIEngine", () => {
                 ignorePath: getFixturePath("cli-engine/.ec0lintignore2"),
                 useEc0lintrc: false,
                 rules: {
-                    quotes: [2, "double"]
+                    "lighter-http": 2
                 }
             });
 
@@ -1146,58 +1146,58 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should warn when deprecated rules are configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: {
-                    "indent-legacy": 1,
-                    "require-jsdoc": 1,
-                    "valid-jsdoc": 1
-                }
-            });
+        // it("should warn when deprecated rules are configured", () => {
+        //     engine = new CLIEngine({
+        //         cwd: originalDir,
+        //         configFile: ".ec0lintrc.js",
+        //         rules: {
+        //             "indent-legacy": 1,
+        //             "require-jsdoc": 1,
+        //             "valid-jsdoc": 1
+        //         }
+        //     });
 
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
+        //     const report = engine.executeOnFiles(["lib/cli*.js"]);
 
-            assert.sameDeepMembers(
-                report.usedDeprecatedRules,
-                [
-                    { ruleId: "indent-legacy", replacedBy: ["indent"] },
-                    { ruleId: "require-jsdoc", replacedBy: [] },
-                    { ruleId: "valid-jsdoc", replacedBy: [] }
-                ]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.sameDeepMembers(
+        //         report.usedDeprecatedRules,
+        //         [
+        //             { ruleId: "indent-legacy", replacedBy: ["indent"] },
+        //             { ruleId: "require-jsdoc", replacedBy: [] },
+        //             { ruleId: "valid-jsdoc", replacedBy: [] }
+        //         ]
+        //     );
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
 
-        it("should not warn when deprecated rules are not configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
-            });
+        // it("should not warn when deprecated rules are not configured", () => {
+        //     engine = new CLIEngine({
+        //         cwd: originalDir,
+        //         configFile: ".ec0lintrc.js",
+        //         rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
+        //     });
 
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
+        //     const report = engine.executeOnFiles(["lib/cli*.js"]);
 
-            assert.deepStrictEqual(report.usedDeprecatedRules, []);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.deepStrictEqual(report.usedDeprecatedRules, []);
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
 
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
-                useEc0lintrc: false
-            });
+        // it("should warn when deprecated rules are found in a config", () => {
+        //     engine = new CLIEngine({
+        //         cwd: originalDir,
+        //         configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
+        //         useEc0lintrc: false
+        //     });
 
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
+        //     const report = engine.executeOnFiles(["lib/cli*.js"]);
 
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
+        //     assert.deepStrictEqual(
+        //         report.usedDeprecatedRules,
+        //         [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
+        //     );
+        //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+        // });
 
         describe("Fix Mode", () => {
 
@@ -1220,11 +1220,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     fix: true,
                     rules: {
-                        semi: 2,
-                        quotes: [2, "double"],
-                        eqeqeq: 2,
-                        "no-undef": 2,
-                        "space-infix-ops": 2
+                        "lighter-http": 2
                     }
                 });
 
@@ -1311,11 +1307,7 @@ describe("CLIEngine", () => {
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     rules: {
-                        semi: 2,
-                        quotes: [2, "double"],
-                        eqeqeq: 2,
-                        "no-undef": 2,
-                        "space-infix-ops": 2
+                        "lighter-http": 2
                     }
                 };
 
@@ -3224,21 +3216,21 @@ describe("CLIEngine", () => {
 
     describe("getConfigForFile", () => {
 
-        it("should return the info from Config#getConfig when called", () => {
-            const options = {
-                configFile: getFixturePath("configurations", "quotes-error.json")
-            };
-            const engine = new CLIEngine(options);
-            const filePath = getFixturePath("single-quoted.js");
+        // it("should return the info from Config#getConfig when called", () => {
+        //     const options = {
+        //         configFile: getFixturePath("configurations", "quotes-error.json")
+        //     };
+        //     const engine = new CLIEngine(options);
+        //     const filePath = getFixturePath("single-quoted.js");
 
-            const actualConfig = engine.getConfigForFile(filePath);
-            const expectedConfig = new CascadingConfigArrayFactory({ specificConfigPath: options.configFile })
-                .getConfigArrayForFile(filePath)
-                .extractConfig(filePath)
-                .toCompatibleObjectAsConfigFileContent();
+        //     const actualConfig = engine.getConfigForFile(filePath);
+        //     const expectedConfig = new CascadingConfigArrayFactory({ specificConfigPath: options.configFile })
+        //         .getConfigArrayForFile(filePath)
+        //         .extractConfig(filePath)
+        //         .toCompatibleObjectAsConfigFileContent();
 
-            assert.deepStrictEqual(actualConfig, expectedConfig);
-        });
+        //     assert.deepStrictEqual(actualConfig, expectedConfig);
+        // });
 
 
         it("should return the config when run from within a subdir", () => {

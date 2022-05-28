@@ -106,12 +106,12 @@ describe("cli", () => {
     });
 
     describe("execute()", () => {
-        it("should return error when text with incorrect quotes is passed as argument", async () => {
-            const configFile = getFixturePath("configurations", "quotes-error.json");
-            const result = await cli.execute(`-c ${configFile}`, "var foo = 'bar';");
+        // it("should return error when text with incorrect quotes is passed as argument", async () => {
+        //     const configFile = getFixturePath("configurations", "quotes-error.json");
+        //     const result = await cli.execute(`-c ${configFile}`, "var foo = 'bar';");
 
-            assert.strictEqual(result, 1);
-        });
+        //     assert.strictEqual(result, 1);
+        // });
 
         it("should not print debug info when passed the empty string as text", async () => {
             const result = await cli.execute(["--stdin", "--no-ec0lintrc"], "");
@@ -159,17 +159,17 @@ describe("cli", () => {
         });
     });
 
-    describe("when given a config with rules with options and severity level set to error", () => {
-        it("should exit with an error status (1)", async () => {
-            const configPath = getFixturePath("configurations", "quotes-error.json");
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --config ${configPath} ${filePath}`;
+    // describe("when given a config with rules with options and severity level set to error", () => {
+    //     it("should exit with an error status (1)", async () => {
+    //         const configPath = getFixturePath("configurations", "quotes-error.json");
+    //         const filePath = getFixturePath("single-quoted.js");
+    //         const code = `--no-ignore --config ${configPath} ${filePath}`;
 
-            const exitStatus = await cli.execute(code);
+    //         const exitStatus = await cli.execute(code);
 
-            assert.strictEqual(exitStatus, 1);
-        });
-    });
+    //         assert.strictEqual(exitStatus, 1);
+    //     });
+    // });
 
     describe("when given a config file and a directory of files", () => {
         it("should load and execute without error", async () => {
@@ -611,7 +611,7 @@ describe("cli", () => {
     describe("when supplied with rule flag and severity level set to error", () => {
         it("should exit with an error status (2)", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [2, double]' ${filePath}`;
+            const code = `--no-ignore --rule 'lighter-http: 2' ${filePath}`;
             const exitStatus = await cli.execute(code);
 
             assert.strictEqual(exitStatus, 1);
@@ -622,7 +622,7 @@ describe("cli", () => {
 
         it("should only print error", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--no-ignore --quiet  -f compact --rule 'quotes: [2, double]' --rule 'no-unused-vars: 1' ${filePath}`;
+            const cliArgs = `--no-ignore --quiet  -f compact --rule 'lighter-http: 1' ${filePath}`;
 
             await cli.execute(cliArgs);
 
@@ -636,7 +636,7 @@ describe("cli", () => {
 
         it("should print nothing if there are no errors", async () => {
             const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--quiet  -f compact --rule 'quotes: [1, double]' --rule 'no-unused-vars: 1' ${filePath}`;
+            const cliArgs = `--quiet  -f compact --rule 'quotes: [1, double]' --rule 'lighter-http: 1' ${filePath}`;
 
             await cli.execute(cliArgs);
 

@@ -1,6 +1,6 @@
 {
     "broken": {
-        ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    quotes: [2, \"double\"]\r\n",
+        ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    lighter-http: 2\r\n",
         "add-conf.yaml": "rules:\r\n    semi: [1, \"never\"]\r\n",
         "console-wrong-quotes-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
         "console-wrong-quotes.js": "console.log('bar');\r\n",
@@ -17,7 +17,7 @@
         },
         "process-exit.js": "process.exit(0);\r\n",
         "subbroken": {
-            ".ec0lintrc": "rules:\r\n    no-console: 1\r\n    quotes: [2, \"single\"]\r\n",
+            ".ec0lintrc": "rules:\r\n    no-console: 1\r\n    lighter-http: 2\r\n",
             "console-wrong-quotes.js": "console.log('bar');\r\n",
             "subsubbroken": {
                 ".ec0lintrc": "rules:\r\n    no-console: 0\r\n    quotes: [1, \"double\"]\r\n",
@@ -55,7 +55,7 @@
         }
     },
     "packagejson": {
-        ".ec0lintrc": "rules:\r\n    quotes: [2, \"double\"]\r\n",
+        ".ec0lintrc": "rules:\r\n    lighter-http: 2\r\n",
         "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
         "subdir": {
             "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"double\"]\r\n    }\r\n  }\r\n}\r\n",

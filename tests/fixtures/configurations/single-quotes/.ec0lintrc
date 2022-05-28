@@ -4,7 +4,6 @@
     },
 
     "rules": {
-        "quotes": [1, "single"],
-        "no-new": 1
+        "lighter-http": 1
     }
 }

@@ -3,7 +3,7 @@
   "version": "",
   "ec0lintConfig": {
     "rules": {
-      "quotes": [2, "single"]
+      "lighter-http": 2
     }
   }
 }

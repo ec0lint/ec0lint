@@ -1,5 +1,5 @@
 {
     "rules": {
-        "quotes": [2, "single"]
+        "lighter-http": 2
     }
 }

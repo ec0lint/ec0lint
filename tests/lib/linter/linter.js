@@ -1795,7 +1795,7 @@ describe("Linter", () => {
         });
 
         it("rules should not change initial config", () => {
-            const config = { rules: { quotes: [2, "double"] } };
+            const config = { rules: { "lighter-http": 2 } };
             const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
             let messages = linter.verify(codeA, config, filename, false);
@@ -1812,7 +1812,7 @@ describe("Linter", () => {
         });
 
         it("rules should not change initial config", () => {
-            const config = { rules: { quotes: [2, "double"] } };
+            const config = { rules: { "lighter-http": 2 } };
             const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
             const codeB = "function foo() { return '1'; }";
 
@@ -3017,7 +3017,7 @@ describe("Linter", () => {
         const code = "/*ec0lint quotes:[2, \"double\"]*/ import * from 'axios';";
 
         it("should report a violation", () => {
-            const config = { rules: { quotes: [2, "single"] } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3035,7 +3035,7 @@ describe("Linter", () => {
         const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ import * from 'axios';";
 
         it("should report a violation", () => {
-            const config = { rules: { quotes: [2, "single"] } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -11222,7 +11222,7 @@ describe("Linter with FlatConfigArray", () => {
                             languageOptions: {
                                 sourceType: "script"
                             },
-                            rules: { quotes: [2, "double"] }
+                            rules: { "lighter-http": 2 }
                         };
                         const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
@@ -11240,7 +11240,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("rules should not change initial config", () => {
-                        const config = { rules: { quotes: [2, "double"] } };
+                        const config = { rules: { "lighter-http": 2 } };
                         const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
                         let messages = linter.verify(codeA, config, filename, false);
@@ -11687,7 +11687,7 @@ describe("Linter with FlatConfigArray", () => {
                     const code = "/*ec0lint quotes:[2, \"double\"]*/ import * from 'axios';";
 
                     it("should report a violation", () => {
-                        const config = { rules: { quotes: [2, "single"] } };
+                        const config = { rules: { "lighter-http": 2 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11705,7 +11705,7 @@ describe("Linter with FlatConfigArray", () => {
                     const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ import * from 'axios';";
 
                     it("should report a violation", () => {
-                        const config = { rules: { quotes: [2, "single"] } };
+                        const config = { rules: { "lighter-http": 2 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
