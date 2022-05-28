@@ -167,7 +167,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.errorCount, 1);
             assert.strictEqual(report.warningCount, 0);
             assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages, {});
+            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.isUndefined(report.results[0].messages[0].output);
             assert.strictEqual(report.results[0].errorCount, 1);
@@ -565,6 +565,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
+            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-https");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -586,6 +587,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
+            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -790,7 +792,7 @@ describe("CLIEngine", () => {
                 cwd: path.join(fixtureDir, ".."),
                 ignore: false,
                 rules: {
-                    semi: 2
+                    "lighter-http": 2
                 }
             });
 
@@ -2540,7 +2542,7 @@ describe("CLIEngine", () => {
                         useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
-                            semi: 2
+                            "lighter-http": 2
                         },
                         extensions: ["js", "txt"],
                         ignore: false,
@@ -2566,7 +2568,7 @@ describe("CLIEngine", () => {
                         useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
-                            semi: 2
+                            "lighter-http": 2
                         },
                         extensions: ["js", "txt"],
                         ignore: false,
@@ -2592,7 +2594,7 @@ describe("CLIEngine", () => {
                         useEc0lintrc: false,
                         plugins: ["test-processor"],
                         rules: {
-                            semi: 2
+                            "lighter-http": 2
                         },
                         extensions: ["js", "txt"],
                         ignore: false
