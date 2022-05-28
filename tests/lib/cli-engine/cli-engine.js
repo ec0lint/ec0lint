@@ -161,7 +161,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("..")
             });
 
-            const report = engine.executeOnText("const axios = require('axios');");
+            const report = engine.executeOnText("/* ec0lint-env es6 */ const axios = require('axios');");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 1);
@@ -813,7 +813,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].filePath, passFilePath);
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-
         });
 
         it("should throw an error when given a directory with all ec0lint excluded files in the directory", () => {
@@ -1486,6 +1485,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
+                assert.strictEqual(report.results[0].messages[0], {});
                 assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
