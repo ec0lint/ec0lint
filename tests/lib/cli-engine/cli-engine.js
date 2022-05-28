@@ -5360,7 +5360,7 @@ describe("CLIEngine", () => {
                                 files: "*",
                                 excludedFiles: "foo/*.js",
                                 rules: {
-                                    lighter-http: "error"
+                                    "lighter-http": "error"
                                 }
                             }
                         ]
@@ -5442,7 +5442,7 @@ describe("CLIEngine", () => {
                     "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
                         rules: {
-                            lighter-http: "error"
+                            "lighter-http": "error"
                         }
                     }),
                     "node_modules/myconf/foo/test.js": "a == b",
