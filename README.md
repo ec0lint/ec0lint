@@ -2,7 +2,7 @@
 
 # ec0lint
 
-[Website](TBD) |
+[Website] https://www.ec0lint.com/ |
 [Configuring](TBD) |
 [Rules](TBD)
 
@@ -18,6 +18,33 @@ The majority uses too heavy fonts, too large/unnecessary images or utilises redu
 ec0lint is a tool for frontend developers that mitigates the carbon footprint of websites. It shows tips advising how to create a more climate-friendly code. Thanks to code optimization ec0lint can help in reducing CO2 emissions per one view from 4.6 g to ~0.2 g saving 529 kg CO2 (-96%!) annually. 
 
 The tool is customized and each rule applied during the analysis can be adjusted, or treated as hints rather than errors. This flexibility allows the developers to reach their goals without interruptions from ec0lint, at the same time drawing attention to possible improvements.
+
+## Features
+
+Current features:
+1) Font format validation
+If a font format isn't WOFF, up to 75% more space will be taken. Let's change them all to WOFF!
+2) Replacement of heavy libraries functions
+Heavy library calls can be replaced by plain JS code. In the case of axios - when all axios functions will be removed from the code, the axios module can be deleted, saving 400 kB of space. The rule works on axios, got, request, make-fetch-happen, superagent, needle, simple-get, lodash, moment js, and date fns.
+3) Font display
+This function checks if all texts have the 'font-display' property set to 'block' or 'swap'. Texts with fonts downloaded on the fly won't be shown until a user will be able to see them.
+
+Features under development:
+1) Lazy-loading
+2) Video form format control 
+3) Image size verification
+4) Image number verification
+5) Icon recommendation
+6) Autoplay control
+7) Automatic downloading control 
+8) Color choice
+9) Budgeting 
+10) Open-source libraries usage validation 
+11) Personalized CI/CD raports
+12) Fix
+13) System fonts or hosted fonts feature
+14) React rules
+15) Typescript rules 
 
 ## How to start contributing
 
