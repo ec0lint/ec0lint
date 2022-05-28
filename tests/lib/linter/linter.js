@@ -317,8 +317,6 @@ describe("Linter", () => {
         it("should have a suppressed message with multiple suppressions", () => {
             const code = [
                 "/* ec0lint-disable lighter-http -- j1 */",
-                "/* ec0lint-disable no-console -- unused */",
-                "/* ec0lint-disable-next-line lighter-http -- j2 */",
                 "import * from 'axios'; // ec0lint-disable-line lighter-http -- j3"
             ].join("\n");
             const config = {
@@ -1832,8 +1830,8 @@ describe("Linter", () => {
         });
 
         it("rules should not change initial config", () => {
-            const config = { rules: { "no-unused-vars": [2, { vars: "all" }] } };
-            const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
+            const config = { rules: { "lighter-http": [2, { vars: "all" }] } };
+            const codeA = "/*ec0lint lighter-http: [0, {\"vars\": \"local\"}]*/ var a = 44;";
             const codeB = "var b = 55;";
 
             let messages = linter.verify(codeA, config, filename, false);
@@ -1971,7 +1969,7 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to enable multiple rules", () => {
-        const code = "/*ec0lint lighter-http:1 no-console:1*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1*/ import * from 'axios'; console.log('test');";
 
         it("should report a violation", () => {
             const config = { rules: {} };
@@ -1979,20 +1977,19 @@ describe("Linter", () => {
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(messages.length, 2);
+            assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.include(messages[0].nodeType, "CallExpression");
-            assert.strictEqual(messages[1].ruleId, "no-console");
 
             assert.strictEqual(suppressedMessages.length, 0);
         });
     });
 
     describe("when evaluating code with comments to enable and disable multiple rules", () => {
-        const code = "/*ec0lint lighter-http:1 no-console:0*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1 lighter-http:0*/ import * from 'axios'; console.log('test');";
 
         it("should report a violation", () => {
-            const config = { rules: { "no-console": 1, "lighter-http": 0 } };
+            const config = { rules: { "lighter-http": 0 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2189,7 +2186,7 @@ describe("Linter", () => {
                 "/*ec0lint-enable */;any();"
             ].join("\n");
 
-            const config = { rules: { "no-unused-vars": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2204,7 +2201,7 @@ describe("Linter", () => {
                 "/*ec0lint-enable */;any();"
             ].join("\n");
 
-            const config = { rules: { "no-unused-vars": 1 } };
+            const config = { rules: { "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2224,31 +2221,7 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-http": 1,
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-            });
-
-            it("should report a violation", () => {
-                const code = [
-                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                    "console.log('test'); // ec0lint-disable-line no-console",
-                    "import * from 'axios';" // here
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
 
@@ -2258,9 +2231,30 @@ describe("Linter", () => {
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
 
-                assert.strictEqual(suppressedMessages.length, 2);
+                assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            });
+
+            it("should report a violation", () => {
+                const code = [
+                    "import * from 'axios'; // ec0lint-disable-line lighter-http",
+                    "console.log('test'); // ec0lint-disable-line lighter-http",
+                    "import * from 'axios';" // here
+                ].join("\n");
+                const config = {
+                    rules: {
+                        "lighter-http": 1
+                    }
+                };
+
+                const messages = linter.verify(code, config, filename);
+                const suppressedMessages = linter.getSuppressedMessages();
+
+                assert.strictEqual(messages.length, 1);
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
+
+                assert.strictEqual(suppressedMessages.length, 1);
+                assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             });
 
             it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
@@ -2271,7 +2265,7 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
 
@@ -2279,7 +2273,7 @@ describe("Linter", () => {
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages[1].ruleId, "lighter-http");
                 assert.strictEqual(suppressedMessages.length, 0);
             });
 
@@ -2347,12 +2341,12 @@ describe("Linter", () => {
             it("should not report a violation", () => {
                 const code = [
                     "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                    "console.log('test'); // ec0lint-disable-line no-console"
+                    "console.log('test'); // ec0lint-disable-line lighter-http"
                 ].join("\n");
                 const config = {
                     rules: {
                         "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
 
@@ -2363,7 +2357,7 @@ describe("Linter", () => {
 
                 assert.strictEqual(suppressedMessages.length, 2);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             });
 
             it("should not report a violation", () => {
@@ -2395,14 +2389,14 @@ describe("Linter", () => {
                 const config = {
                     rules: {
                         "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2417,14 +2411,14 @@ describe("Linter", () => {
                 const config = {
                     rules: {
                         "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2489,14 +2483,14 @@ describe("Linter", () => {
 
             it("should ignore violations only of specified rule", () => {
                 const code = [
-                    "// ec0lint-disable-next-line no-console",
+                    "// ec0lint-disable-next-line lighter-http",
                     "import * from 'axios';",
                     "console.log('test');"
                 ].join("\n");
                 const config = {
                     rules: {
                         "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2504,7 +2498,7 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 2);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 0);
             });
@@ -2519,14 +2513,14 @@ describe("Linter", () => {
                     rules: {
                         "lighter-http": 1,
                         quotes: [1, "single"],
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 2);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2546,13 +2540,13 @@ describe("Linter", () => {
                     rules: {
                         "lighter-http": 1,
                         quotes: [1, "single"],
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
             });
 
             it("should ignore violations of multiple rules when specified in mixed comments", () => {
@@ -2604,7 +2598,7 @@ describe("Linter", () => {
                     rules: {
                         "lighter-http": 1,
                         quotes: [1, "single"],
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2612,7 +2606,7 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 2);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
@@ -2628,7 +2622,7 @@ describe("Linter", () => {
                 const config = {
                     rules: {
                         "lighter-http": 1,
-                        "no-console": 1
+                        "lighter-http": 1
                     }
                 };
                 const messages = linter.verify(code, config, filename);
@@ -2636,7 +2630,7 @@ describe("Linter", () => {
 
                 assert.strictEqual(messages.length, 2);
                 assert.strictEqual(messages[0].ruleId, "lighter-http");
-                assert.strictEqual(messages[1].ruleId, "no-console");
+                assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2656,7 +2650,7 @@ describe("Linter", () => {
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                 assert.strictEqual(suppressedMessages.length, 1);
                 assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2735,13 +2729,13 @@ describe("Linter", () => {
                 "import * from 'axios';",
                 "console.log('test');" // here
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-console");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
 
             assert.strictEqual(suppressedMessages.length, 1);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2749,12 +2743,12 @@ describe("Linter", () => {
 
         it("should report no violation", () => {
             const code = [
-                "/*ec0lint-disable no-unused-vars */",
-                "var foo; // ec0lint-disable-line no-unused-vars",
+                "/*ec0lint-disable lighter-http */",
+                "var foo; // ec0lint-disable-line lighter-http",
                 "var bar;",
-                "/* ec0lint-enable no-unused-vars */" // here
+                "/* ec0lint-enable lighter-http */" // here
             ].join("\n");
-            const config = { rules: { "no-unused-vars": 2 } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2762,21 +2756,21 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 0);
 
             assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
+            assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-unused-vars");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 3);
         });
 
         it("should report no violation", () => {
             const code = [
-                "var foo1; // ec0lint-disable-line no-unused-vars",
-                "var foo2; // ec0lint-disable-line no-unused-vars",
-                "var foo3; // ec0lint-disable-line no-unused-vars",
-                "var foo4; // ec0lint-disable-line no-unused-vars",
-                "var foo5; // ec0lint-disable-line no-unused-vars"
+                "var foo1; // ec0lint-disable-line lighter-http",
+                "var foo2; // ec0lint-disable-line lighter-http",
+                "var foo3; // ec0lint-disable-line lighter-http",
+                "var foo4; // ec0lint-disable-line lighter-http",
+                "var foo5; // ec0lint-disable-line lighter-http"
             ].join("\n");
-            const config = { rules: { "no-unused-vars": 2 } };
+            const config = { rules: { "lighter-http": 2 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2802,7 +2796,7 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*ec0lint-disable lighter-http, no-console */",
+                "/*ec0lint-disable lighter-http, lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
                 "/*ec0lint-enable*/",
@@ -2810,7 +2804,7 @@ describe("Linter", () => {
                 "import * from 'axios';", // here
                 "console.log('test');" // here
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2818,13 +2812,13 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 2);
             assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(messages[0].line, 5);
-            assert.strictEqual(messages[1].ruleId, "no-console");
+            assert.strictEqual(messages[1].ruleId, "lighter-http");
             assert.strictEqual(messages[1].line, 6);
 
             assert.strictEqual(suppressedMessages.length, 2);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 3);
         });
 
@@ -2833,17 +2827,17 @@ describe("Linter", () => {
                 "/*ec0lint-disable lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
-                "/*ec0lint-enable no-console */",
+                "/*ec0lint-enable lighter-http */",
 
                 "import * from 'axios';" // here
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-console");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
 
             assert.strictEqual(suppressedMessages.length, 2);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -2855,7 +2849,7 @@ describe("Linter", () => {
 
         it("should report a violation", () => {
             const code = [
-                "/*ec0lint-disable lighter-http, no-console */",
+                "/*ec0lint-disable lighter-http, lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
                 "/*ec0lint-enable lighter-http*/",
@@ -2863,7 +2857,7 @@ describe("Linter", () => {
                 "import * from 'axios';", // here
                 "console.log('test');"
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2875,9 +2869,9 @@ describe("Linter", () => {
             assert.strictEqual(suppressedMessages.length, 3);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[2].line, 6);
         });
 
@@ -2886,7 +2880,7 @@ describe("Linter", () => {
             const code = [
                 "/*ec0lint-disable lighter-http */",
 
-                "/*ec0lint-disable no-console */",
+                "/*ec0lint-disable lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
                 "/*ec0lint-enable */",
@@ -2901,7 +2895,7 @@ describe("Linter", () => {
 
                 "/*ec0lint-enable*/"
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2909,23 +2903,23 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 4);
             assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(messages[0].line, 6);
-            assert.strictEqual(messages[1].ruleId, "no-console");
+            assert.strictEqual(messages[1].ruleId, "lighter-http");
             assert.strictEqual(messages[1].line, 7);
             assert.strictEqual(messages[2].ruleId, "lighter-http");
             assert.strictEqual(messages[2].line, 9);
-            assert.strictEqual(messages[3].ruleId, "no-console");
+            assert.strictEqual(messages[3].ruleId, "lighter-http");
             assert.strictEqual(messages[3].line, 10);
 
             assert.strictEqual(suppressedMessages.length, 2);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 3);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 4);
         });
 
         it("should report a violation", () => {
             const code = [
-                "/*ec0lint-disable lighter-http, no-console */",
+                "/*ec0lint-disable lighter-http, lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
 
@@ -2934,13 +2928,13 @@ describe("Linter", () => {
                 "import * from 'axios';", // here
                 "console.log('test');",
 
-                "/*ec0lint-enable no-console */",
+                "/*ec0lint-enable lighter-http */",
 
                 "import * from 'axios';", // here
                 "console.log('test');", // here
-                "/*ec0lint-enable no-console */"
+                "/*ec0lint-enable lighter-http */"
             ].join("\n");
-            const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2950,21 +2944,21 @@ describe("Linter", () => {
             assert.strictEqual(messages[0].line, 5);
             assert.strictEqual(messages[1].ruleId, "lighter-http");
             assert.strictEqual(messages[1].line, 8);
-            assert.strictEqual(messages[2].ruleId, "no-console");
+            assert.strictEqual(messages[2].ruleId, "lighter-http");
             assert.strictEqual(messages[2].line, 9);
 
             assert.strictEqual(suppressedMessages.length, 3);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[2].line, 6);
         });
 
         it("should report a violation when severity is warn", () => {
             const code = [
-                "/*ec0lint-disable lighter-http, no-console */",
+                "/*ec0lint-disable lighter-http, lighter-http */",
                 "import * from 'axios';",
                 "console.log('test');",
 
@@ -2973,13 +2967,13 @@ describe("Linter", () => {
                 "import * from 'axios';", // here
                 "console.log('test');",
 
-                "/*ec0lint-enable no-console */",
+                "/*ec0lint-enable lighter-http */",
 
                 "import * from 'axios';", // here
                 "console.log('test');", // here
-                "/*ec0lint-enable no-console */"
+                "/*ec0lint-enable lighter-http */"
             ].join("\n");
-            const config = { rules: { "lighter-http": "warn", "no-console": "warn" } };
+            const config = { rules: { "lighter-http": "warn", "lighter-http": "warn" } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -2989,24 +2983,24 @@ describe("Linter", () => {
             assert.strictEqual(messages[0].line, 5);
             assert.strictEqual(messages[1].ruleId, "lighter-http");
             assert.strictEqual(messages[1].line, 8);
-            assert.strictEqual(messages[2].ruleId, "no-console");
+            assert.strictEqual(messages[2].ruleId, "lighter-http");
             assert.strictEqual(messages[2].line, 9);
 
             assert.strictEqual(suppressedMessages.length, 3);
             assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+            assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages[2].line, 6);
         });
     });
 
     describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-        const code = "/*ec0lint lighter-http:1, no-console:0*/ import * from 'axios'; console.log('test');";
+        const code = "/*ec0lint lighter-http:1, lighter-http:0*/ import * from 'axios'; console.log('test');";
 
         it("should report a violation", () => {
-            const config = { rules: { "no-console": 1, "lighter-http": 0 } };
+            const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -3947,12 +3941,12 @@ var a = "test2";
         });
 
         it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-            const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, no-redeclare";
+            const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, lighter-http";
             const config = {
                 reportUnusedDisableDirectives: true,
                 rules: {
                     "lighter-http": 1,
-                    "no-redeclare": 1
+                    "lighter-http": 1
                 }
             };
 
@@ -3967,7 +3961,7 @@ var a = "test2";
                 [
                     {
                         ruleId: null,
-                        message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
+                        message: "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').",
                         line: 1,
                         column: 16,
                         fix: {
@@ -5330,7 +5324,7 @@ var a = "test2";
                     /*ec0lint-env es2015 -- es2017 */
                     var Promise = {}
                     var Atomics = {}
-                `, { rules: { "no-redeclare": "error" } });
+                `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 // Don't include `Atomics`
@@ -5344,7 +5338,7 @@ var a = "test2";
                         message: "'Promise' is already defined as a built-in global variable.",
                         messageId: "redeclaredAsBuiltin",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5355,9 +5349,9 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*global*/'.", () => {
                 const messages = linter.verify(`
                     /*global aaa -- bbb */
-                    var aaa = {}
+                    import * from 'axios'
                     var bbb = {}
-                `, { rules: { "no-redeclare": "error" } });
+                `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 // Don't include `bbb`
@@ -5368,10 +5362,9 @@ var a = "test2";
                         endColumn: 33,
                         line: 2,
                         endLine: 2,
-                        message: "'aaa' is already defined by a variable declaration.",
                         messageId: "redeclaredBySyntax",
                         nodeType: "Block",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5382,9 +5375,9 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*globals*/'.", () => {
                 const messages = linter.verify(`
                     /*globals aaa -- bbb */
-                    var aaa = {}
+                    import * from 'axios'
                     var bbb = {}
-                `, { rules: { "no-redeclare": "error" } });
+                `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 // Don't include `bbb`
@@ -5395,10 +5388,9 @@ var a = "test2";
                         endColumn: 34,
                         line: 2,
                         endLine: 2,
-                        message: "'aaa' is already defined by a variable declaration.",
                         messageId: "redeclaredBySyntax",
                         nodeType: "Block",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5409,9 +5401,9 @@ var a = "test2";
             it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
                 const messages = linter.verify(`
                     /*exported aaa -- bbb */
-                    var aaa = {}
+                    import * from 'axios'
                     var bbb = {}
-                `, { rules: { "no-unused-vars": "error" } });
+                `, { rules: { "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
                 // Don't include `aaa`
@@ -5425,7 +5417,7 @@ var a = "test2";
                         message: "'bbb' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5435,13 +5427,13 @@ var a = "test2";
 
             it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                 const messages = linter.verify(`
-                    /*ec0lint-disable no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable lighter-http -- lighter-http */
+                    import * from 'axios'
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-unused-vars` but not `no-redeclare`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5449,10 +5441,9 @@ var a = "test2";
                         endLine: 4,
                         endColumn: 28,
                         line: 4,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5464,26 +5455,25 @@ var a = "test2";
                         endLine: 4,
                         endColumn: 28,
                         line: 4,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2,
-                        suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
                     }]
                 );
             });
 
             it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
                 const messages = linter.verify(`
-                    /*ec0lint-disable no-redeclare, no-unused-vars */
-                    /*ec0lint-enable no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable lighter-http, lighter-http */
+                    /*ec0lint-enable lighter-http -- lighter-http */
+                    import * from 'axios'
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-redeclare` but not `no-unused-vars`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5491,10 +5481,9 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5506,10 +5495,9 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2,
                         suppressions: [{ kind: "directive", justification: "" }]
                     }]
@@ -5518,12 +5506,12 @@ var a = "test2";
 
             it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                 const messages = linter.verify(`
-                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
-                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-unused-vars` but not `no-redeclare`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5531,10 +5519,9 @@ var a = "test2";
                         endLine: 3,
                         endColumn: 28,
                         line: 3,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5546,24 +5533,23 @@ var a = "test2";
                         endLine: 3,
                         endColumn: 28,
                         line: 3,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2,
-                        suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
                     }]
                 );
             });
 
             it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                 const messages = linter.verify(`
-                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
-                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-unused-vars` but not `no-redeclare`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5571,10 +5557,9 @@ var a = "test2";
                         endLine: 3,
                         endColumn: 28,
                         line: 3,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5586,26 +5571,25 @@ var a = "test2";
                         endLine: 3,
                         endColumn: 28,
                         line: 3,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2,
-                        suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
                     }]
                 );
             });
 
             it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                 const messages = linter.verify(`
-                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
-                    var aaa = {}
-                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    //ec0lint-disable-next-line lighter-http -- lighter-http
+                    import * from 'axios'
+                    //ec0lint-disable-next-line lighter-http -- lighter-http
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-unused-vars` but not `no-redeclare`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5613,10 +5597,9 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5628,26 +5611,25 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2,
-                        suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
                     }]
                 );
             });
 
             it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                 const messages = linter.verify(`
-                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable-next-line lighter-http -- lighter-http */
+                    import * from 'axios'
+                    /*ec0lint-disable-next-line lighter-http -- lighter-http */
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                 const suppressedMessages = linter.getSuppressedMessages();
 
-                // Do include `no-unused-vars` but not `no-redeclare`
+                // Do include `lighter-http` but not `lighter-http`
                 assert.deepStrictEqual(
                     messages,
                     [{
@@ -5655,10 +5637,9 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is assigned a value but never used.",
                         messageId: "unusedVar",
                         nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
+                        ruleId: "lighter-http",
                         severity: 2
                     }]
                 );
@@ -5670,12 +5651,11 @@ var a = "test2";
                         endLine: 5,
                         endColumn: 28,
                         line: 5,
-                        message: "'aaa' is already defined.",
                         messageId: "redeclared",
                         nodeType: "Identifier",
-                        ruleId: "no-redeclare",
+                        ruleId: "lighter-http",
                         severity: 2,
-                        suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                        suppressions: [{ kind: "directive", justification: "lighter-http" }]
                     }]
                 );
             });
@@ -11281,9 +11261,9 @@ describe("Linter with FlatConfigArray", () => {
                             languageOptions: {
                                 sourceType: "script"
                             },
-                            rules: { "no-unused-vars": [2, { vars: "all" }] }
+                            rules: { "lighter-http": [2, { vars: "all" }] }
                         };
-                        const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
+                        const codeA = "/*ec0lint lighter-http: [0, {\"vars\": \"local\"}]*/ var a = 44;";
                         const codeB = "var b = 55;";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
@@ -11410,7 +11390,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 no-console:1*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 lighter-http:1*/ import * from 'axios'; console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: {} };
@@ -11421,17 +11401,17 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages.length, 2);
                         assert.strictEqual(messages[0].ruleId, "lighter-http");
                         assert.include(messages[0].nodeType, "CallExpression");
-                        assert.strictEqual(messages[1].ruleId, "no-console");
+                        assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 no-console:0*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 lighter-http:0*/ import * from 'axios'; console.log('test');";
 
                     it("should report a violation", () => {
-                        const config = { rules: { "no-console": 1, "lighter-http": 0 } };
+                        const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11657,7 +11637,7 @@ describe("Linter with FlatConfigArray", () => {
                             "/*ec0lint-enable */;any();"
                         ].join("\n");
 
-                        const config = { rules: { "no-unused-vars": 1 } };
+                        const config = { rules: { "lighter-http": 1 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11665,7 +11645,7 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages.length, 0);
 
                         assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
+                        assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     });
 
                     it("should not report a violation", () => {
@@ -11674,7 +11654,7 @@ describe("Linter with FlatConfigArray", () => {
                             "/*ec0lint-enable */;any();"
                         ].join("\n");
 
-                        const config = { rules: { "no-unused-vars": 1 } };
+                        const config = { rules: { "lighter-http": 1 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11682,15 +11662,15 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages.length, 0);
 
                         assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
+                        assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     });
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-                    const code = "/*ec0lint lighter-http:1, no-console:0*/ import * from 'axios'; console.log('test');";
+                    const code = "/*ec0lint lighter-http:1, lighter-http:0*/ import * from 'axios'; console.log('test');";
 
                     it("should report a violation", () => {
-                        const config = { rules: { "no-console": 1, "lighter-http": 0 } };
+                        const config = { rules: { "lighter-http": 1, "lighter-http": 0 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11880,13 +11860,13 @@ var a = "test2";
                         "import * from 'axios';",
                         "console.log('test');" // here
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -11909,7 +11889,7 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*ec0lint-disable lighter-http, no-console */",
+                        "/*ec0lint-disable lighter-http, lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');",
                         "/*ec0lint-enable*/",
@@ -11917,7 +11897,7 @@ var a = "test2";
                         "import * from 'axios';", // here
                         "console.log('test');" // here
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -11925,13 +11905,13 @@ var a = "test2";
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[0].line, 5);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].line, 6);
 
                     assert.strictEqual(suppressedMessages.length, 2);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 3);
                 });
 
@@ -11940,16 +11920,16 @@ var a = "test2";
                         "/*ec0lint-disable lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');", // here
-                        "/*ec0lint-enable no-console */",
+                        "/*ec0lint-enable lighter-http */",
                         "import * from 'axios';"
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 2);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -11961,7 +11941,7 @@ var a = "test2";
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*ec0lint-disable lighter-http, no-console */",
+                        "/*ec0lint-disable lighter-http, lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');",
                         "/*ec0lint-enable lighter-http*/",
@@ -11969,7 +11949,7 @@ var a = "test2";
                         "import * from 'axios';", // here
                         "console.log('test');"
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -11981,9 +11961,9 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 3);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[2].line, 6);
                 });
 
@@ -11992,7 +11972,7 @@ var a = "test2";
                     const code = [
                         "/*ec0lint-disable lighter-http */",
 
-                        "/*ec0lint-disable no-console */",
+                        "/*ec0lint-disable lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');",
                         "/*ec0lint-enable */",
@@ -12007,7 +11987,7 @@ var a = "test2";
 
                         "/*ec0lint-enable*/"
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12015,23 +11995,23 @@ var a = "test2";
                     assert.strictEqual(messages.length, 4);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[0].line, 6);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].line, 7);
                     assert.strictEqual(messages[2].ruleId, "lighter-http");
                     assert.strictEqual(messages[2].line, 9);
-                    assert.strictEqual(messages[3].ruleId, "no-console");
+                    assert.strictEqual(messages[3].ruleId, "lighter-http");
                     assert.strictEqual(messages[3].line, 10);
 
                     assert.strictEqual(suppressedMessages.length, 2);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 3);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 4);
                 });
 
                 it("should report a violation", () => {
                     const code = [
-                        "/*ec0lint-disable lighter-http, no-console */",
+                        "/*ec0lint-disable lighter-http, lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');",
 
@@ -12040,13 +12020,13 @@ var a = "test2";
                         "import * from 'axios';", // here
                         "console.log('test');",
 
-                        "/*ec0lint-enable no-console */",
+                        "/*ec0lint-enable lighter-http */",
 
                         "import * from 'axios';", // here
                         "console.log('test');", // here
-                        "/*ec0lint-enable no-console */"
+                        "/*ec0lint-enable lighter-http */"
                     ].join("\n");
-                    const config = { rules: { "lighter-http": 1, "no-console": 1 } };
+                    const config = { rules: { "lighter-http": 1, "lighter-http": 1 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12056,21 +12036,21 @@ var a = "test2";
                     assert.strictEqual(messages[0].line, 5);
                     assert.strictEqual(messages[1].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].line, 8);
-                    assert.strictEqual(messages[2].ruleId, "no-console");
+                    assert.strictEqual(messages[2].ruleId, "lighter-http");
                     assert.strictEqual(messages[2].line, 9);
 
                     assert.strictEqual(suppressedMessages.length, 3);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[2].line, 6);
                 });
 
                 it("should report a violation when severity is warn", () => {
                     const code = [
-                        "/*ec0lint-disable lighter-http, no-console */",
+                        "/*ec0lint-disable lighter-http, lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');",
 
@@ -12079,13 +12059,13 @@ var a = "test2";
                         "import * from 'axios';", // here
                         "console.log('test');",
 
-                        "/*ec0lint-enable no-console */",
+                        "/*ec0lint-enable lighter-http */",
 
                         "import * from 'axios';", // here
                         "console.log('test');", // here
-                        "/*ec0lint-enable no-console */"
+                        "/*ec0lint-enable lighter-http */"
                     ].join("\n");
-                    const config = { rules: { "lighter-http": "warn", "no-console": "warn" } };
+                    const config = { rules: { "lighter-http": "warn", "lighter-http": "warn" } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12095,26 +12075,26 @@ var a = "test2";
                     assert.strictEqual(messages[0].line, 5);
                     assert.strictEqual(messages[1].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].line, 8);
-                    assert.strictEqual(messages[2].ruleId, "no-console");
+                    assert.strictEqual(messages[2].ruleId, "lighter-http");
                     assert.strictEqual(messages[2].line, 9);
 
                     assert.strictEqual(suppressedMessages.length, 3);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[2].line, 6);
                 });
 
                 it("should report no violation", () => {
                     const code = [
-                        "/*ec0lint-disable no-unused-vars */",
-                        "var foo; // ec0lint-disable-line no-unused-vars",
+                        "/*ec0lint-disable lighter-http */",
+                        "var foo; // ec0lint-disable-line lighter-http",
                         "var bar;",
-                        "/* ec0lint-enable no-unused-vars */" // here
+                        "/* ec0lint-enable lighter-http */" // here
                     ].join("\n");
-                    const config = { rules: { "no-unused-vars": 2 } };
+                    const config = { rules: { "lighter-http": 2 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12122,9 +12102,9 @@ var a = "test2";
                     assert.strictEqual(messages.length, 0);
 
                     assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-unused-vars");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 3);
                 });
 
@@ -12140,7 +12120,7 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12148,7 +12128,7 @@ var a = "test2";
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[0].line, 2);
 
                     assert.strictEqual(suppressedMessages.length, 1);
@@ -12159,13 +12139,13 @@ var a = "test2";
                 it("should report a violation", () => {
                     const code = [
                         "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                        "console.log('test'); // ec0lint-disable-line no-console",
+                        "console.log('test'); // ec0lint-disable-line lighter-http",
                         "import * from 'axios';" // here
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12179,7 +12159,7 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 2);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[0].line, 1);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
+                    assert.strictEqual(suppressedMessages[1].ruleId, "lighter-http");
                     assert.strictEqual(suppressedMessages[1].line, 2);
                 });
 
@@ -12191,7 +12171,7 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12199,7 +12179,7 @@ var a = "test2";
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -12265,12 +12245,12 @@ var a = "test2";
                 it("should not report a violation", () => {
                     const code = [
                         "import * from 'axios'; // ec0lint-disable-line lighter-http",
-                        "console.log('test'); // ec0lint-disable-line no-console"
+                        "console.log('test'); // ec0lint-disable-line lighter-http"
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12291,7 +12271,7 @@ var a = "test2";
                             "lighter-http": 1,
                             quotes: [1, "double"],
                             semi: [1, "always"],
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12312,7 +12292,7 @@ var a = "test2";
                             "lighter-http": 1,
                             quotes: [1, "double"],
                             semi: [1, "always"],
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12345,13 +12325,13 @@ var a = "test2";
 
                 it("should report no violation", () => {
                     const code = [
-                        "var foo1; // ec0lint-disable-line no-unused-vars",
-                        "var foo2; // ec0lint-disable-line no-unused-vars",
-                        "var foo3; // ec0lint-disable-line no-unused-vars",
-                        "var foo4; // ec0lint-disable-line no-unused-vars",
-                        "var foo5; // ec0lint-disable-line no-unused-vars"
+                        "var foo1; // ec0lint-disable-line lighter-http",
+                        "var foo2; // ec0lint-disable-line lighter-http",
+                        "var foo3; // ec0lint-disable-line lighter-http",
+                        "var foo4; // ec0lint-disable-line lighter-http",
+                        "var foo5; // ec0lint-disable-line lighter-http"
                     ].join("\n");
-                    const config = { rules: { "no-unused-vars": 2 } };
+                    const config = { rules: { "lighter-http": 2 } };
 
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
@@ -12372,14 +12352,14 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12394,14 +12374,14 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12489,14 +12469,14 @@ var a = "test2";
 
                 it("should ignore violations only of specified rule", () => {
                     const code = [
-                        "// ec0lint-disable-next-line no-console",
+                        "// ec0lint-disable-next-line lighter-http",
                         "import * from 'axios';",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12504,7 +12484,7 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -12512,21 +12492,21 @@ var a = "test2";
                 it("should ignore violations only of specified rule when block comment span multiple lines", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "no-console */",
+                        "lighter-http */",
                         "import * from 'axios';",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations of multiple rules when specified", () => {
@@ -12539,14 +12519,14 @@ var a = "test2";
                         rules: {
                             "lighter-http": 1,
                             quotes: [1, "single"],
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 2);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12566,13 +12546,13 @@ var a = "test2";
                         rules: {
                             "lighter-http": 1,
                             quotes: [1, "single"],
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
@@ -12624,7 +12604,7 @@ var a = "test2";
                         rules: {
                             "lighter-http": 1,
                             quotes: [1, "single"],
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12632,7 +12612,7 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
@@ -12648,7 +12628,7 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12656,7 +12636,7 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12673,14 +12653,14 @@ var a = "test2";
                             semi: [1, "never"],
                             quotes: [1, "single"],
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 3);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12698,7 +12678,7 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12706,7 +12686,7 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
@@ -12722,7 +12702,7 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12730,7 +12710,7 @@ var a = "test2";
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -12744,7 +12724,7 @@ var a = "test2";
                     const config = {
                         rules: {
                             "lighter-http": 1,
-                            "no-console": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12752,7 +12732,7 @@ var a = "test2";
 
                     assert.strictEqual(messages.length, 2);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
+                    assert.strictEqual(messages[1].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -12789,48 +12769,16 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("should ignore the part preceded by '--' in '/*globals*/'.", () => {
-                    const messages = linter.verify(`
-                    /*globals aaa -- bbb */
-                    var aaa = {}
-                    var bbb = {}
-                `, {
-                        languageOptions: {
-                            sourceType: "script"
-                        },
-                        rules: { "no-redeclare": "error" }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    // Don't include `bbb`
-                    assert.deepStrictEqual(
-                        messages,
-                        [{
-                            column: 31,
-                            endColumn: 34,
-                            line: 2,
-                            endLine: 2,
-                            message: "'aaa' is already defined by a variable declaration.",
-                            messageId: "redeclaredBySyntax",
-                            nodeType: "Block",
-                            ruleId: "no-redeclare",
-                            severity: 2
-                        }]
-                    );
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
                 it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
                     const messages = linter.verify(`
                     /*exported aaa -- bbb */
-                    var aaa = {}
+                    import * from 'axios'
                     var bbb = {}
                 `, {
                         languageOptions: {
                             sourceType: "script"
                         },
-                        rules: { "no-unused-vars": "error" }
+                        rules: { "lighter-http": "error" }
                     });
                     const suppressedMessages = linter.getSuppressedMessages();
 
@@ -12845,7 +12793,7 @@ var a = "test2";
                             message: "'bbb' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -12855,26 +12803,15 @@ var a = "test2";
 
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable*/'.", () => {
                     const messages = linter.verify(`
-                    /*ec0lint-disable no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable lighter-http */
+                    import * from 'axios';
+                `, { rules: { "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-unused-vars` but not `no-redeclare`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
-                        [{
-                            column: 25,
-                            endLine: 4,
-                            endColumn: 28,
-                            line: 4,
-                            message: "'aaa' is assigned a value but never used.",
-                            messageId: "unusedVar",
-                            nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
-                            severity: 2
-                        }]
+                        []
                     );
 
                     assert.deepStrictEqual(
@@ -12884,26 +12821,25 @@ var a = "test2";
                             endColumn: 28,
                             endLine: 4,
                             line: 4,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2,
-                            suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                            suppressions: [{ kind: "directive", justification: "lighter-http" }]
                         }]
                     );
                 });
 
                 it("should ignore the part preceded by '--' in '/*ec0lint-enable*/'.", () => {
                     const messages = linter.verify(`
-                    /*ec0lint-disable no-redeclare, no-unused-vars */
-                    /*ec0lint-enable no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable lighter-http, lighter-http */
+                    /*ec0lint-enable lighter-http -- lighter-http */
+                    import * from 'axios'
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-redeclare` but not `no-unused-vars`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
                         [{
@@ -12911,10 +12847,9 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -12926,10 +12861,9 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2,
                             suppressions: [{ kind: "directive", justification: "" }]
                         }]
@@ -12938,12 +12872,12 @@ var a = "test2";
 
                 it("should ignore the part preceded by '--' in '//ec0lint-disable-line'.", () => {
                     const messages = linter.verify(`
-                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
-                    var aaa = {} //ec0lint-disable-line no-redeclare -- no-unused-vars
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                    import * from 'axios' //ec0lint-disable-line lighter-http -- lighter-http
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-unused-vars` but not `no-redeclare`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
                         [{
@@ -12951,10 +12885,9 @@ var a = "test2";
                             endLine: 3,
                             endColumn: 28,
                             line: 3,
-                            message: "'aaa' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -12966,24 +12899,23 @@ var a = "test2";
                             endLine: 3,
                             endColumn: 28,
                             line: 3,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2,
-                            suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                            suppressions: [{ kind: "directive", justification: "lighter-http" }]
                         }]
                     );
                 });
 
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable-line*/'.", () => {
                     const messages = linter.verify(`
-                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
-                    var aaa = {} /*ec0lint-disable-line no-redeclare -- no-unused-vars */
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                    import * from 'axios' /*ec0lint-disable-line lighter-http -- lighter-http */
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-unused-vars` but not `no-redeclare`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
                         [{
@@ -12991,10 +12923,9 @@ var a = "test2";
                             endLine: 3,
                             endColumn: 28,
                             line: 3,
-                            message: "'aaa' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -13006,26 +12937,25 @@ var a = "test2";
                             endLine: 3,
                             endColumn: 28,
                             line: 3,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2,
-                            suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                            suppressions: [{ kind: "directive", justification: "lighter-http" }]
                         }]
                     );
                 });
 
                 it("should ignore the part preceded by '--' in '//ec0lint-disable-next-line'.", () => {
                     const messages = linter.verify(`
-                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
-                    var aaa = {}
-                    //ec0lint-disable-next-line no-redeclare -- no-unused-vars
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    //ec0lint-disable-next-line lighter-http -- lighter-http
+                    import * from 'axios'
+                    //ec0lint-disable-next-line lighter-http -- lighter-http
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-unused-vars` but not `no-redeclare`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
                         [{
@@ -13033,10 +12963,9 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -13048,26 +12977,25 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2,
-                            suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                            suppressions: [{ kind: "directive", justification: "lighter-http" }]
                         }]
                     );
                 });
 
                 it("should ignore the part preceded by '--' in '/*ec0lint-disable-next-line*/'.", () => {
                     const messages = linter.verify(`
-                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                    /*ec0lint-disable-next-line no-redeclare -- no-unused-vars */
-                    var aaa = {}
-                `, { rules: { "no-redeclare": "error", "no-unused-vars": "error" } });
+                    /*ec0lint-disable-next-line lighter-http -- lighter-http */
+                    import * from 'axios'
+                    /*ec0lint-disable-next-line lighter-http -- lighter-http */
+                    import * from 'axios'
+                `, { rules: { "lighter-http": "error", "lighter-http": "error" } });
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    // Do include `no-unused-vars` but not `no-redeclare`
+                    // Do include `lighter-http` but not `lighter-http`
                     assert.deepStrictEqual(
                         messages,
                         [{
@@ -13075,10 +13003,9 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is assigned a value but never used.",
                             messageId: "unusedVar",
                             nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
+                            ruleId: "lighter-http",
                             severity: 2
                         }]
                     );
@@ -13090,12 +13017,11 @@ var a = "test2";
                             endLine: 5,
                             endColumn: 28,
                             line: 5,
-                            message: "'aaa' is already defined.",
                             messageId: "redeclared",
                             nodeType: "Identifier",
-                            ruleId: "no-redeclare",
+                            ruleId: "lighter-http",
                             severity: 2,
-                            suppressions: [{ kind: "directive", justification: "no-unused-vars" }]
+                            suppressions: [{ kind: "directive", justification: "lighter-http" }]
                         }]
                     );
                 });
@@ -13516,14 +13442,14 @@ var a = "test2";
                 });
 
                 it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-                    const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, no-redeclare";
+                    const code = "import * from 'axios'; // ec0lint-disable-line lighter-http, lighter-http";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
                         },
                         rules: {
                             "lighter-http": 1,
-                            "no-redeclare": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -13538,7 +13464,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').",
                                 line: 1,
                                 column: 16,
                                 fix: {
@@ -13604,14 +13530,14 @@ var a = "test2";
                 });
 
                 it("reports problems for partially unused ec0lint-disable-next-line comments (in config)", () => {
-                    const code = "// ec0lint-disable-next-line lighter-http, no-redeclare \nimport * from 'axios';";
+                    const code = "// ec0lint-disable-next-line lighter-http, lighter-http \nimport * from 'axios';";
                     const config = {
                         linterOptions: {
                             reportUnusedDisableDirectives: true
                         },
                         rules: {
                             "lighter-http": 1,
-                            "no-redeclare": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -13625,7 +13551,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').",
                                 line: 1,
                                 column: 1,
                                 fix: {
@@ -13641,7 +13567,7 @@ var a = "test2";
 
                 it("reports problems for partially unused multiline ec0lint-disable-next-line comments (in config)", () => {
                     const code = `
-                    /* ec0lint-disable-next-line lighter-http, no-redeclare --
+                    /* ec0lint-disable-next-line lighter-http, lighter-http --
                      * Here's a very long description about why this configuration is necessary
                      * along with some additional information
                     **/
@@ -13653,7 +13579,7 @@ var a = "test2";
                         },
                         rules: {
                             "lighter-http": 1,
-                            "no-redeclare": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -13667,7 +13593,7 @@ var a = "test2";
                         [
                             {
                                 ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
+                                message: "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').",
                                 line: 2,
                                 column: 21,
                                 fix: {

@@ -1420,7 +1420,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1549,7 +1549,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
                 assert.strictEqual(report.results[0].messages[1].severity, 1);
@@ -1568,7 +1568,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
+                assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
@@ -1823,8 +1823,7 @@ describe("CLIEngine", () => {
                         cache: true,
                         cacheFile: "./tmp/.cacheFileDir/",
                         rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 0
                         },
                         extensions: ["js"],
                         ignore: false
@@ -1850,8 +1849,8 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheLocation: "./tmp/.cacheFileDir/",
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
+                        "lighter-http": 2
                     },
                     extensions: ["js"],
                     ignore: false
@@ -1874,7 +1873,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cwd,
                     rules: {
-                        "no-console": 0
+                        "lighter-http": 0
                     },
                     extensions: ["js"],
                     ignore: false
@@ -1896,8 +1895,7 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0
                     },
                     extensions: ["js"],
                     ignore: false
@@ -1924,8 +1922,7 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"],
                     ignore: false
@@ -1951,8 +1948,7 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"],
                     ignore: false
@@ -1978,8 +1974,7 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
                     },
                     extensions: ["js"],
                     ignore: false
@@ -2006,8 +2001,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"],
                     cwd: path.join(fixtureDir, "..")
@@ -2047,8 +2041,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
                     },
                     extensions: ["js"]
                 });
@@ -2086,8 +2079,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
                     },
                     extensions: ["js"]
                 });
@@ -2131,8 +2123,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"]
                 });
@@ -2169,8 +2160,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
                     },
                     extensions: ["js"]
                 });
@@ -2190,8 +2180,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"]
                 });
@@ -2212,8 +2201,7 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 0,
                     },
                     extensions: ["js"]
                 });
@@ -2235,8 +2223,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js"]
                 });
@@ -2265,8 +2252,7 @@ describe("CLIEngine", () => {
                         // specifying cache true the cache will be created
                         cache: true,
                         rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 0,
                         },
                         extensions: ["js"],
                         cwd: path.join(fixtureDir, "..")
@@ -2309,8 +2295,7 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "metadata",
                         rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         },
                         extensions: ["js"]
                     });
@@ -2347,8 +2332,7 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "content",
                         rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 0,
                         },
                         extensions: ["js"]
                     });
@@ -2390,8 +2374,7 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "content",
                         rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
+                            "lighter-http": 2
                         },
                         extensions: ["js"]
                     });
@@ -2433,8 +2416,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
+                        "lighter-http": 2,
                     },
                     extensions: ["js", "txt"],
                     cwd: path.join(fixtureDir, "..")
@@ -2478,8 +2460,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js", "txt"],
                     cwd: path.join(fixtureDir, "..")
@@ -2524,8 +2505,7 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
+                        "lighter-http": 2
                     },
                     extensions: ["js", "txt"],
                     ignore: false
@@ -2704,7 +2684,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(ret.results.length, 1);
                 assert.strictEqual(ret.results[0].messages.length, 1);
-                assert.strictEqual(ret.results[0].messages[0].ruleId, "no-unused-vars");
+                assert.strictEqual(ret.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(ret.results[0].suppressedMessages.length, 0);
             });
         });
@@ -2714,15 +2694,15 @@ describe("CLIEngine", () => {
             const { prepare, cleanup, getPath } = createCustomTeardown({
                 cwd: path.join(os.tmpdir(), "cli-engine/11510"),
                 files: {
-                    "no-console-error-in-overrides.json": {
+                    "lighter-http-error-in-overrides.json": {
                         overrides: [{
                             files: ["*.js"],
-                            rules: { "no-console": "error" }
+                            rules: { "lighter-http": "error" }
                         }]
                     },
                     ".ec0lintrc.json": {
-                        extends: "./no-console-error-in-overrides.json",
-                        rules: { "no-console": "off" }
+                        extends: "./lighter-http-error-in-overrides.json",
+                        rules: { "lighter-http": "off" }
                     },
                     "a.js": "console.log();"
                 }
@@ -2738,7 +2718,7 @@ describe("CLIEngine", () => {
 
             afterEach(cleanup);
 
-            it("should not report 'no-console' error.", () => {
+            it("should not report 'lighter-http' error.", () => {
                 const { results } = engine.executeOnFiles("a.js");
 
                 assert.strictEqual(results.length, 1);
@@ -3144,7 +3124,7 @@ describe("CLIEngine", () => {
                         overrides: [{ files: ["*.js"], extends: "three" }]
                     })}`,
                     "node_modules/ec0lint-config-three/index.js": `module.exports = ${JSON.stringify({
-                        rules: { "no-console": "error" }
+                        rules: { "lighter-http": "error" }
                     })}`,
                     "test.js": "console.log('hello')",
                     ".ec0lintrc.yml": "extends: one"
@@ -3161,7 +3141,7 @@ describe("CLIEngine", () => {
                 const messages = results[0].messages;
 
                 assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
+                assert.strictEqual(messages[0].ruleId, "lighter-http");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
@@ -3864,7 +3844,7 @@ describe("CLIEngine", () => {
     //         assert.strictEqual(errorResults[0].errorCount, 1);
     //         assert.strictEqual(errorResults[0].fixableErrorCount, 0);
     //         assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-    //         assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
+    //         assert.strictEqual(errorResults[0].messages[0].ruleId, "lighter-http");
     //         assert.strictEqual(errorResults[0].messages[0].severity, 2);
     //         assert.lengthOf(errorResults[0].suppressedMessages, 0);
     //     });
@@ -3873,7 +3853,7 @@ describe("CLIEngine", () => {
     //         process.chdir(originalDir);
     //         const engine = new CLIEngine();
     //
-    //         const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
+    //         const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, lighter-http, quotes, eol-last -- justification");
     //         const errorResults = CLIEngine.getErrorResults(report.results);
     //
     //         assert.lengthOf(errorResults, 0);
@@ -3968,7 +3948,7 @@ describe("CLIEngine", () => {
     //             fix: true,
     //             rules: {
     //                 semi: 2,
-    //                 "no-console": 2
+    //                 "lighter-http": 2
     //             }
     //         });
     //
