@@ -564,7 +564,7 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].warningCount, 0);
             assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-https");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -808,6 +808,7 @@ describe("CLIEngine", () => {
             report = engine.executeOnFiles([passFilePath]);
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, passFilePath);
+            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -884,8 +885,8 @@ describe("CLIEngine", () => {
             });
 
             assert.throws(() => {
-                engine.executeOnFiles(["tests/fixtures/*-lighter-http.js"]);
-            }, "All files matched by 'tests/fixtures/*-lighter-http.js' are ignored.");
+                engine.executeOnFiles(["tests/fixtures/*lighter-http.js"]);
+            }, "All files matched by 'tests/fixtures/*lighter-http.js' are ignored.");
         });
 
         it("should return a warning when an explicitly given file is ignored", () => {
@@ -945,7 +946,6 @@ describe("CLIEngine", () => {
             const report = engine.executeOnFiles([getFixturePath("shebang.js")]);
 
             assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages, {});
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -1482,7 +1482,6 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0], {});
                 assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
                 assert.strictEqual(report.results[0].messages[0].severity, 2);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
@@ -1517,7 +1516,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
+                assert.strictEqual(report.results[0].suppressedMessages.length, 1);
             });
 
             // Command line configuration - --config with second level .ec0lintrc

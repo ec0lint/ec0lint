@@ -2367,7 +2367,7 @@ describe("Linter", () => {
                 ].join("\n");
                 const config = {
                     rules: {
-                        "lighter-https": 1
+                        "lighter-http": 1
                     }
                 };
 
