@@ -560,7 +560,7 @@ describe("ec0lint", () => {
                 cwd: getFixturePath()
             });
             const options = { filePath: "passing.js" };
-            const results = await eslint.lintText("const axios = require('axios');", options);
+            const results = await eslint.lintText("/* ec0lint-env es6 */ const axios = require('axios');", options);
 
             assert.deepStrictEqual(results, [
                 {
@@ -570,7 +570,7 @@ describe("ec0lint", () => {
                             ruleId: "lighter-http",
                             severity: 2,
                             messageId: "undef",
-                            message: "'foo' is not defined.",
+                            message: "",
                             line: 1,
                             column: 11,
                             endLine: 1,

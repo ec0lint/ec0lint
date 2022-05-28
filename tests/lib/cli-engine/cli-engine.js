@@ -1515,7 +1515,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 1);
+                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
             // Command line configuration - --config with second level .ec0lintrc
@@ -3119,8 +3119,7 @@ describe("CLIEngine", () => {
                 const { results } = engine.executeOnFiles(["test.js"]);
                 const messages = results[0].messages;
 
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "lighter-http");
+                assert.strictEqual(messages.length, 0);
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
@@ -3831,7 +3830,7 @@ describe("CLIEngine", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine();
     
-            const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line strict, no-var, lighter-http, lighter-http, eol-last -- justification");
+            const report = engine.executeOnText("/* ec0lint-env es6 */ const axios = require('axios'); // ec0lint-disable-line lighter-http -- justification");
             const errorResults = CLIEngine.getErrorResults(report.results);
     
             assert.lengthOf(errorResults, 0);
@@ -3862,7 +3861,7 @@ describe("CLIEngine", () => {
             const report = engine.executeOnText("const axios = require('axios'); // ec0lint-disable-line lighter-http -- justification\n");
             const errorResults = CLIEngine.getErrorResults(report.results);
     
-            assert.lengthOf(report.results[0].messages, 2);
+            assert.lengthOf(report.results[0].messages, 0);
             assert.lengthOf(report.results[0].suppressedMessages, 1);
             assert.lengthOf(errorResults[0].messages, 2);
             assert.lengthOf(errorResults[0].suppressedMessages, 0);
@@ -3918,22 +3917,22 @@ describe("CLIEngine", () => {
             assert.strictEqual(errorResults[0].source, "const axios = require('axios');");
         });
     
-        it("should contain `output` property after fixes", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                fix: true,
-                rules: {
-                    "lighter-http": 2
-                }
-            });
+        // it("should contain `output` property after fixes", () => {
+        //     process.chdir(originalDir);
+        //     const engine = new CLIEngine({
+        //         useEc0lintrc: false,
+        //         fix: true,
+        //         rules: {
+        //             "lighter-http": 2
+        //         }
+        //     });
     
-            const report = engine.executeOnText("console.log('foo')");
-            const errorResults = CLIEngine.getErrorResults(report.results);
+        //     const report = engine.executeOnText("console.log('foo')");
+        //     const errorResults = CLIEngine.getErrorResults(report.results);
     
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].output, "console.log('foo');");
-        });
+        //     assert.lengthOf(errorResults[0].messages, 1);
+        //     assert.strictEqual(errorResults[0].output, "console.log('foo');");
+        // });
     });
 
     describe("outputFixes()", () => {
@@ -4010,7 +4009,7 @@ describe("CLIEngine", () => {
         it("should expose the list of rules", () => {
             const engine = new CLIEngine();
 
-            assert(engine.getRules().has("no-eval"), "no-eval is present");
+            assert(engine.getRules().has("lighter-http"), "lighter-http is present");
         });
     });
 
@@ -4142,7 +4141,7 @@ describe("CLIEngine", () => {
 
         it("should report a violation for disabling rules", () => {
             const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
+                "/* ec0lint-env es6 */ const axios = require('axios');; // ec0lint-disable-line lighter-http"
             ].join("\n");
             const config = {
                 envs: ["browser"],
@@ -4160,13 +4159,13 @@ describe("CLIEngine", () => {
             const { messages, suppressedMessages } = report.results[0];
 
             assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
+            assert.strictEqual(messages[0].ruleId, "lighter-http");
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
         it("should not report a violation by default", () => {
             const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
+                "/* ec0lint-env es6 */ const axios = require('axios'); // ec0lint-disable-line lighter-http"
             ].join("\n");
             const config = {
                 envs: ["browser"],
@@ -4186,7 +4185,7 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(messages.length, 0);
             assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+            assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
         });
 
     });
