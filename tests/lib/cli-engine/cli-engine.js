@@ -808,7 +808,6 @@ describe("CLIEngine", () => {
             report = engine.executeOnFiles([passFilePath]);
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, passFilePath);
-            assert.strictEqual(report.results[0].messages[0], {});
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
