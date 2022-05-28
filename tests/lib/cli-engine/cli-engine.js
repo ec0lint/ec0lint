@@ -763,7 +763,7 @@ describe("CLIEngine", () => {
                 cwd: path.join(fixtureDir, ".."),
                 envs: ["browser"],
                 rules: {
-                    "ligher-http": 2
+                    "lighter-http": 2
                 }
             });
 
@@ -927,7 +927,7 @@ describe("CLIEngine", () => {
                 ignorePath: getFixturePath(".ec0lintignore"),
                 ignore: false,
                 rules: {
-                    "ligher-http": 2
+                    "lighter-http": 2
                 }
             });
 
