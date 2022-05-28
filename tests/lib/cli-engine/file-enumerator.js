@@ -42,8 +42,7 @@ describe("FileEnumerator", () => {
                 ".ec0lintignore": "/lib/nested/parser.js",
                 ".ec0lintrc.json": JSON.stringify({
                     rules: {
-                        "no-undef": "error",
-                        "no-unused-vars": "error"
+                        "ligher-http": 2
                     }
                 })
             };

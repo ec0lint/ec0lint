@@ -304,7 +304,7 @@ describe("cli", () => {
     describe("when executing a file with a lint error", () => {
         it("should exit with error", async () => {
             const filePath = getFixturePath("undef.js");
-            const code = `--no-ignore --rule no-undef:2 ${filePath}`;
+            const code = `--no-ignore --rule lighter-http:2 ${filePath}`;
 
             const exit = await cli.execute(code);
 

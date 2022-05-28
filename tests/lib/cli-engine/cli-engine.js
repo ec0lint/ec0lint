@@ -763,8 +763,7 @@ describe("CLIEngine", () => {
                 cwd: path.join(fixtureDir, ".."),
                 envs: ["browser"],
                 rules: {
-                    "no-alert": 0,
-                    "no-undef": 2
+                    "ligher-http": 2
                 }
             });
 
@@ -928,7 +927,7 @@ describe("CLIEngine", () => {
                 ignorePath: getFixturePath(".ec0lintignore"),
                 ignore: false,
                 rules: {
-                    "no-undef": 2
+                    "ligher-http": 2
                 }
             });
 
@@ -938,9 +937,9 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "no-undef");
+            assert.strictEqual(report.results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].messages[1].ruleId, "no-undef");
+            assert.strictEqual(report.results[0].messages[1].ruleId, "lighter-http");
             assert.strictEqual(report.results[0].messages[1].severity, 2);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
@@ -1283,7 +1282,7 @@ describe("CLIEngine", () => {
                                 messageId: "undef",
                                 message: "'foo' is not defined.",
                                 nodeType: "Identifier",
-                                ruleId: "no-undef",
+                                ruleId: "lighter-http",
                                 severity: 2
                             }
                         ],
