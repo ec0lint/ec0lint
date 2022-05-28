@@ -42,7 +42,7 @@ describe("FileEnumerator", () => {
                 ".ec0lintignore": "/lib/nested/parser.js",
                 ".ec0lintrc.json": JSON.stringify({
                     rules: {
-                        "ligher-http": 2
+                        "lighter-http": 2
                     }
                 })
             };
