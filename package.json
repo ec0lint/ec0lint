@@ -26,7 +26,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": "lint"
+    "*.js": "npm run lint"
   },
   "files": [
     "LICENSE",
