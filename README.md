@@ -21,7 +21,7 @@ The tool is customized and each rule applied during the analysis can be adjusted
 
 ## How to start contributing
 
-If you wish to contribute, just write to us and start coding!
+If you wish to contribute, just write to us at ec0lint@tutanota.com and start coding!
 
 Refer to [ESLint Developer Guide](https://eslint.org/docs/developer-guide/contributing/)
 
