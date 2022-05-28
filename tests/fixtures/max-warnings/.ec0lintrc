@@ -1,6 +1,6 @@
 {
     "rules": {
-        "quotes": [1, "single"]
+        "lighter-http": 1
     },
     "root": true
 }

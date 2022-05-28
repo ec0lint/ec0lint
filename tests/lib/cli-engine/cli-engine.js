@@ -144,7 +144,7 @@ describe("CLIEngine", () => {
                 }
             });
 
-            const report = engine.executeOnText("import * from 'axios';");
+            const report = engine.executeOnText("const axios = require('axios');");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
@@ -161,7 +161,7 @@ describe("CLIEngine", () => {
                 cwd: getFixturePath("..")
             });
 
-            const report = engine.executeOnText("import * from 'axios';");
+            const report = engine.executeOnText("const axios = require('axios');");
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 1);
@@ -192,9 +192,9 @@ describe("CLIEngine", () => {
                 rules: { "lighter-http": 2 }
             });
 
-            const report = engine.executeOnText("import * from 'axios';");
+            const report = engine.executeOnText("const axios = require('axios');");
 
-            assert.strictEqual(report.results[0].source, "import * from 'axios';");
+            assert.strictEqual(report.results[0].source, "const axios = require('axios');");
         });
 
         // @scope for @scope/ec0lint-plugin

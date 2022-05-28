@@ -363,7 +363,7 @@ describe("ec0lint", () => {
     //             useEc0lintrc: false,
     //             overrideConfig: {
     //                 rules: {
-    //                     "no-undef": 2
+    //                     "lighter-http": 2
     //                 }
     //             }
     //         });
@@ -372,7 +372,7 @@ describe("ec0lint", () => {
     //
     //         assert.strictEqual(results.length, 1);
     //         assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
-    //         assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
+    //         assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
     //         assert.strictEqual(results[0].messages[0].severity, 2);
     //         assert.strictEqual(results[0].messages[0].output, void 0);
     //     });
@@ -561,7 +561,7 @@ describe("ec0lint", () => {
                 fix: true,
                 overrideConfig: {
                     rules: {
-                        "no-undef": 2
+                        "lighter-http": 2
                     }
                 },
                 ignore: false,
@@ -575,7 +575,7 @@ describe("ec0lint", () => {
                     filePath: getFixturePath("passing.js"),
                     messages: [
                         {
-                            ruleId: "no-undef",
+                            ruleId: "lighter-http",
                             severity: 2,
                             messageId: "undef",
                             message: "'foo' is not defined.",
@@ -1267,7 +1267,7 @@ describe("ec0lint", () => {
                     env: { browser: true },
                     rules: {
                         "no-alert": 0,
-                        "no-undef": 2
+                        "lighter-http": 2
                     }
                 }
             });
@@ -1416,7 +1416,7 @@ describe("ec0lint", () => {
                 ignore: false,
                 overrideConfig: {
                     rules: {
-                        "no-undef": 2
+                        "lighter-http": 2
                     }
                 }
             });
@@ -1425,9 +1425,9 @@ describe("ec0lint", () => {
 
             assert.strictEqual(results.length, 1);
             assert.strictEqual(results[0].filePath, filePath);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
+            assert.strictEqual(results[0].messages[0].ruleId, "lighter-http");
             assert.strictEqual(results[0].messages[0].severity, 2);
-            assert.strictEqual(results[0].messages[1].ruleId, "no-undef");
+            assert.strictEqual(results[0].messages[1].ruleId, "lighter-http");
             assert.strictEqual(results[0].messages[1].severity, 2);
         });
 
@@ -1725,7 +1725,7 @@ describe("ec0lint", () => {
                                 messageId: "undef",
                                 message: "'foo' is not defined.",
                                 nodeType: "Identifier",
-                                ruleId: "no-undef",
+                                ruleId: "lighter-http",
                                 severity: 2
                             }
                         ],

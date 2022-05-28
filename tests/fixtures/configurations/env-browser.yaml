@@ -3,5 +3,4 @@
     browser: true
 
   rules:
-    no-alert: 0
-    no-undef: 2
+    ligher-http: 2

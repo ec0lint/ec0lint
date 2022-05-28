@@ -318,8 +318,8 @@ describe("ConfigRule", () => {
         // });
 
         it("should create arrays of configs for rules", () => {
-            assert.isArray(rulesConfig.quotes);
-            assert.include(rulesConfig.quotes, 2);
+            assert.isArray(rulesConfig["lighter-http"]);
+            assert.include(rulesConfig["lighter-http"], 2);
         });
     });
 });

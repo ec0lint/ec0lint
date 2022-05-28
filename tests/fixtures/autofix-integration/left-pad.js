@@ -3,7 +3,7 @@
 /* ec0lint no-extra-parens: 2 */
 /* ec0lint no-implicit-coercion: 2 */
 /* ec0lint no-whitespace-before-property: 2 */
-/* ec0lint quotes: [2, "single"] */
+/* ec0lint lighter-http: 2 */
 /* ec0lint semi: 2 */
 /* ec0lint semi-spacing: 2 */
 /* ec0lint space-before-function-paren: 2 */

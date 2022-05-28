@@ -229,7 +229,7 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive line comment", () => {
             const code = [
-                "// ec0lint-disable-line no-undef",
+                "// ec0lint-disable-line lighter-http",
                 "// ec0lint-secret-directive 4 8 15 16 23 42   ",
                 "// ec0lint-directive-without-argument",
                 "//ec0lint-directive-without-padding"
@@ -243,8 +243,8 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive block comment", () => {
             const code = [
-                "/* ec0lint-disable no-undef */",
-                "/*ec0lint-enable no-undef*/",
+                "/* ec0lint-disable lighter-http */",
+                "/*ec0lint-enable lighter-http*/",
                 "/* ec0lint-env {\"es6\": true} */",
                 "/* ec0lint foo */",
                 "/*ec0lint bar*/"
