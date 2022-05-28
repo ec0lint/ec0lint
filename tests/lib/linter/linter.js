@@ -3680,11 +3680,11 @@ var a = "test2";
             "globals foo",
             "global foo",
             "exported foo",
-            "ec0lint eqeqeq: error",
-            "ec0lint-disable eqeqeq",
-            "ec0lint-disable-line eqeqeq",
-            "ec0lint-disable-next-line eqeqeq",
-            "ec0lint-enable eqeqeq",
+            "ec0lint lighter-http: error",
+            "ec0lint-disable lighter-http",
+            "ec0lint-disable-line lighter-http",
+            "ec0lint-disable-next-line lighter-http",
+            "ec0lint-enable lighter-http",
             "ec0lint-env es6"
         ]) {
             it(`should warn '/* ${directive} */' if 'noInlineConfig' was given.`, () => {
@@ -3702,8 +3702,8 @@ var a = "test2";
         }
 
         for (const directive of [
-            "ec0lint-disable-line eqeqeq",
-            "ec0lint-disable-next-line eqeqeq"
+            "ec0lint-disable-line lighter-http",
+            "ec0lint-disable-next-line lighter-http"
         ]) {
             it(`should warn '// ${directive}' if 'noInlineConfig' was given.`, () => {
                 const messages = linter.verify(`// ${directive}`, { noInlineConfig: true });
@@ -13251,11 +13251,11 @@ var a = "test2";
                         "globals foo",
                         "global foo",
                         "exported foo",
-                        "ec0lint eqeqeq: error",
-                        "ec0lint-disable eqeqeq",
-                        "ec0lint-disable-line eqeqeq",
-                        "ec0lint-disable-next-line eqeqeq",
-                        "ec0lint-enable eqeqeq"
+                        "ec0lint lighter-http: error",
+                        "ec0lint-disable lighter-http",
+                        "ec0lint-disable-line lighter-http",
+                        "ec0lint-disable-next-line lighter-http",
+                        "ec0lint-enable lighter-http"
                     ]) {
                         it(`should warn '/* ${directive} */' if 'noInlineConfig' was given.`, () => {
                             const messages = linter.verify(`/* ${directive} */`, {
@@ -13276,8 +13276,8 @@ var a = "test2";
                     }
 
                     for (const directive of [
-                        "ec0lint-disable-line eqeqeq",
-                        "ec0lint-disable-next-line eqeqeq"
+                        "ec0lint-disable-line lighter-http",
+                        "ec0lint-disable-next-line lighter-http"
                     ]) {
                         it(`should warn '// ${directive}' if 'noInlineConfig' was given.`, () => {
                             const messages = linter.verify(`// ${directive}`, {

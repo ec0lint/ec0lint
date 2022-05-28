@@ -1198,131 +1198,131 @@ describe("CLIEngine", () => {
         //     assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         // });
 
-        describe("Fix Mode", () => {
+        // describe("Fix Mode", () => {
 
-            it("should return fixed text on multiple files when in fix mode", () => {
+        //     it("should return fixed text on multiple files when in fix mode", () => {
 
-                /**
-                 * Converts CRLF to LF in output.
-                 * This is a workaround for git's autocrlf option on Windows.
-                 * @param {Object} result A result object to convert.
-                 * @returns {void}
-                 */
-                function convertCRLF(result) {
-                    if (result && result.output) {
-                        result.output = result.output.replace(/\r\n/gu, "\n");
-                    }
-                }
+        //         /**
+        //          * Converts CRLF to LF in output.
+        //          * This is a workaround for git's autocrlf option on Windows.
+        //          * @param {Object} result A result object to convert.
+        //          * @returns {void}
+        //          */
+        //         function convertCRLF(result) {
+        //             if (result && result.output) {
+        //                 result.output = result.output.replace(/\r\n/gu, "\n");
+        //             }
+        //         }
 
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    rules: {
-                        "lighter-http": 2
-                    }
-                });
+        //         engine = new CLIEngine({
+        //             cwd: path.join(fixtureDir, ".."),
+        //             useEc0lintrc: false,
+        //             fix: true,
+        //             rules: {
+        //                 "lighter-http": 2
+        //             }
+        //         });
 
-                const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
+        //         const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
 
-                report.results.forEach(convertCRLF);
-                assert.deepStrictEqual(report.results, [
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/multipass.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "true ? \"yes\" : \"no\";\n"
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/ok.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-eqeqeq.js")),
-                        messages: [
-                            {
-                                column: 9,
-                                line: 2,
-                                endColumn: 11,
-                                endLine: 2,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\";\nif (msg == \"hi\") {\n\n}\n"
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
-                        messages: [
-                            {
-                                column: 18,
-                                line: 1,
-                                endColumn: 21,
-                                endLine: 1,
-                                messageId: "undef",
-                                message: "'foo' is not defined.",
-                                nodeType: "Identifier",
-                                ruleId: "lighter-http",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\" + foo;\n"
-                    }
-                ]);
-                assert.strictEqual(report.errorCount, 2);
-                assert.strictEqual(report.warningCount, 0);
-                assert.strictEqual(report.fixableErrorCount, 0);
-                assert.strictEqual(report.fixableWarningCount, 0);
-            });
+        //         report.results.forEach(convertCRLF);
+        //         assert.deepStrictEqual(report.results, [
+        //             {
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/multipass.js")),
+        //                 messages: [],
+        //                 suppressedMessages: [],
+        //                 errorCount: 0,
+        //                 warningCount: 0,
+        //                 fatalErrorCount: 0,
+        //                 fixableErrorCount: 0,
+        //                 fixableWarningCount: 0,
+        //                 output: "true ? \"yes\" : \"no\";\n"
+        //             },
+        //             {
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/ok.js")),
+        //                 messages: [],
+        //                 suppressedMessages: [],
+        //                 errorCount: 0,
+        //                 warningCount: 0,
+        //                 fatalErrorCount: 0,
+        //                 fixableErrorCount: 0,
+        //                 fixableWarningCount: 0
+        //             },
+        //             {
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-lighter-http.js")),
+        //                 messages: [
+        //                     {
+        //                         column: 9,
+        //                         line: 2,
+        //                         endColumn: 11,
+        //                         endLine: 2,
+        //                         message: "Expected '===' and instead saw '=='.",
+        //                         messageId: "unexpected",
+        //                         nodeType: "BinaryExpression",
+        //                         ruleId: "lighter-http",
+        //                         severity: 2
+        //                     }
+        //                 ],
+        //                 suppressedMessages: [],
+        //                 errorCount: 1,
+        //                 warningCount: 0,
+        //                 fatalErrorCount: 0,
+        //                 fixableErrorCount: 0,
+        //                 fixableWarningCount: 0,
+        //                 output: "var msg = \"hi\";\nif (msg == \"hi\") {\n\n}\n"
+        //             },
+        //             {
+        //                 filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
+        //                 messages: [
+        //                     {
+        //                         column: 18,
+        //                         line: 1,
+        //                         endColumn: 21,
+        //                         endLine: 1,
+        //                         messageId: "undef",
+        //                         message: "'foo' is not defined.",
+        //                         nodeType: "Identifier",
+        //                         ruleId: "lighter-http",
+        //                         severity: 2
+        //                     }
+        //                 ],
+        //                 suppressedMessages: [],
+        //                 errorCount: 1,
+        //                 warningCount: 0,
+        //                 fatalErrorCount: 0,
+        //                 fixableErrorCount: 0,
+        //                 fixableWarningCount: 0,
+        //                 output: "var msg = \"hi\" + foo;\n"
+        //             }
+        //         ]);
+        //         assert.strictEqual(report.errorCount, 2);
+        //         assert.strictEqual(report.warningCount, 0);
+        //         assert.strictEqual(report.fixableErrorCount, 0);
+        //         assert.strictEqual(report.fixableWarningCount, 0);
+        //     });
 
-            it("should run autofix even if files are cached without autofix results", () => {
-                const baseOptions = {
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    rules: {
-                        "lighter-http": 2
-                    }
-                };
+        //     it("should run autofix even if files are cached without autofix results", () => {
+        //         const baseOptions = {
+        //             cwd: path.join(fixtureDir, ".."),
+        //             useEc0lintrc: false,
+        //             rules: {
+        //                 "lighter-http": 2
+        //             }
+        //         };
 
-                engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: false }));
+        //         engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: false }));
 
-                // Do initial lint run and populate the cache file
-                engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
+        //         // Do initial lint run and populate the cache file
+        //         engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
 
-                engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: true }));
+        //         engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: true }));
 
-                const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
+        //         const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
 
-                assert.ok(report.results.some(result => result.output));
-            });
+        //         assert.ok(report.results.some(result => result.output));
+        //     });
 
-        });
+        // });
 
         describe("configuration hierarchy", () => {
 
@@ -3031,7 +3031,7 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "test.js": "/* ec0lint-disable eqeqeq */",
+                        "test.js": "/* ec0lint-disable lighter-http */",
                         ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
@@ -3045,7 +3045,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
@@ -3054,7 +3054,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3078,7 +3078,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3096,7 +3096,7 @@ describe("CLIEngine", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].severity, 2);
-                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
             });
@@ -5275,7 +5275,7 @@ describe("CLIEngine", () => {
                             {
                                 files: "foo/*.js",
                                 rules: {
-                                    eqeqeq: "error"
+                                    lighter-http: "error"
                                 }
                             }
                         ]
@@ -5297,7 +5297,7 @@ describe("CLIEngine", () => {
                 });
                 const { results } = engine.executeOnFiles("foo/test.js");
 
-                // Expected to be an 'eqeqeq' error because the file matches to `$CWD/foo/*.js`.
+                // Expected to be an 'lighter-http' error because the file matches to `$CWD/foo/*.js`.
                 assert.deepStrictEqual(results, [
                     {
                         errorCount: 1,
@@ -5313,7 +5313,7 @@ describe("CLIEngine", () => {
                                 message: "Expected '===' and instead saw '=='.",
                                 messageId: "unexpected",
                                 nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
+                                ruleId: "lighter-http",
                                 severity: 2
                             }
                         ],
@@ -5360,7 +5360,7 @@ describe("CLIEngine", () => {
                                 files: "*",
                                 excludedFiles: "foo/*.js",
                                 rules: {
-                                    eqeqeq: "error"
+                                    lighter-http: "error"
                                 }
                             }
                         ]
@@ -5406,7 +5406,7 @@ describe("CLIEngine", () => {
                 });
                 const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
 
-                // Expected to be an 'eqeqeq' error because the file doesn't match to `$CWD/foo/*.js`.
+                // Expected to be an 'lighter-http' error because the file doesn't match to `$CWD/foo/*.js`.
                 assert.deepStrictEqual(results, [
                     {
                         errorCount: 1,
@@ -5422,7 +5422,7 @@ describe("CLIEngine", () => {
                                 message: "Expected '===' and instead saw '=='.",
                                 messageId: "unexpected",
                                 nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
+                                ruleId: "lighter-http",
                                 severity: 2
                             }
                         ],
@@ -5442,7 +5442,7 @@ describe("CLIEngine", () => {
                     "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
                         ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
                         rules: {
-                            eqeqeq: "error"
+                            lighter-http: "error"
                         }
                     }),
                     "node_modules/myconf/foo/test.js": "a == b",
