@@ -132,7 +132,6 @@ ${message}`);
         spawn.sync("npm", ["init", "@ec0lint/config"], { encoding: "utf8", stdio: "inherit" });
         return;
     }
-
     // Otherwise, call the CLI.
     process.exitCode = await require("../lib/cli").execute(
         process.argv,
