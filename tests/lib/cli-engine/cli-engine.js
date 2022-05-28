@@ -229,7 +229,7 @@ describe("CLIEngine", () => {
             after(() => {
                 Module._findPath = originalFindPath;
             });
-            /* ec0lint-enable no-underscore-dangle -- Private Node API overriding */
+            /* eslint-enable no-underscore-dangle -- Private Node API overriding */
 
             it("should resolve 'plugins:[\"@scope\"]' to 'node_modules/@scope/ec0lint-plugin'.", () => {
                 engine = new CLIEngine({ cwd: getFixturePath("plugin-shorthand/basic") });

@@ -3,7 +3,7 @@
  * @author nzakas
  */
 
-/* ec0lint no-use-before-define: "off", no-console: "off" -- CLI */
+/* eslint no-use-before-define: "off", no-console: "off" -- CLI */
 "use strict";
 
 //------------------------------------------------------------------------------

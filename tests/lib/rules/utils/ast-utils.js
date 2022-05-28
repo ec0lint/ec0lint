@@ -467,7 +467,7 @@ describe("ast-utils", () => {
             "this": null,
             "(function () {})": null
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
+        /* eslint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {
@@ -1039,7 +1039,7 @@ describe("ast-utils", () => {
             "a\t": [[1, 0], [1, 1], [1, 2], null],
             "a \n": [[1, 0], [1, 1], [1, 2], [2, 0], null]
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
+        /* eslint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(code => {
             it(`should return expected locations for "${code}".`, () => {
@@ -1735,7 +1735,7 @@ describe("ast-utils", () => {
             "foo\\\nbar": false,
             "128\\\n349": false
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
+        /* eslint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {

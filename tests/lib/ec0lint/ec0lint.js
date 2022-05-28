@@ -798,7 +798,7 @@ describe("ec0lint", () => {
             after(() => {
                 Module._findPath = originalFindPath;
             });
-            /* ec0lint-enable no-underscore-dangle -- Override Node API */
+            /* eslint-enable no-underscore-dangle -- Override Node API */
 
             it("should resolve 'plugins:[\"@scope\"]' to 'node_modules/@scope/ec0lint-plugin'.", async () => {
                 eslint = new ESLint({ cwd: getFixturePath("plugin-shorthand/basic") });

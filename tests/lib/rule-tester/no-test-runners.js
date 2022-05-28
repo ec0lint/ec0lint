@@ -1,4 +1,4 @@
-/* ec0lint no-global-assign: off -- Resetting Mocha globals */
+/* eslint no-global-assign: off -- Resetting Mocha globals */
 /**
  * @fileoverview Tests for RuleTester without any test runner
  * @author Weijia Wang <starkwang@126.com>
