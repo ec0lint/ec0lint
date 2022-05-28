@@ -203,7 +203,7 @@ describe("ec0lint", () => {
                     "- 'errorOnUnmatchedPattern' must be a boolean.",
                     "- 'extensions' must be an array of non-empty strings or null.",
                     "- 'fix' must be a boolean or a function.",
-                    "- 'fixTypes' must be an array of any of \"directive\", \"problem\", \"suggestion\", and \"layout\".",
+                    "- 'fixTypes' must be an array of any of \"directive\", \"javascript\", \"css\", and \"resources\".",
                     "- 'globInputPaths' must be a boolean.",
                     "- 'ignore' must be a boolean.",
                     "- 'ignorePath' must be a non-empty string or null.",
@@ -235,323 +235,325 @@ describe("ec0lint", () => {
         });
     });
 
+    // TODO after adding the first rule
     describe("lintText()", () => {
         let eslint;
+    //
+    //     it("should report the total and per file errors when using local cwd .ec0lintrc", async () => {
+    //         eslint = new ESLint();
+    //         const results = await eslint.lintText("var foo = 'bar';");
+    //
+    //         assert.strictEqual(results.length, 1);
+    //         assert.strictEqual(results[0].messages.length, 1);
+    //         assert.strictEqual(results[0].messages[0].ruleId, "no-unused-vars");
+    //         assert.strictEqual(results[0].fixableErrorCount, 0);
+    //         assert.strictEqual(results[0].fixableWarningCount, 0);
+    //         assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
+    //     });
+    //
+    //     it("should report the total and per file warnings when using local cwd .ec0lintrc", async () => {
+    //         eslint = new ESLint({
+    //             overrideConfig: {
+    //                 rules: {
+    //                     quotes: 1,
+    //                     "no-var": 1,
+    //                     "eol-last": 1,
+    //                     strict: 1,
+    //                     "no-unused-vars": 1
+    //                 }
+    //             }
+    //         });
+    //         const results = await eslint.lintText("var foo = 'bar';");
+    //
+    //         assert.strictEqual(results.length, 1);
+    //         assert.strictEqual(results[0].messages.length, 4);
+    //         assert.strictEqual(results[0].messages[0].ruleId, "no-var");
+    //         assert.strictEqual(results[0].messages[1].ruleId, "no-unused-vars");
+    //         assert.strictEqual(results[0].messages[2].ruleId, "quotes");
+    //         assert.strictEqual(results[0].messages[3].ruleId, "eol-last");
+    //         assert.strictEqual(results[0].fixableErrorCount, 0);
+    //         assert.strictEqual(results[0].fixableWarningCount, 2);
+    //         assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
+    //     });
+    //
+    //     it("should report one message when using specific config file", async () => {
+    //         eslint = new ESLint({
+    //             overrideConfigFile: "fixtures/configurations/quotes-error.json",
+    //             useEc0lintrc: false,
+    //             cwd: getFixturePath("..")
+    //         });
+    //         const results = await eslint.lintText("var foo = 'bar';");
+    //
+    //         assert.strictEqual(results.length, 1);
+    //         assert.strictEqual(results[0].messages.length, 1);
+    //         assert.strictEqual(results[0].messages[0].ruleId, "quotes");
+    //         assert.strictEqual(results[0].messages[0].output, void 0);
+    //         assert.strictEqual(results[0].errorCount, 1);
+    //         assert.strictEqual(results[0].fixableErrorCount, 1);
+    //         assert.strictEqual(results[0].warningCount, 0);
+    //         assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
+    //     });
+    //
+    //     it("should report the filename when passed in", async () => {
+    //         eslint = new ESLint({
+    //             ignore: false,
+    //             cwd: getFixturePath()
+    //         });
+    //         const options = { filePath: "test.js" };
+    //         const results = await eslint.lintText("var foo = 'bar';", options);
+    //
+    //         assert.strictEqual(results[0].filePath, getFixturePath("test.js"));
+    //     });
+    //
+    //     it("should return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is true", async () => {
+    //         eslint = new ESLint({
+    //             ignorePath: getFixturePath(".ec0lintignore"),
+    //             cwd: getFixturePath("..")
+    //         });
+    //         const options = { filePath: "fixtures/passing.js", warnIgnored: true };
+    //         const results = await eslint.lintText("var bar = foo;", options);
+    //
+    //         assert.strictEqual(results.length, 1);
+    //         assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
+    //         assert.strictEqual(results[0].messages[0].severity, 1);
+    //         assert.strictEqual(results[0].messages[0].message, "File ignored because of a matching ignore pattern. Use \"--no-ignore\" to override.");
+    //         assert.strictEqual(results[0].messages[0].output, void 0);
+    //         assert.strictEqual(results[0].errorCount, 0);
+    //         assert.strictEqual(results[0].warningCount, 1);
+    //         assert.strictEqual(results[0].fatalErrorCount, 0);
+    //         assert.strictEqual(results[0].fixableErrorCount, 0);
+    //         assert.strictEqual(results[0].fixableWarningCount, 0);
+    //         assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
+    //     });
+    //
+    //     it("should not return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is false", async () => {
+    //         eslint = new ESLint({
+    //             ignorePath: getFixturePath(".ec0lintignore"),
+    //             cwd: getFixturePath("..")
+    //         });
+    //         const options = {
+    //             filePath: "fixtures/passing.js",
+    //             warnIgnored: false
+    //         };
+    //
+    //         // intentional parsing error
+    //         const results = await eslint.lintText("va r bar = foo;", options);
+    //
+    //         // should not report anything because the file is ignored
+    //         assert.strictEqual(results.length, 0);
+    //     });
+    //
+    //     it("should suppress excluded file warnings by default", async () => {
+    //         eslint = new ESLint({
+    //             ignorePath: getFixturePath(".ec0lintignore"),
+    //             cwd: getFixturePath("..")
+    //         });
+    //         const options = { filePath: "fixtures/passing.js" };
+    //         const results = await eslint.lintText("var bar = foo;", options);
+    //
+    //         // should not report anything because there are no errors
+    //         assert.strictEqual(results.length, 0);
+    //     });
+    //
+    //     it("should return a message when given a filename by --stdin-filename in excluded files list and ignore is off", async () => {
+    //         eslint = new ESLint({
+    //             ignorePath: "fixtures/.ec0lintignore",
+    //             cwd: getFixturePath(".."),
+    //             ignore: false,
+    //             useEc0lintrc: false,
+    //             overrideConfig: {
+    //                 rules: {
+    //                     "no-undef": 2
+    //                 }
+    //             }
+    //         });
+    //         const options = { filePath: "fixtures/passing.js" };
+    //         const results = await eslint.lintText("var bar = foo;", options);
+    //
+    //         assert.strictEqual(results.length, 1);
+    //         assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
+    //         assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
+    //         assert.strictEqual(results[0].messages[0].severity, 2);
+    //         assert.strictEqual(results[0].messages[0].output, void 0);
+    //     });
+    //
+    //     it("should return a message and fixed text when in fix mode", async () => {
+    //         eslint = new ESLint({
+    //             useEc0lintrc: false,
+    //             fix: true,
+    //             overrideConfig: {
+    //                 rules: {
+    //                     semi: 2
+    //                 }
+    //             },
+    //             ignore: false,
+    //             cwd: getFixturePath()
+    //         });
+    //         const options = { filePath: "passing.js" };
+    //         const results = await eslint.lintText("var bar = foo", options);
+    //
+    //         assert.deepStrictEqual(results, [
+    //             {
+    //                 filePath: getFixturePath("passing.js"),
+    //                 messages: [],
+    //                 suppressedMessages: [],
+    //                 errorCount: 0,
+    //                 warningCount: 0,
+    //                 fatalErrorCount: 0,
+    //                 fixableErrorCount: 0,
+    //                 fixableWarningCount: 0,
+    //                 output: "var bar = foo;",
+    //                 usedDeprecatedRules: []
+    //             }
+    //         ]);
+    //     });
+    //
+    //     it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
+    //         eslint = new ESLint({
+    //             useEc0lintrc: false,
+    //             overrideConfig: {
+    //                 extends: ["ec0lint:recommended"]
+    //             },
+    //             ignore: false,
+    //             cwd: getFixturePath()
+    //         });
+    //         const options = { filePath: "file.js" };
+    //         const results = await eslint.lintText("foo ()", options);
+    //
+    //         assert.strictEqual(results.length, 1);
+    //     });
 
-        it("should report the total and per file errors when using local cwd .ec0lintrc", async () => {
-            eslint = new ESLint();
-            const results = await eslint.lintText("var foo = 'bar';");
+        // describe("Fix Types", () => {
+        //     it("should throw an error when an invalid fix type is specified", () => {
+        //         assert.throws(() => {
+        //             eslint = new ESLint({
+        //                 cwd: path.join(fixtureDir, ".."),
+        //                 useEc0lintrc: false,
+        //                 fix: true,
+        //                 fixTypes: ["javascri"]
+        //             });
+        //         }, /'fixTypes' must be an array of any of "directive", "javascript", "css", and "resources"\./iu);
+        //     });
 
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-unused-vars");
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
-        });
+            // fix types - will uncomment after adding --fix property
+            // it("should not fix any rules when fixTypes is used without fix", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: false,
+            //         fixTypes: ["layout"]
+            //     });
+            //     const inputPath = getFixturePath("fix-types/fix-only-semi.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //
+            //     assert.strictEqual(results[0].output, void 0);
+            // });
+            //
+            // it("should not fix non-style rules when fixTypes has only 'layout'", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["layout"]
+            //     });
+            //     const inputPath = getFixturePath("fix-types/fix-only-semi.js");
+            //     const outputPath = getFixturePath("fix-types/fix-only-semi.expected.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
+            //
+            // it("should not fix style or problem rules when fixTypes has only 'suggestion'", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["suggestion"]
+            //     });
+            //     const inputPath = getFixturePath("fix-types/fix-only-prefer-arrow-callback.js");
+            //     const outputPath = getFixturePath("fix-types/fix-only-prefer-arrow-callback.expected.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
+            //
+            // it("should fix both style and problem rules when fixTypes has 'suggestion' and 'layout'", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["suggestion", "layout"]
+            //     });
+            //     const inputPath = getFixturePath("fix-types/fix-both-semi-and-prefer-arrow-callback.js");
+            //     const outputPath = getFixturePath("fix-types/fix-both-semi-and-prefer-arrow-callback.expected.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
 
-        it("should report the total and per file warnings when using local cwd .ec0lintrc", async () => {
-            eslint = new ESLint({
-                overrideConfig: {
-                    rules: {
-                        quotes: 1,
-                        "no-var": 1,
-                        "eol-last": 1,
-                        strict: 1,
-                        "no-unused-vars": 1
-                    }
-                }
-            });
-            const results = await eslint.lintText("var foo = 'bar';");
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 4);
-            assert.strictEqual(results[0].messages[0].ruleId, "no-var");
-            assert.strictEqual(results[0].messages[1].ruleId, "no-unused-vars");
-            assert.strictEqual(results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[3].ruleId, "eol-last");
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 2);
-            assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
-        });
-
-        it("should report one message when using specific config file", async () => {
-            eslint = new ESLint({
-                overrideConfigFile: "fixtures/configurations/quotes-error.json",
-                useEc0lintrc: false,
-                cwd: getFixturePath("..")
-            });
-            const results = await eslint.lintText("var foo = 'bar';");
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[0].output, void 0);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
-        });
-
-        it("should report the filename when passed in", async () => {
-            eslint = new ESLint({
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "test.js" };
-            const results = await eslint.lintText("var foo = 'bar';", options);
-
-            assert.strictEqual(results[0].filePath, getFixturePath("test.js"));
-        });
-
-        it("should return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is true", async () => {
-            eslint = new ESLint({
-                ignorePath: getFixturePath(".ec0lintignore"),
-                cwd: getFixturePath("..")
-            });
-            const options = { filePath: "fixtures/passing.js", warnIgnored: true };
-            const results = await eslint.lintText("var bar = foo;", options);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
-            assert.strictEqual(results[0].messages[0].severity, 1);
-            assert.strictEqual(results[0].messages[0].message, "File ignored because of a matching ignore pattern. Use \"--no-ignore\" to override.");
-            assert.strictEqual(results[0].messages[0].output, void 0);
-            assert.strictEqual(results[0].errorCount, 0);
-            assert.strictEqual(results[0].warningCount, 1);
-            assert.strictEqual(results[0].fatalErrorCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
-        });
-
-        it("should not return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is false", async () => {
-            eslint = new ESLint({
-                ignorePath: getFixturePath(".ec0lintignore"),
-                cwd: getFixturePath("..")
-            });
-            const options = {
-                filePath: "fixtures/passing.js",
-                warnIgnored: false
-            };
-
-            // intentional parsing error
-            const results = await eslint.lintText("va r bar = foo;", options);
-
-            // should not report anything because the file is ignored
-            assert.strictEqual(results.length, 0);
-        });
-
-        it("should suppress excluded file warnings by default", async () => {
-            eslint = new ESLint({
-                ignorePath: getFixturePath(".ec0lintignore"),
-                cwd: getFixturePath("..")
-            });
-            const options = { filePath: "fixtures/passing.js" };
-            const results = await eslint.lintText("var bar = foo;", options);
-
-            // should not report anything because there are no errors
-            assert.strictEqual(results.length, 0);
-        });
-
-        it("should return a message when given a filename by --stdin-filename in excluded files list and ignore is off", async () => {
-            eslint = new ESLint({
-                ignorePath: "fixtures/.ec0lintignore",
-                cwd: getFixturePath(".."),
-                ignore: false,
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        "no-undef": 2
-                    }
-                }
-            });
-            const options = { filePath: "fixtures/passing.js" };
-            const results = await eslint.lintText("var bar = foo;", options);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, getFixturePath("passing.js"));
-            assert.strictEqual(results[0].messages[0].ruleId, "no-undef");
-            assert.strictEqual(results[0].messages[0].severity, 2);
-            assert.strictEqual(results[0].messages[0].output, void 0);
-        });
-
-        it("should return a message and fixed text when in fix mode", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                fix: true,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "passing.js" };
-            const results = await eslint.lintText("var bar = foo", options);
-
-            assert.deepStrictEqual(results, [
-                {
-                    filePath: getFixturePath("passing.js"),
-                    messages: [],
-                    suppressedMessages: [],
-                    errorCount: 0,
-                    warningCount: 0,
-                    fatalErrorCount: 0,
-                    fixableErrorCount: 0,
-                    fixableWarningCount: 0,
-                    output: "var bar = foo;",
-                    usedDeprecatedRules: []
-                }
-            ]);
-        });
-
-        it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    extends: ["ec0lint:recommended"]
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "file.js" };
-            const results = await eslint.lintText("foo ()", options);
-
-            assert.strictEqual(results.length, 1);
-        });
-
-        describe("Fix Types", () => {
-            it("should throw an error when an invalid fix type is specified", () => {
-                assert.throws(() => {
-                    eslint = new ESLint({
-                        cwd: path.join(fixtureDir, ".."),
-                        useEc0lintrc: false,
-                        fix: true,
-                        fixTypes: ["layou"]
-                    });
-                }, /'fixTypes' must be an array of any of "directive", "problem", "suggestion", and "layout"\./iu);
-            });
-
-            it("should not fix any rules when fixTypes is used without fix", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: false,
-                    fixTypes: ["layout"]
-                });
-                const inputPath = getFixturePath("fix-types/fix-only-semi.js");
-                const results = await eslint.lintFiles([inputPath]);
-
-                assert.strictEqual(results[0].output, void 0);
-            });
-
-            it("should not fix non-style rules when fixTypes has only 'layout'", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["layout"]
-                });
-                const inputPath = getFixturePath("fix-types/fix-only-semi.js");
-                const outputPath = getFixturePath("fix-types/fix-only-semi.expected.js");
-                const results = await eslint.lintFiles([inputPath]);
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-
-            it("should not fix style or problem rules when fixTypes has only 'suggestion'", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["suggestion"]
-                });
-                const inputPath = getFixturePath("fix-types/fix-only-prefer-arrow-callback.js");
-                const outputPath = getFixturePath("fix-types/fix-only-prefer-arrow-callback.expected.js");
-                const results = await eslint.lintFiles([inputPath]);
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-
-            it("should fix both style and problem rules when fixTypes has 'suggestion' and 'layout'", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["suggestion", "layout"]
-                });
-                const inputPath = getFixturePath("fix-types/fix-both-semi-and-prefer-arrow-callback.js");
-                const outputPath = getFixturePath("fix-types/fix-both-semi-and-prefer-arrow-callback.expected.js");
-                const results = await eslint.lintFiles([inputPath]);
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-
-            it("should not throw an error when a rule doesn't have a 'meta' property", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["layout"],
-                    rulePaths: [getFixturePath("rules", "fix-types-test")]
-                });
-                const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
-                const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
-                const results = await eslint.lintFiles([inputPath]);
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-
-            it("should not throw an error when a rule is loaded after initialization with lintFiles()", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["layout"],
-                    plugins: {
-                        test: {
-                            rules: {
-                                "no-program": require(getFixturePath("rules", "fix-types-test", "no-program.js"))
-                            }
-                        }
-                    }
-                });
-                const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
-                const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
-                const results = await eslint.lintFiles([inputPath]);
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-
-            it("should not throw an error when a rule is loaded after initialization with lintText()", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    fixTypes: ["layout"],
-                    plugins: {
-                        test: {
-                            rules: {
-                                "no-program": require(getFixturePath("rules", "fix-types-test", "no-program.js"))
-                            }
-                        }
-                    }
-                });
-                const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
-                const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
-                const results = await eslint.lintText(fs.readFileSync(inputPath, { encoding: "utf8" }), { filePath: inputPath });
-                const expectedOutput = fs.readFileSync(outputPath, "utf8");
-
-                assert.strictEqual(results[0].output, expectedOutput);
-            });
-        });
+            // it("should not throw an error when a rule doesn't have a 'meta' property", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["layout"],
+            //         rulePaths: [getFixturePath("rules", "fix-types-test")]
+            //     });
+            //     const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
+            //     const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
+            //
+            // it("should not throw an error when a rule is loaded after initialization with lintFiles()", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["layout"],
+            //         plugins: {
+            //             test: {
+            //                 rules: {
+            //                     "no-program": require(getFixturePath("rules", "fix-types-test", "no-program.js"))
+            //                 }
+            //             }
+            //         }
+            //     });
+            //     const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
+            //     const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
+            //     const results = await eslint.lintFiles([inputPath]);
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
+            //
+            // it("should not throw an error when a rule is loaded after initialization with lintText()", async () => {
+            //     eslint = new ESLint({
+            //         cwd: path.join(fixtureDir, ".."),
+            //         useEc0lintrc: false,
+            //         fix: true,
+            //         fixTypes: ["layout"],
+            //         plugins: {
+            //             test: {
+            //                 rules: {
+            //                     "no-program": require(getFixturePath("rules", "fix-types-test", "no-program.js"))
+            //                 }
+            //             }
+            //         }
+            //     });
+            //     const inputPath = getFixturePath("fix-types/ignore-missing-meta.js");
+            //     const outputPath = getFixturePath("fix-types/ignore-missing-meta.expected.js");
+            //     const results = await eslint.lintText(fs.readFileSync(inputPath, { encoding: "utf8" }), { filePath: inputPath });
+            //     const expectedOutput = fs.readFileSync(outputPath, "utf8");
+            //
+            //     assert.strictEqual(results[0].output, expectedOutput);
+            // });
+        // });
 
         it("should return a message and omit fixed text when in fix mode and fixes aren't done", async () => {
             eslint = new ESLint({
@@ -3154,58 +3156,58 @@ describe("ec0lint", () => {
             });
         });
 
-        describe("'--fix-type' should not crash even if plugin rules exist; https://github.com/eslint/eslint/issues/11586", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "cli-engine/11586"),
-                files: {
-                    "node_modules/ec0lint-plugin-test/index.js": `
-                            exports.rules = {
-                                "no-example": {
-                                    meta: { type: "problem", fixable: "code" },
-                                    create(context) {
-                                        return {
-                                            Identifier(node) {
-                                                if (node.name === "example") {
-                                                    context.report({
-                                                        node,
-                                                        message: "fix",
-                                                        fix: fixer => fixer.replaceText(node, "fixed")
-                                                    })
-                                                }
-                                            }
-                                        };
-                                    }
-                                }
-                            };
-                        `,
-                    ".ec0lintrc.json": {
-                        plugins: ["test"],
-                        rules: { "test/no-example": "error" }
-                    },
-                    "a.js": "example;"
-                }
-            });
-
-            beforeEach(() => {
-                eslint = new ESLint({
-                    cwd: getPath(),
-                    fix: true,
-                    fixTypes: ["problem"]
-                });
-
-                return prepare();
-            });
-
-            afterEach(cleanup);
-
-            it("should not crash.", async () => {
-                const results = await eslint.lintFiles("a.js");
-
-                assert.strictEqual(results.length, 1);
-                assert.deepStrictEqual(results[0].messages, []);
-                assert.deepStrictEqual(results[0].output, "fixed;");
-            });
-        });
+        // describe("'--fix-type' should not crash even if plugin rules exist; https://github.com/eslint/eslint/issues/11586", () => {
+        //     const { prepare, cleanup, getPath } = createCustomTeardown({
+        //         cwd: path.join(os.tmpdir(), "cli-engine/11586"),
+        //         files: {
+        //             "node_modules/ec0lint-plugin-test/index.js": `
+        //                     exports.rules = {
+        //                         "no-example": {
+        //                             meta: { type: "problem", fixable: "code" },
+        //                             create(context) {
+        //                                 return {
+        //                                     Identifier(node) {
+        //                                         if (node.name === "example") {
+        //                                             context.report({
+        //                                                 node,
+        //                                                 message: "fix",
+        //                                                 fix: fixer => fixer.replaceText(node, "fixed")
+        //                                             })
+        //                                         }
+        //                                     }
+        //                                 };
+        //                             }
+        //                         }
+        //                     };
+        //                 `,
+        //             ".ec0lintrc.json": {
+        //                 plugins: ["test"],
+        //                 rules: { "test/no-example": "error" }
+        //             },
+        //             "a.js": "example;"
+        //         }
+        //     });
+        //
+        //     beforeEach(() => {
+        //         eslint = new ESLint({
+        //             cwd: getPath(),
+        //             fix: true,
+        //             fixTypes: ["problem"]
+        //         });
+        //
+        //         return prepare();
+        //     });
+        //
+        //     afterEach(cleanup);
+        //
+        //     it("should not crash.", async () => {
+        //         const results = await eslint.lintFiles("a.js");
+        //
+        //         assert.strictEqual(results.length, 1);
+        //         assert.deepStrictEqual(results[0].messages, []);
+        //         assert.deepStrictEqual(results[0].output, "fixed;");
+        //     });
+        // });
 
         describe("MODULE_NOT_FOUND error handling", () => {
             const cwd = getFixturePath("module-not-found");

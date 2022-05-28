@@ -117,7 +117,6 @@ describe("CodePathAnalyzer", () => {
     describe(".traverseSegments()", () => {
 
         describe("should traverse segments from the first to the end:", () => {
-            /* ec0lint-disable internal-rules/multiline-comment-style -- Commenting out */
             it("simple", () => {
                 const codePath = parseCodePaths("foo(); bar(); baz();")[0];
                 const order = getOrderOfTraversing(codePath);

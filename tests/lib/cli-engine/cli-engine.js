@@ -3865,134 +3865,135 @@ describe("CLIEngine", () => {
 
     });
 
-    describe("getErrorResults()", () => {
-        it("should report 5 error messages when looking for errors only", () => {
-
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].errorCount, 1);
-            assert.strictEqual(errorResults[0].fixableErrorCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-            assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
-            assert.strictEqual(errorResults[0].messages[0].severity, 2);
-            assert.lengthOf(errorResults[0].suppressedMessages, 0);
-        });
-
-        it("should report no error messages when looking for errors only", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults, 0);
-        });
-
-        it("should not mutate passed report.results parameter", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                rules: { quotes: [1, "double"] }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const reportResultsLength = report.results[0].messages.length;
-
-            CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(report.results[0].messages, reportResultsLength);
-        });
-
-        it("should report no suppressed error messages when looking for errors only", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                rules: {
-                    quotes: [1, "double"],
-                    "no-var": 2
-                }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(report.results[0].messages, 2);
-            assert.lengthOf(report.results[0].suppressedMessages, 1);
-            assert.lengthOf(errorResults[0].messages, 2);
-            assert.lengthOf(errorResults[0].suppressedMessages, 0);
-        });
-
-        it("should report a warningCount of 0 when looking for errors only", () => {
-
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.strictEqual(errorResults[0].warningCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-        });
-
-        it("should return 0 error or warning messages even when the file has warnings", () => {
-            const engine = new CLIEngine({
-                ignorePath: path.join(fixtureDir, ".ec0lintignore"),
-                cwd: path.join(fixtureDir, "..")
-            });
-
-            const report = engine.executeOnText("var bar = foo;", "fixtures/passing.js", true);
-            const errorReport = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorReport, 0);
-            assert.lengthOf(report.results, 1);
-            assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 1);
-            assert.strictEqual(report.fatalErrorCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 1);
-            assert.strictEqual(report.results[0].fatalErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-        });
-
-        it("should return source code of file in the `source` property", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                rules: { quotes: [2, "double"] }
-            });
-
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
-        });
-
-        it("should contain `output` property after fixes", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                fix: true,
-                rules: {
-                    semi: 2,
-                    "no-console": 2
-                }
-            });
-
-            const report = engine.executeOnText("console.log('foo')");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].output, "console.log('foo');");
-        });
-    });
+    // TODO after adding the first rule
+    // describe("getErrorResults()", () => {
+    //     it("should report 5 error messages when looking for errors only", () => {
+    //
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine();
+    //
+    //         const report = engine.executeOnText("var foo = 'bar';");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(errorResults[0].messages, 1);
+    //         assert.strictEqual(errorResults[0].errorCount, 1);
+    //         assert.strictEqual(errorResults[0].fixableErrorCount, 0);
+    //         assert.strictEqual(errorResults[0].fixableWarningCount, 0);
+    //         assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
+    //         assert.strictEqual(errorResults[0].messages[0].severity, 2);
+    //         assert.lengthOf(errorResults[0].suppressedMessages, 0);
+    //     });
+    //
+    //     it("should report no error messages when looking for errors only", () => {
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine();
+    //
+    //         const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(errorResults, 0);
+    //     });
+    //
+    //     it("should not mutate passed report.results parameter", () => {
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine({
+    //             rules: { quotes: [1, "double"] }
+    //         });
+    //
+    //         const report = engine.executeOnText("var foo = 'bar';");
+    //         const reportResultsLength = report.results[0].messages.length;
+    //
+    //         CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(report.results[0].messages, reportResultsLength);
+    //     });
+    //
+    //     it("should report no suppressed error messages when looking for errors only", () => {
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine({
+    //             rules: {
+    //                 quotes: [1, "double"],
+    //                 "no-var": 2
+    //             }
+    //         });
+    //
+    //         const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(report.results[0].messages, 2);
+    //         assert.lengthOf(report.results[0].suppressedMessages, 1);
+    //         assert.lengthOf(errorResults[0].messages, 2);
+    //         assert.lengthOf(errorResults[0].suppressedMessages, 0);
+    //     });
+    //
+    //     it("should report a warningCount of 0 when looking for errors only", () => {
+    //
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine();
+    //
+    //         const report = engine.executeOnText("var foo = 'bar';");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.strictEqual(errorResults[0].warningCount, 0);
+    //         assert.strictEqual(errorResults[0].fixableWarningCount, 0);
+    //     });
+    //
+    //     it("should return 0 error or warning messages even when the file has warnings", () => {
+    //         const engine = new CLIEngine({
+    //             ignorePath: path.join(fixtureDir, ".ec0lintignore"),
+    //             cwd: path.join(fixtureDir, "..")
+    //         });
+    //
+    //         const report = engine.executeOnText("var bar = foo;", "fixtures/passing.js", true);
+    //         const errorReport = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(errorReport, 0);
+    //         assert.lengthOf(report.results, 1);
+    //         assert.strictEqual(report.errorCount, 0);
+    //         assert.strictEqual(report.warningCount, 1);
+    //         assert.strictEqual(report.fatalErrorCount, 0);
+    //         assert.strictEqual(report.fixableErrorCount, 0);
+    //         assert.strictEqual(report.fixableWarningCount, 0);
+    //         assert.strictEqual(report.results[0].errorCount, 0);
+    //         assert.strictEqual(report.results[0].warningCount, 1);
+    //         assert.strictEqual(report.results[0].fatalErrorCount, 0);
+    //         assert.strictEqual(report.results[0].fixableErrorCount, 0);
+    //         assert.strictEqual(report.results[0].fixableWarningCount, 0);
+    //     });
+    //
+    //     it("should return source code of file in the `source` property", () => {
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine({
+    //             useEc0lintrc: false,
+    //             rules: { quotes: [2, "double"] }
+    //         });
+    //
+    //
+    //         const report = engine.executeOnText("var foo = 'bar';");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(errorResults[0].messages, 1);
+    //         assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
+    //     });
+    //
+    //     it("should contain `output` property after fixes", () => {
+    //         process.chdir(originalDir);
+    //         const engine = new CLIEngine({
+    //             useEc0lintrc: false,
+    //             fix: true,
+    //             rules: {
+    //                 semi: 2,
+    //                 "no-console": 2
+    //             }
+    //         });
+    //
+    //         const report = engine.executeOnText("console.log('foo')");
+    //         const errorResults = CLIEngine.getErrorResults(report.results);
+    //
+    //         assert.lengthOf(errorResults[0].messages, 1);
+    //         assert.strictEqual(errorResults[0].output, "console.log('foo');");
+    //     });
+    // });
 
     describe("outputFixes()", () => {
         afterEach(() => {

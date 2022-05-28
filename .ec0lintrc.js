@@ -11,9 +11,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2021
     },
-    rules: {
-        "internal-rules/multiline-comment-style": "error"
-    },
+    rules: { },
     overrides: [
         {
             files: ["tools/*.js"],
