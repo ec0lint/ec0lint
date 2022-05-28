@@ -12265,9 +12265,6 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "double"],
-                            lighter-http: [1, "always"],
                             "lighter-http": 1
                         }
                     };
@@ -12286,9 +12283,6 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "double"],
-                            lighter-http: [1, "always"],
                             "lighter-http": 1
                         }
                     };
@@ -12297,7 +12291,7 @@ var a = "test2";
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 5);
+                    assert.strictEqual(suppressedMessages.length, 1);
                 });
 
                 it("should ignore violations of multiple rules when specified in mixed comments", () => {
@@ -12647,9 +12641,6 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            lighter-http: [1, "never"],
-                            quotes: [1, "single"],
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
@@ -12659,10 +12650,7 @@ var a = "test2";
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].ruleId, "lighter-http");
 
-                    assert.strictEqual(suppressedMessages.length, 3);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-                    assert.strictEqual(suppressedMessages[2].ruleId, "lighter-http");
+                    assert.strictEqual(suppressedMessages.length, 0);
                 });
 
                 it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
@@ -12674,17 +12662,13 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "lighter-http");
-
+                    assert.strictEqual(messages.length, 0);
                     assert.strictEqual(suppressedMessages.length, 1);
                     assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
@@ -12698,7 +12682,6 @@ var a = "test2";
                     ].join("\n");
                     const config = {
                         rules: {
-                            "lighter-http": 1,
                             "lighter-http": 1
                         }
                     };
@@ -12706,8 +12689,8 @@ var a = "test2";
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[1].ruleId, "lighter-http");
+                    assert.strictEqual(messages.length, 1);
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
