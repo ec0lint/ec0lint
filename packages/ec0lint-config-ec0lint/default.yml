@@ -4,10 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    func-call-spacing: "error"
-    func-style: ["error", "declaration"]
-    function-call-argument-newline: ["error", "consistent"]
-    function-paren-newline: ["error", "consistent"]
     generator-star-spacing: "error"
     grouped-accessor-pairs: "error"
     guard-for-in: "error"

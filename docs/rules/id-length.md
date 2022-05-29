@@ -253,4 +253,3 @@ const { a: z } = foo;
 
 * [max-len](max-len.md)
 * [new-cap](new-cap.md)
-* [func-names](func-names.md)

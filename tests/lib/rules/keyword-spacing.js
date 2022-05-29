@@ -866,10 +866,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A extends B { constructor() { ({a:super() }) } }", parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { constructor() { ({a: super() }) } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `func-call-spacing`
-        { code: "class A extends B { constructor() { super(); } }", parserOptions: { ecmaVersion: 6 } },
-        { code: "class A extends B { constructor() { super (); } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `semi-spacing`
         { code: "class A extends B { constructor() { ;super(); } }", parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { constructor() { ; super() ; } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },

@@ -153,13 +153,6 @@ let obj = {
     foo:function() {}
 };
 
-// Avoid conflict with `func-call-spacing`
-class A {
-    constructor() {
-        super();
-    }
-}
-
 // Avoid conflict with `object-curly-spacing`
 let obj = {foo: this};
 
