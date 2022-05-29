@@ -20,7 +20,7 @@ This rule doesn't check spacing in the following cases:
 
 * The spacing after the semicolon if it is the first token in the line.
 
-* The spacing before the semicolon if it is after an opening parenthesis (`(` or `{`), or the spacing after the semicolon if it is before a closing parenthesis (`)` or `}`). That spacing is checked by `space-in-parens` or `block-spacing`.
+* The spacing before the semicolon if it is after an opening parenthesis (`(` or `{`), or the spacing after the semicolon if it is before a closing parenthesis (`)` or `}`). That spacing is checked by `space-in-parens`.
 
 * The spacing around the semicolon in a for loop with an empty condition (`for(;;)`).
 
@@ -107,5 +107,4 @@ You can turn this rule off if you are not concerned with the consistency of spac
 * [semi](semi.md)
 * [no-extra-semi](no-extra-semi.md)
 * [comma-spacing](comma-spacing.md)
-* [block-spacing](block-spacing.md)
 * [space-in-parens](space-in-parens.md)

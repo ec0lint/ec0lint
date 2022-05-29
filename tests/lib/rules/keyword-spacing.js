@@ -195,10 +195,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A {a(){} async [b]() {}}", options: [override("async", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "class A {a(){}async[b]() {}}", options: [override("async", NEITHER)], parserOptions: { ecmaVersion: 8 } },
 
-        // not conflict with `block-spacing`
-        { code: "{async function foo() {} }", parserOptions: { ecmaVersion: 8 } },
-        { code: "{ async function foo() {} }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
-
         // not conflict with `comma-spacing`
         { code: "(0,async function foo() {})", parserOptions: { ecmaVersion: 8 } },
         { code: "(0, async function foo() {})", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
@@ -254,10 +250,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "async function wrap() { {} await +1 }", options: [override("await", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { {}await +1 }", options: [override("await", NEITHER)], parserOptions: { ecmaVersion: 8 } },
 
-        // not conflict with `block-spacing`
-        { code: "async function wrap() { {await a } }", parserOptions: { ecmaVersion: 8 } },
-        { code: "async function wrap() { { await a } }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
-
         // not conflict with `comma-spacing`
         { code: "async function wrap() { (0,await a) }", parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { (0, await a) }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
@@ -311,10 +303,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "A: for(;;) { {} break A; }", options: [override("break", BOTH)] },
         { code: "A: for (;;) { {}break A; }", options: [override("break", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "for (;;) {break}",
-        { code: "for(;;) { break }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         "for (;;) { ;break; }",
         { code: "for(;;) { ; break ; }", options: [NEITHER] },
@@ -329,10 +317,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "switch(a) { case 0: {}case(1): }", options: [NEITHER] },
         { code: "switch(a) { case 0: {} case +1: }", options: [override("case", BOTH)] },
         { code: "switch (a) { case 0: {}case+1: }", options: [override("case", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "switch (a) {case 0: }",
-        { code: "switch(a) { case 0: }", options: [NEITHER] },
 
         // not conflict with `semi-spacing`
         "switch (a) { case 0: ;case 1: }",
@@ -359,10 +343,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "(class{})", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "{} class Bar {}", options: [override("class", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "{}class Bar {}", options: [override("class", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `block-spacing`
-        { code: "{class Bar {} }", parserOptions: { ecmaVersion: 6 } },
-        { code: "{ class Bar {} }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `comma-spacing`
         { code: "(0,class {})", parserOptions: { ecmaVersion: 6 } },
@@ -424,10 +404,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}const[a] = b", options: [override("const", NEITHER)], parserOptions: { ecmaVersion: 6 } },
         { code: "{}const{a} = b", options: [override("const", NEITHER)], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `block-spacing`
-        { code: "{const a = b}", parserOptions: { ecmaVersion: 6 } },
-        { code: "{ const a = b}", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `semi-spacing`
         { code: ";const a = b;", parserOptions: { ecmaVersion: 6 } },
         { code: "; const a = b ;", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -440,10 +416,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "A: for(;;) { {}continue A; }", options: [NEITHER] },
         { code: "A: for(;;) { {} continue A; }", options: [override("continue", BOTH)] },
         { code: "A: for (;;) { {}continue A; }", options: [override("continue", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "for (;;) {continue}",
-        { code: "for(;;) { continue }", options: [NEITHER] },
 
         // not conflict with `semi-spacing`
         "for (;;) { ;continue; }",
@@ -458,10 +430,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} debugger", options: [override("debugger", BOTH)] },
         { code: "{}debugger", options: [override("debugger", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "{debugger}",
-        { code: "{ debugger }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";debugger;",
         { code: "; debugger ;", options: [NEITHER] },
@@ -475,10 +443,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "switch(a) { case 0: {} default: }", options: [override("default", BOTH)] },
         { code: "switch (a) { case 0: {}default: }", options: [override("default", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "switch (a) {default:}",
-        { code: "switch(a) { default: }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         "switch (a) { case 0: ;default: }",
         { code: "switch(a) { case 0: ; default: }", options: [NEITHER] },
@@ -491,10 +455,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}delete foo.a", options: [NEITHER] },
         { code: "{} delete foo.a", options: [override("delete", BOTH)] },
         { code: "{}delete foo.a", options: [override("delete", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "{delete foo.a }",
-        { code: "{ delete foo.a }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,delete foo.a)",
@@ -550,10 +510,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}do{} while (true)", options: [override("do", NEITHER)] },
         "{}\ndo\n{} while (true)",
         { code: "{}\ndo\n{}while(true)", options: [NEITHER] },
-
-        // not conflict with `block-spacing`
-        "{do {} while (true)}",
-        { code: "{ do{}while(true) }", options: [NEITHER] },
 
         // not conflict with `semi-spacing`
         ";do; while (true)",
@@ -638,14 +594,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}for(var foo in obj) {}", options: [override("for", NEITHER)] },
         { code: "{}for(var foo of list) {}", options: [override("for", NEITHER)], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `block-spacing`
-        "{for (;;) {} }",
-        "{for (var foo in obj) {} }",
-        { code: "{for (var foo of list) {} }", parserOptions: { ecmaVersion: 6 } },
-        { code: "{ for(;;) {} }", options: [NEITHER] },
-        { code: "{ for(var foo in obj) {} }", options: [NEITHER] },
-        { code: "{ for(var foo of list) {} }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `semi-spacing`
         ";for (;;) {}",
         ";for (var foo in obj) {}",
@@ -685,10 +633,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}function foo() {}", options: [NEITHER] },
         { code: "{} function foo() {}", options: [override("function", BOTH)] },
         { code: "{}function foo() {}", options: [override("function", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "{function foo() {} }",
-        { code: "{ function foo() {} }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,function() {})",
@@ -779,10 +723,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}if(a) {}", options: [override("if", NEITHER)] },
         { code: "if(a) {} else if(a) {}", options: [override("if", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "{if (a) {} }",
-        { code: "{ if(a) {} }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";if (a) {}",
         { code: "; if(a) {}", options: [NEITHER] },
@@ -836,10 +776,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} let [a] = b", options: [override("let", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "{}let[a] = b", options: [override("let", NEITHER)], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `block-spacing`
-        { code: "{let [a] = b }", parserOptions: { ecmaVersion: 6 } },
-        { code: "{ let[a] = b }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `semi-spacing`
         { code: ";let [a] = b", parserOptions: { ecmaVersion: 6 } },
         { code: "; let[a] = b", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -852,10 +788,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}new foo()", options: [NEITHER] },
         { code: "{} new foo()", options: [override("new", BOTH)] },
         { code: "{}new foo()", options: [override("new", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "{new foo() }",
-        { code: "{ new foo() }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,new foo())",
@@ -931,10 +863,6 @@ ruleTester.run("keyword-spacing", rule, {
         "function foo() {\nreturn\n}",
         { code: "function foo() {\nreturn\n}", options: [NEITHER] },
 
-        // not conflict with `block-spacing`
-        "function foo() {return}",
-        { code: "function foo() { return }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         "function foo() { ;return; }",
         { code: "function foo() { ; return ; }", options: [NEITHER] },
@@ -1002,10 +930,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A extends B { a() { {} super[b](); } }", options: [override("super", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { a() { {}super[b](); } }", options: [override("super", NEITHER)], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `block-spacing`
-        { code: "class A extends B { constructor() {super()} }", parserOptions: { ecmaVersion: 6 } },
-        { code: "class A extends B { constructor() { super() } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `comma-spacing`
         { code: "class A extends B { constructor() { (0,super()) } }", parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { constructor() { (0, super()) } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -1061,10 +985,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} switch (a) {}", options: [override("switch", BOTH)] },
         { code: "{}switch(a) {}", options: [override("switch", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "{switch (a) {} }",
-        { code: "{ switch(a) {} }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";switch (a) {}",
         { code: "; switch(a) {}", options: [NEITHER] },
@@ -1087,10 +1007,6 @@ ruleTester.run("keyword-spacing", rule, {
             options: [override("this", { before: false })],
             parser: fixtureParser("keyword-spacing", "prefix-cast-operator-no-space")
         },
-
-        // not conflict with `block-spacing`
-        "{this}",
-        { code: "{ this }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,this)",
@@ -1153,10 +1069,6 @@ ruleTester.run("keyword-spacing", rule, {
         "function foo() {\nthrow a\n}",
         { code: "function foo() {\nthrow a\n}", options: [NEITHER] },
 
-        // not conflict with `block-spacing`
-        "function foo() {throw a }",
-        { code: "function foo() { throw a }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         "function foo() { ;throw a }",
         { code: "function foo() { ; throw a }", options: [NEITHER] },
@@ -1170,10 +1082,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} try {}finally{}", options: [override("try", BOTH)] },
         { code: "{}try{} finally {}", options: [override("try", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "{try {} finally {}}",
-        { code: "{ try{}finally{}}", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";try {} finally {}",
         { code: "; try{}finally{}", options: [NEITHER] },
@@ -1186,10 +1094,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}typeof foo", options: [NEITHER] },
         { code: "{} typeof foo", options: [override("typeof", BOTH)] },
         { code: "{}typeof foo", options: [override("typeof", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "{typeof foo }",
-        { code: "{ typeof foo }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,typeof foo)",
@@ -1245,10 +1149,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}var[a] = b", options: [override("var", NEITHER)], parserOptions: { ecmaVersion: 6 } },
         "for (var foo in [1, 2, 3]) {}",
 
-        // not conflict with `block-spacing`
-        "{var a = b }",
-        { code: "{ var a = b }", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";var a = b",
         { code: "; var a = b", options: [NEITHER] },
@@ -1261,10 +1161,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}void foo", options: [NEITHER] },
         { code: "{} void foo", options: [override("void", BOTH)] },
         { code: "{}void foo", options: [override("void", NEITHER)] },
-
-        // not conflict with `block-spacing`
-        "{void foo }",
-        { code: "{ void foo }", options: [NEITHER] },
 
         // not conflict with `comma-spacing`
         "(0,void foo)",
@@ -1325,10 +1221,6 @@ ruleTester.run("keyword-spacing", rule, {
         "do {}\nwhile (a)",
         { code: "do{}\nwhile(a)", options: [NEITHER] },
 
-        // not conflict with `block-spacing`
-        "{while (a) {}}",
-        { code: "{ while(a) {}}", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";while (a);",
         "do;while (a);",
@@ -1344,10 +1236,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} with (obj) {}", options: [override("with", BOTH)] },
         { code: "{}with(obj) {}", options: [override("with", NEITHER)] },
 
-        // not conflict with `block-spacing`
-        "{with (obj) {}}",
-        { code: "{ with(obj) {}}", options: [NEITHER] },
-
         // not conflict with `semi-spacing`
         ";with (obj) {}",
         { code: "; with(obj) {}", options: [NEITHER] },
@@ -1360,14 +1248,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "function* foo() { {}yield foo }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {} yield foo }", options: [override("yield", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {}yield foo }", options: [override("yield", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        /*
-         * This is invalid syntax: https://github.com/eslint/eslint/issues/5405
-         * {code: "function* foo() { (() => yield foo) }", options: [NEITHER], parserOptions: {ecmaVersion: 6}},
-         * not conflict with `block-spacing`
-         */
-        { code: "function* foo() {yield}", parserOptions: { ecmaVersion: 6 } },
-        { code: "function* foo() { yield }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `comma-spacing`
         { code: "function* foo() { (0,yield foo) }", parserOptions: { ecmaVersion: 6 } },

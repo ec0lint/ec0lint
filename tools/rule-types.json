@@ -1,6 +1,4 @@
 {
-    "block-scoped-var": "suggestion",
-    "block-spacing": "layout",
     "brace-style": "layout",
     "callback-return": "suggestion",
     "camelcase": "suggestion",

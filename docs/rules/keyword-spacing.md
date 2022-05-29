@@ -63,9 +63,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `block-spacing`
-{function foo() {}}
-
 // Avoid conflict with `comma-spacing`
 let a = [100,this.foo, this.bar];
 
