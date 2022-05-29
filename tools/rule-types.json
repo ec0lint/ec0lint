@@ -1,6 +1,4 @@
 {
-    "consistent-return": "suggestion",
-    "consistent-this": "suggestion",
     "constructor-super": "problem",
     "curly": "suggestion",
     "default-case": "suggestion",
