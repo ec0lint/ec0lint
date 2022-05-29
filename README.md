@@ -26,8 +26,7 @@ Current features:
 If a font format isn't WOFF, up to 80% more space will be taken. Let's change them all to WOFF!
 2) Replacement of heavy libraries functions
 Heavy library calls can be replaced by plain JS code. In the case of axios - when all axios functions will be removed from the code, the axios module can be deleted, saving 400 kB of space. The rule works on axios, got, request, make-fetch-happen, superagent, needle, simple-get, lodash, moment js, and date fns.
-3) Font display
-This function checks if all texts have the 'font-display' property set to 'block' or 'swap'. Texts with fonts downloaded on the fly won't be shown until a user will be able to see them.
+3) ?
 
 Features under development:
 1) Lazy-loading
