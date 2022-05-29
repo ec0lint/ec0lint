@@ -1,5 +1,4 @@
 {
-    "constructor-super": "problem",
     "curly": "suggestion",
     "default-case": "suggestion",
     "default-case-last": "suggestion",
