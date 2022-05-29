@@ -1,5 +1,4 @@
 {
-    "callback-return": "suggestion",
     "camelcase": "suggestion",
     "capitalized-comments": "suggestion",
     "class-methods-use-this": "suggestion",
