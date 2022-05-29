@@ -1,4 +1,3 @@
-/* ec0lint dot-notation: 2 */
 /* ec0lint indent: [2, 2] */
 /* ec0lint no-extra-parens: 2 */
 /* ec0lint no-implicit-coercion: 2 */
@@ -6,7 +5,6 @@
 /* ec0lint quotes: [2, "single"] */
 /* ec0lint semi: 2 */
 /* ec0lint semi-spacing: 2 */
-/* ec0lint space-before-function-paren: 2 */
 /* ec0lint space-before-blocks: 1 */
 
 /*
@@ -16,7 +14,7 @@
 
 module.exports = leftpad;
 
-function leftpad (str, len, ch){
+function leftpad(str, len, ch) {
   str = String(str);
 
   var i = -1;

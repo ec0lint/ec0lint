@@ -1,6 +1,4 @@
 {
-    "dot-location": "layout",
-    "dot-notation": "suggestion",
     "eol-last": "layout",
     "eqeqeq": "suggestion",
     "for-direction": "problem",
