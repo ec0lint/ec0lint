@@ -4,7 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    camelcase: "error"
     class-methods-use-this: "error"
     comma-dangle: "error"
     comma-spacing: "error"

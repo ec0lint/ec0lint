@@ -1,5 +1,4 @@
 {
-    "camelcase": "suggestion",
     "capitalized-comments": "suggestion",
     "class-methods-use-this": "suggestion",
     "comma-dangle": "layout",
