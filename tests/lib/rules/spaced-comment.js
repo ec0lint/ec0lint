@@ -159,7 +159,7 @@ ruleTester.run("spaced-comment", rule, {
             options: ["always", { markers: ["ec0lint-env"] }]
         },
         {
-            code: "/*ec0lint eqeqeq:0*/",
+            code: "/*ec0lint lighter-http:0*/",
             options: ["always", { markers: ["ec0lint"] }]
         },
         {

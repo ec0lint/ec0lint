@@ -1634,140 +1634,6 @@ describe("ec0lint", () => {
             );
         });
 
-        describe("Fix Mode", () => {
-            it("should return fixed text on multiple files when in fix mode", async () => {
-
-                /**
-                 * Converts CRLF to LF in output.
-                 * This is a workaround for git's autocrlf option on Windows.
-                 * @param {Object} result A result object to convert.
-                 * @returns {void}
-                 */
-                function convertCRLF(result) {
-                    if (result && result.output) {
-                        result.output = result.output.replace(/\r\n/gu, "\n");
-                    }
-                }
-
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    overrideConfig: {
-                        rules: {
-                            semi: 2,
-                            quotes: [2, "double"],
-                            eqeqeq: 2,
-                            "no-undef": 2,
-                            "space-infix-ops": 2
-                        }
-                    }
-                });
-                const results = await eslint.lintFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                results.forEach(convertCRLF);
-                assert.deepStrictEqual(results, [
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/multipass.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "true ? \"yes\" : \"no\";\n",
-                        usedDeprecatedRules: []
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/ok.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        usedDeprecatedRules: []
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-eqeqeq.js")),
-                        messages: [
-                            {
-                                column: 9,
-                                line: 2,
-                                endColumn: 11,
-                                endLine: 2,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\";\nif (msg == \"hi\") {\n\n}\n",
-                        usedDeprecatedRules: []
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
-                        messages: [
-                            {
-                                column: 18,
-                                line: 1,
-                                endColumn: 21,
-                                endLine: 1,
-                                messageId: "undef",
-                                message: "'foo' is not defined.",
-                                nodeType: "Identifier",
-                                ruleId: "no-undef",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\" + foo;\n",
-                        usedDeprecatedRules: []
-                    }
-                ]);
-            });
-
-            it("should run autofix even if files are cached without autofix results", async () => {
-                const baseOptions = {
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    overrideConfig: {
-                        rules: {
-                            semi: 2,
-                            quotes: [2, "double"],
-                            eqeqeq: 2,
-                            "no-undef": 2,
-                            "space-infix-ops": 2
-                        }
-                    }
-                };
-
-                eslint = new ESLint(Object.assign({}, baseOptions, { cache: true, fix: false }));
-
-                // Do initial lint run and populate the cache file
-                await eslint.lintFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                eslint = new ESLint(Object.assign({}, baseOptions, { cache: true, fix: true }));
-                const results = await eslint.lintFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                assert(results.some(result => result.output));
-            });
-        });
-
         // These tests have to do with https://github.com/eslint/eslint/issues/963
 
         describe("configuration hierarchy", () => {
@@ -3464,7 +3330,7 @@ describe("ec0lint", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "test.js": "/* ec0lint-disable eqeqeq */",
+                        "test.js": "/* ec0lint-disable lighter-http */",
                         ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
@@ -3479,7 +3345,7 @@ describe("ec0lint", () => {
 
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
             });
 
             describe("the runtime option overrides config files.", () => {
@@ -3487,7 +3353,7 @@ describe("ec0lint", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3510,7 +3376,7 @@ describe("ec0lint", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3528,7 +3394,7 @@ describe("ec0lint", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].severity, 2);
-                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                 });
             });
         });
@@ -5596,217 +5462,6 @@ describe("ec0lint", () => {
                     path.join(root, "foo/test.js"),
                     path.join(root, "foo/test.txt"),
                     path.join(root, "test.js")
-                ]);
-            });
-        });
-    });
-
-    describe("'ignorePatterns', 'overrides[].files', and 'overrides[].excludedFiles' of the configuration that the '--config' option provided should be resolved from CWD.", () => {
-        const root = getFixturePath("cli-engine/config-and-overrides-files");
-
-        describe("if { files: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": {
-                        overrides: [
-                            {
-                                files: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    },
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'lintFiles()' with 'foo/test.js' should use the override entry.", async () => {
-                const engine = new ESLint({
-                    overrideConfigFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const results = await engine.lintFiles("foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(getPath(), "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        usedDeprecatedRules: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'lintFiles()' with 'node_modules/myconf/foo/test.js' should NOT use the override entry.", async () => {
-                const engine = new ESLint({
-                    overrideConfigFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: root,
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const results = await engine.lintFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be no errors because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(getPath(), "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        usedDeprecatedRules: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { files: '*', excludedFiles: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        overrides: [
-                            {
-                                files: "*",
-                                excludedFiles: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'lintFiles()' with 'foo/test.js' should NOT use the override entry.", async () => {
-                const engine = new ESLint({
-                    overrideConfigFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: root,
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const results = await engine.lintFiles("foo/test.js");
-
-                // Expected to be no errors because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(getPath(), "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        usedDeprecatedRules: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'lintFiles()' with 'node_modules/myconf/foo/test.js' should use the override entry.", async () => {
-                const engine = new ESLint({
-                    overrideConfigFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: root,
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const results = await engine.lintFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(getPath(), "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        usedDeprecatedRules: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { ignorePatterns: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
-                        rules: {
-                            eqeqeq: "error"
-                        }
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'lintFiles()' with '**/*.js' should iterate 'node_modules/myconf/foo/test.js' but not 'foo/test.js'.", async () => {
-                const engine = new ESLint({
-                    overrideConfigFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    useEc0lintrc: false
-                });
-                const files = (await engine.lintFiles("**/*.js"))
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(files, [
-                    path.join(root, "node_modules/myconf/foo/test.js")
                 ]);
             });
         });

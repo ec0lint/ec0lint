@@ -699,7 +699,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[4].suppressedMessages.length, 0);
         });
 
-
         it("should return the total number of errors when given multiple files", () => {
 
             engine = new CLIEngine({
@@ -1235,7 +1234,6 @@ describe("CLIEngine", () => {
                     rules: {
                         semi: 2,
                         quotes: [2, "double"],
-                        eqeqeq: 2,
                         "no-undef": 2,
                         "space-infix-ops": 2
                     }
@@ -1268,21 +1266,9 @@ describe("CLIEngine", () => {
                     },
                     {
                         filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-eqeqeq.js")),
-                        messages: [
-                            {
-                                column: 9,
-                                line: 2,
-                                endColumn: 11,
-                                endLine: 2,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
+                        messages: [],
                         suppressedMessages: [],
-                        errorCount: 1,
+                        errorCount: 0,
                         warningCount: 0,
                         fatalErrorCount: 0,
                         fixableErrorCount: 0,
@@ -1313,7 +1299,7 @@ describe("CLIEngine", () => {
                         output: "var msg = \"hi\" + foo;\n"
                     }
                 ]);
-                assert.strictEqual(report.errorCount, 2);
+                assert.strictEqual(report.errorCount, 1);
                 assert.strictEqual(report.warningCount, 0);
                 assert.strictEqual(report.fixableErrorCount, 0);
                 assert.strictEqual(report.fixableWarningCount, 0);
@@ -1326,7 +1312,6 @@ describe("CLIEngine", () => {
                     rules: {
                         semi: 2,
                         quotes: [2, "double"],
-                        eqeqeq: 2,
                         "no-undef": 2,
                         "space-infix-ops": 2
                     }
@@ -3073,7 +3058,7 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "test.js": "/* ec0lint-disable eqeqeq */",
+                        "test.js": "/* ec0lint-disable lighter-http */",
                         ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
@@ -3087,7 +3072,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
@@ -3096,7 +3081,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3120,7 +3105,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3138,7 +3123,7 @@ describe("CLIEngine", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].severity, 2);
-                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
             });
@@ -5300,214 +5285,6 @@ describe("CLIEngine", () => {
                     path.join(root, "foo/test.js"),
                     path.join(root, "foo/test.txt"),
                     path.join(root, "test.js")
-                ]);
-            });
-        });
-    });
-
-    describe("'ignorePatterns', 'overrides[].files', and 'overrides[].excludedFiles' of the configuration that the '--config' option provided should be resolved from CWD.", () => {
-        const root = getFixturePath("cli-engine/config-and-overrides-files");
-
-        describe("if { files: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        overrides: [
-                            {
-                                files: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with 'foo/test.js' should use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(root, "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should NOT use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be no errors because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(root, "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { files: '*', excludedFiles: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        overrides: [
-                            {
-                                files: "*",
-                                excludedFiles: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with 'foo/test.js' should NOT use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("foo/test.js");
-
-                // Expected to be no errors because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(root, "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(root, "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { ignorePatterns: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
-                        rules: {
-                            eqeqeq: "error"
-                        }
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with '**/*.js' should iterate 'node_modules/myconf/foo/test.js' but not 'foo/test.js'.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    useEc0lintrc: false
-                });
-                const files = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(files, [
-                    path.join(root, "node_modules/myconf/foo/test.js")
                 ]);
             });
         });

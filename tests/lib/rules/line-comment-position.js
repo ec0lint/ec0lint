@@ -23,7 +23,7 @@ ruleTester.run("line-comment-position", rule, {
         "// valid comment\n1 + 1;",
         "/* block comments are skipped */\n1 + 1;",
         "1 + 1; /* block comments are skipped */",
-        "1 + 1; /* ec0lint eqeqeq: 'error' */",
+        "1 + 1; /* ec0lint lighter-http: 'error' */",
         "1 + 1; /* ec0lint-disable */",
         "1 + 1; /* ec0lint-enable */",
         "1 + 1; // ec0lint-disable-line",
