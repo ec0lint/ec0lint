@@ -198,4 +198,3 @@ If you don't want to enforce line breaks between arguments, don't enable this ru
 * [function-paren-newline](function-paren-newline.md)
 * [func-call-spacing](func-call-spacing.md)
 * [object-property-newline](object-property-newline.md)
-* [array-element-newline](array-element-newline.md)

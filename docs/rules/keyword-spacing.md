@@ -63,10 +63,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `array-bracket-spacing`
-let a = [this];
-let b = [function() {}];
-
 // Avoid conflict with `arrow-spacing`
 let a = ()=> this.foo;
 
@@ -160,9 +156,6 @@ if (foo) {
 } else {
     //...
 }
-
-// Avoid conflict with `array-bracket-spacing`
-let a = [this];
 
 // Avoid conflict with `arrow-spacing`
 let a = ()=> this.foo;

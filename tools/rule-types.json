@@ -1,9 +1,4 @@
 {
-    "accessor-pairs": "suggestion",
-    "array-bracket-newline": "layout",
-    "array-bracket-spacing": "layout",
-    "array-callback-return": "problem",
-    "array-element-newline": "layout",
     "arrow-body-style": "suggestion",
     "arrow-parens": "layout",
     "arrow-spacing": "layout",

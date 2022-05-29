@@ -289,6 +289,5 @@ You can turn this rule off if you are not concerned with the consistency of spac
 
 ## Related Rules
 
-* [array-bracket-spacing](array-bracket-spacing.md)
 * [object-curly-spacing](object-curly-spacing.md)
 * [computed-property-spacing](computed-property-spacing.md)

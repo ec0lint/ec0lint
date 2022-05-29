@@ -16,7 +16,6 @@ This rule enforces consistent spacing before and after commas in variable declar
 This rule does not apply in an `ArrayExpression` or `ArrayPattern` in either of the following cases:
 
 * adjacent null elements
-* an initial null element, to avoid conflicts with the [`array-bracket-spacing`](array-bracket-spacing.md) rule
 
 ## Options
 
@@ -63,7 +62,6 @@ Example of **correct** code for this rule with initial null element for the defa
 
 ```js
 /*eslint comma-spacing: ["error", { "before": false, "after": true }]*/
-/*eslint array-bracket-spacing: ["error", "always"]*/
 
 var arr = [ , 2, 3 ]
 ```
@@ -103,7 +101,6 @@ Examples of **correct** code for this rule with initial null element for the `{ 
 
 ```js
 /*eslint comma-spacing: ["error", { "before": true, "after": false }]*/
-/*eslint array-bracket-spacing: ["error", "never"]*/
 
 var arr = [,2 ,3]
 ```
@@ -114,7 +111,6 @@ If your project will not be following a consistent comma-spacing pattern, turn t
 
 ## Related Rules
 
-* [array-bracket-spacing](array-bracket-spacing.md)
 * [comma-style](comma-style.md)
 * [space-in-brackets](space-in-brackets.md) (deprecated)
 * [space-in-parens](space-in-parens.md)

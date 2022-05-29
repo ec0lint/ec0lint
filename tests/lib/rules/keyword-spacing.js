@@ -195,10 +195,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A {a(){} async [b]() {}}", options: [override("async", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "class A {a(){}async[b]() {}}", options: [override("async", NEITHER)], parserOptions: { ecmaVersion: 8 } },
 
-        // not conflict with `array-bracket-spacing`
-        { code: "[async function foo() {}]", parserOptions: { ecmaVersion: 8 } },
-        { code: "[ async function foo() {}]", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
-
         // not conflict with `arrow-spacing`
         { code: "() =>async function foo() {}", parserOptions: { ecmaVersion: 8 } },
         { code: "() => async function foo() {}", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
@@ -261,10 +257,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "async function wrap() { {}await +1 }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { {} await +1 }", options: [override("await", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { {}await +1 }", options: [override("await", NEITHER)], parserOptions: { ecmaVersion: 8 } },
-
-        // not conflict with `array-bracket-spacing`
-        { code: "async function wrap() { [await a] }", parserOptions: { ecmaVersion: 8 } },
-        { code: "async function wrap() { [ await a] }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
 
         // not conflict with `arrow-spacing`
         { code: "async () =>await a", parserOptions: { ecmaVersion: 8 } },
@@ -375,10 +367,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "(class{})", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "{} class Bar {}", options: [override("class", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "{}class Bar {}", options: [override("class", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `array-bracket-spacing`
-        { code: "[class {}]", parserOptions: { ecmaVersion: 6 } },
-        { code: "[ class{}]", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `arrow-spacing`
         { code: "() =>class {}", parserOptions: { ecmaVersion: 6 } },
@@ -515,10 +503,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}delete foo.a", options: [NEITHER] },
         { code: "{} delete foo.a", options: [override("delete", BOTH)] },
         { code: "{}delete foo.a", options: [override("delete", NEITHER)] },
-
-        // not conflict with `array-bracket-spacing`
-        "[delete foo.a]",
-        { code: "[ delete foo.a]", options: [NEITHER] },
 
         // not conflict with `arrow-spacing`
         { code: "(() =>delete foo.a)", parserOptions: { ecmaVersion: 6 } },
@@ -718,10 +702,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} function foo() {}", options: [override("function", BOTH)] },
         { code: "{}function foo() {}", options: [override("function", NEITHER)] },
 
-        // not conflict with `array-bracket-spacing`
-        "[function() {}]",
-        { code: "[ function() {}]", options: [NEITHER] },
-
         // not conflict with `arrow-spacing`
         { code: "(() =>function() {})", parserOptions: { ecmaVersion: 6 } },
         { code: "(() => function() {})", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -893,10 +873,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} new foo()", options: [override("new", BOTH)] },
         { code: "{}new foo()", options: [override("new", NEITHER)] },
 
-        // not conflict with `array-bracket-spacing`
-        "[new foo()]",
-        { code: "[ new foo()]", options: [NEITHER] },
-
         // not conflict with `arrow-spacing`
         { code: "(() =>new foo())", parserOptions: { ecmaVersion: 6 } },
         { code: "(() => new foo())", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -1050,10 +1026,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A extends B { a() { {} super[b](); } }", options: [override("super", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { a() { {}super[b](); } }", options: [override("super", NEITHER)], parserOptions: { ecmaVersion: 6 } },
 
-        // not conflict with `array-bracket-spacing`
-        { code: "class A extends B { constructor() { [super()]; } }", parserOptions: { ecmaVersion: 6 } },
-        { code: "class A extends B { constructor() { [ super() ]; } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `arrow-spacing`
         { code: "class A extends B { constructor() { () =>super(); } }", parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { constructor() { () => super(); } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -1143,10 +1115,6 @@ ruleTester.run("keyword-spacing", rule, {
             options: [override("this", { before: false })],
             parser: fixtureParser("keyword-spacing", "prefix-cast-operator-no-space")
         },
-
-        // not conflict with `array-bracket-spacing`
-        "[this]",
-        { code: "[ this ]", options: [NEITHER] },
 
         // not conflict with `arrow-spacing`
         { code: "(() =>this)", parserOptions: { ecmaVersion: 6 } },
@@ -1251,10 +1219,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} typeof foo", options: [override("typeof", BOTH)] },
         { code: "{}typeof foo", options: [override("typeof", NEITHER)] },
 
-        // not conflict with `array-bracket-spacing`
-        "[typeof foo]",
-        { code: "[ typeof foo]", options: [NEITHER] },
-
         // not conflict with `arrow-spacing`
         { code: "(() =>typeof foo)", parserOptions: { ecmaVersion: 6 } },
         { code: "(() => typeof foo)", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
@@ -1333,10 +1297,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}void foo", options: [NEITHER] },
         { code: "{} void foo", options: [override("void", BOTH)] },
         { code: "{}void foo", options: [override("void", NEITHER)] },
-
-        // not conflict with `array-bracket-spacing`
-        "[void foo]",
-        { code: "[ void foo]", options: [NEITHER] },
 
         // not conflict with `arrow-spacing`
         { code: "(() =>void foo)", parserOptions: { ecmaVersion: 6 } },
@@ -1440,10 +1400,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "function* foo() { {}yield foo }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {} yield foo }", options: [override("yield", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {}yield foo }", options: [override("yield", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `array-bracket-spacing`
-        { code: "function* foo() { [yield] }", parserOptions: { ecmaVersion: 6 } },
-        { code: "function* foo() { [ yield ] }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         /*
          * This is invalid syntax: https://github.com/eslint/eslint/issues/5405

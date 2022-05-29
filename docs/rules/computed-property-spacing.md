@@ -176,6 +176,5 @@ You can turn this rule off if you are not concerned with the consistency of comp
 
 ## Related Rules
 
-* [array-bracket-spacing](array-bracket-spacing.md)
 * [comma-spacing](comma-spacing.md)
 * [space-in-parens](space-in-parens.md)
