@@ -4,9 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    comma-dangle: "error"
-    comma-spacing: "error"
-    comma-style: ["error", "last"]
     computed-property-spacing: "error"
     consistent-return: "error"
     curly: ["error", "all"]

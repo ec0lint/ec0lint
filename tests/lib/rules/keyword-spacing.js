@@ -195,10 +195,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A {a(){} async [b]() {}}", options: [override("async", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "class A {a(){}async[b]() {}}", options: [override("async", NEITHER)], parserOptions: { ecmaVersion: 8 } },
 
-        // not conflict with `comma-spacing`
-        { code: "(0,async function foo() {})", parserOptions: { ecmaVersion: 8 } },
-        { code: "(0, async function foo() {})", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
-
         // not conflict with `computed-property-spacing`
         { code: "a[async function foo() {}]", parserOptions: { ecmaVersion: 8 } },
         { code: "({[async function foo() {}]: 0})", parserOptions: { ecmaVersion: 8 } },
@@ -249,10 +245,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "async function wrap() { {}await +1 }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { {} await +1 }", options: [override("await", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "async function wrap() { {}await +1 }", options: [override("await", NEITHER)], parserOptions: { ecmaVersion: 8 } },
-
-        // not conflict with `comma-spacing`
-        { code: "async function wrap() { (0,await a) }", parserOptions: { ecmaVersion: 8 } },
-        { code: "async function wrap() { (0, await a) }", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
 
         // not conflict with `computed-property-spacing`
         { code: "async function wrap() { a[await a] }", parserOptions: { ecmaVersion: 8 } },
@@ -343,10 +335,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "(class{})", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "{} class Bar {}", options: [override("class", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "{}class Bar {}", options: [override("class", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `comma-spacing`
-        { code: "(0,class {})", parserOptions: { ecmaVersion: 6 } },
-        { code: "(0, class{})", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `computed-property-spacing`
         { code: "a[class {}]", parserOptions: { ecmaVersion: 6 } },
@@ -455,10 +443,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}delete foo.a", options: [NEITHER] },
         { code: "{} delete foo.a", options: [override("delete", BOTH)] },
         { code: "{}delete foo.a", options: [override("delete", NEITHER)] },
-
-        // not conflict with `comma-spacing`
-        "(0,delete foo.a)",
-        { code: "(0, delete foo.a)", options: [NEITHER] },
 
         // not conflict with `computed-property-spacing`
         "a[delete foo.a]",
@@ -634,10 +618,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} function foo() {}", options: [override("function", BOTH)] },
         { code: "{}function foo() {}", options: [override("function", NEITHER)] },
 
-        // not conflict with `comma-spacing`
-        "(0,function() {})",
-        { code: "(0, function() {})", options: [NEITHER] },
-
         // not conflict with `computed-property-spacing`
         "a[function() {}]",
         { code: "({[function() {}]: 0})", parserOptions: { ecmaVersion: 6 } },
@@ -701,10 +681,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A { a() {}get[b]() {} }", options: [override("get", NEITHER)], parserOptions: { ecmaVersion: 6 } },
         { code: "class A { a; get #b() {} }", parserOptions: { ecmaVersion: 2022 } },
         { code: "class A { a;get#b() {} }", options: [NEITHER], parserOptions: { ecmaVersion: 2022 } },
-
-        // not conflict with `comma-spacing`
-        { code: "({ a,get [b]() {} })", parserOptions: { ecmaVersion: 6 } },
-        { code: "({ a, get[b]() {} })", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `semi-spacing`
         { code: "class A { ;get #b() {} }", parserOptions: { ecmaVersion: 2022 } },
@@ -788,10 +764,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}new foo()", options: [NEITHER] },
         { code: "{} new foo()", options: [override("new", BOTH)] },
         { code: "{}new foo()", options: [override("new", NEITHER)] },
-
-        // not conflict with `comma-spacing`
-        "(0,new foo())",
-        { code: "(0, new foo())", options: [NEITHER] },
 
         // not conflict with `computed-property-spacing`
         "a[new foo()]",
@@ -883,10 +855,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A { a; set #b(value) {} }", parserOptions: { ecmaVersion: 2022 } },
         { code: "class A { a;set#b(value) {} }", options: [NEITHER], parserOptions: { ecmaVersion: 2022 } },
 
-        // not conflict with `comma-spacing`
-        { code: "({ a,set [b](value) {} })", parserOptions: { ecmaVersion: 6 } },
-        { code: "({ a, set[b](value) {} })", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `semi-spacing`
         { code: "class A { ;set #b(value) {} }", parserOptions: { ecmaVersion: 2022 } },
         { code: "class A { ; set#b(value) {} }", options: [NEITHER], parserOptions: { ecmaVersion: 2022 } },
@@ -929,10 +897,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A extends B { a() { {}super[b](); } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { a() { {} super[b](); } }", options: [override("super", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "class A extends B { a() { {}super[b](); } }", options: [override("super", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `comma-spacing`
-        { code: "class A extends B { constructor() { (0,super()) } }", parserOptions: { ecmaVersion: 6 } },
-        { code: "class A extends B { constructor() { (0, super()) } }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `computed-property-spacing`
         { code: "class A extends B { constructor() { ({[super()]: 0}) } }", parserOptions: { ecmaVersion: 6 } },
@@ -1007,10 +971,6 @@ ruleTester.run("keyword-spacing", rule, {
             options: [override("this", { before: false })],
             parser: fixtureParser("keyword-spacing", "prefix-cast-operator-no-space")
         },
-
-        // not conflict with `comma-spacing`
-        "(0,this)",
-        { code: "(0, this)", options: [NEITHER] },
 
         // not conflict with `computed-property-spacing`
         "a[this]",
@@ -1095,10 +1055,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} typeof foo", options: [override("typeof", BOTH)] },
         { code: "{}typeof foo", options: [override("typeof", NEITHER)] },
 
-        // not conflict with `comma-spacing`
-        "(0,typeof foo)",
-        { code: "(0, typeof foo)", options: [NEITHER] },
-
         // not conflict with `computed-property-spacing`
         "a[typeof foo]",
         { code: "({[typeof foo]: 0})", parserOptions: { ecmaVersion: 6 } },
@@ -1161,10 +1117,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{}void foo", options: [NEITHER] },
         { code: "{} void foo", options: [override("void", BOTH)] },
         { code: "{}void foo", options: [override("void", NEITHER)] },
-
-        // not conflict with `comma-spacing`
-        "(0,void foo)",
-        { code: "(0, void foo)", options: [NEITHER] },
 
         // not conflict with `computed-property-spacing`
         "a[void foo]",
@@ -1248,10 +1200,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "function* foo() { {}yield foo }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {} yield foo }", options: [override("yield", BOTH)], parserOptions: { ecmaVersion: 6 } },
         { code: "function* foo() { {}yield foo }", options: [override("yield", NEITHER)], parserOptions: { ecmaVersion: 6 } },
-
-        // not conflict with `comma-spacing`
-        { code: "function* foo() { (0,yield foo) }", parserOptions: { ecmaVersion: 6 } },
-        { code: "function* foo() { (0, yield foo) }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `computed-property-spacing`
         { code: "function* foo() { a[yield] }", parserOptions: { ecmaVersion: 6 } },

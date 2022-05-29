@@ -63,9 +63,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `comma-spacing`
-let a = [100,this.foo, this.bar];
-
 // Avoid conflict with `computed-property-spacing`
 obj[this.foo] = 0;
 
@@ -150,9 +147,6 @@ if (foo) {
 } else {
     //...
 }
-
-// Avoid conflict with `comma-spacing`
-let a = [100, this.foo, this.bar];
 
 // Avoid conflict with `computed-property-spacing`
 obj[this.foo] = 0;

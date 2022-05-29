@@ -332,7 +332,3 @@ answer = everything
 ## When Not To Use It
 
 If your project will not be using a common operator line break style, turn this rule off.
-
-## Related Rules
-
-* [comma-style](comma-style.md)

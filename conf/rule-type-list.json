@@ -45,12 +45,6 @@
                 ]
             },
             {
-                "removed": "no-comma-dangle",
-                "replacedBy": [
-                    "comma-dangle"
-                ]
-            },
-            {
                 "removed": "no-empty-class",
                 "replacedBy": [
                     "no-empty-character-class"

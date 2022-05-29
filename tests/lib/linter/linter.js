@@ -1680,7 +1680,7 @@ describe("Linter", () => {
 
             code.forEach(item => {
                 config.rules[item] = 1;
-                newRules[item] = function(context) {
+                newRules[item] = function (context) {
                     return {
                         Literal(node) {
                             context.report(node, "message");
@@ -3397,20 +3397,6 @@ var a = "test2";
         });
     });
 
-    describe("when using a rule which has been replaced", () => {
-        const code = TEST_CODE;
-
-        it("should report the new rule", () => {
-            const results = linter.verify(code, { rules: { "no-comma-dangle": 2 } });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(results[0].ruleId, "no-comma-dangle");
-            assert.strictEqual(results[0].message, "Rule 'no-comma-dangle' was removed and replaced by: comma-dangle");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
     describe("when calling getRules", () => {
         it("should return all loaded rules", () => {
             const rules = linter.getRules();
@@ -3821,7 +3807,7 @@ var a = "test2";
 
         it("should assign process.cwd() to it if cwd is undefined", () => {
             let spy;
-            const linterWithOption = new Linter({ });
+            const linterWithOption = new Linter({});
 
             linterWithOption.defineRule("checker", context => {
 
@@ -6234,7 +6220,7 @@ var a = "test2";
                         MetaProperty: checkEmpty
                     };
 
-                    rule[type] = function(node) {
+                    rule[type] = function (node) {
                         const expectedNames = expectedNamesList.shift();
                         const variables = context.getDeclaredVariables(node);
 
@@ -10135,7 +10121,7 @@ describe("Linter with FlatConfigArray", () => {
                                             MetaProperty: checkEmpty
                                         };
 
-                                        rule[type] = function(node) {
+                                        rule[type] = function (node) {
                                             const expectedNames = expectedNamesList.shift();
                                             const variables = context.getDeclaredVariables(node);
 
@@ -14608,19 +14594,6 @@ var a = "test2";
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
             });
-
-            describe("when using a rule which has been replaced", () => {
-                const code = TEST_CODE;
-
-                it("should report the new rule", () => {
-
-                    assert.throws(() => {
-                        linter.verify(code, { rules: { "no-comma-dangle": 2 } });
-                    }, /Key "rules": Key "no-comma-dangle": Rule "no-comma-dangle" was removed and replaced by "comma-dangle"/u);
-
-                });
-            });
-
         });
     });
 
@@ -14701,7 +14674,7 @@ var a = "test2";
     describe("defineRule()", () => {
         it("should throw an error when called in flat config mode", () => {
             assert.throws(() => {
-                linter.defineRule("foo", () => {});
+                linter.defineRule("foo", () => { });
             }, /This method cannot be used with flat config/u);
         });
     });
