@@ -98,7 +98,6 @@ function foo() {
 
 ## Related Rules
 
-* [complexity](complexity.md)
 * [max-len](max-len.md)
 * [max-lines](max-lines.md)
 * [max-lines-per-function](max-lines-per-function.md)

@@ -192,7 +192,6 @@ You can turn this rule off if you are not concerned with the number of lines in 
 
 ## Related Rules
 
-* [complexity](complexity.md)
 * [max-depth](max-depth.md)
 * [max-lines](max-lines.md)
 * [max-nested-callbacks](max-nested-callbacks.md)

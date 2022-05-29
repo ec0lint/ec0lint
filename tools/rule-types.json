@@ -1,5 +1,4 @@
 {
-    "complexity": "suggestion",
     "computed-property-spacing": "layout",
     "consistent-return": "suggestion",
     "consistent-this": "suggestion",

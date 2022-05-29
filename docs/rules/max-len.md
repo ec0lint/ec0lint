@@ -156,7 +156,6 @@ var dep = require('really/really/really/really/really/really/really/really/long/
 
 ## Related Rules
 
-* [complexity](complexity.md)
 * [max-depth](max-depth.md)
 * [max-nested-callbacks](max-nested-callbacks.md)
 * [max-params](max-params.md)

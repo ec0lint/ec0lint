@@ -162,7 +162,6 @@ function foo() {
 
 ## Related Rules
 
-* [complexity](complexity.md)
 * [max-depth](max-depth.md)
 * [max-len](max-len.md)
 * [max-lines](max-lines.md)
