@@ -1,7 +1,4 @@
 {
-    "default-case": "suggestion",
-    "default-case-last": "suggestion",
-    "default-param-last": "suggestion",
     "dot-location": "layout",
     "dot-notation": "suggestion",
     "eol-last": "layout",

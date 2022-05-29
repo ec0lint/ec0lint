@@ -187,7 +187,3 @@ switch(foo) {
 ## When Not To Use It
 
 If you don't want to enforce that each `case` statement should end with a `throw`, `return`, `break`, or comment, then you can safely turn this rule off.
-
-## Related Rules
-
-* [default-case](default-case.md)
