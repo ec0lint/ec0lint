@@ -51,17 +51,6 @@ Examples of **correct** code for this rule with the default `"beside"` option:
   bar()
 );
 
-// functions with block bodies allowed with this rule using any style
-// to enforce a consistent location for this case, see the rule: `brace-style`
-(foo) => {
-  return bar();
-}
-
-(foo) =>
-{
-  return bar();
-}
-```
 
 Examples of **incorrect** code for this rule with the `"below"` option:
 
@@ -95,8 +84,3 @@ Examples of **correct** code for this rule with the `"below"` option:
 ## When Not To Use It
 
 If you're not concerned about consistent locations of implicitly returned arrow function expressions, you should not turn on this rule.
-
-
-## Related Rules
-
-* [`brace-style`](brace-style.md) which enforces this behavior for arrow functions with block bodies.

@@ -215,4 +215,3 @@ You can turn this rule off if you are not concerned with the consistency of spac
 
 * [keyword-spacing](keyword-spacing.md)
 * [switch-colon-spacing](switch-colon-spacing.md)
-* [brace-style](brace-style.md)

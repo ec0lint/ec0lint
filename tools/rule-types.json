@@ -1,5 +1,4 @@
 {
-    "brace-style": "layout",
     "callback-return": "suggestion",
     "camelcase": "suggestion",
     "capitalized-comments": "suggestion",
