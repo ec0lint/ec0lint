@@ -1,5 +1,4 @@
 {
-    "class-methods-use-this": "suggestion",
     "comma-dangle": "layout",
     "comma-spacing": "layout",
     "comma-style": "layout",
