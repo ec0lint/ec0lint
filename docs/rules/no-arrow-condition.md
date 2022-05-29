@@ -45,6 +45,5 @@ var x = (a) => 1 ? 2 : 3
 
 ## Related Rules
 
-* [arrow-parens](arrow-parens.md)
 * [no-confusing-arrow](no-confusing-arrow.md)
 * [no-constant-condition](no-constant-condition.md)

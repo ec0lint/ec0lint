@@ -63,9 +63,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `arrow-spacing`
-let a = ()=> this.foo;
-
 // Avoid conflict with `block-spacing`
 {function foo() {}}
 
@@ -156,9 +153,6 @@ if (foo) {
 } else {
     //...
 }
-
-// Avoid conflict with `arrow-spacing`
-let a = ()=> this.foo;
 
 // Avoid conflict with `comma-spacing`
 let a = [100, this.foo, this.bar];

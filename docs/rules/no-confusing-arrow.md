@@ -92,4 +92,3 @@ Examples of **correct** code for this rule with the `{"onlyOneSimpleParam": true
 ## Related Rules
 
 * [no-constant-condition](no-constant-condition.md)
-* [arrow-parens](arrow-parens.md)
