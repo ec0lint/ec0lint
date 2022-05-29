@@ -1,5 +1,4 @@
 {
-    "computed-property-spacing": "layout",
     "consistent-return": "suggestion",
     "consistent-this": "suggestion",
     "constructor-super": "problem",

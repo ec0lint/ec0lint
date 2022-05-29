@@ -63,9 +63,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `computed-property-spacing`
-obj[this.foo] = 0;
-
 // Avoid conflict with `generator-star-spacing`
 function *foo() {}
 
@@ -147,9 +144,6 @@ if (foo) {
 } else {
     //...
 }
-
-// Avoid conflict with `computed-property-spacing`
-obj[this.foo] = 0;
 
 // Avoid conflict with `generator-star-spacing`
 function* foo() {}

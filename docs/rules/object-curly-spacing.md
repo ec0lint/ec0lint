@@ -152,5 +152,4 @@ You can turn this rule off if you are not concerned with the consistency of spac
 
 ## Related Rules
 
-* [computed-property-spacing](computed-property-spacing.md)
 * [space-in-parens](space-in-parens.md)

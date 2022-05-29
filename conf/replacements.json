@@ -41,8 +41,7 @@
             "keyword-spacing"
         ],
         "space-in-brackets": [
-            "object-curly-spacing",
-            "computed-property-spacing"
+            "object-curly-spacing"
         ],
         "space-return-throw-case": [
             "keyword-spacing"
