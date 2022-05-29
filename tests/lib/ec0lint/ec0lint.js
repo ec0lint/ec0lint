@@ -92,7 +92,7 @@ describe("ec0lint", () => {
     }
 
     // copy into clean area so as not to get "infected" by this project's .ec0lintrc files
-    before(function() {
+    before(function () {
 
         /*
          * GitHub Actions Windows and macOS runners occasionally exhibit
@@ -256,7 +256,6 @@ describe("ec0lint", () => {
                     rules: {
                         quotes: 1,
                         "no-var": 1,
-                        "eol-last": 1,
                         strict: 1,
                         "no-unused-vars": 1
                     }
@@ -265,13 +264,12 @@ describe("ec0lint", () => {
             const results = await eslint.lintText("var foo = 'bar';");
 
             assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 4);
+            assert.strictEqual(results[0].messages.length, 3);
             assert.strictEqual(results[0].messages[0].ruleId, "no-var");
             assert.strictEqual(results[0].messages[1].ruleId, "no-unused-vars");
             assert.strictEqual(results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[3].ruleId, "eol-last");
             assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 2);
+            assert.strictEqual(results[0].fixableWarningCount, 1);
             assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
         });
 
@@ -786,7 +784,7 @@ describe("ec0lint", () => {
 
             before(() => {
                 originalFindPath = Module._findPath;
-                Module._findPath = function(id, ...otherArgs) {
+                Module._findPath = function (id, ...otherArgs) {
                     if (id === "@scope/ec0lint-plugin") {
                         return path.resolve(__dirname, "../../fixtures/plugin-shorthand/basic/node_modules/@scope/ec0lint-plugin/index.js");
                     }
@@ -4537,7 +4535,6 @@ describe("ec0lint", () => {
                 overrideConfig: {
                     env: { browser: true },
                     rules: {
-                        "eol-last": 0,
                         "no-alert": 1,
                         "no-trailing-spaces": 0,
                         strict: 0,
@@ -4564,7 +4561,6 @@ describe("ec0lint", () => {
                 overrideConfig: {
                     env: { browser: true },
                     rules: {
-                        "eol-last": 0,
                         "no-alert": 1,
                         "no-trailing-spaces": 0,
                         strict: 0,

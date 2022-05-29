@@ -4720,18 +4720,16 @@ var a = "test2";
         it("should report warnings in order by line and column when called", () => {
 
             const code = "foo()\n    alert('test')";
-            const config = { rules: { "no-mixed-spaces-and-tabs": 1, "eol-last": 1, semi: [1, "always"] } };
+            const config = { rules: { "no-mixed-spaces-and-tabs": 1, semi: [1, "always"] } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(messages.length, 3);
+            assert.strictEqual(messages.length, 2);
             assert.strictEqual(messages[0].line, 1);
             assert.strictEqual(messages[0].column, 6);
             assert.strictEqual(messages[1].line, 2);
             assert.strictEqual(messages[1].column, 18);
-            assert.strictEqual(messages[2].line, 2);
-            assert.strictEqual(messages[2].column, 18);
 
             assert.strictEqual(suppressedMessages.length, 0);
         });
@@ -8528,18 +8526,16 @@ describe("Linter with FlatConfigArray", () => {
         it("should report warnings in order by line and column when called", () => {
 
             const code = "foo()\n    alert('test')";
-            const config = { rules: { "no-mixed-spaces-and-tabs": 1, "eol-last": 1, semi: [1, "always"] } };
+            const config = { rules: { "no-mixed-spaces-and-tabs": 1, semi: [1, "always"] } };
 
             const messages = linter.verify(code, config, filename);
             const suppressedMessages = linter.getSuppressedMessages();
 
-            assert.strictEqual(messages.length, 3);
+            assert.strictEqual(messages.length, 2);
             assert.strictEqual(messages[0].line, 1);
             assert.strictEqual(messages[0].column, 6);
             assert.strictEqual(messages[1].line, 2);
             assert.strictEqual(messages[1].column, 18);
-            assert.strictEqual(messages[2].line, 2);
-            assert.strictEqual(messages[2].column, 18);
 
             assert.strictEqual(suppressedMessages.length, 0);
         });

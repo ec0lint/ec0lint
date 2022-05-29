@@ -83,7 +83,7 @@ describe("CLIEngine", () => {
     }
 
     // copy into clean area so as not to get "infected" by this project's .ec0lintrc files
-    before(function() {
+    before(function () {
 
         /*
          * GitHub Actions Windows and macOS runners occasionally exhibit
@@ -142,7 +142,6 @@ describe("CLIEngine", () => {
                 rules: {
                     quotes: 1,
                     "no-var": 1,
-                    "eol-last": 1,
                     strict: 1,
                     "no-unused-vars": 1
                 }
@@ -152,16 +151,15 @@ describe("CLIEngine", () => {
 
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 4);
+            assert.strictEqual(report.warningCount, 3);
             assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 2);
+            assert.strictEqual(report.fixableWarningCount, 1);
             assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
             assert.strictEqual(report.results[0].messages[1].ruleId, "no-unused-vars");
             assert.strictEqual(report.results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[3].ruleId, "eol-last");
-            assert.strictEqual(report.results[0].messages.length, 4);
+            assert.strictEqual(report.results[0].messages.length, 3);
             assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 2);
+            assert.strictEqual(report.results[0].fixableWarningCount, 1);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -219,7 +217,7 @@ describe("CLIEngine", () => {
 
             before(() => {
                 originalFindPath = Module._findPath;
-                Module._findPath = function(id, ...otherArgs) {
+                Module._findPath = function (id, ...otherArgs) {
                     if (id === "@scope/ec0lint-plugin") {
                         return path.resolve(__dirname, "../../fixtures/plugin-shorthand/basic/node_modules/@scope/ec0lint-plugin/index.js");
                     }
@@ -3187,7 +3185,7 @@ describe("CLIEngine", () => {
             let cleanup;
 
             beforeEach(() => {
-                cleanup = () => {};
+                cleanup = () => { };
             });
 
             afterEach(async () => {
@@ -3761,8 +3759,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a custom formatter is requested, also if the path has backslashes", () => {
             const engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                }),
+                cwd: path.join(fixtureDir, "..")
+            }),
                 formatter = engine.getFormatter(".\\fixtures\\formatters\\simple.js");
 
             assert.isFunction(formatter);
@@ -3770,8 +3768,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter prefixed with ec0lint-formatter is requested", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("bar");
 
             assert.isFunction(formatter);
@@ -3779,8 +3777,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("ec0lint-formatter-bar");
 
             assert.isFunction(formatter);
@@ -3788,8 +3786,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested within a scoped npm package", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("@somenamespace/foo");
 
             assert.isFunction(formatter);
@@ -3797,8 +3795,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested within a scoped npm package, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("@somenamespace/ec0lint-formatter-foo");
 
             assert.isFunction(formatter);
@@ -3887,7 +3885,7 @@ describe("CLIEngine", () => {
             process.chdir(originalDir);
             const engine = new CLIEngine();
 
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
+            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes");
             const errorResults = CLIEngine.getErrorResults(report.results);
 
             assert.lengthOf(errorResults, 0);
@@ -4001,8 +3999,8 @@ describe("CLIEngine", () => {
 
         it("should call fs.writeFileSync() for each result with output", () => {
             const fakeFS = {
-                    writeFileSync: () => {}
-                },
+                writeFileSync: () => { }
+            },
                 localCLIEngine = proxyquire("../../../lib/cli-engine/cli-engine", {
                     fs: fakeFS
                 }).CLIEngine,
@@ -4031,8 +4029,8 @@ describe("CLIEngine", () => {
 
         it("should call fs.writeFileSync() for each result with output and not at all for a result without output", () => {
             const fakeFS = {
-                    writeFileSync: () => {}
-                },
+                writeFileSync: () => { }
+            },
                 localCLIEngine = proxyquire("../../../lib/cli-engine/cli-engine", {
                     fs: fakeFS
                 }).CLIEngine,
@@ -4208,7 +4206,6 @@ describe("CLIEngine", () => {
                 useEc0lintrc: false,
                 allowInlineConfig: false,
                 rules: {
-                    "eol-last": 0,
                     "no-alert": 1,
                     "no-trailing-spaces": 0,
                     strict: 0,
@@ -4237,7 +4234,6 @@ describe("CLIEngine", () => {
 
                 // allowInlineConfig: true is the default
                 rules: {
-                    "eol-last": 0,
                     "no-alert": 1,
                     "no-trailing-spaces": 0,
                     strict: 0,

@@ -4,7 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    eol-last: "error"
     eqeqeq: "error"
 
     func-call-spacing: "error"
