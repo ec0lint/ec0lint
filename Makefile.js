@@ -391,7 +391,6 @@ function getFormatterResults() {
     const formatterFiles = fs.readdirSync("./lib/cli-engine/formatters/"),
         rules = {
             "no-else-return": "warn",
-            indent: ["warn", 4],
             "space-unary-ops": "error",
             semi: ["warn", "always"]
         },

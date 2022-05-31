@@ -815,20 +815,6 @@ describe("ec0lint", () => {
             });
         });
 
-        it("should warn when deprecated rules are found in a config", async () => {
-            eslint = new ESLint({
-                cwd: originalDir,
-                useEc0lintrc: false,
-                overrideConfigFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
-            });
-            const [result] = await eslint.lintText("foo");
-
-            assert.deepStrictEqual(
-                result.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-        });
-
         it("should throw if non-string value is given to 'code' parameter", async () => {
             eslint = new ESLint();
             await assert.rejects(() => eslint.lintText(100), /'code' must be a string/u);
@@ -1583,55 +1569,17 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages.length, 0);
         });
 
-        it("should warn when deprecated rules are configured", async () => {
-            eslint = new ESLint({
-                cwd: originalDir,
-                overrideConfigFile: ".ec0lintrc.js",
-                overrideConfig: {
-                    rules: {
-                        "indent-legacy": 1,
-                        "require-jsdoc": 1,
-                        "valid-jsdoc": 1
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(
-                results[0].usedDeprecatedRules,
-                [
-                    { ruleId: "indent-legacy", replacedBy: ["indent"] },
-                    { ruleId: "require-jsdoc", replacedBy: [] },
-                    { ruleId: "valid-jsdoc", replacedBy: [] }
-                ]
-            );
-        });
-
         it("should not warn when deprecated rules are not configured", async () => {
             eslint = new ESLint({
                 cwd: originalDir,
                 overrideConfigFile: ".ec0lintrc.js",
                 overrideConfig: {
-                    rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
+                    rules: { "valid-jsdoc": 0, "require-jsdoc": 0 }
                 }
             });
             const results = await eslint.lintFiles(["lib/cli*.js"]);
 
             assert.deepStrictEqual(results[0].usedDeprecatedRules, []);
-        });
-
-        it("should warn when deprecated rules are found in a config", async () => {
-            eslint = new ESLint({
-                cwd: originalDir,
-                overrideConfigFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
-                useEc0lintrc: false
-            });
-            const results = await eslint.lintFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(
-                results[0].usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
         });
 
         // These tests have to do with https://github.com/eslint/eslint/issues/963

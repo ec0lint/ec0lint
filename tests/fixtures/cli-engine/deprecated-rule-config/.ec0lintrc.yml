@@ -1,2 +1,2 @@
 rules:
-  indent-legacy: error
+  lighter-http: error

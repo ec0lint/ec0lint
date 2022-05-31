@@ -249,21 +249,6 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.suppressedMessages.length, 0);
             });
         });
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                useEc0lintrc: false,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
-            });
-
-            const report = engine.executeOnText("foo");
-
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
     });
 
     describe("executeOnFiles()", () => {
@@ -1158,56 +1143,16 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should warn when deprecated rules are configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: {
-                    "indent-legacy": 1,
-                    "require-jsdoc": 1,
-                    "valid-jsdoc": 1
-                }
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.sameDeepMembers(
-                report.usedDeprecatedRules,
-                [
-                    { ruleId: "indent-legacy", replacedBy: ["indent"] },
-                    { ruleId: "require-jsdoc", replacedBy: [] },
-                    { ruleId: "valid-jsdoc", replacedBy: [] }
-                ]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should not warn when deprecated rules are not configured", () => {
             engine = new CLIEngine({
                 cwd: originalDir,
                 configFile: ".ec0lintrc.js",
-                rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
+                rules: { "valid-jsdoc": 0, "require-jsdoc": 0 }
             });
 
             const report = engine.executeOnFiles(["lib/cli*.js"]);
 
             assert.deepStrictEqual(report.usedDeprecatedRules, []);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
-                useEc0lintrc: false
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 

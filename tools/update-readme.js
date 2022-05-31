@@ -49,15 +49,13 @@ delete allSponsors.backers;
  */
 function formatTeamMembers(members) {
     return stripIndents`
-        <table><tbody><tr>${
-        members.map((member, index) => `<td align="center" valign="top" width="11%">
+        <table><tbody><tr>${members.map((member, index) => `<td align="center" valign="top" width="11%">
             <a href="https://github.com/${member.username}">
                 <img src="https://github.com/${member.username}.png?s=75" width="75" height="75"><br />
                 ${member.name}
             </a>
             </td>${(index + 1) % 9 === 0 ? "</tr><tr>" : ""}`).join("")
         }</tr></tbody></table>`;
-    /* ec0lint-enable indent -- Allow deeper template substitution indent */
 }
 
 /**
@@ -69,14 +67,11 @@ function formatSponsors(sponsors) {
     const nonEmptySponsors = Object.keys(sponsors).filter(tier => sponsors[tier].length > 0);
 
     return stripIndents`<!--sponsorsstart-->
-        ${
-            nonEmptySponsors.map(tier => `<h3>${tier[0].toUpperCase()}${tier.slice(1)} Sponsors</h3>
-            <p>${
-                sponsors[tier].map(sponsor => `<a href="${sponsor.url}"><img src="${sponsor.image}" alt="${sponsor.name}" height="${heights[tier]}"></a>`).join(" ")
-            }</p>`).join("")
+        ${nonEmptySponsors.map(tier => `<h3>${tier[0].toUpperCase()}${tier.slice(1)} Sponsors</h3>
+            <p>${sponsors[tier].map(sponsor => `<a href="${sponsor.url}"><img src="${sponsor.image}" alt="${sponsor.name}" height="${heights[tier]}"></a>`).join(" ")
+        }</p>`).join("")
         }
     <!--sponsorsend-->`;
-    /* ec0lint-enable indent -- Allow deeper template substitution indent */
 }
 
 //-----------------------------------------------------------------------------

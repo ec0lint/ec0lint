@@ -1,6 +1,4 @@
 {
-    "indent": "layout",
-    "indent-legacy": "layout",
     "init-declarations": "suggestion",
     "jsx-quotes": "layout",
     "key-spacing": "layout",
