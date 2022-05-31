@@ -1,8 +1,4 @@
 {
-    "id-blacklist": "suggestion",
-    "id-denylist": "suggestion",
-    "id-length": "suggestion",
-    "id-match": "suggestion",
     "implicit-arrow-linebreak": "layout",
     "indent": "layout",
     "indent-legacy": "layout",
