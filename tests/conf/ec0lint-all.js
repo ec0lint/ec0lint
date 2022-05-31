@@ -31,7 +31,7 @@ describe("ec0lint-all", () => {
         const someRule = "yoda";
 
         assert.include(ruleNames, someRule);
-        assert.isAbove(count, 200);
+        assert.isAbove(count, 10);
     });
 
     it("should configure all rules as errors", () => {
