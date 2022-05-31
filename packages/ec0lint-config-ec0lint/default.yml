@@ -3,12 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    lines-around-comment: ["error", {
-        beforeBlockComment: true,
-        afterBlockComment: false,
-        beforeLineComment: true,
-        afterLineComment: false
-    }]
     max-len: ["error", 160, {
         "ignoreComments": true,
         "ignoreUrls": true,

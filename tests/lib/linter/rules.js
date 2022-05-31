@@ -38,14 +38,14 @@ describe("rules", () => {
              * A rule that does nothing
              * @returns {void}
              */
-            function rule() {}
+            function rule() { }
             rule.schema = [];
             rules.define("foo", rule);
             assert.deepStrictEqual(rules.get("foo"), { create: rule, schema: [] });
         });
 
         it("should return the rule as-is if it was defined as an object with a create() method", () => {
-            const rule = { create() {} };
+            const rule = { create() { } };
 
             rules.define("foo", rule);
             assert.strictEqual(rules.get("foo"), rule);
@@ -90,7 +90,7 @@ describe("rules", () => {
         it("should iterate all rules", () => {
             const allRules = new Map(rules);
 
-            assert.isAbove(allRules.size, 230);
+            assert.isAbove(allRules.size, 10);
             assert.isObject(allRules.get("no-alert"));
         });
     });

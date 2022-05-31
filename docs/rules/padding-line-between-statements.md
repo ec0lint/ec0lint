@@ -200,8 +200,6 @@ class C {
 
 ----
 
-This configuration would require blank lines after all directive prologues, like the [lines-around-directive](lines-around-directive.md) rule.
-
 Examples of **incorrect** code for the `[{ blankLine: "always", prev: "directive", next: "*" }, { blankLine: "any", prev: "directive", next: "directive" }]` configuration:
 
 ```js

@@ -1,10 +1,5 @@
 {
     "lighter-http": "problem",
-    "line-comment-position": "layout",
-    "linebreak-style": "layout",
-    "lines-around-comment": "layout",
-    "lines-around-directive": "layout",
-    "lines-between-class-members": "layout",
     "max-classes-per-file": "suggestion",
     "max-depth": "suggestion",
     "max-len": "layout",

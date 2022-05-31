@@ -3401,7 +3401,7 @@ var a = "test2";
         it("should return all loaded rules", () => {
             const rules = linter.getRules();
 
-            assert.isAbove(rules.size, 230);
+            assert.isAbove(rules.size, 10);
             assert.isObject(rules.get("no-alert"));
         });
     });
