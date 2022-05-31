@@ -1,5 +1,4 @@
 {
-    "guard-for-in": "suggestion",
     "handle-callback-err": "suggestion",
     "id-blacklist": "suggestion",
     "id-denylist": "suggestion",
