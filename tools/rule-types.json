@@ -1,5 +1,4 @@
 {
-    "implicit-arrow-linebreak": "layout",
     "indent": "layout",
     "indent-legacy": "layout",
     "init-declarations": "suggestion",
