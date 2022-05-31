@@ -1,5 +1,4 @@
 {
-    "init-declarations": "suggestion",
     "jsx-quotes": "layout",
     "key-spacing": "layout",
     "keyword-spacing": "layout",
