@@ -1,5 +1,4 @@
 {
-    "handle-callback-err": "suggestion",
     "id-blacklist": "suggestion",
     "id-denylist": "suggestion",
     "id-length": "suggestion",
