@@ -4,7 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    grouped-accessor-pairs: "error"
     guard-for-in: "error"
 
     key-spacing: ["error", { beforeColon: false, afterColon: true }]
