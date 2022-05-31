@@ -106,13 +106,10 @@ To avoid contradictions with other rules that require multiple spaces, this rule
 
 This option is an object that expects property names to be AST node types as defined by [ESTree](https://github.com/estree/estree). The easiest way to determine the node types for `exceptions` is to use [AST Explorer](https://astexplorer.net/) with the espree parser.
 
-Only the `Property` node type is ignored by default, because for the [key-spacing](key-spacing.md) rule some alignment options require multiple spaces in properties of object literals.
-
 Examples of **correct** code for the default `"exceptions": { "Property": true }` option:
 
 ```js
 /*eslint no-multi-spaces: "error"*/
-/*eslint key-spacing: ["error", { align: "value" }]*/
 
 var obj = {
     first:  "first",
@@ -124,7 +121,6 @@ Examples of **incorrect** code for the `"exceptions": { "Property": false }` opt
 
 ```js
 /*eslint no-multi-spaces: ["error", { exceptions: { "Property": false } }]*/
-/*eslint key-spacing: ["error", { align: "value" }]*/
 
 var obj = {
     first:  "first",
@@ -164,7 +160,6 @@ If you don't want to check and disallow multiple spaces, then you should turn th
 
 ## Related Rules
 
-* [key-spacing](key-spacing.md)
 * [space-infix-ops](space-infix-ops.md)
 * [space-in-brackets](space-in-brackets.md) (deprecated)
 * [space-in-parens](space-in-parens.md)

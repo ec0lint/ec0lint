@@ -22,17 +22,8 @@
         "no-wrap-func": [
             "no-extra-parens"
         ],
-        "space-after-keywords": [
-            "keyword-spacing"
-        ],
-        "space-before-keywords": [
-            "keyword-spacing"
-        ],
         "space-in-brackets": [
             "object-curly-spacing"
-        ],
-        "space-return-throw-case": [
-            "keyword-spacing"
         ],
         "space-unary-word-ops": [
             "space-unary-ops"

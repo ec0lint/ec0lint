@@ -3,8 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    key-spacing: ["error", { beforeColon: false, afterColon: true }]
-    keyword-spacing: "error"
     lines-around-comment: ["error", {
         beforeBlockComment: true,
         afterBlockComment: false,

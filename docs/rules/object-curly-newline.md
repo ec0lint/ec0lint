@@ -539,7 +539,6 @@ If you don't want to enforce consistent line breaks after opening and before clo
 
 ## Related Rules
 
-* [key-spacing](key-spacing.md)
 * [object-curly-spacing](object-curly-spacing.md)
 * [object-property-newline](object-property-newline.md)
 

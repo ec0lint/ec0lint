@@ -69,27 +69,9 @@
                 ]
             },
             {
-                "removed": "space-after-keywords",
-                "replacedBy": [
-                    "keyword-spacing"
-                ]
-            },
-            {
-                "removed": "space-before-keywords",
-                "replacedBy": [
-                    "keyword-spacing"
-                ]
-            },
-            {
                 "removed": "space-in-brackets",
                 "replacedBy": [
                     "object-curly-spacing"
-                ]
-            },
-            {
-                "removed": "space-return-throw-case",
-                "replacedBy": [
-                    "keyword-spacing"
                 ]
             },
             {

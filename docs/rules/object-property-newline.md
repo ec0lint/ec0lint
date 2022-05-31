@@ -262,7 +262,6 @@ You can turn this rule off if you want to decide, case-by-case, whether to place
 
 ## Related Rules
 
-* [key-spacing](key-spacing.md)
 * [object-curly-spacing](object-curly-spacing.md)
 
 ## Compatibility

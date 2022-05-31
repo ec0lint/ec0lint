@@ -11,7 +11,6 @@ Having an inconsistent style distracts the reader from seeing the important part
 
 This rule will enforce consistency of spacing before blocks. It is only applied on blocks that don’t begin on a new line.
 
-* This rule ignores spacing which is between a keyword and a block. The spacing is handled by the `keyword-spacing` rule.
 * This rule ignores spacing which is between `:` of a switch case and a block. The spacing is handled by the `switch-colon-spacing` rule.
 
 ## Options
@@ -60,12 +59,12 @@ if (a) {
 
 if (a) {
     b();
-} else{ /*no error. this is checked by `keyword-spacing` rule.*/
+} else{
     c();
 }
 
 class C {
-    static{} /*no error. this is checked by `keyword-spacing` rule.*/
+    static{}
 }
 
 function a() {}
@@ -213,5 +212,4 @@ You can turn this rule off if you are not concerned with the consistency of spac
 
 ## Related Rules
 
-* [keyword-spacing](keyword-spacing.md)
 * [switch-colon-spacing](switch-colon-spacing.md)
