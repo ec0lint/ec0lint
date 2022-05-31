@@ -1,8 +1,5 @@
 {
     "rules": {
-        "global-strict": [
-            "strict"
-        ],
         "no-arrow-condition": [
             "no-confusing-arrow",
             "no-constant-condition"

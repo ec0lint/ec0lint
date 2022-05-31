@@ -1,5 +1,4 @@
 {
-    "global-require": "suggestion",
     "grouped-accessor-pairs": "suggestion",
     "guard-for-in": "suggestion",
     "handle-callback-err": "suggestion",
