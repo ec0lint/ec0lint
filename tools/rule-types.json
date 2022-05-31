@@ -1,5 +1,4 @@
 {
-    "generator-star-spacing": "layout",
     "getter-return": "problem",
     "global-require": "suggestion",
     "grouped-accessor-pairs": "suggestion",
@@ -229,7 +228,6 @@
     "sort-keys": "suggestion",
     "sort-vars": "suggestion",
     "space-before-blocks": "layout",
-    "space-before-function-paren": "layout",
     "space-in-parens": "layout",
     "space-infix-ops": "layout",
     "space-unary-ops": "layout",

@@ -1,8 +1,5 @@
 {
     "rules": {
-        "generator-star": [
-            "generator-star-spacing"
-        ],
         "global-strict": [
             "strict"
         ],
@@ -28,14 +25,8 @@
         "no-wrap-func": [
             "no-extra-parens"
         ],
-        "space-after-function-name": [
-            "space-before-function-paren"
-        ],
         "space-after-keywords": [
             "keyword-spacing"
-        ],
-        "space-before-function-parentheses": [
-            "space-before-function-paren"
         ],
         "space-before-keywords": [
             "keyword-spacing"

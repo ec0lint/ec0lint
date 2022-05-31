@@ -4,7 +4,6 @@ extends:
 
 rules:
     indent: ["error", 4, {SwitchCase: 1}]
-    generator-star-spacing: "error"
     grouped-accessor-pairs: "error"
     guard-for-in: "error"
 
@@ -131,11 +130,6 @@ rules:
     semi-spacing: ["error", {before: false, after: true}]
     semi-style: "error"
     space-before-blocks: "error"
-    space-before-function-paren: ["error", {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-    }]
     space-in-parens: "error"
     space-infix-ops: "error"
     space-unary-ops: ["error", {words: true, nonwords: false}]

@@ -195,10 +195,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A {a(){} async [b]() {}}", options: [override("async", BOTH)], parserOptions: { ecmaVersion: 8 } },
         { code: "class A {a(){}async[b]() {}}", options: [override("async", NEITHER)], parserOptions: { ecmaVersion: 8 } },
 
-        // not conflict with `generator-star-spacing`
-        { code: "({ async* foo() {} })", parserOptions: { ecmaVersion: 2018 } },
-        { code: "({ async *foo() {} })", options: [NEITHER], parserOptions: { ecmaVersion: 2018 } },
-
         // not conflict with `key-spacing`
         { code: "({a:async function foo() {} })", parserOptions: { ecmaVersion: 8 } },
         { code: "({a: async function foo() {} })", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
@@ -206,10 +202,6 @@ ruleTester.run("keyword-spacing", rule, {
         // not conflict with `semi-spacing`
         { code: ";async function foo() {};", parserOptions: { ecmaVersion: 8 } },
         { code: "; async function foo() {} ;", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
-
-        // not conflict with `space-before-function-paren`
-        { code: "async() => {}", parserOptions: { ecmaVersion: 8 } },
-        { code: "async () => {}", options: [NEITHER], parserOptions: { ecmaVersion: 8 } },
 
         // not conflict with `space-in-parens`
         { code: "(async function foo() {})", parserOptions: { ecmaVersion: 8 } },
@@ -594,10 +586,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "{} function foo() {}", options: [override("function", BOTH)] },
         { code: "{}function foo() {}", options: [override("function", NEITHER)] },
 
-        // not conflict with `generator-star-spacing`
-        { code: "function* foo() {}", parserOptions: { ecmaVersion: 6 } },
-        { code: "function *foo() {}", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
-
         // not conflict with `key-spacing`
         "({a:function() {} })",
         { code: "({a: function() {} })", options: [NEITHER] },
@@ -605,13 +593,6 @@ ruleTester.run("keyword-spacing", rule, {
         // not conflict with `semi-spacing`
         ";function foo() {};",
         { code: "; function foo() {} ;", options: [NEITHER] },
-
-        /*
-         * not conflict with `space-before-function-paren`
-         * not conflict with `space-in-parens`
-         */
-        "(function() {})",
-        { code: "( function () {})", options: [NEITHER] },
 
         // not conflict with `space-infix-ops`
         "a =function() {}",
@@ -840,10 +821,6 @@ ruleTester.run("keyword-spacing", rule, {
         { code: "class A { a() {} static {} }", options: [override("static", BOTH)], parserOptions: { ecmaVersion: 2022 } },
         { code: "class A { a() {}static{} }", options: [override("static", NEITHER)], parserOptions: { ecmaVersion: 2022 } },
         { code: "class A { a() {}\nstatic\n{} }", options: [NEITHER], parserOptions: { ecmaVersion: 2022 } },
-
-        // not conflict with `generator-star-spacing`
-        { code: "class A { static* [a]() {} }", parserOptions: { ecmaVersion: 6 } },
-        { code: "class A { static *[a]() {} }", options: [NEITHER], parserOptions: { ecmaVersion: 6 } },
 
         // not conflict with `semi-spacing`
         { code: "class A { ;static a() {} }", parserOptions: { ecmaVersion: 6 } },

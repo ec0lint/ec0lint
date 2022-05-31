@@ -17,8 +17,6 @@ if (foo) {
 
 Of course, you could also have a style guide that disallows spaces around keywords.
 
-However, if you want to enforce the style of spacing between the `function` keyword and the following opening parenthesis, please refer to [space-before-function-paren](space-before-function-paren.md).
-
 ## Rule Details
 
 This rule enforces consistent spacing around keywords and keyword-like tokens: `as` (in module declarations), `async` (of async functions), `await` (of await expressions), `break`, `case`, `catch`, `class`, `const`, `continue`, `debugger`, `default`, `delete`, `do`, `else`, `export`, `extends`, `finally`, `for`, `from` (in module declarations), `function`, `get` (of getters), `if`, `import`, `in` (in for-in statements), `let`, `new`, `of` (in for-of statements), `return`, `set` (of setters), `static`, `super`, `switch`, `this`, `throw`, `try`, `typeof`, `var`, `void`, `while`, `with`, and `yield`. This rule is designed carefully not to conflict with other spacing rules: it does not apply to spacing where other rules report problems.
@@ -62,9 +60,6 @@ if (foo) {
 } else {
     //...
 }
-
-// Avoid conflict with `generator-star-spacing`
-function *foo() {}
 
 // Avoid conflict with `key-spacing`
 let obj = {
@@ -145,9 +140,6 @@ if (foo) {
     //...
 }
 
-// Avoid conflict with `generator-star-spacing`
-function* foo() {}
-
 // Avoid conflict with `key-spacing`
 let obj = {
     foo:function() {}
@@ -158,9 +150,6 @@ let obj = {foo: this};
 
 // Avoid conflict with `semi-spacing`
 let a = this;function foo() {}
-
-// Avoid conflict with `space-before-function-paren`
-function() {}
 
 // Avoid conflict with `space-infix-ops`
 if ("foo"in{foo: 0}) {}
