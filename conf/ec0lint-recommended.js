@@ -11,7 +11,6 @@
 /** @type {import("../lib/shared/types").ConfigData} */
 module.exports = {
     rules: {
-        "getter-return": "error",
         "lighter-http": "error",
         "no-async-promise-executor": "error",
         "no-case-declarations": "error",

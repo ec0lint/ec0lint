@@ -94,10 +94,6 @@ Object.defineProperty(foo, "bar", {
 });
 ```
 
-## Related Rules
-
-* [getter-return](getter-return.md)
-
 ## Further Reading
 
 * [MDN setter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)

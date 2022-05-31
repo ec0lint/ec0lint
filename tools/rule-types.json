@@ -1,5 +1,4 @@
 {
-    "getter-return": "problem",
     "global-require": "suggestion",
     "grouped-accessor-pairs": "suggestion",
     "guard-for-in": "suggestion",
