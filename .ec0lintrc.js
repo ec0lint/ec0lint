@@ -12,7 +12,7 @@ module.exports = {
         ecmaVersion: 2021
     },
     rules: {
-        "internal-rules/multiline-comment-style": "error"
+        "internal-rules/lighter-http": "error"
     },
     overrides: [
         {

@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "multiline-comment-style": "suggestion",
-    "multiline-ternary": "layout",
     "new-cap": "suggestion",
     "new-parens": "layout",
     "newline-after-var": "layout",
