@@ -1,10 +1,5 @@
 {
     "lighter-http": "problem",
-    "new-cap": "suggestion",
-    "new-parens": "layout",
-    "newline-after-var": "layout",
-    "newline-before-return": "layout",
-    "newline-per-chained-call": "layout",
     "no-alert": "suggestion",
     "no-array-constructor": "suggestion",
     "no-async-promise-executor": "problem",
@@ -165,7 +160,6 @@
     "operator-assignment": "suggestion",
     "operator-linebreak": "layout",
     "padded-blocks": "layout",
-    "padding-line-between-statements": "layout",
     "prefer-arrow-callback": "suggestion",
     "prefer-const": "suggestion",
     "prefer-destructuring": "suggestion",
