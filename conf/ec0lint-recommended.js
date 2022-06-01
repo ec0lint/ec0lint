@@ -12,7 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-async-promise-executor": "error",
         "no-case-declarations": "error",
         "no-class-assign": "error",
         "no-compare-neg-zero": "error",

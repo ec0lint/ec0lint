@@ -162,10 +162,6 @@ ruleTester.run("spaced-comment", rule, {
             code: "/*ec0lint lighter-http:0*/",
             options: ["always", { markers: ["ec0lint"] }]
         },
-        {
-            code: "/*ec0lint-disable no-alert, no-console */\nalert()\nconsole.log()\n/*ec0lint-enable no-alert */",
-            options: ["always", { markers: ["ec0lint-enable", "ec0lint-disable"] }]
-        },
 
         // misc. variations
         {

@@ -1248,7 +1248,7 @@ describe("ec0lint", () => {
                 overrideConfig: {
                     env: { browser: true },
                     rules: {
-                        "no-alert": 0,
+                        "lighter-http": 0,
                         "no-undef": 2
                     }
                 }
@@ -3535,7 +3535,7 @@ describe("ec0lint", () => {
             const options = {
                 baseConfig: {
                     rules: {
-                        "no-alert": ["error", {
+                        "lighter-http": ["error", {
                             thisDoesNotExist: true
                         }]
                     }
@@ -3546,7 +3546,7 @@ describe("ec0lint", () => {
 
             await assert.rejects(
                 () => engine.calculateConfigForFile(filePath),
-                /Configuration for rule "no-alert" is invalid:/u
+                /Configuration for rule "lighter-http" is invalid:/u
             );
         });
     });
@@ -4334,59 +4334,6 @@ describe("ec0lint", () => {
         it("should throw if non object array is given to 'results' parameter", async () => {
             await assert.rejects(() => ESLint.outputFixes(null), /'results' must be an array/u);
             await assert.rejects(() => ESLint.outputFixes([null]), /'results' must include only objects/u);
-        });
-    });
-
-    describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
-        it("should report a violation for disabling rules", async () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                ignore: true,
-                useEc0lintrc: false,
-                allowInlineConfig: false,
-                overrideConfig: {
-                    env: { browser: true },
-                    rules: {
-                        "no-alert": 1,
-                        "no-trailing-spaces": 0,
-                        strict: 0,
-                        quotes: 0
-                    }
-                }
-            };
-            const eslintCLI = new ESLint(config);
-            const results = await eslintCLI.lintText(code);
-            const messages = results[0].messages;
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-        });
-
-        it("should not report a violation by default", async () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                ignore: true,
-                useEc0lintrc: false,
-                allowInlineConfig: true,
-                overrideConfig: {
-                    env: { browser: true },
-                    rules: {
-                        "no-alert": 1,
-                        "no-trailing-spaces": 0,
-                        strict: 0,
-                        quotes: 0
-                    }
-                }
-            };
-            const eslintCLI = new ESLint(config);
-            const results = await eslintCLI.lintText(code);
-            const messages = results[0].messages;
-
-            assert.strictEqual(messages.length, 0);
         });
     });
 

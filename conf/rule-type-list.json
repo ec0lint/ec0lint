@@ -26,13 +26,6 @@
         "description": "These rules from older versions of ec0lint (before the <a href=\"/docs/user-guide/rule-deprecation\">deprecation policy</a> existed) have been replaced by newer rules:",
         "rules": [
             {
-                "removed": "no-arrow-condition",
-                "replacedBy": [
-                    "no-confusing-arrow",
-                    "no-constant-condition"
-                ]
-            },
-            {
                 "removed": "no-empty-class",
                 "replacedBy": [
                     "no-empty-character-class"

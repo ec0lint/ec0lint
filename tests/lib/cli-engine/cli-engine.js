@@ -760,7 +760,6 @@ describe("CLIEngine", () => {
                 cwd: path.join(fixtureDir, ".."),
                 envs: ["browser"],
                 rules: {
-                    "no-alert": 0,
                     "no-undef": 2
                 }
             });
@@ -4122,65 +4121,6 @@ describe("CLIEngine", () => {
 
             assert.deepStrictEqual(result, ["one-js-file/example.js"]);
         });
-    });
-
-    describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
-
-        it("should report a violation for disabling rules", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                envs: ["browser"],
-                ignore: true,
-                useEc0lintrc: false,
-                allowInlineConfig: false,
-                rules: {
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    quotes: 0
-                }
-            };
-
-            const ec0lintCLI = new CLIEngine(config); //!
-
-            const report = ec0lintCLI.executeOnText(code); //!
-            const { messages, suppressedMessages } = report.results[0];
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation by default", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                envs: ["browser"],
-                ignore: true,
-                useEc0lintrc: false,
-
-                // allowInlineConfig: true is the default
-                rules: {
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    quotes: 0
-                }
-            };
-
-            const ec0lintCLI = new CLIEngine(config);
-
-            const report = ec0lintCLI.executeOnText(code);
-            const { messages, suppressedMessages } = report.results[0];
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-        });
-
     });
 
     describe("when evaluating code when reportUnusedDisableDirectives is enabled", () => {

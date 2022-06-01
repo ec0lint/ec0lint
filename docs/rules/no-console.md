@@ -95,5 +95,4 @@ However, you might not want to manually add `eslint-disable-next-line` or `eslin
 
 ## Related Rules
 
-* [no-alert](no-alert.md)
 * [no-debugger](no-debugger.md)

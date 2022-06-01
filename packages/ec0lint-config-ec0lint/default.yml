@@ -3,8 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-alert: "error"
-    no-array-constructor: "error"
     no-caller: "error"
     no-confusing-arrow: "error"
     no-console: "error"

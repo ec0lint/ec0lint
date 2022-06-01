@@ -223,123 +223,6 @@ describe("Linter", () => {
 
             assert.strictEqual(suppressedMessages.length, 0);
         });
-
-        it("should have a suppressed message", () => {
-            const code = "/* ec0lint-disable no-alert -- justification */\nalert(\"test\");";
-            const config = {
-                rules: { "no-alert": 1 }
-            };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.deepStrictEqual(
-                suppressedMessages[0].suppressions,
-                [{ kind: "directive", justification: "justification" }]
-            );
-        });
-
-        it("should have a suppressed message", () => {
-            const code = [
-                "/* ec0lint-disable no-alert --- j1",
-                " * --- j2",
-                " */",
-                "alert(\"test\");"
-            ].join("\n");
-            const config = {
-                rules: { "no-alert": 1 }
-            };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.deepStrictEqual(
-                suppressedMessages[0].suppressions,
-                [{ kind: "directive", justification: "j1\n * --- j2" }]
-            );
-        });
-
-        it("should not report a lint message", () => {
-            const code = [
-                "/* ec0lint-disable -- j1 */",
-                "// ec0lint-disable-next-line -- j2",
-                "alert(\"test\");"
-            ].join("\n");
-            const config = {
-                rules: { "no-alert": 1 }
-            };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.deepStrictEqual(
-                suppressedMessages[0].suppressions,
-                [
-                    { kind: "directive", justification: "j1" },
-                    { kind: "directive", justification: "j2" }
-                ]
-            );
-        });
-
-        it("should not report a lint message", () => {
-            const code = [
-                "/* ec0lint-disable -- j1 */",
-                "alert(\"test\"); // ec0lint-disable-line -- j2"
-            ].join("\n");
-            const config = {
-                rules: { "no-alert": 1 }
-            };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.deepStrictEqual(
-                suppressedMessages[0].suppressions,
-                [
-                    { kind: "directive", justification: "j1" },
-                    { kind: "directive", justification: "j2" }
-                ]
-            );
-        });
-
-        it("should have a suppressed message with multiple suppressions", () => {
-            const code = [
-                "/* ec0lint-disable no-alert -- j1 */",
-                "/* ec0lint-disable no-console -- unused */",
-                "/* ec0lint-disable-next-line no-alert -- j2 */",
-                "alert(\"test\"); // ec0lint-disable-line no-alert -- j3"
-            ].join("\n");
-            const config = {
-                rules: { "no-alert": 1 }
-            };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.deepStrictEqual(
-                suppressedMessages[0].suppressions,
-                [
-                    { kind: "directive", justification: "j1" },
-                    { kind: "directive", justification: "j2" },
-                    { kind: "directive", justification: "j3" }
-                ]
-            );
-        });
     });
 
     describe("context.getSource()", () => {
@@ -1765,21 +1648,6 @@ describe("Linter", () => {
 
     describe("when evaluating code with comments to enable rules", () => {
 
-        it("should report a violation", () => {
-            const code = "/*ec0lint no-alert:1*/ alert('test');";
-            const config = { rules: {} };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].message, "Unexpected alert.");
-            assert.include(messages[0].nodeType, "CallExpression");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("rules should not change initial config", () => {
             const config = { rules: { strict: 2 } };
             const codeA = "/*ec0lint strict: 0*/ function bar() { return 2; }";
@@ -1852,31 +1720,8 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with invalid comments to enable rules", () => {
-        it("should report a violation when the config is not a valid rule configuration", () => {
-            const messages = linter.verify("/*ec0lint no-alert:true*/ alert('test');", {});
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.deepStrictEqual(
-                messages,
-                [
-                    {
-                        severity: 2,
-                        ruleId: "no-alert",
-                        message: "Configuration for rule \"no-alert\" is invalid:\n\tSeverity should be one of the following: 0 = off, 1 = warn, 2 = error (you passed 'true').\n",
-                        line: 1,
-                        column: 1,
-                        endLine: 1,
-                        endColumn: 26,
-                        nodeType: null
-                    }
-                ]
-            );
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("should report a violation when the config violates a rule's schema", () => {
-            const messages = linter.verify("/* ec0lint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
+            const messages = linter.verify("/* ec0lint lighter-http: [error, {nonExistentPropertyName: true}]*/", {});
             const suppressedMessages = linter.getSuppressedMessages();
 
             assert.deepStrictEqual(
@@ -1884,31 +1729,17 @@ describe("Linter", () => {
                 [
                     {
                         severity: 2,
-                        ruleId: "no-alert",
-                        message: "Configuration for rule \"no-alert\" is invalid:\n\tValue [{\"nonExistentPropertyName\":true}] should NOT have more than 0 items.\n",
+                        ruleId: "lighter-http",
+                        message: "Configuration for rule \"lighter-http\" is invalid:\n\tValue [{\"nonExistentPropertyName\":true}] should NOT have more than 0 items.\n",
                         line: 1,
                         column: 1,
                         endLine: 1,
-                        endColumn: 64,
+                        endColumn: 68,
                         nodeType: null
                     }
                 ]
             );
 
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to disable rules", () => {
-        const code = "/*ec0lint no-alert:0*/ alert('test');";
-
-        it("should not report a violation", () => {
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
             assert.strictEqual(suppressedMessages.length, 0);
         });
     });
@@ -1967,43 +1798,6 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(messages[0].severity, 2);
             assert.strictEqual(messages[0].message, "Definition for rule 'foo' was not found.");
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to enable multiple rules", () => {
-        const code = "/*ec0lint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
-
-        it("should report a violation", () => {
-            const config = { rules: {} };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].message, "Unexpected alert.");
-            assert.include(messages[0].nodeType, "CallExpression");
-            assert.strictEqual(messages[1].ruleId, "no-console");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to enable and disable multiple rules", () => {
-        const code = "/*ec0lint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
-
-        it("should report a violation", () => {
-            const config = { rules: { "no-console": 1, "no-alert": 0 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].message, "Unexpected alert.");
-            assert.include(messages[0].nodeType, "CallExpression");
-
             assert.strictEqual(suppressedMessages.length, 0);
         });
     });
@@ -2096,178 +1890,9 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code with comments to enable and disable all reporting", () => {
-        it("should report a violation", () => {
-
-            const code = [
-                "/*ec0lint-disable */",
-                "alert('test');",
-                "/*ec0lint-enable */",
-                "alert('test');"
-            ].join("\n");
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].message, "Unexpected alert.");
-            assert.include(messages[0].nodeType, "CallExpression");
-            assert.strictEqual(messages[0].line, 4);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].message, "Unexpected alert.");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[0].suppressions.length, 1);
-            assert.strictEqual(suppressedMessages[0].suppressions[0].justification, "");
-        });
-
-        it("should not report a violation", () => {
-            const code = [
-                "/*ec0lint-disable */",
-                "alert('test');",
-                "alert('test');"
-            ].join("\n");
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[0].suppressions.length, 1);
-            assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[1].suppressions.length, 1);
-        });
-
-        it("should not report a violation", () => {
-            const code = [
-                "                    alert('test1');/*ec0lint-disable */\n",
-                "alert('test');",
-                "                                         alert('test');\n",
-                "/*ec0lint-enable */alert('test2');"
-            ].join("");
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-            assert.strictEqual(messages[0].column, 21);
-            assert.strictEqual(messages[1].column, 20);
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].column, 1);
-            assert.strictEqual(suppressedMessages[1].column, 56);
-        });
-
-        it("should report a violation", () => {
-
-            const code = [
-                "/*ec0lint-disable */",
-                "alert('test');",
-                "/*ec0lint-disable */",
-                "alert('test');",
-                "/*ec0lint-enable*/",
-                "alert('test');",
-                "/*ec0lint-enable*/"
-            ].join("\n");
-
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 2);
-        });
-
-
-        it("should not report a violation", () => {
-            const code = [
-                "/*ec0lint-disable */",
-                "(function(){ var b = 44;})()",
-                "/*ec0lint-enable */;any();"
-            ].join("\n");
-
-            const config = { rules: { "no-unused-vars": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 1);
-        });
-
-        it("should not report a violation", () => {
-            const code = [
-                "(function(){ /*ec0lint-disable */ var b = 44;})()",
-                "/*ec0lint-enable */;any();"
-            ].join("\n");
-
-            const config = { rules: { "no-unused-vars": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 1);
-        });
-    });
-
     describe("when evaluating code with comments to ignore reporting on specific rules on a specific line", () => {
 
         describe("ec0lint-disable-line", () => {
-            it("should report a violation", () => {
-                const code = [
-                    "alert('test'); // ec0lint-disable-line no-alert",
-                    "console.log('test');" // here
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should report a violation", () => {
-                const code = [
-                    "alert('test'); // ec0lint-disable-line no-alert",
-                    "console.log('test'); // ec0lint-disable-line no-console",
-                    "alert('test');" // here
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            });
-
             it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
                 const code = [
                     "/* ec0lint-disable-line",
@@ -2287,919 +1912,6 @@ describe("Linter", () => {
                 assert.strictEqual(messages[1].ruleId, "no-console");
                 assert.strictEqual(suppressedMessages.length, 0);
             });
-
-            it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
-                const code = [
-                    "alert('test'); /* ec0lint-disable-line ",
-                    "no-alert */"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.deepStrictEqual(messages, [
-                    {
-                        ruleId: "no-alert",
-                        severity: 1,
-                        line: 1,
-                        column: 1,
-                        endLine: 1,
-                        endColumn: 14,
-                        message: "Unexpected alert.",
-                        messageId: "unexpected",
-                        nodeType: "CallExpression"
-                    },
-                    {
-                        ruleId: null,
-                        severity: 2,
-                        message: "ec0lint-disable-line comment should not span multiple lines.",
-                        line: 1,
-                        column: 16,
-                        endLine: 2,
-                        endColumn: 12,
-                        nodeType: null
-                    }
-                ]);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should not report a violation for ec0lint-disable-line in block comment", () => {
-                const code = [
-                    "alert('test'); // ec0lint-disable-line no-alert",
-                    "alert('test'); /*ec0lint-disable-line no-alert*/"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "no-alert");
-            });
-
-            it("should not report a violation", () => {
-                const code = [
-                    "alert('test'); // ec0lint-disable-line no-alert",
-                    "console.log('test'); // ec0lint-disable-line no-console"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            });
-
-            it("should not report a violation", () => {
-                const code = [
-                    "alert('test') // ec0lint-disable-line no-alert, quotes, semi",
-                    "console.log('test'); // ec0lint-disable-line"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "double"],
-                        semi: [1, "always"],
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-                assert.strictEqual(suppressedMessages.length, 5);
-            });
-
-            it("should not report a violation", () => {
-                const code = [
-                    "alert('test') /* ec0lint-disable-line no-alert, quotes, semi */",
-                    "console.log('test'); /* ec0lint-disable-line */"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "double"],
-                        semi: [1, "always"],
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-                assert.strictEqual(suppressedMessages.length, 5);
-            });
-
-            it("should ignore violations of multiple rules when specified in mixed comments", () => {
-                const code = [
-                    " alert(\"test\"); /* ec0lint-disable-line no-alert */ // ec0lint-disable-line quotes"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"]
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-        });
-
-        describe("ec0lint-disable-next-line", () => {
-            it("should ignore violation of specified rule on next line", () => {
-                const code = [
-                    "// ec0lint-disable-next-line no-alert",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line no-alert */",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-            it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line no-alert */",
-                    "alert('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should not ignore violation if code is not on next line", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line",
-                    "no-alert */alert('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should ignore violation if block comment span multiple lines", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line",
-                    "no-alert */",
-                    "alert('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should ignore violations only of specified rule", () => {
-                const code = [
-                    "// ec0lint-disable-next-line no-console",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should ignore violations of multiple rules when specified", () => {
-                const code = [
-                    "// ec0lint-disable-next-line no-alert, quotes",
-                    "alert(\"test\");",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"],
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-            });
-
-            it("should ignore violations of multiple rules when specified in multiple lines", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line",
-                    "no-alert,",
-                    "quotes",
-                    "*/",
-                    "alert(\"test\");",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"],
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-            });
-
-            it("should ignore violations of multiple rules when specified in mixed comments", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line no-alert */ // ec0lint-disable-next-line quotes",
-                    "alert(\"test\");"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"]
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-
-                assert.strictEqual(suppressedMessages.length, 2);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-            });
-
-            it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line",
-                    "no-alert",
-                    "*/ // ec0lint-disable-next-line quotes",
-                    "alert(\"test\");"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"]
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-
-                assert.strictEqual(messages.length, 0);
-            });
-
-            it("should ignore violations of only the specified rule on next line", () => {
-                const code = [
-                    "// ec0lint-disable-next-line quotes",
-                    "alert(\"test\");",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        quotes: [1, "single"],
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
-            });
-
-            it("should ignore violations of specified rule on next line only", () => {
-                const code = [
-                    "alert('test');",
-                    "// ec0lint-disable-next-line no-alert",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should ignore all rule violations on next line if none specified", () => {
-                const code = [
-                    "// ec0lint-disable-next-line",
-                    "alert(\"test\");",
-                    "console.log('test')"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        semi: [1, "never"],
-                        quotes: [1, "single"],
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 3);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-                assert.strictEqual(suppressedMessages[2].ruleId, "semi");
-            });
-
-            it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
-                const code = [
-                    "alert('test');",
-                    "/* ec0lint-disable-next-line no-alert */",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 1);
-                assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            });
-
-            it("should report a violation", () => {
-                const code = [
-                    "/* ec0lint-disable-next-line",
-                    "*",
-                    "*/",
-                    "console.log('test');" // here
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should not ignore violations if comment is of the type hashbang", () => {
-                const code = [
-                    "#! ec0lint-disable-next-line no-alert",
-                    "alert('test');",
-                    "console.log('test');"
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-alert": 1,
-                        "no-console": 1
-                    }
-                };
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[0].ruleId, "no-alert");
-                assert.strictEqual(messages[1].ruleId, "no-console");
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-        });
-    });
-
-    describe("when evaluating code with comments to enable and disable reporting of specific rules", () => {
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert */",
-                "alert('test');",
-                "console.log('test');" // here
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-console");
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-        });
-
-        it("should report no violation", () => {
-            const code = [
-                "/*ec0lint-disable no-unused-vars */",
-                "var foo; // ec0lint-disable-line no-unused-vars",
-                "var bar;",
-                "/* ec0lint-enable no-unused-vars */" // here
-            ].join("\n");
-            const config = { rules: { "no-unused-vars": 2 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-unused-vars");
-            assert.strictEqual(suppressedMessages[1].line, 3);
-        });
-
-        it("should report no violation", () => {
-            const code = [
-                "var foo1; // ec0lint-disable-line no-unused-vars",
-                "var foo2; // ec0lint-disable-line no-unused-vars",
-                "var foo3; // ec0lint-disable-line no-unused-vars",
-                "var foo4; // ec0lint-disable-line no-unused-vars",
-                "var foo5; // ec0lint-disable-line no-unused-vars"
-            ].join("\n");
-            const config = { rules: { "no-unused-vars": 2 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 5);
-        });
-
-        it("should report no violation", () => {
-            const code = [
-                "/* ec0lint-disable quotes */",
-                "console.log(\"foo\");",
-                "/* ec0lint-enable quotes */"
-            ].join("\n");
-            const config = { rules: { quotes: 2 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert, no-console */",
-                "alert('test');",
-                "console.log('test');",
-                "/*ec0lint-enable*/",
-
-                "alert('test');", // here
-                "console.log('test');" // here
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].line, 5);
-            assert.strictEqual(messages[1].ruleId, "no-console");
-            assert.strictEqual(messages[1].line, 6);
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[1].line, 3);
-        });
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert */",
-                "alert('test');",
-                "console.log('test');",
-                "/*ec0lint-enable no-console */",
-
-                "alert('test');" // here
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-console");
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[1].line, 5);
-        });
-
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert, no-console */",
-                "alert('test');",
-                "console.log('test');",
-                "/*ec0lint-enable no-alert*/",
-
-                "alert('test');", // here
-                "console.log('test');"
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].line, 5);
-
-            assert.strictEqual(suppressedMessages.length, 3);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[2].line, 6);
-        });
-
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert */",
-
-                "/*ec0lint-disable no-console */",
-                "alert('test');",
-                "console.log('test');",
-                "/*ec0lint-enable */",
-
-                "alert('test');", // here
-                "console.log('test');", // here
-
-                "/*ec0lint-enable */",
-
-                "alert('test');", // here
-                "console.log('test');", // here
-
-                "/*ec0lint-enable*/"
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 4);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].line, 6);
-            assert.strictEqual(messages[1].ruleId, "no-console");
-            assert.strictEqual(messages[1].line, 7);
-            assert.strictEqual(messages[2].ruleId, "no-alert");
-            assert.strictEqual(messages[2].line, 9);
-            assert.strictEqual(messages[3].ruleId, "no-console");
-            assert.strictEqual(messages[3].line, 10);
-
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 3);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[1].line, 4);
-        });
-
-        it("should report a violation", () => {
-            const code = [
-                "/*ec0lint-disable no-alert, no-console */",
-                "alert('test');",
-                "console.log('test');",
-
-                "/*ec0lint-enable no-alert */",
-
-                "alert('test');", // here
-                "console.log('test');",
-
-                "/*ec0lint-enable no-console */",
-
-                "alert('test');", // here
-                "console.log('test');", // here
-                "/*ec0lint-enable no-console */"
-            ].join("\n");
-            const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 3);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].line, 5);
-            assert.strictEqual(messages[1].ruleId, "no-alert");
-            assert.strictEqual(messages[1].line, 8);
-            assert.strictEqual(messages[2].ruleId, "no-console");
-            assert.strictEqual(messages[2].line, 9);
-
-            assert.strictEqual(suppressedMessages.length, 3);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[2].line, 6);
-        });
-
-        it("should report a violation when severity is warn", () => {
-            const code = [
-                "/*ec0lint-disable no-alert, no-console */",
-                "alert('test');",
-                "console.log('test');",
-
-                "/*ec0lint-enable no-alert */",
-
-                "alert('test');", // here
-                "console.log('test');",
-
-                "/*ec0lint-enable no-console */",
-
-                "alert('test');", // here
-                "console.log('test');", // here
-                "/*ec0lint-enable no-console */"
-            ].join("\n");
-            const config = { rules: { "no-alert": "warn", "no-console": "warn" } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 3);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].line, 5);
-            assert.strictEqual(messages[1].ruleId, "no-alert");
-            assert.strictEqual(messages[1].line, 8);
-            assert.strictEqual(messages[2].ruleId, "no-console");
-            assert.strictEqual(messages[2].line, 9);
-
-            assert.strictEqual(suppressedMessages.length, 3);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages[0].line, 2);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[1].line, 3);
-            assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-            assert.strictEqual(suppressedMessages[2].line, 6);
-        });
-    });
-
-    describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-        const code = "/*ec0lint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
-
-        it("should report a violation", () => {
-            const config = { rules: { "no-console": 1, "no-alert": 0 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(messages[0].message, "Unexpected alert.");
-            assert.include(messages[0].nodeType, "CallExpression");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to enable configurable rule", () => {
-        const code = "/*ec0lint quotes:[2, \"double\"]*/ alert('test');";
-
-        it("should report a violation", () => {
-            const config = { rules: { quotes: [2, "single"] } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "quotes");
-            assert.strictEqual(messages[0].message, "Strings must use doublequote.");
-            assert.include(messages[0].nodeType, "Literal");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-        const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ alert('test');";
-
-        it("should report a violation", () => {
-            const config = { rules: { quotes: [2, "single"] } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "quotes");
-            assert.strictEqual(messages[0].message, "Strings must use doublequote.");
-            assert.include(messages[0].nodeType, "Literal");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
-        it("should report a violation", () => {
-            const code = "/*ec0lint no-alert:'1'*/ alert('test');";
-
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-
-            /*
-             * Incorrectly formatted comment threw error;
-             * message from caught exception
-             * may differ amongst UAs, so verifying
-             * first part only as defined in the
-             * parseJsonConfig function in lib/eslint.js
-             */
-            assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":'1'':/u);
-            assert.strictEqual(messages[0].line, 1);
-            assert.strictEqual(messages[0].column, 1);
-
-            assert.strictEqual(messages[1].ruleId, "no-alert");
-            assert.strictEqual(messages[1].message, "Unexpected alert.");
-            assert.include(messages[1].nodeType, "CallExpression");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should report a violation", () => {
-            const code = "/*ec0lint no-alert:abc*/ alert('test');";
-
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-
-            /*
-             * Incorrectly formatted comment threw error;
-             * message from caught exception
-             * may differ amongst UAs, so verifying
-             * first part only as defined in the
-             * parseJsonConfig function in lib/ec0lint.js
-             */
-            assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":abc':/u);
-            assert.strictEqual(messages[0].line, 1);
-            assert.strictEqual(messages[0].column, 1);
-
-            assert.strictEqual(messages[1].ruleId, "no-alert");
-            assert.strictEqual(messages[1].message, "Unexpected alert.");
-            assert.include(messages[1].nodeType, "CallExpression");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should report a violation", () => {
-            const code = "/*ec0lint no-alert:0 2*/ alert('test');";
-
-            const config = { rules: { "no-alert": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 2);
-
-            /*
-             * Incorrectly formatted comment threw error;
-             * message from caught exception
-             * may differ amongst UAs, so verifying
-             * first part only as defined in the
-             * parseJsonConfig function in lib/ec0lint.js
-             */
-            assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":0 2':/u);
-            assert.strictEqual(messages[0].line, 1);
-            assert.strictEqual(messages[0].column, 1);
-
-            assert.strictEqual(messages[1].ruleId, "no-alert");
-            assert.strictEqual(messages[1].message, "Unexpected alert.");
-            assert.include(messages[1].nodeType, "CallExpression");
-
-            assert.strictEqual(suppressedMessages.length, 0);
         });
     });
 
@@ -3353,7 +2065,7 @@ describe("Linter", () => {
             const rules = linter.getRules();
 
             assert.isAbove(rules.size, 10);
-            assert.isObject(rules.get("no-alert"));
+            assert.isObject(rules.get("lighter-http"));
         });
     });
 
@@ -3541,27 +2253,6 @@ describe("Linter", () => {
     });
 
     describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
-        it("should report a violation for disabling rules", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 1
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: false
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
 
         it("should report a violation for global variable declarations", () => {
             const code = [
@@ -3596,72 +2287,6 @@ describe("Linter", () => {
 
             linter.verify(code, config, { allowInlineConfig: false });
             assert(ok);
-        });
-
-        it("should report a violation for ec0lint-disable", () => {
-            const code = [
-                "/* ec0lint-disable */",
-                "alert('test');"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 1
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: false
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation for rule changes", () => {
-            const code = [
-                "/*ec0lint no-alert:2*/",
-                "alert('test');"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 0
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: false
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should report a violation for disable-line", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 2
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: false
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-
-            assert.strictEqual(suppressedMessages.length, 0);
         });
 
         it("should report a violation for env changes", () => {
@@ -3814,42 +2439,6 @@ describe("Linter", () => {
             assert.strictEqual(suppressedMessages.length, 0);
         });
 
-        it("reports problems for multiple ec0lint-disable comments, including unused ones", () => {
-            const code = [
-                "/* ec0lint-disable no-alert -- j1 */",
-                "alert(\"test\"); //ec0lint-disable-line no-alert -- j2"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 2
-                }
-            };
-            const messages = linter.verify(code, config, { reportUnusedDisableDirectives: true });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].suppressions.length, 2);
-        });
-
-        it("reports problems for ec0lint-disable-line and ec0lint-disable-next-line comments, including unused ones", () => {
-            const code = [
-                "// ec0lint-disable-next-line no-alert -- j1 */",
-                "alert(\"test\"); //ec0lint-disable-line no-alert -- j2"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 2
-                }
-            };
-            const messages = linter.verify(code, config, { reportUnusedDisableDirectives: true });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].suppressions.length, 2);
-        });
-
         it("reports problems for multiple unused ec0lint-disable comments with mutliple ruleIds", () => {
             const code = [
                 "/* ec0lint no-undef: 2, no-void: 2 */",
@@ -3946,44 +2535,6 @@ describe("Linter", () => {
             );
 
             assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-            const code = "alert('test'); // ec0lint-disable-line no-alert, no-redeclare";
-            const config = {
-                reportUnusedDisableDirectives: true,
-                rules: {
-                    "no-alert": 1,
-                    "no-redeclare": 1
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: true
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.deepStrictEqual(
-                messages,
-                [
-                    {
-                        ruleId: null,
-                        message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
-                        line: 1,
-                        column: 16,
-                        fix: {
-                            range: [47, 61],
-                            text: ""
-                        },
-                        severity: 1,
-                        nodeType: null
-                    }
-                ]
-            );
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
         });
 
         describe("autofix", () => {
@@ -4541,30 +3092,6 @@ describe("Linter", () => {
                     );
                 });
             }
-        });
-    });
-
-    describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
-        it("should not report a violation", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-alert": 1
-                }
-            };
-
-            const messages = linter.verify(code, config, {
-                filename,
-                allowInlineConfig: true
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
         });
     });
 
@@ -11200,15 +9727,15 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to enable rules", () => {
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint no-alert:1*/ alert('test');";
+                        const code = "/*ec0lint lighter-http:1*/ let foo = require('axios');";
                         const config = { rules: {} };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-                        assert.strictEqual(messages[0].message, "Unexpected alert.");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[0].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -11300,7 +9827,7 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with invalid comments to enable rules", () => {
                     it("should report a violation when the config is not a valid rule configuration", () => {
-                        const messages = linter.verify("/*ec0lint no-alert:true*/ alert('test');", {});
+                        const messages = linter.verify("/*ec0lint lighter-http:true*/ let foo = require('axios');", {});
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.deepStrictEqual(
@@ -11308,12 +9835,12 @@ describe("Linter with FlatConfigArray", () => {
                             [
                                 {
                                     severity: 2,
-                                    ruleId: "no-alert",
-                                    message: "Configuration for rule \"no-alert\" is invalid:\n\tSeverity should be one of the following: 0 = off, 1 = warn, 2 = error (you passed 'true').\n",
+                                    ruleId: "lighter-http",
+                                    message: "Configuration for rule \"lighter-http\" is invalid:\n\tSeverity should be one of the following: 0 = off, 1 = warn, 2 = error (you passed 'true').\n",
                                     line: 1,
                                     column: 1,
                                     endLine: 1,
-                                    endColumn: 26,
+                                    endColumn: 30,
                                     nodeType: null
                                 }
                             ]
@@ -11323,7 +9850,7 @@ describe("Linter with FlatConfigArray", () => {
                     });
 
                     it("should report a violation when the config violates a rule's schema", () => {
-                        const messages = linter.verify("/* ec0lint no-alert: [error, {nonExistentPropertyName: true}]*/", {});
+                        const messages = linter.verify("/* ec0lint lighter-http: [error, {nonExistentPropertyName: true}]*/", {});
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.deepStrictEqual(
@@ -11331,12 +9858,12 @@ describe("Linter with FlatConfigArray", () => {
                             [
                                 {
                                     severity: 2,
-                                    ruleId: "no-alert",
-                                    message: "Configuration for rule \"no-alert\" is invalid:\n\tValue [{\"nonExistentPropertyName\":true}] should NOT have more than 0 items.\n",
+                                    ruleId: "lighter-http",
+                                    message: "Configuration for rule \"lighter-http\" is invalid:\n\tValue [{\"nonExistentPropertyName\":true}] should NOT have more than 0 items.\n",
                                     line: 1,
                                     column: 1,
                                     endLine: 1,
-                                    endColumn: 64,
+                                    endColumn: 68,
                                     nodeType: null
                                 }
                             ]
@@ -11349,8 +9876,8 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to disable rules", () => {
 
                     it("should not report a violation", () => {
-                        const config = { rules: { "no-alert": 1 } };
-                        const messages = linter.verify("/*ec0lint no-alert:0*/ alert('test');", config, filename);
+                        const config = { rules: { "lighter-http": 1 } };
+                        const messages = linter.verify("/*ec0lint lighter-http:0*/ let foo = require('axios');", config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 0);
@@ -11409,7 +9936,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable multiple rules", () => {
-                    const code = "/*ec0lint no-alert:1 no-console:1*/ alert('test'); console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 no-console:1*/ let foo = require('axios'); console.log('test');";
 
                     it("should report a violation", () => {
                         const config = { rules: {} };
@@ -11418,8 +9945,8 @@ describe("Linter with FlatConfigArray", () => {
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 2);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-                        assert.strictEqual(messages[0].message, "Unexpected alert.");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[0].nodeType, "CallExpression");
                         assert.strictEqual(messages[1].ruleId, "no-console");
 
@@ -11428,17 +9955,17 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple rules", () => {
-                    const code = "/*ec0lint no-alert:1 no-console:0*/ alert('test'); console.log('test');";
+                    const code = "/*ec0lint lighter-http:1 no-console:0*/ let foo = require('axios'); console.log('test');";
 
                     it("should report a violation", () => {
-                        const config = { rules: { "no-console": 1, "no-alert": 0 } };
+                        const config = { rules: { "no-console": 1, "lighter-http": 0 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-                        assert.strictEqual(messages[0].message, "Unexpected alert.");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[0].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -11569,145 +10096,8 @@ describe("Linter with FlatConfigArray", () => {
                     });
                 });
 
-                describe("when evaluating code with comments to enable and disable all reporting", () => {
-                    it("should report a violation", () => {
-
-                        const code = [
-                            "/*ec0lint-disable */",
-                            "alert('test');",
-                            "/*ec0lint-enable */",
-                            "alert('test');"
-                        ].join("\n");
-                        const config = { rules: { "no-alert": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-                        assert.strictEqual(messages[0].message, "Unexpected alert.");
-                        assert.include(messages[0].nodeType, "CallExpression");
-                        assert.strictEqual(messages[0].line, 4);
-
-                        assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                        assert.strictEqual(suppressedMessages[0].line, 2);
-                    });
-
-                    it("should not report a violation", () => {
-                        const code = [
-                            "/*ec0lint-disable */",
-                            "alert('test');",
-                            "alert('test');"
-                        ].join("\n");
-                        const config = { rules: { "no-alert": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 2);
-                    });
-
-                    it("should not report a violation", () => {
-                        const code = [
-                            "                    alert('test1');/*ec0lint-disable */\n",
-                            "alert('test');",
-                            "                                         alert('test');\n",
-                            "/*ec0lint-enable */alert('test2');"
-                        ].join("");
-                        const config = { rules: { "no-alert": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 2);
-                        assert.strictEqual(messages[0].column, 21);
-                        assert.strictEqual(messages[1].column, 20);
-
-                        assert.strictEqual(suppressedMessages.length, 2);
-                        assert.strictEqual(suppressedMessages[0].column, 1);
-                        assert.strictEqual(suppressedMessages[1].column, 56);
-                    });
-
-                    it("should report a violation", () => {
-
-                        const code = [
-                            "/*ec0lint-disable */",
-                            "alert('test');",
-                            "/*ec0lint-disable */",
-                            "alert('test');",
-                            "/*ec0lint-enable*/",
-                            "alert('test');",
-                            "/*ec0lint-enable*/"
-                        ].join("\n");
-
-                        const config = { rules: { "no-alert": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 2);
-                    });
-
-
-                    it("should not report a violation", () => {
-                        const code = [
-                            "/*ec0lint-disable */",
-                            "(function(){ var b = 44;})()",
-                            "/*ec0lint-enable */;any();"
-                        ].join("\n");
-
-                        const config = { rules: { "no-unused-vars": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-
-                        assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
-                    });
-
-                    it("should not report a violation", () => {
-                        const code = [
-                            "(function(){ /*ec0lint-disable */ var b = 44;})()",
-                            "/*ec0lint-enable */;any();"
-                        ].join("\n");
-
-                        const config = { rules: { "no-unused-vars": 1 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-
-                        assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
-                    });
-                });
-
-                describe("when evaluating code with comments to enable and disable multiple comma separated rules", () => {
-                    const code = "/*ec0lint no-alert:1, no-console:0*/ alert('test'); console.log('test');";
-
-                    it("should report a violation", () => {
-                        const config = { rules: { "no-console": 1, "no-alert": 0 } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-                        assert.strictEqual(messages[0].message, "Unexpected alert.");
-                        assert.include(messages[0].nodeType, "CallExpression");
-
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-                });
-
                 describe("when evaluating code with comments to enable configurable rule", () => {
-                    const code = "/*ec0lint quotes:[2, \"double\"]*/ alert('test');";
+                    const code = "/*ec0lint quotes:[2, \"double\"]*/ let foo = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { quotes: [2, "single"] } };
@@ -11725,7 +10115,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ alert('test');";
+                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ let foo = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: { quotes: [2, "single"] } };
@@ -11744,9 +10134,9 @@ describe("Linter with FlatConfigArray", () => {
 
                 describe("when evaluating code with incorrectly formatted comments to disable rule", () => {
                     it("should report a violation", () => {
-                        const code = "/*ec0lint no-alert:'1'*/ alert('test');";
+                        const code = "/*ec0lint lighter-http:'1'*/ let foo = require('axios');";
 
-                        const config = { rules: { "no-alert": 1 } };
+                        const config = { rules: { "lighter-http": 1 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11760,21 +10150,21 @@ describe("Linter with FlatConfigArray", () => {
                          * first part only as defined in the
                          * parseJsonConfig function in lib/eslint.js
                          */
-                        assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":'1'':/u);
+                        assert.match(messages[0].message, /^Failed to parse JSON from ' "lighter-http":'1'':/u);
                         assert.strictEqual(messages[0].line, 1);
                         assert.strictEqual(messages[0].column, 1);
 
-                        assert.strictEqual(messages[1].ruleId, "no-alert");
-                        assert.strictEqual(messages[1].message, "Unexpected alert.");
+                        assert.strictEqual(messages[1].ruleId, "lighter-http");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint no-alert:abc*/ alert('test');";
+                        const code = "/*ec0lint lighter-http:abc*/ let foo = require('axios');";
 
-                        const config = { rules: { "no-alert": 1 } };
+                        const config = { rules: { "lighter-http": 1 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11788,21 +10178,21 @@ describe("Linter with FlatConfigArray", () => {
                          * first part only as defined in the
                          * parseJsonConfig function in lib/eslint.js
                          */
-                        assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":abc':/u);
+                        assert.match(messages[0].message, /^Failed to parse JSON from ' "lighter-http":abc':/u);
                         assert.strictEqual(messages[0].line, 1);
                         assert.strictEqual(messages[0].column, 1);
 
-                        assert.strictEqual(messages[1].ruleId, "no-alert");
-                        assert.strictEqual(messages[1].message, "Unexpected alert.");
+                        assert.strictEqual(messages[1].ruleId, "lighter-http");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
 
                     it("should report a violation", () => {
-                        const code = "/*ec0lint no-alert:0 2*/ alert('test');";
+                        const code = "/*ec0lint lighter-http:0 2*/ let foo = require('axios');";
 
-                        const config = { rules: { "no-alert": 1 } };
+                        const config = { rules: { "lighter-http": 1 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -11816,328 +10206,20 @@ describe("Linter with FlatConfigArray", () => {
                          * first part only as defined in the
                          * parseJsonConfig function in lib/eslint.js
                          */
-                        assert.match(messages[0].message, /^Failed to parse JSON from ' "no-alert":0 2':/u);
+                        assert.match(messages[0].message, /^Failed to parse JSON from ' "lighter-http":0 2':/u);
                         assert.strictEqual(messages[0].line, 1);
                         assert.strictEqual(messages[0].column, 1);
 
-                        assert.strictEqual(messages[1].ruleId, "no-alert");
-                        assert.strictEqual(messages[1].message, "Unexpected alert.");
+                        assert.strictEqual(messages[1].ruleId, "lighter-http");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
                 });
-            });
-
-            describe("/*ec0lint-disable*/ and /*ec0lint-enable*/", () => {
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert */",
-                        "alert('test');",
-                        "console.log('test');" // here
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                });
-
-                it("should report no violation", () => {
-                    const code = [
-                        "/* ec0lint-disable quotes */",
-                        "console.log(\"foo\");",
-                        "/* ec0lint-enable quotes */"
-                    ].join("\n");
-                    const config = { rules: { quotes: 2 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert, no-console */",
-                        "alert('test');",
-                        "console.log('test');",
-                        "/*ec0lint-enable*/",
-
-                        "alert('test');", // here
-                        "console.log('test');" // here
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 5);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-                    assert.strictEqual(messages[1].line, 6);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 3);
-                });
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert */",
-                        "alert('test');",
-                        "console.log('test');", // here
-                        "/*ec0lint-enable no-console */",
-                        "alert('test');"
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[1].line, 5);
-                });
-
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert, no-console */",
-                        "alert('test');",
-                        "console.log('test');",
-                        "/*ec0lint-enable no-alert*/",
-
-                        "alert('test');", // here
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 5);
-
-                    assert.strictEqual(suppressedMessages.length, 3);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[2].line, 6);
-                });
-
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert */",
-
-                        "/*ec0lint-disable no-console */",
-                        "alert('test');",
-                        "console.log('test');",
-                        "/*ec0lint-enable */",
-
-                        "alert('test');", // here
-                        "console.log('test');", // here
-
-                        "/*ec0lint-enable */",
-
-                        "alert('test');", // here
-                        "console.log('test');", // here
-
-                        "/*ec0lint-enable*/"
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 4);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 6);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-                    assert.strictEqual(messages[1].line, 7);
-                    assert.strictEqual(messages[2].ruleId, "no-alert");
-                    assert.strictEqual(messages[2].line, 9);
-                    assert.strictEqual(messages[3].ruleId, "no-console");
-                    assert.strictEqual(messages[3].line, 10);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 3);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 4);
-                });
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert, no-console */",
-                        "alert('test');",
-                        "console.log('test');",
-
-                        "/*ec0lint-enable no-alert */",
-
-                        "alert('test');", // here
-                        "console.log('test');",
-
-                        "/*ec0lint-enable no-console */",
-
-                        "alert('test');", // here
-                        "console.log('test');", // here
-                        "/*ec0lint-enable no-console */"
-                    ].join("\n");
-                    const config = { rules: { "no-alert": 1, "no-console": 1 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 3);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 5);
-                    assert.strictEqual(messages[1].ruleId, "no-alert");
-                    assert.strictEqual(messages[1].line, 8);
-                    assert.strictEqual(messages[2].ruleId, "no-console");
-                    assert.strictEqual(messages[2].line, 9);
-
-                    assert.strictEqual(suppressedMessages.length, 3);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[2].line, 6);
-                });
-
-                it("should report a violation when severity is warn", () => {
-                    const code = [
-                        "/*ec0lint-disable no-alert, no-console */",
-                        "alert('test');",
-                        "console.log('test');",
-
-                        "/*ec0lint-enable no-alert */",
-
-                        "alert('test');", // here
-                        "console.log('test');",
-
-                        "/*ec0lint-enable no-console */",
-
-                        "alert('test');", // here
-                        "console.log('test');", // here
-                        "/*ec0lint-enable no-console */"
-                    ].join("\n");
-                    const config = { rules: { "no-alert": "warn", "no-console": "warn" } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 3);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 5);
-                    assert.strictEqual(messages[1].ruleId, "no-alert");
-                    assert.strictEqual(messages[1].line, 8);
-                    assert.strictEqual(messages[2].ruleId, "no-console");
-                    assert.strictEqual(messages[2].line, 9);
-
-                    assert.strictEqual(suppressedMessages.length, 3);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 3);
-                    assert.strictEqual(suppressedMessages[2].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[2].line, 6);
-                });
-
-                it("should report no violation", () => {
-                    const code = [
-                        "/*ec0lint-disable no-unused-vars */",
-                        "var foo; // ec0lint-disable-line no-unused-vars",
-                        "var bar;",
-                        "/* ec0lint-enable no-unused-vars */" // here
-                    ].join("\n");
-                    const config = { rules: { "no-unused-vars": 2 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-unused-vars");
-                    assert.strictEqual(suppressedMessages[0].line, 2);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-unused-vars");
-                    assert.strictEqual(suppressedMessages[1].line, 3);
-                });
-
             });
 
             describe("/*ec0lint-disable-line*/", () => {
-
-                it("should report a violation", () => {
-                    const code = [
-                        "alert('test'); // ec0lint-disable-line no-alert",
-                        "console.log('test');" // here
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-                    assert.strictEqual(messages[0].line, 2);
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 1);
-                });
-
-                it("should report a violation", () => {
-                    const code = [
-                        "alert('test'); // ec0lint-disable-line no-alert",
-                        "console.log('test'); // ec0lint-disable-line no-console",
-                        "alert('test');" // here
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[0].line, 3);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[0].line, 1);
-                    assert.strictEqual(suppressedMessages[1].ruleId, "no-console");
-                    assert.strictEqual(suppressedMessages[1].line, 2);
-                });
 
                 it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
@@ -12162,12 +10244,12 @@ describe("Linter with FlatConfigArray", () => {
 
                 it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
-                        "alert('test'); /* ec0lint-disable-line ",
-                        "no-alert */"
+                        "let foo = require('axios'); /* ec0lint-disable-line ",
+                        "lighter-http */"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1
+                            "lighter-http": 1
                         }
                     };
 
@@ -12176,13 +10258,13 @@ describe("Linter with FlatConfigArray", () => {
 
                     assert.deepStrictEqual(messages, [
                         {
-                            ruleId: "no-alert",
+                            ruleId: "lighter-http",
                             severity: 1,
                             line: 1,
-                            column: 1,
+                            column: 11,
                             endLine: 1,
-                            endColumn: 14,
-                            message: "Unexpected alert.",
+                            endColumn: 27,
+                            message: "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).",
                             messageId: "unexpected",
                             nodeType: "CallExpression"
                         },
@@ -12191,113 +10273,14 @@ describe("Linter with FlatConfigArray", () => {
                             severity: 2,
                             message: "ec0lint-disable-line comment should not span multiple lines.",
                             line: 1,
-                            column: 16,
+                            column: 29,
                             endLine: 2,
-                            endColumn: 12,
+                            endColumn: 16,
                             nodeType: null
                         }
                     ]);
 
                     assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should not report a violation for ec0lint-disable-line in block comment", () => {
-                    const code = [
-                        "alert('test'); // ec0lint-disable-line no-alert",
-                        "alert('test'); /*ec0lint-disable-line no-alert*/"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 2);
-                });
-
-                it("should not report a violation", () => {
-                    const code = [
-                        "alert('test'); // ec0lint-disable-line no-alert",
-                        "console.log('test'); // ec0lint-disable-line no-console"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 2);
-                });
-
-                it("should not report a violation", () => {
-                    const code = [
-                        "alert('test') // ec0lint-disable-line no-alert, quotes, semi",
-                        "console.log('test'); // ec0lint-disable-line"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "double"],
-                            semi: [1, "always"],
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 5);
-                });
-
-                it("should not report a violation", () => {
-                    const code = [
-                        "alert('test') /* ec0lint-disable-line no-alert, quotes, semi */",
-                        "console.log('test'); /* ec0lint-disable-line */"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "double"],
-                            semi: [1, "always"],
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 5);
-                });
-
-                it("should ignore violations of multiple rules when specified in mixed comments", () => {
-                    const code = [
-                        " alert(\"test\"); /* ec0lint-disable-line no-alert */ // ec0lint-disable-line quotes"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "single"]
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should report no violation", () => {
@@ -12322,13 +10305,13 @@ describe("Linter with FlatConfigArray", () => {
             describe("/*ec0lint-disable-next-line*/", () => {
                 it("should ignore violation of specified rule on next line", () => {
                     const code = [
-                        "// ec0lint-disable-next-line no-alert",
-                        "alert('test');",
+                        "// ec0lint-disable-next-line lighter-http",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
@@ -12339,18 +10322,18 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(messages[0].ruleId, "no-console");
 
                     assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
 
                 it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
-                        "/* ec0lint-disable-next-line no-alert */",
-                        "alert('test');",
+                        "/* ec0lint-disable-next-line lighter-http */",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
@@ -12361,16 +10344,16 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(messages[0].ruleId, "no-console");
 
                     assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
                 it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
                     const code = [
-                        "/* ec0lint-disable-next-line no-alert */",
-                        "alert('test');"
+                        "/* ec0lint-disable-next-line lighter-http */",
+                        "let foo = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12379,24 +10362,24 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(messages.length, 0);
 
                     assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
 
                 it("should not ignore violation if code is not on next line", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "no-alert */alert('test');"
+                        "lighter-http */let foo = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -12404,12 +10387,12 @@ describe("Linter with FlatConfigArray", () => {
                 it("should ignore violation if block comment span multiple lines", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "no-alert */",
-                        "alert('test');"
+                        "lighter-http */",
+                        "let foo = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1
+                            "lighter-http": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
@@ -12418,41 +10401,18 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(messages.length, 0);
 
                     assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                });
-
-                // For https://github.com/eslint/eslint/issues/14284
-                it("should ignore violation if block comment span multiple lines with description", () => {
-                    const code = `
-                    /* ec0lint-disable-next-line no-alert --
-                        description on why this exception is seen as appropriate but past a
-                        comfortable reading line length
-                    */
-                    alert("buzz");
-                    `;
-                    const config = {
-                        rules: {
-                            "no-alert": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                 });
 
                 it("should ignore violations only of specified rule", () => {
                     const code = [
                         "// ec0lint-disable-next-line no-console",
-                        "alert('test');",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
@@ -12460,7 +10420,7 @@ describe("Linter with FlatConfigArray", () => {
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].ruleId, "no-console");
 
                     assert.strictEqual(suppressedMessages.length, 0);
@@ -12470,58 +10430,34 @@ describe("Linter with FlatConfigArray", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
                         "no-console */",
-                        "alert('test');",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
                     const messages = linter.verify(code, config, filename);
 
                     assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].ruleId, "no-console");
-                });
-
-                it("should ignore violations of multiple rules when specified", () => {
-                    const code = [
-                        "// ec0lint-disable-next-line no-alert, quotes",
-                        "alert(\"test\");",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "single"],
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should ignore violations of multiple rules when specified in multiple lines", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "no-alert,",
+                        "lighter-http,",
                         "quotes",
                         "*/",
-                        "alert(\"test\");",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             quotes: [1, "single"],
                             "no-console": 1
                         }
@@ -12530,143 +10466,24 @@ describe("Linter with FlatConfigArray", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].ruleId, "no-console");
-                });
-
-                it("should ignore violations of multiple rules when specified in mixed comments", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line no-alert */ // ec0lint-disable-next-line quotes",
-                        "alert(\"test\");"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "single"]
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 2);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
                 });
 
                 it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
                     const code = [
                         "/* ec0lint-disable-next-line",
-                        "no-alert",
+                        "lighter-http",
                         "*/ // ec0lint-disable-next-line quotes",
-                        "alert(\"test\");"
+                        "let foo = require('axios');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             quotes: [1, "single"]
                         }
                     };
                     const messages = linter.verify(code, config, filename);
 
                     assert.strictEqual(messages.length, 0);
-                });
-
-                it("should ignore violations of only the specified rule on next line", () => {
-                    const code = [
-                        "// ec0lint-disable-next-line quotes",
-                        "alert(\"test\");",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            quotes: [1, "single"],
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "quotes");
-                });
-
-                it("should ignore violations of specified rule on next line only", () => {
-                    const code = [
-                        "alert('test');",
-                        "// ec0lint-disable-next-line no-alert",
-                        "alert('test');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                });
-
-                it("should ignore all rule violations on next line if none specified", () => {
-                    const code = [
-                        "// ec0lint-disable-next-line",
-                        "alert(\"test\");",
-                        "console.log('test')"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            semi: [1, "never"],
-                            quotes: [1, "single"],
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 3);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                    assert.strictEqual(suppressedMessages[1].ruleId, "quotes");
-                    assert.strictEqual(suppressedMessages[2].ruleId, "semi");
-                });
-
-                it("should ignore violations if ec0lint-disable-next-line is a block comment", () => {
-                    const code = [
-                        "alert('test');",
-                        "/* ec0lint-disable-next-line no-alert */",
-                        "alert('test');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-alert": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
                 });
 
                 it("should report a violation", () => {
@@ -12678,7 +10495,7 @@ describe("Linter with FlatConfigArray", () => {
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
@@ -12694,13 +10511,13 @@ describe("Linter with FlatConfigArray", () => {
 
                 it("should not ignore violations if comment is of the type hashbang", () => {
                     const code = [
-                        "#! ec0lint-disable-next-line no-alert",
-                        "alert('test');",
+                        "#! ec0lint-disable-next-line lighter-http",
+                        "let foo = require('axios');",
                         "console.log('test');"
                     ].join("\n");
                     const config = {
                         rules: {
-                            "no-alert": 1,
+                            "lighter-http": 1,
                             "no-console": 1
                         }
                     };
@@ -12708,7 +10525,7 @@ describe("Linter with FlatConfigArray", () => {
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "no-alert");
+                    assert.strictEqual(messages[0].ruleId, "lighter-http");
                     assert.strictEqual(messages[1].ruleId, "no-console");
 
                     assert.strictEqual(suppressedMessages.length, 0);
@@ -13151,11 +10968,11 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
                     it("should report a violation for disabling rules", () => {
                         const code = [
-                            "alert('test'); // ec0lint-disable-line no-alert"
+                            "let foo = require('axios'); // ec0lint-disable-line lighter-http"
                         ].join("\n");
                         const config = {
                             rules: {
-                                "no-alert": 1
+                                "lighter-http": 1
                             }
                         };
 
@@ -13166,7 +10983,7 @@ describe("Linter with FlatConfigArray", () => {
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
@@ -13212,11 +11029,11 @@ describe("Linter with FlatConfigArray", () => {
                     it("should report a violation for ec0lint-disable", () => {
                         const code = [
                             "/* ec0lint-disable */",
-                            "alert('test');"
+                            "let foo = require('axios');"
                         ].join("\n");
                         const config = {
                             rules: {
-                                "no-alert": 1
+                                "lighter-http": 1
                             }
                         };
 
@@ -13227,54 +11044,10 @@ describe("Linter with FlatConfigArray", () => {
                         const suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
+                        assert.strictEqual(messages[0].ruleId, "lighter-http");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
-
-                    it("should not report a violation for rule changes", () => {
-                        const code = [
-                            "/*ec0lint no-alert:2*/",
-                            "alert('test');"
-                        ].join("\n");
-                        const config = {
-                            rules: {
-                                "no-alert": 0
-                            }
-                        };
-
-                        const messages = linter.verify(code, config, {
-                            filename,
-                            allowInlineConfig: false
-                        });
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-
-                    it("should report a violation for disable-line", () => {
-                        const code = [
-                            "alert('test'); // ec0lint-disable-line"
-                        ].join("\n");
-                        const config = {
-                            rules: {
-                                "no-alert": 2
-                            }
-                        };
-
-                        const messages = linter.verify(code, config, {
-                            filename,
-                            allowInlineConfig: false
-                        });
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "no-alert");
-
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-
                 });
 
                 describe("when evaluating code with 'noInlineConfig'", () => {
@@ -13344,11 +11117,11 @@ describe("Linter with FlatConfigArray", () => {
                 describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
                     it("should not report a violation", () => {
                         const code = [
-                            "alert('test'); // ec0lint-disable-line no-alert"
+                            "let foo = require('axios'); // ec0lint-disable-line lighter-http"
                         ].join("\n");
                         const config = {
                             rules: {
-                                "no-alert": 1
+                                "lighter-http": 1
                             }
                         };
 
@@ -13361,7 +11134,7 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages.length, 0);
 
                         assert.strictEqual(suppressedMessages.length, 1);
-                        assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+                        assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
                     });
                 });
 
@@ -13472,46 +11245,6 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
-                it("reports problems for partially unused ec0lint-disable comments (in config)", () => {
-                    const code = "alert('test'); // ec0lint-disable-line no-alert, no-redeclare";
-                    const config = {
-                        linterOptions: {
-                            reportUnusedDisableDirectives: true
-                        },
-                        rules: {
-                            "no-alert": 1,
-                            "no-redeclare": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, {
-                        filename,
-                        allowInlineConfig: true
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.deepStrictEqual(
-                        messages,
-                        [
-                            {
-                                ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
-                                line: 1,
-                                column: 16,
-                                fix: {
-                                    range: [47, 61],
-                                    text: ""
-                                },
-                                severity: 1,
-                                nodeType: null
-                            }
-                        ]
-                    );
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-                });
-
                 it("reports problems for unused ec0lint-disable-next-line comments (in config)", () => {
                     assert.deepStrictEqual(
                         linter.verify("// ec0lint-disable-next-line", {
@@ -13552,84 +11285,6 @@ describe("Linter with FlatConfigArray", () => {
                                 fix: {
                                     range: [0, 33],
                                     text: " "
-                                },
-                                severity: 1,
-                                nodeType: null
-                            }
-                        ]
-                    );
-                });
-
-                it("reports problems for partially unused ec0lint-disable-next-line comments (in config)", () => {
-                    const code = "// ec0lint-disable-next-line no-alert, no-redeclare \nalert('test');";
-                    const config = {
-                        linterOptions: {
-                            reportUnusedDisableDirectives: true
-                        },
-                        rules: {
-                            "no-alert": 1,
-                            "no-redeclare": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, {
-                        filename,
-                        allowInlineConfig: true
-                    });
-
-                    assert.deepStrictEqual(
-                        messages,
-                        [
-                            {
-                                ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
-                                line: 1,
-                                column: 1,
-                                fix: {
-                                    range: [37, 51],
-                                    text: ""
-                                },
-                                severity: 1,
-                                nodeType: null
-                            }
-                        ]
-                    );
-                });
-
-                it("reports problems for partially unused multiline ec0lint-disable-next-line comments (in config)", () => {
-                    const code = `
-                    /* ec0lint-disable-next-line no-alert, no-redeclare --
-                     * Here's a very long description about why this configuration is necessary
-                     * along with some additional information
-                    **/
-                    alert('test');
-                    `;
-                    const config = {
-                        linterOptions: {
-                            reportUnusedDisableDirectives: true
-                        },
-                        rules: {
-                            "no-alert": 1,
-                            "no-redeclare": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, {
-                        filename,
-                        allowInlineConfig: true
-                    });
-
-                    assert.deepStrictEqual(
-                        messages,
-                        [
-                            {
-                                ruleId: null,
-                                message: "Unused ec0lint-disable directive (no problems were reported from 'no-redeclare').",
-                                line: 2,
-                                column: 21,
-                                fix: {
-                                    range: [58, 72],
-                                    text: ""
                                 },
                                 severity: 1,
                                 nodeType: null
@@ -14527,9 +12182,9 @@ describe("Linter with FlatConfigArray", () => {
         });
 
         it("should have a suppressed message", () => {
-            const code = "/* ec0lint-disable no-alert -- justification */\nalert(\"test\");";
+            const code = "/* ec0lint-disable lighter-http -- justification */\nlet foo = require('axios');";
             const config = {
-                rules: { "no-alert": 1 }
+                rules: { "lighter-http": 1 }
             };
             const messages = linter.verify(code, config);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -14537,7 +12192,7 @@ describe("Linter with FlatConfigArray", () => {
             assert.strictEqual(messages.length, 0);
 
             assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+            assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.deepStrictEqual(
                 suppressedMessages[0].suppressions,
                 [{ kind: "directive", justification: "justification" }]
@@ -14546,13 +12201,13 @@ describe("Linter with FlatConfigArray", () => {
 
         it("should have a suppressed message", () => {
             const code = [
-                "/* ec0lint-disable no-alert -- j1",
+                "/* ec0lint-disable lighter-http -- j1",
                 " * j2",
                 " */",
-                "alert(\"test\");"
+                "let foo = require('axios');"
             ].join("\n");
             const config = {
-                rules: { "no-alert": 1 }
+                rules: { "lighter-http": 1 }
             };
             const messages = linter.verify(code, config);
             const suppressedMessages = linter.getSuppressedMessages();
@@ -14560,7 +12215,7 @@ describe("Linter with FlatConfigArray", () => {
             assert.strictEqual(messages.length, 0);
 
             assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
+            assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
             assert.deepStrictEqual(
                 suppressedMessages[0].suppressions,
                 [{ kind: "directive", justification: "j1\n * j2" }]

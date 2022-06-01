@@ -1,9 +1,5 @@
 {
     "rules": {
-        "no-arrow-condition": [
-            "no-confusing-arrow",
-            "no-constant-condition"
-        ],
         "no-empty-class": [
             "no-empty-character-class"
         ],

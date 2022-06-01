@@ -35,7 +35,6 @@ If your code is still very much in development and don't want to worry about str
 
 ## Related Rules
 
-* [no-alert](no-alert.md)
 * [no-console](no-console.md)
 
 ## Further Reading

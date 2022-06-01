@@ -3,5 +3,5 @@
     browser: true
 
   rules:
-    no-alert: 0
+    lighter-http: 0
     no-undef: 2
