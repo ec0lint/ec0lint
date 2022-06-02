@@ -80,6 +80,5 @@ If you don't want to restrict your code from using any JavaScript features or sy
 
 ## Related Rules
 
-* [no-console](no-console.md)
 * [no-debugger](no-debugger.md)
 * [no-restricted-properties](no-restricted-properties.md)

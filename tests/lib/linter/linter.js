@@ -1890,31 +1890,6 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code with comments to ignore reporting on specific rules on a specific line", () => {
-
-        describe("ec0lint-disable-line", () => {
-            it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
-                const code = [
-                    "/* ec0lint-disable-line",
-                    "*",
-                    "*/ console.log('test');" // here
-                ].join("\n");
-                const config = {
-                    rules: {
-                        "no-console": 1
-                    }
-                };
-
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 2);
-                assert.strictEqual(messages[1].ruleId, "no-console");
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-        });
-    });
-
     describe("when evaluating a file with a hashbang", () => {
 
         it("should preserve line numbers", () => {
@@ -9936,7 +9911,7 @@ describe("Linter with FlatConfigArray", () => {
                 });
 
                 describe("when evaluating code with comments to enable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 no-console:1*/ let foo = require('axios'); console.log('test');";
+                    const code = "/*ec0lint lighter-http:1*/ let foo = require('axios');";
 
                     it("should report a violation", () => {
                         const config = { rules: {} };
@@ -9944,21 +9919,20 @@ describe("Linter with FlatConfigArray", () => {
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
 
-                        assert.strictEqual(messages.length, 2);
+                        assert.strictEqual(messages.length, 1);
                         assert.strictEqual(messages[0].ruleId, "lighter-http");
                         assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
                         assert.include(messages[0].nodeType, "CallExpression");
-                        assert.strictEqual(messages[1].ruleId, "no-console");
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
                 });
 
                 describe("when evaluating code with comments to enable and disable multiple rules", () => {
-                    const code = "/*ec0lint lighter-http:1 no-console:0*/ let foo = require('axios'); console.log('test');";
+                    const code = "/*ec0lint lighter-http:1*/ let foo = require('axios');";
 
                     it("should report a violation", () => {
-                        const config = { rules: { "no-console": 1, "lighter-http": 0 } };
+                        const config = { rules: { "lighter-http": 0 } };
 
                         const messages = linter.verify(code, config, filename);
                         const suppressedMessages = linter.getSuppressedMessages();
@@ -10221,27 +10195,6 @@ describe("Linter with FlatConfigArray", () => {
 
             describe("/*ec0lint-disable-line*/", () => {
 
-                it("should report a violation if ec0lint-disable-line in a block comment is not on a single line", () => {
-                    const code = [
-                        "/* ec0lint-disable-line",
-                        "*",
-                        "*/ console.log('test');" // here
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
                 it("should not disable rule and add an extra report if ec0lint-disable-line in a block comment is not on a single line", () => {
                     const code = [
                         "let foo = require('axios'); /* ec0lint-disable-line ",
@@ -10300,236 +10253,6 @@ describe("Linter with FlatConfigArray", () => {
                     assert.strictEqual(suppressedMessages.length, 5);
                 });
 
-            });
-
-            describe("/*ec0lint-disable-next-line*/", () => {
-                it("should ignore violation of specified rule on next line", () => {
-                    const code = [
-                        "// ec0lint-disable-next-line lighter-http",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                });
-
-                it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line lighter-http */",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                });
-                it("should ignore violation of specified rule if ec0lint-disable-next-line is a block comment", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line lighter-http */",
-                        "let foo = require('axios');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                });
-
-                it("should not ignore violation if code is not on next line", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "lighter-http */let foo = require('axios');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should ignore violation if block comment span multiple lines", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "lighter-http */",
-                        "let foo = require('axios');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 1);
-                    assert.strictEqual(suppressedMessages[0].ruleId, "lighter-http");
-                });
-
-                it("should ignore violations only of specified rule", () => {
-                    const code = [
-                        "// ec0lint-disable-next-line no-console",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should ignore violations only of specified rule when block comment span multiple lines", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "no-console */",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-                });
-
-                it("should ignore violations of multiple rules when specified in multiple lines", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "lighter-http,",
-                        "quotes",
-                        "*/",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"],
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-
-                    assert.strictEqual(messages.length, 1);
-                    assert.strictEqual(messages[0].ruleId, "no-console");
-                });
-
-                it("should ignore violations of multiple rules when specified in mixed sinlge line and multi line comments", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "lighter-http",
-                        "*/ // ec0lint-disable-next-line quotes",
-                        "let foo = require('axios');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            quotes: [1, "single"]
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-
-                    assert.strictEqual(messages.length, 0);
-                });
-
-                it("should report a violation", () => {
-                    const code = [
-                        "/* ec0lint-disable-next-line",
-                        "*",
-                        "*/",
-                        "console.log('test');" // here
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should not ignore violations if comment is of the type hashbang", () => {
-                    const code = [
-                        "#! ec0lint-disable-next-line lighter-http",
-                        "let foo = require('axios');",
-                        "console.log('test');"
-                    ].join("\n");
-                    const config = {
-                        rules: {
-                            "lighter-http": 1,
-                            "no-console": 1
-                        }
-                    };
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 2);
-                    assert.strictEqual(messages[0].ruleId, "lighter-http");
-                    assert.strictEqual(messages[1].ruleId, "no-console");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
             });
 
             describe("descriptions in directive comments", () => {

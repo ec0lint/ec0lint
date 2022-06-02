@@ -33,10 +33,6 @@ function isTruthy(x) {
 
 If your code is still very much in development and don't want to worry about stripping `debugger` statements, then turn this rule off. You'll generally want to turn it back on when testing code prior to deployment.
 
-## Related Rules
-
-* [no-console](no-console.md)
-
 ## Further Reading
 
 * [Debugger](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/debugger)

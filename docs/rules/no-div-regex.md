@@ -30,5 +30,4 @@ function bar() { return /[=]foo/; }
 
 ## Related Rules
 
-* [no-control-regex](no-control-regex.md)
 * [no-regex-spaces](no-regex-spaces.md)

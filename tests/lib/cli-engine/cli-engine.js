@@ -1351,38 +1351,6 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
-            // Project configuration - second level .ec0lintrc
-            it("should return one message when executing with local .ec0lintrc that overrides parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - third level .ec0lintrc
-            it("should return one message when executing with local .ec0lintrc that overrides parent and grandparent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
             // Project configuration - first level package.json
             it("should return one message when executing with package.json", () => {
 
@@ -1476,42 +1444,6 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with second level .ec0lintrc
-            it("should return two messages when executing with config file that adds to local and parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(report.results[0].messages[1].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with second level .ec0lintrc
-            it("should return one message when executing with config file that overrides local and parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: getFixturePath("config-hierarchy/broken/override-conf.yaml")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
                 assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             });
 
@@ -1754,32 +1686,6 @@ describe("CLIEngine", () => {
                 afterEach(() => {
                     deleteCacheDir();
                 });
-
-                it("should create the cache file inside the provided directory", () => {
-                    assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
-
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        cacheFile: "./tmp/.cacheFileDir/",
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"],
-                        ignore: false
-                    });
-
-                    const file = getFixturePath("cache/src", "test-file.js");
-
-                    engine.executeOnFiles([file]);
-
-                    assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
-
-                    sinon.restore();
-                });
             });
 
             it("should create the cache file inside the provided directory using the cacheLocation option", () => {
@@ -1792,7 +1698,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheLocation: "./tmp/.cacheFileDir/",
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"],
@@ -1808,81 +1713,6 @@ describe("CLIEngine", () => {
                 sinon.restore();
             });
 
-            it("should create the cache file inside cwd when no cacheLocation provided", () => {
-                const cwd = path.resolve(getFixturePath("cli-engine"));
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-                    cache: true,
-                    cwd,
-                    rules: {
-                        "no-console": 0
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                const file = getFixturePath("cli-engine", "console.js");
-
-                engine.executeOnFiles([file]);
-
-                assert.isTrue(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for ec0lint was created at provided cwd");
-            });
-
-            it("should invalidate the cache if the configuration changed between executions", () => {
-                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                let spy = sinon.spy(fs, "readFileSync");
-
-                let file = getFixturePath("cache/src", "test-file.js");
-
-                file = fs.realpathSync(file);
-
-                const result = engine.executeOnFiles([file]);
-
-                assert.strictEqual(result.errorCount + result.warningCount, 0, "the file passed without errors or warnings");
-                assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
-
-                // destroy the spy
-                sinon.restore();
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                // create a new spy
-                spy = sinon.spy(fs, "readFileSync");
-
-                const cachedResult = engine.executeOnFiles([file]);
-
-                assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed because the config changed");
-                assert.strictEqual(cachedResult.errorCount, 1, "since configuration changed the cache was not used an one error was reported");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
-            });
-
             it("should remember the files from a previous run and do not operate on them if not changed", () => {
 
                 assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
@@ -1893,7 +1723,6 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"],
@@ -1920,7 +1749,6 @@ describe("CLIEngine", () => {
                     // specifying cache true the cache will be created
                     cache: true,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"],
@@ -1948,7 +1776,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"],
@@ -1989,7 +1816,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2028,7 +1854,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2073,7 +1898,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2111,7 +1935,6 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2132,7 +1955,6 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2154,7 +1976,6 @@ describe("CLIEngine", () => {
                     cache: true,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2177,7 +1998,6 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     cacheFile,
                     rules: {
-                        "no-console": 0,
                         "no-unused-vars": 2
                     },
                     extensions: ["js"]
@@ -2207,7 +2027,6 @@ describe("CLIEngine", () => {
                         // specifying cache true the cache will be created
                         cache: true,
                         rules: {
-                            "no-console": 0,
                             "no-unused-vars": 2
                         },
                         extensions: ["js"],
@@ -2251,7 +2070,6 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "metadata",
                         rules: {
-                            "no-console": 0,
                             "no-unused-vars": 2
                         },
                         extensions: ["js"]
@@ -2289,7 +2107,6 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "content",
                         rules: {
-                            "no-console": 0,
                             "no-unused-vars": 2
                         },
                         extensions: ["js"]
@@ -2332,7 +2149,6 @@ describe("CLIEngine", () => {
                         cacheFile,
                         cacheStrategy: "content",
                         rules: {
-                            "no-console": 0,
                             "no-unused-vars": 2
                         },
                         extensions: ["js"]
@@ -2368,14 +2184,13 @@ describe("CLIEngine", () => {
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("processors", "test", "test-processor.txt"))]);
 
                 assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
+                assert.strictEqual(report.results[0].messages.length, 1);
             });
             it("should return two messages when executing with config file that specifies preloaded processor", () => {
                 engine = new CLIEngine({
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
                         "no-unused-vars": 2
                     },
                     extensions: ["js", "txt"],
@@ -2400,7 +2215,7 @@ describe("CLIEngine", () => {
                 const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("processors", "test", "test-processor.txt"))]);
 
                 assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
+                assert.strictEqual(report.results[0].messages.length, 1);
             });
             it("should run processors when calling executeOnFiles with config file that specifies a processor", () => {
                 engine = cliEngineWithPlugins({
@@ -2420,7 +2235,6 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
                         "no-unused-vars": 2
                     },
                     extensions: ["js", "txt"],
@@ -2466,7 +2280,6 @@ describe("CLIEngine", () => {
                     useEc0lintrc: false,
                     plugins: ["test-processor"],
                     rules: {
-                        "no-console": 2,
                         "no-unused-vars": 2
                     },
                     extensions: ["js", "txt"],
@@ -2648,44 +2461,6 @@ describe("CLIEngine", () => {
                 assert.strictEqual(ret.results[0].messages.length, 1);
                 assert.strictEqual(ret.results[0].messages[0].ruleId, "no-unused-vars");
                 assert.strictEqual(ret.results[0].suppressedMessages.length, 0);
-            });
-        });
-
-        describe("a config file setting should have higher priority than a shareable config file's settings always; https://github.com/eslint/eslint/issues/11510", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "cli-engine/11510"),
-                files: {
-                    "no-console-error-in-overrides.json": {
-                        overrides: [{
-                            files: ["*.js"],
-                            rules: { "no-console": "error" }
-                        }]
-                    },
-                    ".ec0lintrc.json": {
-                        extends: "./no-console-error-in-overrides.json",
-                        rules: { "no-console": "off" }
-                    },
-                    "a.js": "console.log();"
-                }
-            });
-
-            beforeEach(() => {
-                engine = new CLIEngine({
-                    cwd: getPath()
-                });
-
-                return prepare();
-            });
-
-            afterEach(cleanup);
-
-            it("should not report 'no-console' error.", () => {
-                const { results } = engine.executeOnFiles("a.js");
-
-                assert.strictEqual(results.length, 1);
-                assert.deepStrictEqual(results[0].messages, []);
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
 
@@ -3070,41 +2845,6 @@ describe("CLIEngine", () => {
                     assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
-            });
-        });
-
-        describe("with 'overrides[*].extends' setting on deep locations", () => {
-            const root = getFixturePath("cli-engine/deeply-overrides-i-extends");
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-                        overrides: [{ files: ["*test*"], extends: "two" }]
-                    })}`,
-                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
-                        overrides: [{ files: ["*.js"], extends: "three" }]
-                    })}`,
-                    "node_modules/ec0lint-config-three/index.js": `module.exports = ${JSON.stringify({
-                        rules: { "no-console": "error" }
-                    })}`,
-                    "test.js": "console.log('hello')",
-                    ".ec0lintrc.yml": "extends: one"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("should not throw.", () => {
-                engine = new CLIEngine({ cwd: getPath() });
-
-                const { results } = engine.executeOnFiles(["test.js"]);
-                const messages = results[0].messages;
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
 
@@ -3900,24 +3640,6 @@ describe("CLIEngine", () => {
 
             assert.lengthOf(errorResults[0].messages, 1);
             assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
-        });
-
-        it("should contain `output` property after fixes", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                fix: true,
-                rules: {
-                    semi: 2,
-                    "no-console": 2
-                }
-            });
-
-            const report = engine.executeOnText("console.log('foo')");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].output, "console.log('foo');");
         });
     });
 

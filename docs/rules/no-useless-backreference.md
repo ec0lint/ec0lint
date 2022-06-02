@@ -123,7 +123,6 @@ Examples of additional **correct** code for this rule:
 
 ## Related Rules
 
-* [no-control-regex](no-control-regex.md)
 * [no-empty-character-class](no-empty-character-class.md)
 * [no-invalid-regexp](no-invalid-regexp.md)
 

@@ -5,7 +5,6 @@
  * @author Nicholas C. Zakas
  */
 
-/* ec0lint no-console:off -- CLI */
 
 "use strict";
 

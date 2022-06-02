@@ -187,5 +187,4 @@ for (let i = 0; i < 10; i++) {
 ## Related Rules
 
 * [no-unreachable](no-unreachable.md)
-* [no-constant-condition](no-constant-condition.md)
 * [no-unmodified-loop-condition](no-unmodified-loop-condition.md)

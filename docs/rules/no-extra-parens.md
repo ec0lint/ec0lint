@@ -292,7 +292,6 @@ typeof (a);
 
 ## Related Rules
 
-* [no-cond-assign](no-cond-assign.md)
 * [no-return-assign](no-return-assign.md)
 
 ## Further Reading
