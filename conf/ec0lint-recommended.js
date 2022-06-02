@@ -12,13 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-debugger": "error",
-        "no-delete-var": "error",
-        "no-dupe-args": "error",
-        "no-dupe-class-members": "error",
-        "no-dupe-else-if": "error",
-        "no-dupe-keys": "error",
-        "no-duplicate-case": "error",
         "no-empty": "error",
         "no-empty-character-class": "error",
         "no-empty-pattern": "error",
