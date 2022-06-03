@@ -7,6 +7,7 @@
     "arrow-body-style": "suggestion",
     "arrow-parens": "layout",
     "arrow-spacing": "layout",
+    "avoid-lodash": "suggestion",
     "block-scoped-var": "suggestion",
     "block-spacing": "layout",
     "brace-style": "layout",
