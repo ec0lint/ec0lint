@@ -95,6 +95,7 @@
     "no-constructor-return": "problem",
     "no-continue": "suggestion",
     "no-control-regex": "problem",
+    "no-date-fns": "suggestion",
     "no-debugger": "problem",
     "no-delete-var": "suggestion",
     "no-div-regex": "suggestion",
