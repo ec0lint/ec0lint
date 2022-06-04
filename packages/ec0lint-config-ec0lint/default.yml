@@ -3,9 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-implied-eval: "error"
-    no-invalid-this: "error"
-    no-iterator: "error"
     no-label-var: "error"
     no-labels: "error"
     no-lone-blocks: "error"

@@ -121,10 +121,6 @@ Examples of additional **correct** code for this rule:
 /^(a)\1\2$/.test("aa\x02"); // true. In this case, \1 is a backreference, \2 is an octal escape sequence.
 ```
 
-## Related Rules
-
-* [no-invalid-regexp](no-invalid-regexp.md)
-
 ## Further Reading
 
 * [MDN: Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)

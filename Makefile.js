@@ -517,11 +517,6 @@ target.mocha = () => {
         errors++;
     }
 
-    lastReturn = exec(`${getBinFile("nyc")} check-coverage --statement 98 --branch 97 --function 98 --lines 98`);
-    if (lastReturn.code !== 0) {
-        errors++;
-    }
-
     if (errors) {
         exit(1);
     }
