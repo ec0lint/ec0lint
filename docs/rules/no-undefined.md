@@ -22,7 +22,7 @@ Because `undefined` can be overwritten or shadowed, reading `undefined` can give
 * Checking if a value is `undefined` should be done with `typeof`.
 * Using the `void` operator to generate the value of `undefined` if necessary.
 
-[no-shadow-restricted-names](no-shadow-restricted-names.md) rules to prevent `undefined` from being shadowed or assigned a different value. This ensures that `undefined` will always hold its original, expected value.
+-names.md) rules to prevent `undefined` from being shadowed or assigned a different value. This ensures that `undefined` will always hold its original, expected value.
 
 ## Rule Details
 
@@ -70,7 +70,6 @@ If you want to allow the use of `undefined` in your code, then you can safely tu
 
 * [no-undef-init](no-undef-init.md)
 * [no-void](no-void.md)
-* [no-shadow-restricted-names](no-shadow-restricted-names.md)
 
 ## Further Reading
 

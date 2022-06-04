@@ -12,10 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-self-assign": "error",
-        "no-setter-return": "error",
-        "no-shadow-restricted-names": "error",
-        "no-sparse-arrays": "error",
         "no-this-before-super": "error",
         "no-unexpected-multiline": "error",
         "no-unreachable": "error",

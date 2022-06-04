@@ -1,8 +1,5 @@
 {
     "rules": {
-        "no-space-before-semi": [
-            "semi-spacing"
-        ],
         "space-in-brackets": [
             "object-curly-spacing"
         ],
