@@ -45,6 +45,5 @@ If you don't want to be notified about usage of labels, then it's safe to disabl
 
 ## Related Rules
 
-* [no-extra-label](./no-extra-label.md)
 * [no-labels](./no-labels.md)
 * [no-unused-labels](./no-unused-labels.md)

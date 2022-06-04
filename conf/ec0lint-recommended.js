@@ -12,12 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-empty": "error",
-        "no-empty-character-class": "error",
-        "no-empty-pattern": "error",
-        "no-ex-assign": "error",
-        "no-extra-boolean-cast": "error",
-        "no-extra-semi": "error",
         "no-fallthrough": "error",
         "no-func-assign": "error",
         "no-import-assign": "error",

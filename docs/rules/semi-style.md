@@ -121,6 +121,5 @@ If you don't want to notify the location of semicolons, then it's safe to disabl
 
 ## Related Rules
 
-* [no-extra-semi](./no-extra-semi.md)
 * [semi](./semi.md)
 * [semi-spacing](./semi-spacing.md)

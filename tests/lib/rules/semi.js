@@ -1694,37 +1694,6 @@ ruleTester.run("semi", rule, {
             }]
         },
 
-        // https://github.com/eslint/eslint/issues/7928
-        {
-            code: [
-                "/*ec0lint no-extra-semi: error */",
-                "foo();",
-                ";[0,1,2].forEach(bar)"
-            ].join("\n"),
-            output: [
-                "/*ec0lint no-extra-semi: error */",
-                "foo()",
-                ";[0,1,2].forEach(bar)"
-            ].join("\n"),
-            options: ["never"],
-            errors: [
-                {
-                    messageId: "extraSemi",
-                    line: 2,
-                    column: 6,
-                    endLine: 2,
-                    endColumn: 7
-                },
-                {
-                    message: "Unnecessary semicolon.",
-                    line: 3,
-                    column: 1,
-                    endLine: 3,
-                    endColumn: 2
-                }
-            ]
-        },
-
         // https://github.com/eslint/eslint/issues/9521
         {
             code: `

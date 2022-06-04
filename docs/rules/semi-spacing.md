@@ -105,5 +105,4 @@ You can turn this rule off if you are not concerned with the consistency of spac
 ## Related Rules
 
 * [semi](semi.md)
-* [no-extra-semi](no-extra-semi.md)
 * [space-in-parens](space-in-parens.md)

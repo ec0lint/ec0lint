@@ -88,6 +88,5 @@ If you are trying to override one of the native objects.
 
 ## Related Rules
 
-* [no-extend-native](no-extend-native.md)
 * [no-redeclare](no-redeclare.md)
 * [no-shadow](no-shadow.md)

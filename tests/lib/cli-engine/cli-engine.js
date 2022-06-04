@@ -3717,7 +3717,7 @@ describe("CLIEngine", () => {
         it("should expose the list of rules", () => {
             const engine = new CLIEngine();
 
-            assert(engine.getRules().has("no-eval"), "no-eval is present");
+            assert(engine.getRules().has("lighter-http"), "lighter-http is present");
         });
     });
 

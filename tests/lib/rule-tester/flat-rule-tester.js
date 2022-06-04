@@ -82,11 +82,11 @@ describe("FlatRuleTester", () => {
 
     // Stub `describe()` and `it()` while this test suite.
     before(() => {
-        FlatRuleTester.describe = function(text, method) {
+        FlatRuleTester.describe = function (text, method) {
             ruleTesterTestEmitter.emit("describe", text, method);
             return method.call(this);
         };
-        FlatRuleTester.it = function(text, method) {
+        FlatRuleTester.it = function (text, method) {
             ruleTesterTestEmitter.emit("it", text, method);
             return method.call(this);
         };
@@ -138,7 +138,7 @@ describe("FlatRuleTester", () => {
              * @private
              */
             function setConfig(config) {
-                return function() {
+                return function () {
                     FlatRuleTester.setDefaultConfig(config);
                 };
             }
@@ -230,7 +230,7 @@ describe("FlatRuleTester", () => {
 
             describe("when `it` is set and has an `only()` method", () => {
                 before(() => {
-                    FlatRuleTester.it.only = () => {};
+                    FlatRuleTester.it.only = () => { };
                     sinon.spy(FlatRuleTester.it, "only");
                 });
                 after(() => {
@@ -264,7 +264,7 @@ describe("FlatRuleTester", () => {
                      * `it.only` to prevent the real one from being called.
                      */
                     originalGlobalItOnly = it.only;
-                    it.only = () => {};
+                    it.only = () => { };
                     sinon.spy(it, "only");
                 });
                 after(() => {
@@ -454,73 +454,6 @@ describe("FlatRuleTester", () => {
                 });
             });
         });
-    });
-
-    it("should not throw an error when everything passes", () => {
-        ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-            valid: [
-                "Eval(foo)"
-            ],
-            invalid: [
-                { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-            ]
-        });
-    });
-
-    it("should throw correct error when valid code is invalid and enables other core rule", () => {
-
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "/*ec0lint semi: 2*/ eval(foo);"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-                ]
-            });
-        }, /Should have no errors but had 1/u);
-    });
-
-    it("should throw an error when valid code is invalid", () => {
-
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "eval(foo)"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-                ]
-            });
-        }, /Should have no errors but had 1/u);
-    });
-
-    it("should throw an error when valid code is invalid", () => {
-
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    { code: "eval(foo)" }
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-                ]
-            });
-        }, /Should have no errors but had 1/u);
-    });
-
-    it("should throw an error if invalid code is valid", () => {
-
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "Eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression" }] }
-                ]
-            });
-        }, /Should have 1 error but had 0/u);
     });
 
     it("should throw an error when the error message is wrong", () => {
@@ -727,18 +660,6 @@ describe("FlatRuleTester", () => {
         }, /Output is incorrect/u);
     });
 
-    it("should not throw an error when the expected output is null and no errors produce output", () => {
-        ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-            valid: [
-                "bar = baz;"
-            ],
-            invalid: [
-                { code: "eval(x)", errors: 1, output: null },
-                { code: "eval(x); eval(y);", errors: 2, output: null }
-            ]
-        });
-    });
-
     it("should throw an error when the expected output is null and problems produce output", () => {
         assert.throws(() => {
             ruleTester.run("no-var", require("../../fixtures/testers/rule-tester/no-var"), {
@@ -791,63 +712,6 @@ describe("FlatRuleTester", () => {
         }, "The rule fixed the code. Please add 'output' property.");
     });
 
-    it("should throw an error if invalid code specifies wrong type", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression2" }] }
-                ]
-            });
-        }, /Error type should be CallExpression2, found CallExpression/u);
-    });
-
-    it("should throw an error if invalid code specifies wrong line", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression", line: 5 }] }
-                ]
-            });
-        }, /Error line should be 5/u);
-    });
-
-    it("should not skip line assertion if line is a falsy value", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "\neval(foo)", errors: [{ message: "eval sucks.", type: "CallExpression", line: 0 }] }
-                ]
-            });
-        }, /Error line should be 0/u);
-    });
-
-    it("should throw an error if invalid code specifies wrong column", () => {
-        const wrongColumn = 10,
-            expectedErrorMessage = "Error column should be 1";
-
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: ["Eval(foo)"],
-                invalid: [{
-                    code: "eval(foo)",
-                    errors: [{
-                        message: "eval sucks.",
-                        column: wrongColumn
-                    }]
-                }]
-            });
-        }, expectedErrorMessage);
-    });
-
     it("should throw error for empty error array", () => {
         assert.throws(() => {
             ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMessageIds, {
@@ -879,18 +743,6 @@ describe("FlatRuleTester", () => {
         }, /Invalid cases must have 'error' value greater than 0/u);
     });
 
-    it("should not skip column assertion if column is a falsy value", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: ["Eval(foo)"],
-                invalid: [{
-                    code: "var foo; eval(foo)",
-                    errors: [{ message: "eval sucks.", column: 0 }]
-                }]
-            });
-        }, /Error column should be 0/u);
-    });
-
     it("should throw an error if invalid code specifies wrong endLine", () => {
         assert.throws(() => {
             ruleTester.run("no-var", require("../../fixtures/testers/rule-tester/no-var"), {
@@ -915,112 +767,6 @@ describe("FlatRuleTester", () => {
                 ]
             });
         }, "Error endColumn should be 10");
-    });
-
-    it("should throw an error if invalid code has the wrong number of errors", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    {
-                        code: "eval(foo)",
-                        errors: [
-                            { message: "eval sucks.", type: "CallExpression" },
-                            { message: "eval sucks.", type: "CallExpression" }
-                        ]
-                    }
-                ]
-            });
-        }, /Should have 2 errors but had 1/u);
-    });
-
-    it("should throw an error if invalid code does not have errors", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "eval(foo)" }
-                ]
-            });
-        }, /Did not specify errors for an invalid test of no-eval/u);
-    });
-
-    it("should throw an error if invalid code has the wrong explicit number of errors", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "Eval(foo)"
-                ],
-                invalid: [
-                    { code: "eval(foo)", errors: 2 }
-                ]
-            });
-        }, /Should have 2 errors but had 1/u);
-    });
-
-    it("should throw an error if there's a parsing error in a valid test", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "1eval('foo')"
-                ],
-                invalid: [
-                    { code: "eval('foo')", errors: [{}] }
-                ]
-            });
-        }, /fatal parsing error/iu);
-    });
-
-    it("should throw an error if there's a parsing error in an invalid test", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "noeval('foo')"
-                ],
-                invalid: [
-                    { code: "1eval('foo')", errors: [{}] }
-                ]
-            });
-        }, /fatal parsing error/iu);
-    });
-
-    it("should throw an error if there's a parsing error in an invalid test and errors is just a number", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    "noeval('foo')"
-                ],
-                invalid: [
-                    { code: "1eval('foo')", errors: 1 }
-                ]
-            });
-        }, /fatal parsing error/iu);
-    });
-
-    // https://github.com/eslint/eslint/issues/4779
-    it("should throw an error if there's a parsing error and output doesn't match", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [],
-                invalid: [
-                    { code: "eval(`foo`", output: "eval(`foo`);", errors: [{}] }
-                ]
-            });
-        }, /fatal parsing error/iu);
-    });
-
-    it("should not throw an error if invalid code has at least an expected empty error object", () => {
-        ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-            valid: ["Eval(foo)"],
-            invalid: [{
-                code: "eval(foo)",
-                errors: [{}]
-            }]
-        });
     });
 
     it("should pass-through the globals config of valid tests to the to rule", () => {
@@ -1089,7 +835,7 @@ describe("FlatRuleTester", () => {
     });
 
     it("should pass-through the filename to the rule", () => {
-        (function() {
+        (function () {
             ruleTester.run("", require("../../fixtures/testers/rule-tester/no-test-filename"), {
                 valid: [
                     {
@@ -1157,36 +903,6 @@ describe("FlatRuleTester", () => {
 
     describe("Parsers", () => {
 
-        it("should pass-through the parser to the rule", () => {
-            const spy = sinon.spy(ruleTester.linter, "verify");
-            const esprima = require("esprima");
-
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    {
-                        code: "Eval(foo)"
-                    }
-                ],
-                invalid: [
-                    {
-                        code: "eval(foo)",
-                        languageOptions: {
-                            parser: esprima
-                        },
-                        errors: [{ line: 1 }]
-                    }
-                ]
-            });
-
-            const configs = spy.args[1][1];
-            const config = configs.getConfig("test.js");
-
-            assert.strictEqual(
-                config.languageOptions.parser[Symbol.for("ec0lint.RuleTester.parser")],
-                esprima
-            );
-        });
-
         it("should pass-through services from parseForESLint to the rule", () => {
             const enhancedParser = require("../../fixtures/parsers/enhanced-parser");
             const disallowHiRule = {
@@ -1221,23 +937,6 @@ describe("FlatRuleTester", () => {
                 ]
             });
         });
-
-        it("should throw an error when the parser is not an object", () => {
-            assert.throws(() => {
-                ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                    valid: [],
-                    invalid: [{
-                        code: "var foo;",
-                        languageOptions: {
-                            parser: "esprima"
-                        },
-                        errors: 1
-                    }]
-                });
-            }, /Parser must be an object with a parse\(\) or parseForESLint\(\) method/u);
-
-        });
-
     });
 
 
@@ -1306,28 +1005,6 @@ describe("FlatRuleTester", () => {
                 invalid: []
             });
         }, /Schema for rule invalid-defaults is invalid: default is ignored for: data1\.foo/u);
-    });
-
-    it("throw an error when an unknown config option is included", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    { code: "Eval(foo)", foo: "bar" }
-                ],
-                invalid: []
-            });
-        }, /ec0lint configuration in rule-tester is invalid/u);
-    });
-
-    it("throw an error when env is included in config", () => {
-        assert.throws(() => {
-            ruleTester.run("no-eval", require("../../fixtures/testers/rule-tester/no-eval"), {
-                valid: [
-                    { code: "Eval(foo)", env: ["es6"] }
-                ],
-                invalid: []
-            });
-        }, /Unexpected key "env" found./u);
     });
 
     it("should pass-through the tester config to the rule", () => {
@@ -1865,20 +1542,6 @@ describe("FlatRuleTester", () => {
                         suggestions: [{}, {}]
                     }]
                 }]
-            });
-        });
-
-        it("should support explicitly expecting no suggestions", () => {
-            [void 0, null, false, []].forEach(suggestions => {
-                ruleTester.run("suggestions-basic", require("../../fixtures/testers/rule-tester/no-eval"), {
-                    valid: [],
-                    invalid: [{
-                        code: "eval('var foo');",
-                        errors: [{
-                            suggestions
-                        }]
-                    }]
-                });
             });
         });
 
@@ -2431,7 +2094,7 @@ describe("FlatRuleTester", () => {
         it('should throw if "code" property is missing', () => {
             assert.throws(() => {
                 ruleTester.run("foo", require("../../fixtures/testers/rule-tester/no-var"), {
-                    valid: [{ }],
+                    valid: [{}],
                     invalid: [{ code: "foo" }]
 
                 });
@@ -2440,7 +2103,7 @@ describe("FlatRuleTester", () => {
             assert.throws(() => {
                 ruleTester.run("foo", require("../../fixtures/testers/rule-tester/no-var"), {
                     valid: ["foo"],
-                    invalid: [{ }]
+                    invalid: [{}]
                 });
             }, /Test case must specify a string value for 'code'/u);
         });
@@ -2582,15 +2245,15 @@ describe("FlatRuleTester", () => {
              * Subclass for testing
              */
             class RuleTesterSubclass extends FlatRuleTester { }
-            RuleTesterSubclass.describe = function(text, method) {
+            RuleTesterSubclass.describe = function (text, method) {
                 ruleTesterTestEmitter.emit("custom describe", text, method);
                 return method.call(this);
             };
-            RuleTesterSubclass.it = function(text, method) {
+            RuleTesterSubclass.it = function (text, method) {
                 ruleTesterTestEmitter.emit("custom it", text, method);
                 return method.call(this);
             };
-            RuleTesterSubclass.itOnly = function(text, method) {
+            RuleTesterSubclass.itOnly = function (text, method) {
                 ruleTesterTestEmitter.emit("custom itOnly", text, method);
                 return method.call(this);
             };

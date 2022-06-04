@@ -19,6 +19,6 @@ const rules = eslintRecommended.rules;
 
 describe("ec0lint-recommended", () => {
     it("should configure recommended rules as error", () => {
-        assert.strictEqual(rules["no-extra-semi"], "error");
+        assert.strictEqual(rules["lighter-http"], "error");
     });
 });

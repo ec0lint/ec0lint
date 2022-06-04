@@ -1892,20 +1892,6 @@ describe("Linter", () => {
 
     describe("when evaluating a file with a hashbang", () => {
 
-        it("should preserve line numbers", () => {
-            const code = "#!bin/program\n\nvar foo;;";
-            const config = { rules: { "no-extra-semi": 1 } };
-            const messages = linter.verify(code, config);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-extra-semi");
-            assert.strictEqual(messages[0].nodeType, "EmptyStatement");
-            assert.strictEqual(messages[0].line, 3);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("should have a comment with the hashbang in it", () => {
             const code = "#!bin/program\n\nvar foo;;";
             const config = { rules: { checker: "error" } };
@@ -9078,19 +9064,6 @@ describe("Linter with FlatConfigArray", () => {
 
         describe("Code with a hashbang comment", () => {
             const code = "#!bin/program\n\nvar foo;;";
-
-            it("should preserve line numbers", () => {
-                const config = { rules: { "no-extra-semi": 1 } };
-                const messages = linter.verify(code, config);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-extra-semi");
-                assert.strictEqual(messages[0].nodeType, "EmptyStatement");
-                assert.strictEqual(messages[0].line, 3);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
 
             it("should have a comment with the hashbang in it", () => {
                 const spy = sinon.spy(context => {

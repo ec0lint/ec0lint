@@ -42,4 +42,3 @@ var foo = "bar";
 ## Related Rules
 
 * [semi](semi.md)
-* [no-extra-semi](no-extra-semi.md)

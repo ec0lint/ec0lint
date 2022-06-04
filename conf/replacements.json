@@ -1,22 +1,10 @@
 {
     "rules": {
-        "no-empty-class": [
-            "no-empty-character-class"
-        ],
-        "no-empty-label": [
-            "no-labels"
-        ],
-        "no-extra-strict": [
-            "strict"
-        ],
         "no-reserved-keys": [
             "quote-props"
         ],
         "no-space-before-semi": [
             "semi-spacing"
-        ],
-        "no-wrap-func": [
-            "no-extra-parens"
         ],
         "space-in-brackets": [
             "object-curly-spacing"

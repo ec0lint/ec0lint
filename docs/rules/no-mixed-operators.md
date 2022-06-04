@@ -42,9 +42,6 @@ will generate
 
 This rule checks `BinaryExpression`, `LogicalExpression` and `ConditionalExpression`.
 
-This rule may conflict with [no-extra-parens](no-extra-parens.md) rule.
-If you use both this and [no-extra-parens](no-extra-parens.md) rule together, you need to use the `nestedBinaryExpressions` option of [no-extra-parens](no-extra-parens.md) rule.
-
 Examples of **incorrect** code for this rule:
 
 ```js
@@ -189,7 +186,3 @@ var foo = (a + b) - c;
 ## When Not To Use It
 
 If you don't want to be notified about mixed operators, then it's safe to disable this rule.
-
-## Related Rules
-
-* [no-extra-parens](no-extra-parens.md)

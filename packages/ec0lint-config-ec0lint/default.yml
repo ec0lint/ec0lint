@@ -3,10 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-else-return: ["error", { allowElseIf: false }]
-    no-eval: "error"
-    no-extend-native: "error"
-    no-extra-bind: "error"
     no-floating-decimal: "error"
     no-implied-eval: "error"
     no-invalid-this: "error"
