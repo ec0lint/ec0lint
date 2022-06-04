@@ -91,4 +91,3 @@ You can turn this rule off if you are not concerned with unnecessary complexity 
 ## Related Rules
 
 * [no-ternary](no-ternary.md)
-* [no-nested-ternary](no-nested-ternary.md)

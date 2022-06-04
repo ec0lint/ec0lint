@@ -12,8 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-new-symbol": "error",
-        "no-nonoctal-decimal-escape": "error",
         "no-obj-calls": "error",
         "no-octal": "error",
         "no-prototype-builtins": "error",
