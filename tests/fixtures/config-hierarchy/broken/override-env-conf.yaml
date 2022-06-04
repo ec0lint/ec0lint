@@ -2,4 +2,4 @@ extends: "ec0lint:recommended"
 env:
     node: true
 rules:
-    no-mixed-requires: 0
+    lighter-http: 0

@@ -3,10 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-mixed-spaces-and-tabs: ["error", false] # Modified from recommended
-    no-multi-spaces: "error"
-    no-multi-str: "error"
-    no-multiple-empty-lines: ["error", {max: 2, maxBOF: 0, maxEOF: 0}]
     no-nested-ternary: "error"
     no-new: "error"
     no-new-func: "error"

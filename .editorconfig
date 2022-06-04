@@ -7,9 +7,5 @@ trim_trailing_whitespace = true
 end_of_line = lf
 insert_final_newline = true
 
-[{docs/rules/{indent.md,no-mixed-spaces-and-tabs.md}]
-indent_style = disabled
-indent_size = disabled
-
 [docs/rules/no-trailing-spaces.md]
 trim_trailing_whitespace = false
