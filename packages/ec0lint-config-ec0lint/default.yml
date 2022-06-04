@@ -3,7 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-octal-escape: "error"
     no-param-reassign: "error"
     no-proto: "error"
     no-process-exit: "off"

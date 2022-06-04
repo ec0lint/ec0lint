@@ -1,8 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-obj-calls": "problem",
-    "no-octal": "suggestion",
-    "no-octal-escape": "suggestion",
     "no-param-reassign": "suggestion",
     "no-path-concat": "suggestion",
     "no-plusplus": "suggestion",
