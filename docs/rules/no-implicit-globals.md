@@ -219,7 +219,6 @@ In the case of an ES module, if you don't want this rule to warn you about the r
 ## Related Rules
 
 * [no-undef](no-undef.md)
-* [no-global-assign](no-global-assign.md)
 
 ## Further Reading
 

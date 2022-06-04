@@ -82,7 +82,7 @@ describe("cli", () => {
     }
 
     // copy into clean area so as not to get "infected" by this project's .eslintrc files
-    before(function() {
+    before(function () {
 
         /*
          * GitHub Actions Windows and macOS runners occasionally exhibit
@@ -583,13 +583,6 @@ describe("cli", () => {
     });
 
     describe("when executing with global flag", () => {
-        it("should default defined variables to read-only", async () => {
-            const filePath = getFixturePath("undef.js");
-            const exit = await cli.execute(`--global baz,bat --no-ignore --rule no-global-assign:2 ${filePath}`);
-
-            assert.isTrue(log.info.calledOnce);
-            assert.strictEqual(exit, 1);
-        });
 
         it("should allow defining writable global variables", async () => {
             const filePath = getFixturePath("undef.js");

@@ -28,7 +28,6 @@ var bar = a + 1;
 ```
 
 Note that this rule does not disallow assignments to read-only global variables.
-See [no-global-assign](no-global-assign.md) if you also want to disallow those assignments.
 
 This rule also does not disallow redeclarations of global variables.
 See [no-redeclare](no-redeclare.md) if you also want to disallow those redeclarations.
@@ -105,7 +104,6 @@ If explicit declaration of global variables is not to your taste.
 
 ## Related Rules
 
-* [no-global-assign](no-global-assign.md)
 * [no-redeclare](no-redeclare.md)
 
 ## Compatibility
