@@ -3,9 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-tabs: "error"
-    no-throw-literal: "error"
-    no-trailing-spaces: "error"
     no-undef: ["error", {typeof: true}] # Modified from recommended
     no-undef-init: "error"
     no-undefined: "error"

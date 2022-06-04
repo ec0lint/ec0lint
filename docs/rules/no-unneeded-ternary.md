@@ -88,6 +88,3 @@ Note that `defaultAssignment: false` still allows expressions of the form `x ? e
 
 You can turn this rule off if you are not concerned with unnecessary complexity in conditional expressions.
 
-## Related Rules
-
-* [no-ternary](no-ternary.md)

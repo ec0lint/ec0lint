@@ -12,7 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-this-before-super": "error",
         "no-unexpected-multiline": "error",
         "no-unreachable": "error",
         "no-unsafe-finally": "error",

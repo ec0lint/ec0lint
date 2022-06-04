@@ -1,11 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-tabs": "layout",
-    "no-template-curly-in-string": "problem",
-    "no-ternary": "suggestion",
-    "no-this-before-super": "problem",
-    "no-throw-literal": "suggestion",
-    "no-trailing-spaces": "layout",
     "no-undef": "problem",
     "no-undef-init": "suggestion",
     "no-undefined": "suggestion",
