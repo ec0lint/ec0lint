@@ -1,8 +1,5 @@
 {
     "rules": {
-        "no-reserved-keys": [
-            "quote-props"
-        ],
         "no-space-before-semi": [
             "semi-spacing"
         ],

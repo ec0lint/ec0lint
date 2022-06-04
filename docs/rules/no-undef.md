@@ -102,10 +102,6 @@ module.exports = function() {
 
 If explicit declaration of global variables is not to your taste.
 
-## Related Rules
-
-* [no-redeclare](no-redeclare.md)
-
 ## Compatibility
 
 This rule provides compatibility with treatment of global variables in [JSHint](http://jshint.com/) and [JSLint](http://www.jslint.com).

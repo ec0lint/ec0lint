@@ -187,35 +187,6 @@ describe("bin/ec0lint.js", () => {
     });
 
     describe("handling crashes", () => {
-        it("prints the error message to stderr in the event of a crash", () => {
-            const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
-            const exitCodeAssertion = assertExitCode(child, 2);
-            const outputAssertion = getOutput(child).then(output => {
-                const expectedSubstring = "Syntax error in selector";
-
-                assert.strictEqual(output.stdout, "");
-                assert.include(output.stderr, expectedSubstring);
-            });
-
-            return Promise.all([exitCodeAssertion, outputAssertion]);
-        });
-
-        it("prints the error message exactly once to stderr in the event of a crash", () => {
-            const child = runESLint(["--rule=no-restricted-syntax:[error, 'Invalid Selector [[[']", "Makefile.js"]);
-            const exitCodeAssertion = assertExitCode(child, 2);
-            const outputAssertion = getOutput(child).then(output => {
-                const expectedSubstring = "Syntax error in selector";
-
-                assert.strictEqual(output.stdout, "");
-                assert.include(output.stderr, expectedSubstring);
-
-                // The message should appear exactly once in stderr
-                assert.strictEqual(output.stderr.indexOf(expectedSubstring), output.stderr.lastIndexOf(expectedSubstring));
-            });
-
-            return Promise.all([exitCodeAssertion, outputAssertion]);
-        });
-
         it("prints the error message pointing to line of code", () => {
             const invalidConfig = path.join(__dirname, "../fixtures/bin/.ec0lintrc.yml");
             const child = runESLint(["--no-ignore", invalidConfig]);
