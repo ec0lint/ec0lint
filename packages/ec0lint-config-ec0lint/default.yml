@@ -3,10 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-label-var: "error"
-    no-labels: "error"
-    no-lone-blocks: "error"
-    no-loop-func: "error"
     no-mixed-spaces-and-tabs: ["error", false] # Modified from recommended
     no-multi-spaces: "error"
     no-multi-str: "error"

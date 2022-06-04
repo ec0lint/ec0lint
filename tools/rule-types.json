@@ -1,11 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-label-var": "suggestion",
-    "no-labels": "suggestion",
-    "no-lone-blocks": "suggestion",
-    "no-lonely-if": "suggestion",
-    "no-loop-func": "suggestion",
-    "no-loss-of-precision": "problem",
     "no-magic-numbers": "suggestion",
     "no-misleading-character-class": "problem",
     "no-mixed-operators": "suggestion",

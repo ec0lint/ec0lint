@@ -12,7 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-loss-of-precision": "error",
         "no-misleading-character-class": "error",
         "no-mixed-spaces-and-tabs": "error",
         "no-new-symbol": "error",
