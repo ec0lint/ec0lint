@@ -3,7 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-floating-decimal: "error"
     no-implied-eval: "error"
     no-invalid-this: "error"
     no-iterator: "error"

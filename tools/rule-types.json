@@ -1,8 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-fallthrough": "problem",
-    "no-floating-decimal": "suggestion",
-    "no-func-assign": "problem",
     "no-global-assign": "suggestion",
     "no-implicit-coercion": "suggestion",
     "no-implicit-globals": "suggestion",
