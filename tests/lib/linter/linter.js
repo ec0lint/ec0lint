@@ -2199,18 +2199,6 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 0);
             assert.strictEqual(suppressedMessages.length, 0);
         });
-
-        it("should not report a violation", () => {
-            const code = `/*ec0lint no-process-exit: 0 */ /*${ESLINT_ENV} node */ process.exit();`;
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
     });
 
     describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {

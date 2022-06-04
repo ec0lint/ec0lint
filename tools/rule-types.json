@@ -1,13 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-param-reassign": "suggestion",
-    "no-path-concat": "suggestion",
-    "no-plusplus": "suggestion",
-    "no-process-env": "suggestion",
-    "no-process-exit": "suggestion",
-    "no-promise-executor-return": "problem",
-    "no-proto": "suggestion",
-    "no-prototype-builtins": "problem",
     "no-redeclare": "suggestion",
     "no-regex-spaces": "suggestion",
     "no-restricted-exports": "suggestion",

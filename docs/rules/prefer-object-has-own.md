@@ -10,8 +10,6 @@ if (Object.prototype.hasOwnProperty.call(object, "foo")) {
 }
 ```
 
-This is a common practice because methods on `Object.prototype` can sometimes be unavailable or redefined (see the [no-prototype-builtins](no-prototype-builtins.md) rule).
-
 Introduced in ES2022, `Object.hasOwn()` is a shorter alternative to `Object.prototype.hasOwnProperty.call()`:
 
 ```js

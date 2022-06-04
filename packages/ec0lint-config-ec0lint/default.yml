@@ -3,9 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-param-reassign: "error"
-    no-proto: "error"
-    no-process-exit: "off"
     no-restricted-properties: [
         "error",
         { property: "substring", message: "Use .slice instead of .substring." },

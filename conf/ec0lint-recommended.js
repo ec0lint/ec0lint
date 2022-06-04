@@ -12,7 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-prototype-builtins": "error",
         "no-regex-spaces": "error",
         "no-self-assign": "error",
         "no-setter-return": "error",
