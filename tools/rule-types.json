@@ -1,3 +1,6 @@
 {
-    "lighter-http": "problem"
+    "lighter-http": "problem",
+    "avoid-lodash": "suggestion",
+    "no-date-fns": "suggestion",
+    "no-moment-js": "suggestion"
 }
