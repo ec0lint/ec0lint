@@ -28,10 +28,10 @@ describe("ec0lint-all", () => {
     it("should return all rules", () => {
         const ruleNames = Object.keys(rules);
         const count = ruleNames.length;
-        const someRule = "yoda";
+        const someRule = "lighter-http";
 
         assert.include(ruleNames, someRule);
-        assert.isAbove(count, 1);
+        assert.isAbove(count, 0);
     });
 
     it("should configure all rules as errors", () => {

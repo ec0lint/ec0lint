@@ -1,5 +1,3 @@
 {
-    "lighter-http": "problem",
-    "yield-star-spacing": "layout",
-    "yoda": "suggestion"
+    "lighter-http": "problem"
 }

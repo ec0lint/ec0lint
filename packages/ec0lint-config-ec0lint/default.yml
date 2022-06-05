@@ -3,5 +3,4 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    yield-star-spacing: "error"
-    yoda: ["error", "never", { exceptRange: true }]
+   lighter-http: "error"

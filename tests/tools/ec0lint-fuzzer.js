@@ -14,14 +14,14 @@ const configRule = require("../../tools/config-rule");
 // Tests
 //------------------------------------------------------------------------------
 
-describe("ec0lint-fuzzer", function() {
+describe("ec0lint-fuzzer", function () {
     let fakeRule, fuzz;
 
     /*
      * These tests take awhile because isolating which rule caused an error requires running eslint up to hundreds of
      * times, one rule at a time.
      */
-    this.timeout(15000); 
+    this.timeout(15000);
 
     const linter = new eslint.Linter();
     const coreRules = linter.getRules();
@@ -138,128 +138,6 @@ describe("ec0lint-fuzzer", function() {
                 });
 
                 assert.deepStrictEqual(results, []);
-            });
-        });
-
-        describe("when a rule's autofix produces invalid syntax on the first pass", () => {
-            it("reports an autofix error with a minimal config", () => {
-
-                // Replaces programs that start with "foo" with invalid syntax
-                fakeRule = context => ({
-                    Program(node) {
-                        const sourceCode = context.getSourceCode();
-
-                        if (sourceCode.text === `foo ${disableFixableRulesComment}`) {
-                            context.report({
-                                node,
-                                message: "no foos allowed",
-                                fix: fixer => fixer.replaceTextRange([0, sourceCode.text.length], INVALID_SYNTAX)
-                            });
-                        }
-                    }
-                });
-
-                const results = fuzz({
-                    count: 1,
-                    codeGenerator: () => `foo ${disableFixableRulesComment}`,
-                    checkAutofixes: true,
-                    linter
-                });
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].type, "autofix");
-                assert.strictEqual(results[0].text, `foo ${disableFixableRulesComment}`);
-                assert.deepStrictEqual(results[0].config.rules, { "test-fuzzer-rule": 2 });
-                assert.deepStrictEqual(results[0].error, {
-                    ruleId: null,
-                    fatal: true,
-                    severity: 2,
-                    message: `Parsing error: ${expectedSyntaxError.message}`,
-                    line: expectedSyntaxError.lineNumber,
-                    column: expectedSyntaxError.column
-                });
-            });
-        });
-
-        describe("when a rule's autofix produces invalid syntax on the second pass", () => {
-            it("reports an autofix error with a minimal config and the text from the second pass", () => {
-                const intermediateCode = `bar ${disableFixableRulesComment}`;
-
-                // Replaces programs that start with "foo" with invalid syntax
-                fakeRule = context => ({
-                    Program(node) {
-                        const sourceCode = context.getSourceCode();
-
-                        if (sourceCode.text.startsWith("foo") || sourceCode.text === intermediateCode) {
-                            context.report({
-                                node,
-                                message: "no foos allowed",
-                                fix(fixer) {
-                                    return fixer.replaceTextRange(
-                                        [0, sourceCode.text.length],
-                                        sourceCode.text === intermediateCode ? INVALID_SYNTAX : intermediateCode
-                                    );
-                                }
-                            });
-                        }
-                    }
-                });
-
-                const results = fuzz({
-                    count: 1,
-                    codeGenerator: () => `foo ${disableFixableRulesComment}`,
-                    checkAutofixes: true,
-                    linter
-                });
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].type, "autofix");
-                assert.strictEqual(results[0].text, intermediateCode);
-                assert.deepStrictEqual(results[0].config.rules, { "test-fuzzer-rule": 2 });
-                assert.deepStrictEqual(results[0].error, {
-                    ruleId: null,
-                    fatal: true,
-                    severity: 2,
-                    message: `Parsing error: ${expectedSyntaxError.message}`,
-                    line: expectedSyntaxError.lineNumber,
-                    column: expectedSyntaxError.column
-                });
-            });
-        });
-
-        describe("when a rule crashes on the second autofix pass", () => {
-            it("reports a crash error with a minimal config", () => {
-
-                // Replaces programs that start with "foo" with invalid syntax
-                fakeRule = context => ({
-                    Program(node) {
-                        const sourceCode = context.getSourceCode();
-
-                        if (sourceCode.text.startsWith("foo")) {
-                            context.report({
-                                node,
-                                message: "no foos allowed",
-                                fix: fixer => fixer.replaceText(node, "bar")
-                            });
-                        } else if (sourceCode.text === `bar ${disableFixableRulesComment}`) {
-                            throw CRASH_BUG;
-                        }
-                    }
-                });
-
-                const results = fuzz({
-                    count: 1,
-                    codeGenerator: () => `foo ${disableFixableRulesComment}`,
-                    checkAutofixes: true,
-                    linter
-                });
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].type, "crash");
-
-                assert.strictEqual(results[0].text, `bar ${disableFixableRulesComment}`);
-                assert.deepStrictEqual(results[0].config.rules, { "test-fuzzer-rule": 2 });
-                assert.strictEqual(results[0].error, CRASH_BUG.stack);
             });
         });
     });
