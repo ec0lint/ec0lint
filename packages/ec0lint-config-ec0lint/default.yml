@@ -3,15 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    prefer-arrow-callback: "error"
-    prefer-const: "error"
-    prefer-exponentiation-operator: "error"
-    prefer-numeric-literals: "error"
-    prefer-promise-reject-errors: "error"
-    prefer-regex-literals: "error"
-    prefer-rest-params: "error"
-    prefer-spread: "error"
-    prefer-template: "error"
     quotes: ["error", "double", {avoidEscape: true}]
     quote-props: ["error", "as-needed"]
     radix: "error"
