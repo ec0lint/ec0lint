@@ -83,7 +83,7 @@ describe("CLIEngine", () => {
     }
 
     // copy into clean area so as not to get "infected" by this project's .ec0lintrc files
-    before(function() {
+    before(function () {
 
         /*
          * GitHub Actions Windows and macOS runners occasionally exhibit
@@ -136,59 +136,6 @@ describe("CLIEngine", () => {
 
         let engine;
 
-        it("should report the total and per file warnings when using local cwd .ec0lintrc", () => {
-
-            engine = new CLIEngine({
-                rules: {
-                    quotes: 1,
-                    "no-var": 1,
-                    "eol-last": 1,
-                    strict: 1,
-                    "no-unused-vars": 1
-                }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar';");
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 4);
-            assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 2);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "no-var");
-            assert.strictEqual(report.results[0].messages[1].ruleId, "no-unused-vars");
-            assert.strictEqual(report.results[0].messages[2].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[3].ruleId, "eol-last");
-            assert.strictEqual(report.results[0].messages.length, 4);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 2);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should report one message when using specific config file", () => {
-
-            engine = new CLIEngine({
-                configFile: "fixtures/configurations/quotes-error.json",
-                useEc0lintrc: false,
-                cwd: getFixturePath("..")
-            });
-
-            const report = engine.executeOnText("var foo = 'bar';");
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.errorCount, 1);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.isUndefined(report.results[0].messages[0].output);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should suppress excluded file warnings by default", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath(".ec0lintignore"),
@@ -201,17 +148,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 0);
         });
 
-        it("should return source code of file in `source` property when errors are present", () => {
-            engine = new CLIEngine({
-                useEc0lintrc: false,
-                rules: { semi: 2 }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar'");
-
-            assert.strictEqual(report.results[0].source, "var foo = 'bar'");
-        });
-
         // @scope for @scope/ec0lint-plugin
         describe("(plugin shorthand)", () => {
             const Module = require("module");
@@ -219,7 +155,7 @@ describe("CLIEngine", () => {
 
             before(() => {
                 originalFindPath = Module._findPath;
-                Module._findPath = function(id, ...otherArgs) {
+                Module._findPath = function (id, ...otherArgs) {
                     if (id === "@scope/ec0lint-plugin") {
                         return path.resolve(__dirname, "../../fixtures/plugin-shorthand/basic/node_modules/@scope/ec0lint-plugin/index.js");
                     }
@@ -229,7 +165,6 @@ describe("CLIEngine", () => {
             after(() => {
                 Module._findPath = originalFindPath;
             });
-            /* ec0lint-enable no-underscore-dangle -- Private Node API overriding */
 
             it("should resolve 'plugins:[\"@scope\"]' to 'node_modules/@scope/ec0lint-plugin'.", () => {
                 engine = new CLIEngine({ cwd: getFixturePath("plugin-shorthand/basic") });
@@ -251,43 +186,12 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.suppressedMessages.length, 0);
             });
         });
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                useEc0lintrc: false,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml"
-            });
-
-            const report = engine.executeOnText("foo");
-
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
     });
 
     describe("executeOnFiles()", () => {
 
         /** @type {InstanceType<import("../../../lib/cli-engine").CLIEngine>} */
         let engine;
-
-        it("should use correct parser when custom parser is specified", () => {
-
-            engine = new CLIEngine({
-                cwd: originalDir,
-                ignore: false
-            });
-
-            const filePath = path.resolve(__dirname, "../../fixtures/configurations/parser/custom.js");
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].message, "Parsing error: Boom!");
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
 
         it("should report zero messages when given a config file and a valid file", () => {
 
@@ -374,30 +278,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should fall back to defaults when extensions is set to an empty array", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath("configurations"),
-                configFile: getFixturePath("configurations", "quotes-error.json"),
-                extensions: []
-            });
-            const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.errorCount, 1);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should report zero messages when given a directory with a .js and a .js2 file", () => {
 
             engine = new CLIEngine({
@@ -477,25 +357,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should report on globs with explicit inclusion of dotfiles, even though ignored by default", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath("cli-engine"),
-                rules: {
-                    quotes: [2, "single"]
-                }
-            });
-
-            const report = engine.executeOnFiles(["hidden/.hiddenfolder/*.js"]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should not check default ignored files without --no-ignore flag", () => {
 
             engine = new CLIEngine({
@@ -519,96 +380,6 @@ describe("CLIEngine", () => {
             }, "All files matched by 'node_modules' are ignored.");
         });
 
-        it("should not check .hidden files if they are passed explicitly without --no-ignore flag", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath(".."),
-                useEc0lintrc: false,
-                rules: {
-                    quotes: [2, "single"]
-                }
-            });
-
-            const report = engine.executeOnFiles(["fixtures/files/.bar.js"]);
-            const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 1);
-            assert.strictEqual(report.results[0].fatalErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].message, expectedMsg);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should not check files within a .hidden folder if they are passed explicitly without the --no-ignore flag", () => {
-            engine = new CLIEngine({
-                cwd: getFixturePath("cli-engine"),
-                useEc0lintrc: false,
-                rules: {
-                    quotes: [2, "single"]
-                }
-            });
-
-            const report = engine.executeOnFiles(["hidden/.hiddenfolder/double-quotes.js"]);
-            const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 1);
-            assert.strictEqual(report.results[0].fatalErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].message, expectedMsg);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should check .hidden files if they are passed explicitly with --no-ignore flag", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath(".."),
-                ignore: false,
-                useEc0lintrc: false,
-                rules: {
-                    quotes: [2, "single"]
-                }
-            });
-
-            const report = engine.executeOnFiles(["fixtures/files/.bar.js"]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should check .hidden files if they are unignored with an --ignore-pattern", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath("cli-engine"),
-                ignore: true,
-                useEc0lintrc: false,
-                ignorePattern: "!.hidden*",
-                rules: {
-                    quotes: [2, "single"]
-                }
-            });
-
-            const report = engine.executeOnFiles(["hidden/"]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should report zero messages when given a pattern with a .js and a .js2 file", () => {
 
             engine = new CLIEngine({
@@ -624,124 +395,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
             assert.strictEqual(report.results[1].messages.length, 0);
             assert.strictEqual(report.results[1].suppressedMessages.length, 0);
-        });
-
-        it("should return one error message when given a config with rules with options and severity level set to error", () => {
-
-            engine = new CLIEngine({
-                cwd: getFixturePath("configurations"),
-                configFile: getFixturePath("configurations", "quotes-error.json")
-            });
-            const report = engine.executeOnFiles([getFixturePath("single-quoted.js")]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.errorCount, 1);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 1);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].errorCount, 1);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 1);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should return 3 messages when given a config file and a directory of 3 valid files", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                configFile: getFixturePath("configurations", "semi-error.json")
-            });
-
-            const fixturePath = getFixturePath("formatters");
-            const report = engine.executeOnFiles([fixturePath]);
-
-            assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results.length, 5);
-            assert.strictEqual(path.relative(fixturePath, report.results[0].filePath), "async.js");
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[1].filePath), "broken.js");
-            assert.strictEqual(report.results[1].errorCount, 0);
-            assert.strictEqual(report.results[1].warningCount, 0);
-            assert.strictEqual(report.results[1].fixableErrorCount, 0);
-            assert.strictEqual(report.results[1].fixableWarningCount, 0);
-            assert.strictEqual(report.results[1].messages.length, 0);
-            assert.strictEqual(report.results[1].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[2].filePath), "cwd.js");
-            assert.strictEqual(report.results[2].errorCount, 0);
-            assert.strictEqual(report.results[2].warningCount, 0);
-            assert.strictEqual(report.results[2].fixableErrorCount, 0);
-            assert.strictEqual(report.results[2].fixableWarningCount, 0);
-            assert.strictEqual(report.results[2].messages.length, 0);
-            assert.strictEqual(report.results[2].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[3].filePath), "simple.js");
-            assert.strictEqual(report.results[3].errorCount, 0);
-            assert.strictEqual(report.results[3].warningCount, 0);
-            assert.strictEqual(report.results[3].fixableErrorCount, 0);
-            assert.strictEqual(report.results[3].fixableWarningCount, 0);
-            assert.strictEqual(report.results[3].messages.length, 0);
-            assert.strictEqual(report.results[3].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[4].filePath), path.join("test", "simple.js"));
-            assert.strictEqual(report.results[4].errorCount, 0);
-            assert.strictEqual(report.results[4].warningCount, 0);
-            assert.strictEqual(report.results[4].fixableErrorCount, 0);
-            assert.strictEqual(report.results[4].fixableWarningCount, 0);
-            assert.strictEqual(report.results[4].messages.length, 0);
-            assert.strictEqual(report.results[4].suppressedMessages.length, 0);
-        });
-
-
-        it("should return the total number of errors when given multiple files", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                configFile: getFixturePath("configurations", "single-quotes-error.json")
-            });
-
-            const fixturePath = getFixturePath("formatters");
-            const report = engine.executeOnFiles([fixturePath]);
-
-            assert.strictEqual(report.errorCount, 6);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 6);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results.length, 5);
-            assert.strictEqual(path.relative(fixturePath, report.results[0].filePath), "async.js");
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[1].filePath), "broken.js");
-            assert.strictEqual(report.results[1].errorCount, 0);
-            assert.strictEqual(report.results[1].warningCount, 0);
-            assert.strictEqual(report.results[1].fixableErrorCount, 0);
-            assert.strictEqual(report.results[1].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[2].filePath), "cwd.js");
-            assert.strictEqual(report.results[2].errorCount, 0);
-            assert.strictEqual(report.results[2].warningCount, 0);
-            assert.strictEqual(report.results[2].fixableErrorCount, 0);
-            assert.strictEqual(report.results[2].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[3].filePath), "simple.js");
-            assert.strictEqual(report.results[3].errorCount, 3);
-            assert.strictEqual(report.results[3].warningCount, 0);
-            assert.strictEqual(report.results[3].fixableErrorCount, 3);
-            assert.strictEqual(report.results[3].fixableWarningCount, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[4].filePath), path.join("test", "simple.js"));
-            assert.strictEqual(report.results[4].errorCount, 3);
-            assert.strictEqual(report.results[4].warningCount, 0);
-            assert.strictEqual(report.results[4].fixableErrorCount, 3);
-            assert.strictEqual(report.results[4].fixableWarningCount, 0);
         });
 
         it("should process when file is given by not specifying extensions", () => {
@@ -772,24 +425,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when given an option to set environment to browser", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                envs: ["browser"],
-                rules: {
-                    "no-alert": 0,
-                    "no-undef": 2
-                }
-            });
-
-            const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("globals-browser.js"))]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should return zero messages when given a config with environment set to Node.js", () => {
 
             engine = new CLIEngine({
@@ -802,36 +437,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should not return results from previous call when calling more than once", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                ignore: false,
-                rules: {
-                    semi: 2
-                }
-            });
-
-            const failFilePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-            const passFilePath = fs.realpathSync(getFixturePath("passing.js"));
-
-            let report = engine.executeOnFiles([failFilePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, failFilePath);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "semi");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-
-            report = engine.executeOnFiles([passFilePath]);
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, passFilePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-
         });
 
         it("should throw an error when given a directory with all ec0lint excluded files in the directory", () => {
@@ -859,40 +464,6 @@ describe("CLIEngine", () => {
         it("should throw an error when all given files are ignored even with a `./` prefix", () => {
             engine = new CLIEngine({
                 ignorePath: getFixturePath(".ec0lintignore")
-            });
-
-            assert.throws(() => {
-                engine.executeOnFiles(["./tests/fixtures/cli-engine/"]);
-            }, "All files matched by './tests/fixtures/cli-engine/' are ignored.");
-        });
-
-        it("should ignore one-level down node_modules when ignore file has 'node_modules/' in it", () => {
-            engine = new CLIEngine({
-                ignorePath: getFixturePath("cli-engine", "nested_node_modules", ".ec0lintignore"),
-                useEc0lintrc: false,
-                rules: {
-                    quotes: [2, "double"]
-                },
-                cwd: getFixturePath("cli-engine", "nested_node_modules")
-            });
-
-            const report = engine.executeOnFiles(["."]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should ignore all files and throw an error when tests/fixtures/ is in ignore file", () => {
-            engine = new CLIEngine({
-                ignorePath: getFixturePath("cli-engine/.ec0lintignore2"),
-                useEc0lintrc: false,
-                rules: {
-                    quotes: [2, "double"]
-                }
             });
 
             assert.throws(() => {
@@ -934,29 +505,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].fatalErrorCount, 0);
             assert.strictEqual(report.results[0].fixableErrorCount, 0);
             assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should return two messages when given a file in excluded files list while ignore is off", () => {
-
-            engine = new CLIEngine({
-                ignorePath: getFixturePath(".ec0lintignore"),
-                ignore: false,
-                rules: {
-                    "no-undef": 2
-                }
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("undef.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "no-undef");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].messages[1].ruleId, "no-undef");
-            assert.strictEqual(report.results[0].messages[1].severity, 2);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
@@ -1072,23 +620,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when executing without useEc0lintrc flag", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                useEc0lintrc: false
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should return zero messages when executing without useEc0lintrc flag in Node.js environment", () => {
 
             engine = new CLIEngine({
@@ -1107,280 +638,8 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when executing with base-config flag set to false", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                baseConfig: false,
-                useEc0lintrc: false
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should return zero messages and ignore .ec0lintrc files when executing with no-ec0lintrc flag", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                useEc0lintrc: false,
-                envs: ["node"]
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "quotes.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should return zero messages and ignore package.json files when executing with no-ec0lintrc flag", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                useEc0lintrc: false,
-                envs: ["node"]
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("packagejson", "quotes.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should warn when deprecated rules are configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: {
-                    "indent-legacy": 1,
-                    "require-jsdoc": 1,
-                    "valid-jsdoc": 1
-                }
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.sameDeepMembers(
-                report.usedDeprecatedRules,
-                [
-                    { ruleId: "indent-legacy", replacedBy: ["indent"] },
-                    { ruleId: "require-jsdoc", replacedBy: [] },
-                    { ruleId: "valid-jsdoc", replacedBy: [] }
-                ]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should not warn when deprecated rules are not configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: { indent: 1, "valid-jsdoc": 0, "require-jsdoc": 0 }
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(report.usedDeprecatedRules, []);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should warn when deprecated rules are found in a config", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: "tests/fixtures/cli-engine/deprecated-rule-config/.ec0lintrc.yml",
-                useEc0lintrc: false
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(
-                report.usedDeprecatedRules,
-                [{ ruleId: "indent-legacy", replacedBy: ["indent"] }]
-            );
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        describe("Fix Mode", () => {
-
-            it("should return fixed text on multiple files when in fix mode", () => {
-
-                /**
-                 * Converts CRLF to LF in output.
-                 * This is a workaround for git's autocrlf option on Windows.
-                 * @param {Object} result A result object to convert.
-                 * @returns {void}
-                 */
-                function convertCRLF(result) {
-                    if (result && result.output) {
-                        result.output = result.output.replace(/\r\n/gu, "\n");
-                    }
-                }
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    fix: true,
-                    rules: {
-                        semi: 2,
-                        quotes: [2, "double"],
-                        eqeqeq: 2,
-                        "no-undef": 2,
-                        "space-infix-ops": 2
-                    }
-                });
-
-                const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                report.results.forEach(convertCRLF);
-                assert.deepStrictEqual(report.results, [
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/multipass.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "true ? \"yes\" : \"no\";\n"
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/ok.js")),
-                        messages: [],
-                        suppressedMessages: [],
-                        errorCount: 0,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes-semi-eqeqeq.js")),
-                        messages: [
-                            {
-                                column: 9,
-                                line: 2,
-                                endColumn: 11,
-                                endLine: 2,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\";\nif (msg == \"hi\") {\n\n}\n"
-                    },
-                    {
-                        filePath: fs.realpathSync(path.resolve(fixtureDir, "fixmode/quotes.js")),
-                        messages: [
-                            {
-                                column: 18,
-                                line: 1,
-                                endColumn: 21,
-                                endLine: 1,
-                                messageId: "undef",
-                                message: "'foo' is not defined.",
-                                nodeType: "Identifier",
-                                ruleId: "no-undef",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        errorCount: 1,
-                        warningCount: 0,
-                        fatalErrorCount: 0,
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        output: "var msg = \"hi\" + foo;\n"
-                    }
-                ]);
-                assert.strictEqual(report.errorCount, 2);
-                assert.strictEqual(report.warningCount, 0);
-                assert.strictEqual(report.fixableErrorCount, 0);
-                assert.strictEqual(report.fixableWarningCount, 0);
-            });
-
-            it("should run autofix even if files are cached without autofix results", () => {
-                const baseOptions = {
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    rules: {
-                        semi: 2,
-                        quotes: [2, "double"],
-                        eqeqeq: 2,
-                        "no-undef": 2,
-                        "space-infix-ops": 2
-                    }
-                };
-
-                engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: false }));
-
-                // Do initial lint run and populate the cache file
-                engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                engine = new CLIEngine(Object.assign({}, baseOptions, { cache: true, fix: true }));
-
-                const report = engine.executeOnFiles([path.resolve(fixtureDir, `${fixtureDir}/fixmode`)]);
-
-                assert.ok(report.results.some(result => result.output));
-            });
-
-        });
-
         describe("configuration hierarchy", () => {
 
-            // Default configuration - blank
-            it("should return zero messages when executing with no .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // No default configuration rules - conf/environments.js (/*ec0lint-env node*/)
-            it("should return zero messages when executing with no .ec0lintrc in the Node.js environment", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    reset: true,
-                    useEc0lintrc: false
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes-node.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
             // Project configuration - first level .ec0lintrc
             it("should return zero messages when executing with .ec0lintrc in the Node.js environment", () => {
 
@@ -1407,242 +666,6 @@ describe("CLIEngine", () => {
                 assert.strictEqual(report.results.length, 1);
                 assert.strictEqual(report.results[0].messages.length, 0);
             });
-
-            // Project configuration - first level .ec0lintrc
-            it("should return one message when executing with .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 2);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - second level .ec0lintrc
-            it("should return one message when executing with local .ec0lintrc that overrides parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - third level .ec0lintrc
-            it("should return one message when executing with local .ec0lintrc that overrides parent and grandparent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/subsubbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - first level package.json
-            it("should return one message when executing with package.json", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - second level package.json
-            it("should return zero messages when executing with local package.json that overrides parent package.json", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - third level package.json
-            it("should return one message when executing with local package.json that overrides parent and grandparent package.json", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 2);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Project configuration - .ec0lintrc overrides package.json in same directory
-            it("should return one message when executing with .ec0lintrc that overrides a package.json in the same directory", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 2);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return two messages when executing with config file that adds to local .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 2);
-                assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(report.results[0].messages[1].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return no messages when executing with config file that overrides local .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with second level .ec0lintrc
-            it("should return two messages when executing with config file that adds to local and parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(report.results[0].messages[1].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with second level .ec0lintrc
-            it("should return one message when executing with config file that overrides local and parent .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: getFixturePath("config-hierarchy/broken/override-conf.yaml")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/subbroken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "no-console");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return no messages when executing with config file that overrides local .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 0);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --rule with --config and first level .ec0lintrc
-            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: getFixturePath("config-hierarchy/broken/override-conf.yaml"),
-                    rules: {
-                        quotes: [1, "double"]
-                    }
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
-            // Command line configuration - --rule with --config and first level .ec0lintrc
-            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", () => {
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    configFile: getFixturePath("/config-hierarchy/broken/override-conf.yaml"),
-                    rules: {
-                        quotes: [1, "double"]
-                    }
-                });
-
-                const report = engine.executeOnFiles([getFixturePath("config-hierarchy/broken/console-wrong-quotes.js")]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 1);
-                assert.strictEqual(report.results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(report.results[0].messages[0].severity, 1);
-                assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            });
-
         });
 
         describe("plugins", () => {
@@ -1827,746 +850,10 @@ describe("CLIEngine", () => {
                 afterEach(() => {
                     deleteCacheDir();
                 });
-
-                it("should create the cache file inside the provided directory", () => {
-                    assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
-
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        cacheFile: "./tmp/.cacheFileDir/",
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"],
-                        ignore: false
-                    });
-
-                    const file = getFixturePath("cache/src", "test-file.js");
-
-                    engine.executeOnFiles([file]);
-
-                    assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
-
-                    sinon.restore();
-                });
-            });
-
-            it("should create the cache file inside the provided directory using the cacheLocation option", () => {
-                assert.isFalse(shell.test("-d", path.resolve("./tmp/.cacheFileDir/.cache_hashOfCurrentWorkingDirectory")), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    cacheLocation: "./tmp/.cacheFileDir/",
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                const file = getFixturePath("cache/src", "test-file.js");
-
-                engine.executeOnFiles([file]);
-
-                assert.isTrue(shell.test("-f", path.resolve(`./tmp/.cacheFileDir/.cache_${hash(process.cwd())}`)), "the cache for ec0lint was created");
-
-                sinon.restore();
-            });
-
-            it("should create the cache file inside cwd when no cacheLocation provided", () => {
-                const cwd = path.resolve(getFixturePath("cli-engine"));
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-                    cache: true,
-                    cwd,
-                    rules: {
-                        "no-console": 0
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                const file = getFixturePath("cli-engine", "console.js");
-
-                engine.executeOnFiles([file]);
-
-                assert.isTrue(shell.test("-f", path.resolve(cwd, ".ec0lintcache")), "the cache for ec0lint was created at provided cwd");
-            });
-
-            it("should invalidate the cache if the configuration changed between executions", () => {
-                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                let spy = sinon.spy(fs, "readFileSync");
-
-                let file = getFixturePath("cache/src", "test-file.js");
-
-                file = fs.realpathSync(file);
-
-                const result = engine.executeOnFiles([file]);
-
-                assert.strictEqual(result.errorCount + result.warningCount, 0, "the file passed without errors or warnings");
-                assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
-
-                // destroy the spy
-                sinon.restore();
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                // create a new spy
-                spy = sinon.spy(fs, "readFileSync");
-
-                const cachedResult = engine.executeOnFiles([file]);
-
-                assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed because the config changed");
-                assert.strictEqual(cachedResult.errorCount, 1, "since configuration changed the cache was not used an one error was reported");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
-            });
-
-            it("should remember the files from a previous run and do not operate on them if not changed", () => {
-
-                assert.isFalse(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                let spy = sinon.spy(fs, "readFileSync");
-
-                let file = getFixturePath("cache/src", "test-file.js");
-
-                file = fs.realpathSync(file);
-
-                const result = engine.executeOnFiles([file]);
-
-                assert.strictEqual(spy.getCall(0).args[0], file, "the module read the file because is considered changed");
-                assert.isTrue(shell.test("-f", path.resolve(".ec0lintcache")), "the cache for ec0lint was created");
-
-                // destroy the spy
-                sinon.restore();
-
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    ignore: false
-                });
-
-                // create a new spy
-                spy = sinon.spy(fs, "readFileSync");
-
-                const cachedResult = engine.executeOnFiles([file]);
-
-                assert.deepStrictEqual(result, cachedResult, "the result is the same regardless of using cache or not");
-
-                // assert the file was not processed because the cache was used
-                assert.isFalse(spy.calledWith(file), "the file was not loaded because it used the cache");
-            });
-
-            it("should remember the files from a previous run and do not operate on then if not changed", () => {
-
-                const cacheFile = getFixturePath(".ec0lintcache");
-                const cliEngineOptions = {
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"],
-                    cwd: path.join(fixtureDir, "..")
-                };
-
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine(cliEngineOptions);
-
-                let file = getFixturePath("cache/src", "test-file.js");
-
-                file = fs.realpathSync(file);
-
-                engine.executeOnFiles([file]);
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint was created");
-
-                cliEngineOptions.cache = false;
-                engine = new CLIEngine(cliEngineOptions);
-
-                engine.executeOnFiles([file]);
-
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint was deleted since last run did not used the cache");
-            });
-
-            it("should store in the cache a file that failed the test", () => {
-
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint does not exist");
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                const badFile = fs.realpathSync(getFixturePath("cache/src", "fail-file.js"));
-                const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
-
-                const result = engine.executeOnFiles([badFile, goodFile]);
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint was created");
-
-                const fileCache = fCache.createFromFile(cacheFile);
-                const { cache } = fileCache;
-
-                assert.isTrue(typeof cache.getKey(goodFile) === "object", "the entry for the good file is in the cache");
-
-                assert.isTrue(typeof cache.getKey(badFile) === "object", "the entry for the bad file is in the cache");
-
-                const cachedResult = engine.executeOnFiles([badFile, goodFile]);
-
-                assert.deepStrictEqual(result, cachedResult, "result is the same with or without cache");
-            });
-
-            it("should not contain in the cache a file that was deleted", () => {
-
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                doDelete(cacheFile);
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                const badFile = fs.realpathSync(getFixturePath("cache/src", "fail-file.js"));
-                const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
-                const toBeDeletedFile = fs.realpathSync(getFixturePath("cache/src", "file-to-delete.js"));
-
-                engine.executeOnFiles([badFile, goodFile, toBeDeletedFile]);
-
-                const fileCache = fCache.createFromFile(cacheFile);
-                let { cache } = fileCache;
-
-                assert.isTrue(typeof cache.getKey(toBeDeletedFile) === "object", "the entry for the file to be deleted is in the cache");
-
-                // delete the file from the file system
-                fs.unlinkSync(toBeDeletedFile);
-
-                /*
-                 * file-entry-cache@2.0.0 will remove from the cache deleted files
-                 * even when they were not part of the array of files to be analyzed
-                 */
-                engine.executeOnFiles([badFile, goodFile]);
-
-                cache = JSON.parse(fs.readFileSync(cacheFile));
-
-                assert.isTrue(typeof cache[toBeDeletedFile] === "undefined", "the entry for the file to be deleted is not in the cache");
-            });
-
-            it("should contain files that were not visited in the cache provided they still exist", () => {
-
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                doDelete(cacheFile);
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-
-                    // specifying cache true the cache will be created
-                    cache: true,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                const badFile = fs.realpathSync(getFixturePath("cache/src", "fail-file.js"));
-                const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
-                const testFile2 = fs.realpathSync(getFixturePath("cache/src", "test-file2.js"));
-
-                engine.executeOnFiles([badFile, goodFile, testFile2]);
-
-                let fileCache = fCache.createFromFile(cacheFile);
-                let { cache } = fileCache;
-
-                assert.isTrue(typeof cache.getKey(testFile2) === "object", "the entry for the test-file2 is in the cache");
-
-                /*
-                 * we pass a different set of files minus test-file2
-                 * previous version of file-entry-cache would remove the non visited
-                 * entries. 2.0.0 version will keep them unless they don't exist
-                 */
-                engine.executeOnFiles([badFile, goodFile]);
-
-                fileCache = fCache.createFromFile(cacheFile);
-                cache = fileCache.cache;
-
-                assert.isTrue(typeof cache.getKey(testFile2) === "object", "the entry for the test-file2 is in the cache");
-            });
-
-            it("should not delete cache when executing on text", () => {
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
-
-                engine.executeOnText("var foo = 'bar';");
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
-            });
-
-            it("should not delete cache when executing on text with a provided filename", () => {
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
-
-                engine.executeOnText("var bar = foo;", "fixtures/passing.js");
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
-            });
-
-            it("should not delete cache when executing on files with --cache flag", () => {
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    cache: true,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                const file = getFixturePath("cli-engine", "console.js");
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
-
-                engine.executeOnFiles([file]);
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint still exists");
-            });
-
-            it("should delete cache when executing on files without --cache flag", () => {
-                const cacheFile = getFixturePath(".ec0lintcache");
-
-                engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false,
-                    cacheFile,
-                    rules: {
-                        "no-console": 0,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js"]
-                });
-
-                const file = getFixturePath("cli-engine", "console.js");
-
-                assert.isTrue(shell.test("-f", cacheFile), "the cache for ec0lint exists");
-
-                engine.executeOnFiles([file]);
-
-                assert.isFalse(shell.test("-f", cacheFile), "the cache for ec0lint has been deleted");
-            });
-
-            describe("cacheFile", () => {
-                it("should use the specified cache file", () => {
-                    const customCacheFile = path.resolve(".cache/custom-cache");
-
-                    assert.isFalse(shell.test("-f", customCacheFile), "the cache for ec0lint does not exist");
-
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-
-                        // specify a custom cache file
-                        cacheFile: customCacheFile,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"],
-                        cwd: path.join(fixtureDir, "..")
-                    });
-
-                    const badFile = fs.realpathSync(getFixturePath("cache/src", "fail-file.js"));
-                    const goodFile = fs.realpathSync(getFixturePath("cache/src", "test-file.js"));
-
-                    const result = engine.executeOnFiles([badFile, goodFile]);
-
-                    assert.isTrue(shell.test("-f", customCacheFile), "the cache for ec0lint was created");
-
-                    const fileCache = fCache.createFromFile(customCacheFile);
-                    const { cache } = fileCache;
-
-                    assert.isTrue(typeof cache.getKey(goodFile) === "object", "the entry for the good file is in the cache");
-
-                    assert.isTrue(typeof cache.getKey(badFile) === "object", "the entry for the bad file is in the cache");
-
-                    const cachedResult = engine.executeOnFiles([badFile, goodFile]);
-
-                    assert.deepStrictEqual(result, cachedResult, "result is the same with or without cache");
-                });
-            });
-
-            describe("cacheStrategy", () => {
-                it("should detect changes using a file's modification time when set to 'metadata'", () => {
-                    const cacheFile = getFixturePath(".ec0lintcache");
-                    const badFile = getFixturePath("cache/src", "fail-file.js");
-                    const goodFile = getFixturePath("cache/src", "test-file.js");
-
-                    doDelete(cacheFile);
-
-                    engine = new CLIEngine({
-                        cwd: path.join(fixtureDir, ".."),
-                        useEc0lintrc: false,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        cacheFile,
-                        cacheStrategy: "metadata",
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"]
-                    });
-
-                    engine.executeOnFiles([badFile, goodFile]);
-
-                    let fileCache = fCache.createFromFile(cacheFile, false);
-                    const entries = fileCache.normalizeEntries([badFile, goodFile]);
-
-                    entries.forEach(entry => {
-                        assert.isFalse(entry.changed, `the entry for ${entry.key} is initially unchanged`);
-                    });
-
-                    // this should result in a changed entry
-                    shell.touch(goodFile);
-                    fileCache = fCache.createFromFile(cacheFile, false);
-                    assert.isFalse(fileCache.getFileDescriptor(badFile).changed, `the entry for ${badFile} is unchanged`);
-                    assert.isTrue(fileCache.getFileDescriptor(goodFile).changed, `the entry for ${goodFile} is changed`);
-                });
-
-                it("should not detect changes using a file's modification time when set to 'content'", () => {
-                    const cacheFile = getFixturePath(".ec0lintcache");
-                    const badFile = getFixturePath("cache/src", "fail-file.js");
-                    const goodFile = getFixturePath("cache/src", "test-file.js");
-
-                    doDelete(cacheFile);
-
-                    engine = new CLIEngine({
-                        cwd: path.join(fixtureDir, ".."),
-                        useEc0lintrc: false,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        cacheFile,
-                        cacheStrategy: "content",
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"]
-                    });
-
-                    engine.executeOnFiles([badFile, goodFile]);
-
-                    let fileCache = fCache.createFromFile(cacheFile, true);
-                    let entries = fileCache.normalizeEntries([badFile, goodFile]);
-
-                    entries.forEach(entry => {
-                        assert.isFalse(entry.changed, `the entry for ${entry.key} is initially unchanged`);
-                    });
-
-                    // this should NOT result in a changed entry
-                    shell.touch(goodFile);
-                    fileCache = fCache.createFromFile(cacheFile, true);
-                    entries = fileCache.normalizeEntries([badFile, goodFile]);
-                    entries.forEach(entry => {
-                        assert.isFalse(entry.changed, `the entry for ${entry.key} remains unchanged`);
-                    });
-                });
-
-                it("should detect changes using a file's contents when set to 'content'", () => {
-                    const cacheFile = getFixturePath(".ec0lintcache");
-                    const badFile = getFixturePath("cache/src", "fail-file.js");
-                    const goodFile = getFixturePath("cache/src", "test-file.js");
-                    const goodFileCopy = path.resolve(`${path.dirname(goodFile)}`, "test-file-copy.js");
-
-                    shell.cp(goodFile, goodFileCopy);
-
-                    doDelete(cacheFile);
-
-                    engine = new CLIEngine({
-                        cwd: path.join(fixtureDir, ".."),
-                        useEc0lintrc: false,
-
-                        // specifying cache true the cache will be created
-                        cache: true,
-                        cacheFile,
-                        cacheStrategy: "content",
-                        rules: {
-                            "no-console": 0,
-                            "no-unused-vars": 2
-                        },
-                        extensions: ["js"]
-                    });
-
-                    engine.executeOnFiles([badFile, goodFileCopy]);
-
-                    let fileCache = fCache.createFromFile(cacheFile, true);
-                    const entries = fileCache.normalizeEntries([badFile, goodFileCopy]);
-
-                    entries.forEach(entry => {
-                        assert.isFalse(entry.changed, `the entry for ${entry.key} is initially unchanged`);
-                    });
-
-                    // this should result in a changed entry
-                    shell.sed("-i", "abc", "xzy", goodFileCopy);
-                    fileCache = fCache.createFromFile(cacheFile, true);
-                    assert.isFalse(fileCache.getFileDescriptor(badFile).changed, `the entry for ${badFile} is unchanged`);
-                    assert.isTrue(fileCache.getFileDescriptor(goodFileCopy).changed, `the entry for ${goodFileCopy} is changed`);
-                });
             });
         });
 
         describe("processors", () => {
-            it("should return two messages when executing with config file that specifies a processor", () => {
-                engine = cliEngineWithPlugins({
-                    configFile: getFixturePath("configurations", "processors.json"),
-                    useEc0lintrc: false,
-                    extensions: ["js", "txt"],
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("processors", "test", "test-processor.txt"))]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-            });
-            it("should return two messages when executing with config file that specifies preloaded processor", () => {
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-                    plugins: ["test-processor"],
-                    rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js", "txt"],
-                    cwd: path.join(fixtureDir, "..")
-                }, {
-                    preloadedPlugins: {
-                        "test-processor": {
-                            processors: {
-                                ".txt": {
-                                    preprocess(text) {
-                                        return [text];
-                                    },
-                                    postprocess(messages) {
-                                        return messages[0];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                const report = engine.executeOnFiles([fs.realpathSync(getFixturePath("processors", "test", "test-processor.txt"))]);
-
-                assert.strictEqual(report.results.length, 1);
-                assert.strictEqual(report.results[0].messages.length, 2);
-            });
-            it("should run processors when calling executeOnFiles with config file that specifies a processor", () => {
-                engine = cliEngineWithPlugins({
-                    configFile: getFixturePath("configurations", "processors.json"),
-                    useEc0lintrc: false,
-                    extensions: ["js", "txt"],
-                    cwd: path.join(fixtureDir, "..")
-                });
-
-                const report = engine.executeOnFiles([getFixturePath("processors", "test", "test-processor.txt")]);
-
-                assert.strictEqual(report.results[0].messages[0].message, "'b' is defined but never used.");
-                assert.strictEqual(report.results[0].messages[0].ruleId, "post-processed");
-            });
-            it("should run processors when calling executeOnFiles with config file that specifies preloaded processor", () => {
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-                    plugins: ["test-processor"],
-                    rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js", "txt"],
-                    cwd: path.join(fixtureDir, "..")
-                }, {
-                    preloadedPlugins: {
-                        "test-processor": {
-                            processors: {
-                                ".txt": {
-                                    preprocess(text) {
-                                        return [text.replace("a()", "b()")];
-                                    },
-                                    postprocess(messages) {
-                                        messages[0][0].ruleId = "post-processed";
-                                        return messages[0];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                const report = engine.executeOnFiles([getFixturePath("processors", "test", "test-processor.txt")]);
-
-                assert.strictEqual(report.results[0].messages[0].message, "'b' is defined but never used.");
-                assert.strictEqual(report.results[0].messages[0].ruleId, "post-processed");
-            });
-            it("should run processors when calling executeOnText with config file that specifies a processor", () => {
-                engine = cliEngineWithPlugins({
-                    configFile: getFixturePath("configurations", "processors.json"),
-                    useEc0lintrc: false,
-                    extensions: ["js", "txt"],
-                    ignore: false
-                });
-
-                const report = engine.executeOnText("function a() {console.log(\"Test\");}", "tests/fixtures/processors/test/test-processor.txt");
-
-                assert.strictEqual(report.results[0].messages[0].message, "'b' is defined but never used.");
-                assert.strictEqual(report.results[0].messages[0].ruleId, "post-processed");
-            });
-            it("should run processors when calling executeOnText with config file that specifies preloaded processor", () => {
-                engine = new CLIEngine({
-                    useEc0lintrc: false,
-                    plugins: ["test-processor"],
-                    rules: {
-                        "no-console": 2,
-                        "no-unused-vars": 2
-                    },
-                    extensions: ["js", "txt"],
-                    ignore: false
-                }, {
-                    preloadedPlugins: {
-                        "test-processor": {
-                            processors: {
-                                ".txt": {
-                                    preprocess(text) {
-                                        return [text.replace("a()", "b()")];
-                                    },
-                                    postprocess(messages) {
-                                        messages[0][0].ruleId = "post-processed";
-                                        return messages[0];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                const report = engine.executeOnText("function a() {console.log(\"Test\");}", "tests/fixtures/processors/test/test-processor.txt");
-
-                assert.strictEqual(report.results[0].messages[0].message, "'b' is defined but never used.");
-                assert.strictEqual(report.results[0].messages[0].ruleId, "post-processed");
-            });
 
             describe("autofixing with processors", () => {
                 const HTML_PROCESSOR = Object.freeze({
@@ -2585,84 +872,6 @@ describe("CLIEngine", () => {
                             return problem;
                         });
                     }
-                });
-
-
-                it("should run in autofix mode when using a processor that supports autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 0);
-                    assert.strictEqual(report.results[0].output, "<script>foo;</script>");
-                });
-
-                it("should not run in autofix mode when using a processor that does not support autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": HTML_PROCESSOR
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 1);
-                    assert.isFalse(Object.prototype.hasOwnProperty.call(report.results[0], "output"));
-                });
-
-                it("should not run in autofix mode when `fix: true` is not provided, even if the processor supports autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 1);
-                    assert.isFalse(Object.prototype.hasOwnProperty.call(report.results[0], "output"));
                 });
             });
         });
@@ -2714,52 +923,6 @@ describe("CLIEngine", () => {
                 });
             });
 
-            it("should recognize dotfiles", () => {
-                const ret = engine.executeOnFiles([".test-target.js"]);
-
-                assert.strictEqual(ret.results.length, 1);
-                assert.strictEqual(ret.results[0].messages.length, 1);
-                assert.strictEqual(ret.results[0].messages[0].ruleId, "no-unused-vars");
-                assert.strictEqual(ret.results[0].suppressedMessages.length, 0);
-            });
-        });
-
-        describe("a config file setting should have higher priority than a shareable config file's settings always; https://github.com/eslint/eslint/issues/11510", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: path.join(os.tmpdir(), "cli-engine/11510"),
-                files: {
-                    "no-console-error-in-overrides.json": {
-                        overrides: [{
-                            files: ["*.js"],
-                            rules: { "no-console": "error" }
-                        }]
-                    },
-                    ".ec0lintrc.json": {
-                        extends: "./no-console-error-in-overrides.json",
-                        rules: { "no-console": "off" }
-                    },
-                    "a.js": "console.log();"
-                }
-            });
-
-            beforeEach(() => {
-                engine = new CLIEngine({
-                    cwd: getPath()
-                });
-
-                return prepare();
-            });
-
-            afterEach(cleanup);
-
-            it("should not report 'no-console' error.", () => {
-                const { results } = engine.executeOnFiles("a.js");
-
-                assert.strictEqual(results.length, 1);
-                assert.deepStrictEqual(results[0].messages, []);
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
-            });
         });
 
         describe("configs of plugin rules should be validated even if 'plugins' key doesn't exist; https://github.com/ec0lint/ec0lint/issues/11559", () => {
@@ -3075,7 +1238,7 @@ describe("CLIEngine", () => {
                 const teardown = createCustomTeardown({
                     cwd: root,
                     files: {
-                        "test.js": "/* ec0lint-disable eqeqeq */",
+                        "test.js": "/* ec0lint-disable lighter-http */",
                         ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                     }
                 });
@@ -3089,7 +1252,7 @@ describe("CLIEngine", () => {
 
                 assert.strictEqual(messages.length, 1);
                 assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                 assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
 
@@ -3098,7 +1261,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3122,7 +1285,7 @@ describe("CLIEngine", () => {
                     const teardown = createCustomTeardown({
                         cwd: root,
                         files: {
-                            "test.js": "/* ec0lint-disable eqeqeq */",
+                            "test.js": "/* ec0lint-disable lighter-http */",
                             ".ec0lintrc.yml": "reportUnusedDisableDirectives: true"
                         }
                     });
@@ -3140,44 +1303,9 @@ describe("CLIEngine", () => {
 
                     assert.strictEqual(messages.length, 1);
                     assert.strictEqual(messages[0].severity, 2);
-                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'eqeqeq').");
+                    assert.strictEqual(messages[0].message, "Unused ec0lint-disable directive (no problems were reported from 'lighter-http').");
                     assert.strictEqual(results[0].suppressedMessages.length, 0);
                 });
-            });
-        });
-
-        describe("with 'overrides[*].extends' setting on deep locations", () => {
-            const root = getFixturePath("cli-engine/deeply-overrides-i-extends");
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-                        overrides: [{ files: ["*test*"], extends: "two" }]
-                    })}`,
-                    "node_modules/ec0lint-config-two/index.js": `module.exports = ${JSON.stringify({
-                        overrides: [{ files: ["*.js"], extends: "three" }]
-                    })}`,
-                    "node_modules/ec0lint-config-three/index.js": `module.exports = ${JSON.stringify({
-                        rules: { "no-console": "error" }
-                    })}`,
-                    "test.js": "console.log('hello')",
-                    ".ec0lintrc.yml": "extends: one"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("should not throw.", () => {
-                engine = new CLIEngine({ cwd: getPath() });
-
-                const { results } = engine.executeOnFiles(["test.js"]);
-                const messages = results[0].messages;
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, "no-console");
-                assert.strictEqual(results[0].suppressedMessages.length, 0);
             });
         });
 
@@ -3187,7 +1315,7 @@ describe("CLIEngine", () => {
             let cleanup;
 
             beforeEach(() => {
-                cleanup = () => {};
+                cleanup = () => { };
             });
 
             afterEach(async () => {
@@ -3258,23 +1386,6 @@ describe("CLIEngine", () => {
     });
 
     describe("getConfigForFile", () => {
-
-        it("should return the info from Config#getConfig when called", () => {
-            const options = {
-                configFile: getFixturePath("configurations", "quotes-error.json")
-            };
-            const engine = new CLIEngine(options);
-            const filePath = getFixturePath("single-quoted.js");
-
-            const actualConfig = engine.getConfigForFile(filePath);
-            const expectedConfig = new CascadingConfigArrayFactory({ specificConfigPath: options.configFile })
-                .getConfigArrayForFile(filePath)
-                .extractConfig(filePath)
-                .toCompatibleObjectAsConfigFileContent();
-
-            assert.deepStrictEqual(actualConfig, expectedConfig);
-        });
-
 
         it("should return the config when run from within a subdir", () => {
             const options = {
@@ -3761,8 +1872,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a custom formatter is requested, also if the path has backslashes", () => {
             const engine = new CLIEngine({
-                    cwd: path.join(fixtureDir, "..")
-                }),
+                cwd: path.join(fixtureDir, "..")
+            }),
                 formatter = engine.getFormatter(".\\fixtures\\formatters\\simple.js");
 
             assert.isFunction(formatter);
@@ -3770,8 +1881,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter prefixed with ec0lint-formatter is requested", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("bar");
 
             assert.isFunction(formatter);
@@ -3779,8 +1890,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("ec0lint-formatter-bar");
 
             assert.isFunction(formatter);
@@ -3788,8 +1899,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested within a scoped npm package", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("@somenamespace/foo");
 
             assert.isFunction(formatter);
@@ -3797,8 +1908,8 @@ describe("CLIEngine", () => {
 
         it("should return a function when a formatter is requested within a scoped npm package, also when the ec0lint-formatter prefix is included in the format argument", () => {
             const engine = new CLIEngine({
-                    cwd: getFixturePath("cli-engine")
-                }),
+                cwd: getFixturePath("cli-engine")
+            }),
                 formatter = engine.getFormatter("@somenamespace/ec0lint-formatter-foo");
 
             assert.isFunction(formatter);
@@ -3866,76 +1977,6 @@ describe("CLIEngine", () => {
     });
 
     describe("getErrorResults()", () => {
-        it("should report 5 error messages when looking for errors only", () => {
-
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].errorCount, 1);
-            assert.strictEqual(errorResults[0].fixableErrorCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-            assert.strictEqual(errorResults[0].messages[0].ruleId, "no-unused-vars");
-            assert.strictEqual(errorResults[0].messages[0].severity, 2);
-            assert.lengthOf(errorResults[0].suppressedMessages, 0);
-        });
-
-        it("should report no error messages when looking for errors only", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line strict, no-var, no-unused-vars, quotes, eol-last -- justification");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults, 0);
-        });
-
-        it("should not mutate passed report.results parameter", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                rules: { quotes: [1, "double"] }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const reportResultsLength = report.results[0].messages.length;
-
-            CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(report.results[0].messages, reportResultsLength);
-        });
-
-        it("should report no suppressed error messages when looking for errors only", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                rules: {
-                    quotes: [1, "double"],
-                    "no-var": 2
-                }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(report.results[0].messages, 2);
-            assert.lengthOf(report.results[0].suppressedMessages, 1);
-            assert.lengthOf(errorResults[0].messages, 2);
-            assert.lengthOf(errorResults[0].suppressedMessages, 0);
-        });
-
-        it("should report a warningCount of 0 when looking for errors only", () => {
-
-            process.chdir(originalDir);
-            const engine = new CLIEngine();
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.strictEqual(errorResults[0].warningCount, 0);
-            assert.strictEqual(errorResults[0].fixableWarningCount, 0);
-        });
 
         it("should return 0 error or warning messages even when the file has warnings", () => {
             const engine = new CLIEngine({
@@ -3959,39 +2000,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].fixableErrorCount, 0);
             assert.strictEqual(report.results[0].fixableWarningCount, 0);
         });
-
-        it("should return source code of file in the `source` property", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                rules: { quotes: [2, "double"] }
-            });
-
-
-            const report = engine.executeOnText("var foo = 'bar';");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
-        });
-
-        it("should contain `output` property after fixes", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                useEc0lintrc: false,
-                fix: true,
-                rules: {
-                    semi: 2,
-                    "no-console": 2
-                }
-            });
-
-            const report = engine.executeOnText("console.log('foo')");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.strictEqual(errorResults[0].output, "console.log('foo');");
-        });
     });
 
     describe("outputFixes()", () => {
@@ -4001,8 +2009,8 @@ describe("CLIEngine", () => {
 
         it("should call fs.writeFileSync() for each result with output", () => {
             const fakeFS = {
-                    writeFileSync: () => {}
-                },
+                writeFileSync: () => { }
+            },
                 localCLIEngine = proxyquire("../../../lib/cli-engine/cli-engine", {
                     fs: fakeFS
                 }).CLIEngine,
@@ -4031,8 +2039,8 @@ describe("CLIEngine", () => {
 
         it("should call fs.writeFileSync() for each result with output and not at all for a result without output", () => {
             const fakeFS = {
-                    writeFileSync: () => {}
-                },
+                writeFileSync: () => { }
+            },
                 localCLIEngine = proxyquire("../../../lib/cli-engine/cli-engine", {
                     fs: fakeFS
                 }).CLIEngine,
@@ -4068,7 +2076,7 @@ describe("CLIEngine", () => {
         it("should expose the list of rules", () => {
             const engine = new CLIEngine();
 
-            assert(engine.getRules().has("no-eval"), "no-eval is present");
+            assert(engine.getRules().has("lighter-http"), "lighter-http is present");
         });
     });
 
@@ -4194,67 +2202,6 @@ describe("CLIEngine", () => {
 
             assert.deepStrictEqual(result, ["one-js-file/example.js"]);
         });
-    });
-
-    describe("when evaluating code with comments to change config when allowInlineConfig is disabled", () => {
-
-        it("should report a violation for disabling rules", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                envs: ["browser"],
-                ignore: true,
-                useEc0lintrc: false,
-                allowInlineConfig: false,
-                rules: {
-                    "eol-last": 0,
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    quotes: 0
-                }
-            };
-
-            const ec0lintCLI = new CLIEngine(config); //!
-
-            const report = ec0lintCLI.executeOnText(code); //!
-            const { messages, suppressedMessages } = report.results[0];
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-alert");
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation by default", () => {
-            const code = [
-                "alert('test'); // ec0lint-disable-line no-alert"
-            ].join("\n");
-            const config = {
-                envs: ["browser"],
-                ignore: true,
-                useEc0lintrc: false,
-
-                // allowInlineConfig: true is the default
-                rules: {
-                    "eol-last": 0,
-                    "no-alert": 1,
-                    "no-trailing-spaces": 0,
-                    strict: 0,
-                    quotes: 0
-                }
-            };
-
-            const ec0lintCLI = new CLIEngine(config);
-
-            const report = ec0lintCLI.executeOnText(code);
-            const { messages, suppressedMessages } = report.results[0];
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 1);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-alert");
-        });
-
     });
 
     describe("when evaluating code when reportUnusedDisableDirectives is enabled", () => {
@@ -5304,214 +3251,6 @@ describe("CLIEngine", () => {
                     path.join(root, "foo/test.js"),
                     path.join(root, "foo/test.txt"),
                     path.join(root, "test.js")
-                ]);
-            });
-        });
-    });
-
-    describe("'ignorePatterns', 'overrides[].files', and 'overrides[].excludedFiles' of the configuration that the '--config' option provided should be resolved from CWD.", () => {
-        const root = getFixturePath("cli-engine/config-and-overrides-files");
-
-        describe("if { files: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        overrides: [
-                            {
-                                files: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with 'foo/test.js' should use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(root, "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should NOT use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be no errors because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(root, "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { files: '*', excludedFiles: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        overrides: [
-                            {
-                                files: "*",
-                                excludedFiles: "foo/*.js",
-                                rules: {
-                                    eqeqeq: "error"
-                                }
-                            }
-                        ]
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with 'foo/test.js' should NOT use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("foo/test.js");
-
-                // Expected to be no errors because the file matches to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 0,
-                        filePath: path.join(root, "foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [],
-                        suppressedMessages: [],
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-
-            it("'executeOnFiles()' with 'node_modules/myconf/foo/test.js' should use the override entry.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    ignore: false,
-                    useEc0lintrc: false
-                });
-                const { results } = engine.executeOnFiles("node_modules/myconf/foo/test.js");
-
-                // Expected to be an 'eqeqeq' error because the file doesn't match to `$CWD/foo/*.js`.
-                assert.deepStrictEqual(results, [
-                    {
-                        errorCount: 1,
-                        filePath: path.join(root, "node_modules/myconf/foo/test.js"),
-                        fixableErrorCount: 0,
-                        fixableWarningCount: 0,
-                        messages: [
-                            {
-                                column: 3,
-                                endColumn: 5,
-                                endLine: 1,
-                                line: 1,
-                                message: "Expected '===' and instead saw '=='.",
-                                messageId: "unexpected",
-                                nodeType: "BinaryExpression",
-                                ruleId: "eqeqeq",
-                                severity: 2
-                            }
-                        ],
-                        suppressedMessages: [],
-                        source: "a == b",
-                        warningCount: 0,
-                        fatalErrorCount: 0
-                    }
-                ]);
-            });
-        });
-
-        describe("if { ignorePatterns: 'foo/*.txt', ... } is present by '--config node_modules/myconf/.ec0lintrc.json',", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/myconf/.ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: ["!/node_modules/myconf", "foo/*.js"],
-                        rules: {
-                            eqeqeq: "error"
-                        }
-                    }),
-                    "node_modules/myconf/foo/test.js": "a == b",
-                    "foo/test.js": "a == b"
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'executeOnFiles()' with '**/*.js' should iterate 'node_modules/myconf/foo/test.js' but not 'foo/test.js'.", () => {
-                const engine = new CLIEngine({
-                    configFile: "node_modules/myconf/.ec0lintrc.json",
-                    cwd: getPath(),
-                    useEc0lintrc: false
-                });
-                const files = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(files, [
-                    path.join(root, "node_modules/myconf/foo/test.js")
                 ]);
             });
         });

@@ -225,25 +225,6 @@ describe("LintResultCache", () => {
                 assert.isNull(result);
             });
         });
-
-        describe("When file is present and unchanged and config is unchanged", () => {
-            beforeEach(() => {
-                hashStub.returns(hashOfConfig);
-            });
-
-            it("should return expected results", () => {
-                const result = lintResultsCache.getCachedLintResults(
-                    filePath,
-                    fakeConfig
-                );
-
-                assert.deepStrictEqual(result, fakeErrorResults);
-                assert.ok(
-                    result.source,
-                    "source property should be hydrated from filesystem"
-                );
-            });
-        });
     });
 
     describe("setCachedLintResults", () => {
@@ -278,36 +259,6 @@ describe("LintResultCache", () => {
             lintResultsCache = new LintResultCache(cacheFileLocation, "metadata");
         });
 
-        describe("When lint result has output property", () => {
-            it("does not modify file entry", () => {
-                lintResultsCache.setCachedLintResults(
-                    filePath,
-                    fakeConfig,
-                    fakeErrorResultsAutofix
-                );
-
-                assert.notProperty(cacheEntry.meta, "results");
-                assert.notProperty(cacheEntry.meta, "hashOfConfig");
-            });
-        });
-
-        describe("When file is not found on filesystem", () => {
-            beforeEach(() => {
-                cacheEntry.notFound = true;
-            });
-
-            it("does not modify file entry", () => {
-                lintResultsCache.setCachedLintResults(
-                    filePath,
-                    fakeConfig,
-                    fakeErrorResults
-                );
-
-                assert.notProperty(cacheEntry.meta, "results");
-                assert.notProperty(cacheEntry.meta, "hashOfConfig");
-            });
-        });
-
         describe("When file is found on filesystem", () => {
             beforeEach(() => {
                 lintResultsCache.setCachedLintResults(
@@ -319,14 +270,6 @@ describe("LintResultCache", () => {
 
             it("stores hash of config in file entry", () => {
                 assert.strictEqual(cacheEntry.meta.hashOfConfig, hashOfConfig);
-            });
-
-            it("stores results (except source) in file entry", () => {
-                const expectedCachedResults = Object.assign({}, fakeErrorResults, {
-                    source: null
-                });
-
-                assert.deepStrictEqual(cacheEntry.meta.results, expectedCachedResults);
             });
         });
 
@@ -341,14 +284,6 @@ describe("LintResultCache", () => {
 
             it("stores hash of config in file entry", () => {
                 assert.strictEqual(cacheEntry.meta.hashOfConfig, hashOfConfig);
-            });
-
-            it("stores results (except source) in file entry", () => {
-                const expectedCachedResults = Object.assign({}, fakeErrorResults, {
-                    source: null
-                });
-
-                assert.deepStrictEqual(cacheEntry.meta.results, expectedCachedResults);
             });
         });
     });

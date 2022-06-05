@@ -229,7 +229,6 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive line comment", () => {
             const code = [
-                "// ec0lint-disable-line no-undef",
                 "// ec0lint-secret-directive 4 8 15 16 23 42   ",
                 "// ec0lint-directive-without-argument",
                 "//ec0lint-directive-without-padding"
@@ -243,8 +242,6 @@ describe("ast-utils", () => {
 
         it("should return true if it is a directive block comment", () => {
             const code = [
-                "/* ec0lint-disable no-undef */",
-                "/*ec0lint-enable no-undef*/",
                 "/* ec0lint-env {\"es6\": true} */",
                 "/* ec0lint foo */",
                 "/*ec0lint bar*/"
@@ -467,7 +464,6 @@ describe("ast-utils", () => {
             "this": null,
             "(function () {})": null
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {
@@ -1039,7 +1035,6 @@ describe("ast-utils", () => {
             "a\t": [[1, 0], [1, 1], [1, 2], null],
             "a \n": [[1, 0], [1, 1], [1, 2], [2, 0], null]
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(code => {
             it(`should return expected locations for "${code}".`, () => {
@@ -1735,7 +1730,6 @@ describe("ast-utils", () => {
             "foo\\\nbar": false,
             "128\\\n349": false
         };
-        /* ec0lint-enable quote-props -- Make consistent here for readability */
 
         Object.keys(expectedResults).forEach(key => {
             it(`should return ${expectedResults[key]} for ${key}`, () => {

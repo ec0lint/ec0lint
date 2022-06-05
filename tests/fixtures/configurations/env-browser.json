@@ -2,9 +2,7 @@
   "env": {
     "browser": true
   },
-
   "rules": {
-    "no-alert": 0,
-    "no-undef": 2
+    "lighter-http": 0
   }
 }
