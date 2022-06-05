@@ -766,19 +766,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should not warn when deprecated rules are not configured", () => {
-            engine = new CLIEngine({
-                cwd: originalDir,
-                configFile: ".ec0lintrc.js",
-                rules: { "valid-jsdoc": 0, "require-jsdoc": 0 }
-            });
-
-            const report = engine.executeOnFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(report.usedDeprecatedRules, []);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         describe("configuration hierarchy", () => {
 
             // Project configuration - first level .ec0lintrc

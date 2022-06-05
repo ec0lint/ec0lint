@@ -3,9 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    radix: "error"
-    require-unicode-regexp: "error"
-    rest-spread-spacing: "error"
     semi: "error"
     semi-spacing: ["error", {before: false, after: true}]
     semi-style: "error"

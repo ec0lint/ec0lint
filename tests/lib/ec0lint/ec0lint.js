@@ -1053,19 +1053,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages.length, 0);
         });
 
-        it("should not warn when deprecated rules are not configured", async () => {
-            eslint = new ESLint({
-                cwd: originalDir,
-                overrideConfigFile: ".ec0lintrc.js",
-                overrideConfig: {
-                    rules: { "valid-jsdoc": 0, "require-jsdoc": 0 }
-                }
-            });
-            const results = await eslint.lintFiles(["lib/cli*.js"]);
-
-            assert.deepStrictEqual(results[0].usedDeprecatedRules, []);
-        });
-
         // These tests have to do with https://github.com/eslint/eslint/issues/963
 
         describe("plugins", () => {

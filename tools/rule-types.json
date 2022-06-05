@@ -1,12 +1,5 @@
 {
     "lighter-http": "problem",
-    "radix": "suggestion",
-    "require-atomic-updates": "problem",
-    "require-await": "suggestion",
-    "require-jsdoc": "suggestion",
-    "require-unicode-regexp": "suggestion",
-    "require-yield": "suggestion",
-    "rest-spread-spacing": "layout",
     "semi": "layout",
     "semi-spacing": "layout",
     "semi-style": "layout",
