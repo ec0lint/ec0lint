@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "template-curly-spacing": "layout",
-    "template-tag-spacing": "layout",
     "unicode-bom": "layout",
     "use-isnan": "problem",
     "valid-jsdoc": "suggestion",

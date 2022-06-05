@@ -1851,7 +1851,7 @@ describe("Linter", () => {
         it("should return all loaded rules", () => {
             const rules = linter.getRules();
 
-            assert.isAbove(rules.size, 10);
+            assert.isAbove(rules.size, 1);
             assert.isObject(rules.get("lighter-http"));
         });
     });

@@ -74,7 +74,7 @@ describe("rules", () => {
         it("should iterate all rules", () => {
             const allRules = new Map(rules);
 
-            assert.isAbove(allRules.size, 10);
+            assert.isAbove(allRules.size, 1);
             assert.isObject(allRules.get("lighter-http"));
         });
     });

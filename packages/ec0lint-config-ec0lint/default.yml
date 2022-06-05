@@ -3,8 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    template-curly-spacing: ["error", "never"]
-    template-tag-spacing: "error"
     unicode-bom: "error"
     wrap-iife: "error"
     yield-star-spacing: "error"
