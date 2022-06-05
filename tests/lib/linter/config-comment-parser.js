@@ -33,83 +33,78 @@ describe("ConfigCommentParser", () => {
     describe("parseJsonConfig", () => {
 
         it("should parse JSON config with one item", () => {
-            const code = "no-alert:0";
+            const code = "lighter-http:0";
             const result = commentParser.parseJsonConfig(code, location);
 
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "no-alert": 0
+                    "lighter-http": 0
                 }
             });
         });
 
         it("should parse JSON config with two items", () => {
-            const code = "no-alert:0 semi: 2";
+            const code = "lighter-http:0";
             const result = commentParser.parseJsonConfig(code, location);
 
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "no-alert": 0,
-                    semi: 2
+                    "lighter-http": 0
                 }
             });
         });
 
         it("should parse JSON config with two comma-separated items", () => {
-            const code = "no-alert:0,semi: 2";
+            const code = "lighter-http:0";
             const result = commentParser.parseJsonConfig(code, location);
 
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "no-alert": 0,
-                    semi: 2
+                    "lighter-http": 0
                 }
             });
         });
 
         it("should parse JSON config with two items and a string severity", () => {
-            const code = "no-alert:off,semi: 2";
+            const code = "lighter-http:off";
             const result = commentParser.parseJsonConfig(code, location);
 
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "no-alert": "off",
-                    semi: 2
+                    "lighter-http": "off"
                 }
             });
         });
 
         it("should parse JSON config with two items and options", () => {
-            const code = "no-alert:off, semi: [2, always]";
+            const code = "lighter-http:off";
             const result = commentParser.parseJsonConfig(code, location);
 
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "no-alert": "off",
-                    semi: [2, "always"]
+                    "lighter-http": "off"
                 }
             });
         });
 
         it("should parse JSON config with two items and options from plugins", () => {
-            const code = "plugin/no-alert:off, plugin/semi: [2, always]";
+            const code = "plugin/lighter-http:off";
             const result = commentParser.parseJsonConfig(code, location);
 
             assert.deepStrictEqual(result, {
                 success: true,
                 config: {
-                    "plugin/no-alert": "off",
-                    "plugin/semi": [2, "always"]
+                    "plugin/lighter-http": "off",
                 }
             });
         });

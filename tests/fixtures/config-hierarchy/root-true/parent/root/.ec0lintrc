@@ -1,6 +1,6 @@
 {
     "root": true,
     "rules": {
-        "no-extra-semi": "error"
+        "lighter-htpp": "error"
     }
 }

@@ -82,7 +82,7 @@ describe("cli", () => {
     }
 
     // copy into clean area so as not to get "infected" by this project's .eslintrc files
-    before(function() {
+    before(function () {
 
         /*
          * GitHub Actions Windows and macOS runners occasionally exhibit
@@ -106,12 +106,6 @@ describe("cli", () => {
     });
 
     describe("execute()", () => {
-        it("should return error when text with incorrect quotes is passed as argument", async () => {
-            const configFile = getFixturePath("configurations", "quotes-error.json");
-            const result = await cli.execute(`-c ${configFile}`, "var foo = 'bar';");
-
-            assert.strictEqual(result, 1);
-        });
 
         it("should not print debug info when passed the empty string as text", async () => {
             const result = await cli.execute(["--stdin", "--no-ec0lintrc"], "");
@@ -142,44 +136,6 @@ describe("cli", () => {
             const filePath = getFixturePath("passing.js");
 
             await cli.execute(`--config ${configPath} ${filePath}`);
-        });
-    });
-
-    describe("when there is a local config file", () => {
-        const code = "lib/cli.js";
-
-        it("should load the local config file", async () => {
-
-            // Mock CWD
-            process.eslintCwd = getFixturePath("configurations", "single-quotes");
-
-            await cli.execute(code);
-
-            process.eslintCwd = null;
-        });
-    });
-
-    describe("when given a config with rules with options and severity level set to error", () => {
-        it("should exit with an error status (1)", async () => {
-            const configPath = getFixturePath("configurations", "quotes-error.json");
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --config ${configPath} ${filePath}`;
-
-            const exitStatus = await cli.execute(code);
-
-            assert.strictEqual(exitStatus, 1);
-        });
-    });
-
-    describe("when given a config file and a directory of files", () => {
-        it("should load and execute without error", async () => {
-            const configPath = getFixturePath("configurations", "semi-error.json");
-            const filePath = getFixturePath("formatters");
-            const code = `--config ${configPath} ${filePath}`;
-
-            const exitStatus = await cli.execute(code);
-
-            assert.strictEqual(exitStatus, 0);
         });
     });
 
@@ -301,17 +257,6 @@ describe("cli", () => {
         });
     });
 
-    describe("when executing a file with a lint error", () => {
-        it("should exit with error", async () => {
-            const filePath = getFixturePath("undef.js");
-            const code = `--no-ignore --rule no-undef:2 ${filePath}`;
-
-            const exit = await cli.execute(code);
-
-            assert.strictEqual(exit, 1);
-        });
-    });
-
     describe("when using --fix-type without --fix or --fix-dry-run", () => {
         it("should exit with error", async () => {
             const filePath = getFixturePath("passing.js");
@@ -329,23 +274,6 @@ describe("cli", () => {
             const exit = await cli.execute(`--no-ignore ${filePath}`);
 
             assert.strictEqual(exit, 1);
-        });
-    });
-
-    describe("when calling execute more than once", () => {
-        it("should not print the results from previous execution", async () => {
-            const filePath = getFixturePath("missing-semicolon.js");
-            const passingPath = getFixturePath("passing.js");
-
-            await cli.execute(`--no-ignore --rule semi:2 ${filePath}`);
-
-            assert.isTrue(log.info.called, "Log should have been called.");
-
-            log.info.resetHistory();
-
-            await cli.execute(`--no-ignore --rule semi:2 ${passingPath}`);
-            assert.isTrue(log.info.notCalled);
-
         });
     });
 
@@ -561,35 +489,7 @@ describe("cli", () => {
 
 
     });
-
-    describe("when executing with no-ec0lintrc flag", () => {
-        it("should ignore a local config file", async () => {
-            const filePath = getFixturePath("ec0lintrc", "quotes.js");
-            const exit = await cli.execute(`--no-ec0lintrc --no-ignore ${filePath}`);
-
-            assert.isTrue(log.info.notCalled);
-            assert.strictEqual(exit, 0);
-        });
-    });
-
-    describe("when executing without no-ec0lintrc flag", () => {
-        it("should load a local config file", async () => {
-            const filePath = getFixturePath("ec0lintrc", "quotes.js");
-            const exit = await cli.execute(`--no-ignore ${filePath}`);
-
-            assert.isTrue(log.info.calledOnce);
-            assert.strictEqual(exit, 1);
-        });
-    });
-
     describe("when executing with global flag", () => {
-        it("should default defined variables to read-only", async () => {
-            const filePath = getFixturePath("undef.js");
-            const exit = await cli.execute(`--global baz,bat --no-ignore --rule no-global-assign:2 ${filePath}`);
-
-            assert.isTrue(log.info.calledOnce);
-            assert.strictEqual(exit, 1);
-        });
 
         it("should allow defining writable global variables", async () => {
             const filePath = getFixturePath("undef.js");
@@ -605,84 +505,6 @@ describe("cli", () => {
 
             assert.isTrue(log.info.notCalled);
             assert.strictEqual(exit, 0);
-        });
-    });
-
-    describe("when supplied with rule flag and severity level set to error", () => {
-        it("should exit with an error status (2)", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [2, double]' ${filePath}`;
-            const exitStatus = await cli.execute(code);
-
-            assert.strictEqual(exitStatus, 1);
-        });
-    });
-
-    describe("when the quiet option is enabled", () => {
-
-        it("should only print error", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--no-ignore --quiet  -f compact --rule 'quotes: [2, double]' --rule 'no-unused-vars: 1' ${filePath}`;
-
-            await cli.execute(cliArgs);
-
-            sinon.assert.calledOnce(log.info);
-
-            const formattedOutput = log.info.firstCall.args[0];
-
-            assert.include(formattedOutput, "Error");
-            assert.notInclude(formattedOutput, "Warning");
-        });
-
-        it("should print nothing if there are no errors", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--quiet  -f compact --rule 'quotes: [1, double]' --rule 'no-unused-vars: 1' ${filePath}`;
-
-            await cli.execute(cliArgs);
-
-            sinon.assert.notCalled(log.info);
-        });
-    });
-
-    describe("when supplied with report output file path", () => {
-        afterEach(() => {
-            sh.rm("-rf", "tests/output");
-        });
-
-        it("should write the file and create dirs if they don't exist", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
-
-            await cli.execute(code);
-
-            assert.include(fs.readFileSync("tests/output/ec0lint-output.txt", "utf8"), filePath);
-            assert.isTrue(log.info.notCalled);
-        });
-
-        it("should return an error if the path is a directory", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output ${filePath}`;
-
-            fs.mkdirSync("tests/output");
-
-            const exit = await cli.execute(code);
-
-            assert.strictEqual(exit, 2);
-            assert.isTrue(log.info.notCalled);
-            assert.isTrue(log.error.calledOnce);
-        });
-
-        it("should return an error if the path could not be written to", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const code = `--no-ignore --rule 'quotes: [1, double]' --o tests/output/ec0lint-output.txt ${filePath}`;
-
-            fs.writeFileSync("tests/output", "foo");
-
-            const exit = await cli.execute(code);
-
-            assert.strictEqual(exit, 2);
-            assert.isTrue(log.info.notCalled);
-            assert.isTrue(log.error.calledOnce);
         });
     });
 
@@ -747,25 +569,6 @@ describe("cli", () => {
             assert.strictEqual(exitCode, 0);
         });
 
-        it("should exit with exit code 1 if warning count exceeds threshold", async () => {
-            const filePath = getFixturePath("max-warnings");
-            const exitCode = await cli.execute(`--no-ignore --max-warnings 5 ${filePath}`);
-
-            assert.strictEqual(exitCode, 1);
-            assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
-        });
-
-        it("should exit with exit code 1 without printing warnings if the quiet option is enabled and warning count exceeds threshold", async () => {
-            const filePath = getFixturePath("max-warnings");
-            const exitCode = await cli.execute(`--no-ignore --quiet --max-warnings 5 ${filePath}`);
-
-            assert.strictEqual(exitCode, 1);
-            assert.ok(log.error.calledOnce);
-            assert.include(log.error.getCall(0).args[0], "ec0lint found too many warnings");
-            assert.ok(log.info.notCalled); // didn't print warnings
-        });
-
         it("should not change exit code if warning count equals threshold", async () => {
             const filePath = getFixturePath("max-warnings");
             const exitCode = await cli.execute(`--no-ignore --max-warnings 6 ${filePath}`);
@@ -787,13 +590,6 @@ describe("cli", () => {
             const exitCode = await cli.execute(`--no-ignore --exit-on-fatal-error ${filePath}`);
 
             assert.strictEqual(exitCode, 0);
-        });
-
-        it("should exit with exit code 1 if no fatal errors are found, but rule violations are found", async () => {
-            const filePath = getFixturePath("exit-on-fatal-error", "no-fatal-error-rule-violation.js");
-            const exitCode = await cli.execute(`--no-ignore --exit-on-fatal-error ${filePath}`);
-
-            assert.strictEqual(exitCode, 1);
         });
 
         it("should exit with exit code 2 if fatal error is found", async () => {

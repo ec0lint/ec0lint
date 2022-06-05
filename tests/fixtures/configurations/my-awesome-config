@@ -1,9 +1,0 @@
-{
-    "env": {
-        "browser": true
-    },
-
-    "rules": {
-        "quotes": [3, "triple"]
-    }
-}

@@ -38,14 +38,14 @@ describe("rules", () => {
              * A rule that does nothing
              * @returns {void}
              */
-            function rule() {}
+            function rule() { }
             rule.schema = [];
             rules.define("foo", rule);
             assert.deepStrictEqual(rules.get("foo"), { create: rule, schema: [] });
         });
 
         it("should return the rule as-is if it was defined as an object with a create() method", () => {
-            const rule = { create() {} };
+            const rule = { create() { } };
 
             rules.define("foo", rule);
             assert.strictEqual(rules.get("foo"), rule);
@@ -67,22 +67,6 @@ describe("rules", () => {
             assert.strictEqual(problems[0].endLine, 1);
             assert.strictEqual(problems[0].endColumn, 2);
         });
-
-
-        it("should report a linting error that lists replacements if a rule is known to have been replaced", () => {
-            const linter = new Linter();
-            const problems = linter.verify("foo", { rules: { "no-arrow-condition": "error" } });
-
-            assert.lengthOf(problems, 1);
-            assert.strictEqual(
-                problems[0].message,
-                "Rule 'no-arrow-condition' was removed and replaced by: no-confusing-arrow, no-constant-condition"
-            );
-            assert.strictEqual(problems[0].line, 1);
-            assert.strictEqual(problems[0].column, 1);
-            assert.strictEqual(problems[0].endLine, 1);
-            assert.strictEqual(problems[0].endColumn, 2);
-        });
     });
 
 
@@ -90,8 +74,8 @@ describe("rules", () => {
         it("should iterate all rules", () => {
             const allRules = new Map(rules);
 
-            assert.isAbove(allRules.size, 230);
-            assert.isObject(allRules.get("no-alert"));
+            assert.isAbove(allRules.size, 0);
+            assert.isObject(allRules.get("lighter-http"));
         });
     });
 });
