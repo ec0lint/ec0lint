@@ -39,7 +39,6 @@ var str = "Hello World!";
 var str = `Hello, ${name}!`;
 var str = `Time: ${12 * 60 * 60 * 1000}`;
 
-// This is reported by `no-useless-concat`.
 var str = "Hello, " + "World!";
 ```
 
@@ -51,5 +50,4 @@ In ES2015 (ES6) or later, if you don't want to be notified about string concaten
 
 ## Related Rules
 
-* [no-useless-concat](no-useless-concat.md)
 * [quotes](quotes.md)

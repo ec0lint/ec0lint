@@ -3,25 +3,8 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-undef: ["error", {typeof: true}] # Modified from recommended
-    no-undef-init: "error"
-    no-undefined: "error"
-    no-underscore-dangle: ["error", {allowAfterThis: true}]
-    no-unmodified-loop-condition: "error"
-    no-unneeded-ternary: "error"
-    no-unreachable-loop: "error"
-    no-unused-expressions: "error"
-    no-unused-vars: ["error", {vars: "all", args: "after-used", caughtErrors: "all"}] # Modified from recommended
-    no-use-before-define: "error"
-    no-useless-call: "error"
-    no-useless-computed-key: "error"
-    no-useless-concat: "error"
-    no-useless-constructor: "error"
-    no-useless-rename: "error"
-    no-useless-return: "error"
     no-whitespace-before-property: "error"
     no-var: "error"
-
     object-curly-newline: ["error", { "consistent": true, "multiline": true }]
     object-curly-spacing: ["error", "always"]
     object-property-newline: ["error", { "allowAllPropertiesOnSameLine": true }]

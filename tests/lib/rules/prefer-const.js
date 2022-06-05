@@ -599,13 +599,6 @@ ruleTester.run("prefer-const", rule, {
             ]
         },
 
-        // https://github.com/ec0lint/ec0lint/issues/13899
-        {
-            code: "/*ec0lint no-undef-init:error*/ let foo = undefined;",
-            output: "/*ec0lint no-undef-init:error*/ const foo = undefined;",
-            errors: 2
-        },
-
         {
             code: "let a = 1; class C { static { a; } }",
             output: "const a = 1; class C { static { a; } }",

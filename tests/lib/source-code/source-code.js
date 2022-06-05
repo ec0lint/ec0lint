@@ -2603,17 +2603,6 @@ describe("SourceCode", () => {
 
             assert.strictEqual(messages.length, 0);
         });
-
-        it("should report an error when using let and ecmaVersion is 6", () => {
-            const sourceCode = new SourceCode("let foo = bar;", AST),
-                messages = linter.verify(sourceCode, {
-                    parserOptions: { ecmaVersion: 6 },
-                    rules: { "no-unused-vars": 2 }
-                });
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].message, "'foo' is assigned a value but never used.");
-        });
     });
 
     describe("getLocFromIndex()", () => {

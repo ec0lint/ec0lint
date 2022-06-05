@@ -244,10 +244,6 @@ var foo = {
 Anyone not yet in an ES6 environment would not want to apply this rule. Others may find the terseness of the shorthand
 syntax harder to read and may not want to encourage it with this rule.
 
-## Related Rules
-
-* [`no-useless-rename`](no-useless-rename.md) which disallows renaming import, export, and destructured assignments to the same name.
-
 ## Further Reading
 
 [Object initializer - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)

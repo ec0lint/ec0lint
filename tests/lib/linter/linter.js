@@ -100,14 +100,6 @@ describe("Linter", () => {
             assert.strictEqual(spy.firstCall.thisValue, void 0, "this value should be undefined");
         });
 
-        it("does not allow listeners to use special EventEmitter values", () => {
-            const spy = sinon.spy();
-
-            linter.defineRule("checker", () => ({ newListener: spy }));
-            linter.verify("foo", { rules: { checker: "error", "no-undef": "error" } });
-            assert(spy.notCalled);
-        });
-
         it("has all the `parent` properties on nodes when the rule listeners are created", () => {
             const spy = sinon.spy(context => {
                 const ast = context.getSourceCode().ast;
@@ -1699,24 +1691,6 @@ describe("Linter", () => {
             assert.strictEqual(messages.length, 1);
             assert.strictEqual(suppressedMessages.length, 0);
         });
-
-        it("rules should not change initial config", () => {
-            const config = { rules: { "no-unused-vars": [2, { vars: "all" }] } };
-            const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
-            const codeB = "var b = 55;";
-
-            let messages = linter.verify(codeA, config, filename, false);
-            let suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-
-            messages = linter.verify(codeB, config, filename, false);
-            suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
     });
 
     describe("when evaluating code with invalid comments to enable rules", () => {
@@ -2054,153 +2028,6 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code without comments to environment", () => {
-        it("should report a violation when using typed array", () => {
-            const code = "var array = new Uint8Array();";
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should report a violation when using Promise", () => {
-            const code = "new Promise();";
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
-    describe("when evaluating code with comments to environment", () => {
-        it("should not support legacy config", () => {
-            const code = "/*jshint mocha:true */ describe();";
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-undef");
-            assert.strictEqual(messages[0].nodeType, "Identifier");
-            assert.strictEqual(messages[0].line, 1);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = "/*ec0lint-env es6 */ new Promise();";
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        // https://github.com/eslint/eslint/issues/14652
-        it("should not report a violation", () => {
-            const codes = [
-                "/*ec0lint-env es6\n */ new Promise();",
-                "/*ec0lint-env browser,\nes6 */ window;Promise;",
-                "/*ec0lint-env\nbrowser,es6 */ window;Promise;"
-            ];
-            const config = { rules: { "no-undef": 1 } };
-
-            for (const code of codes) {
-                const messages = linter.verify(code, config, filename);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 0);
-                assert.strictEqual(suppressedMessages.length, 0);
-            }
-
-        });
-
-        it("should not report a violation", () => {
-            const code = `/*${ESLINT_ENV} mocha,node */ require();describe();`;
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = "/*ec0lint-env mocha */ suite();test();";
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = `/*${ESLINT_ENV} amd */ define();require();`;
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = `/*${ESLINT_ENV} jasmine */ expect();spyOn();`;
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = `/*globals require: true */ /*${ESLINT_ENV} node */ require = 1;`;
-
-            const config = { rules: { "no-undef": 1 } };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not report a violation", () => {
-            const code = `/*${ESLINT_ENV} node */ process.exit();`;
-
-            const config = { rules: {} };
-
-            const messages = linter.verify(code, config, filename);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
     describe("when evaluating code with comments to change config when allowInlineConfig is enabled", () => {
 
         it("should report a violation for global variable declarations", () => {
@@ -2238,23 +2065,6 @@ describe("Linter", () => {
             assert(ok);
         });
 
-        it("should report a violation for env changes", () => {
-            const code = [
-                `/*${ESLINT_ENV} browser*/ window`
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-undef": 2
-                }
-            };
-            const messages = linter.verify(code, config, { allowInlineConfig: false });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, "no-undef");
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
     });
 
     describe("when evaluating code with 'noInlineComment'", () => {
@@ -2386,29 +2196,6 @@ describe("Linter", () => {
             );
 
             assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("reports problems for multiple unused ec0lint-disable comments with mutliple ruleIds", () => {
-            const code = [
-                "/* ec0lint no-undef: 2, no-void: 2 */",
-                "/* ec0lint-disable no-undef -- j1 */",
-                "void foo; //ec0lint-disable-line no-undef, no-void -- j2"
-            ].join("\n");
-            const config = {
-                rules: {
-                    "no-undef": 2,
-                    "no-void": 2
-                }
-            };
-            const messages = linter.verify(code, config, { reportUnusedDisableDirectives: true });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 2);
-            assert.strictEqual(suppressedMessages[0].ruleId, "no-void");
-            assert.strictEqual(suppressedMessages[0].suppressions.length, 1);
-            assert.strictEqual(suppressedMessages[1].ruleId, "no-undef");
-            assert.strictEqual(suppressedMessages[1].suppressions.length, 2);
         });
 
         it("reports problems for unused ec0lint-disable comments (error)", () => {
@@ -3672,37 +3459,6 @@ describe("Linter", () => {
             assert(ok);
         });
 
-        it("should report a linting error when a global is set to an invalid value", () => {
-            const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "no-undef": "error" } });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.deepStrictEqual(results, [
-                {
-                    ruleId: null,
-                    severity: 2,
-                    message: "'AAAAA' is not a valid configuration for a global (use 'readonly', 'writable', or 'off')",
-                    line: 1,
-                    column: 1,
-                    endLine: 1,
-                    endColumn: 39,
-                    nodeType: null
-                },
-                {
-                    ruleId: "no-undef",
-                    messageId: "undef",
-                    severity: 2,
-                    message: "'foo' is not defined.",
-                    line: 2,
-                    column: 1,
-                    endLine: 2,
-                    endColumn: 4,
-                    nodeType: "Identifier"
-                }
-            ]);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("should not crash when we reuse the SourceCode object", () => {
             linter.verify("function render() { return <div className='test'>{hello}</div> }", { parserOptions: { ecmaVersion: 6, ecmaFeatures: { jsx: true } } });
             linter.verify(linter.getSourceCode(), { parserOptions: { ecmaVersion: 6, ecmaFeatures: { jsx: true } } });
@@ -3780,33 +3536,6 @@ describe("Linter", () => {
                 // Use only `aaa`.
                 assert.strictEqual(aaa.callCount, 1);
                 assert.strictEqual(bbb.callCount, 0);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
-                const messages = linter.verify(`
-                    /*exported aaa -- bbb */
-                    var aaa = {}
-                    var bbb = {}
-                `, { rules: { "no-unused-vars": "error" } });
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                // Don't include `aaa`
-                assert.deepStrictEqual(
-                    messages,
-                    [{
-                        column: 25,
-                        endColumn: 28,
-                        endLine: 4,
-                        line: 4,
-                        message: "'bbb' is assigned a value but never used.",
-                        messageId: "unusedVar",
-                        nodeType: "Identifier",
-                        ruleId: "no-unused-vars",
-                        severity: 2
-                    }]
-                );
 
                 assert.strictEqual(suppressedMessages.length, 0);
             });
@@ -4863,19 +4592,6 @@ describe("Linter", () => {
             });
         });
 
-        it("does not include suggestions in autofix results", () => {
-            const fixResult = linter.verifyAndFix("var foo = /\\#/", {
-                rules: {
-                    semi: 2,
-                    "no-useless-escape": 2
-                }
-            });
-
-            assert.strictEqual(fixResult.output, "var foo = /\\#/;");
-            assert.strictEqual(fixResult.fixed, true);
-            assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
-        });
-
         it("does not apply autofixes when fix argument is `false`", () => {
             const fixResult = linter.verifyAndFix("var a", {
                 rules: {
@@ -5364,57 +5080,6 @@ describe("Linter with FlatConfigArray", () => {
 
             describe("ecmaVersion", () => {
 
-                it("should error when accessing a global that isn't available in ecmaVersion 5", () => {
-                    const messages = linter.verify("new Map()", {
-                        languageOptions: {
-                            ecmaVersion: 5,
-                            sourceType: "script"
-                        },
-                        rules: {
-                            "no-undef": "error"
-                        }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should error when accessing a global that isn't available in ecmaVersion 3", () => {
-                    const messages = linter.verify("JSON.stringify({})", {
-                        languageOptions: {
-                            ecmaVersion: 3,
-                            sourceType: "script"
-                        },
-                        rules: {
-                            "no-undef": "error"
-                        }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should add globals for ES6 when ecmaVersion is 6", () => {
-                    const messages = linter.verify("new Map()", {
-                        languageOptions: {
-                            ecmaVersion: 6
-                        },
-                        rules: {
-                            "no-undef": "error"
-                        }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0, "There should be no linting errors.");
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
                 it("should allow destructuring when ecmaVersion is 6", () => {
                     const messages = linter.verify("let {a} = b", {
                         languageOptions: {
@@ -5618,23 +5283,6 @@ describe("Linter with FlatConfigArray", () => {
                     const suppressedMessages = linter.getSuppressedMessages();
 
                     assert.strictEqual(messages.length, 0, "There should no linting errors.");
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should error when accessing a Node.js global outside of commonjs", () => {
-                    const messages = linter.verify("require()", {
-                        languageOptions: {
-                            ecmaVersion: 6
-                        },
-                        rules: {
-                            "no-undef": "error"
-                        }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 1, "There should be one linting error.");
-                    assert.strictEqual(messages[0].ruleId, "no-undef", "The linting error should be no-undef.");
-
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
 
@@ -6669,28 +6317,6 @@ describe("Linter with FlatConfigArray", () => {
                 linter.verify("foo", config);
                 assert(spy.calledOnce);
                 assert.strictEqual(spy.firstCall.thisValue, void 0);
-            });
-
-            it("should not call unrecognized rule visitor when present in a rule", () => {
-                const spy = sinon.spy();
-                const config = {
-                    plugins: {
-                        test: {
-                            rules: {
-                                checker: () => ({
-                                    newListener: spy
-                                })
-                            }
-                        }
-                    },
-                    rules: {
-                        "test/checker": "error",
-                        "no-undef": "error"
-                    }
-                };
-
-                linter.verify("foo", config);
-                assert(spy.notCalled);
             });
 
             it("should have all the `parent` properties on nodes when the rule visitors are created", () => {
@@ -9101,38 +8727,6 @@ describe("Linter with FlatConfigArray", () => {
                     linter.verify(code, config);
                     assert(ok);
                 });
-
-                it("should report a linting error when a global is set to an invalid value", () => {
-                    const results = linter.verify("/* global foo: AAAAA, bar: readonly */\nfoo;\nbar;", { rules: { "no-undef": "error" } });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.deepStrictEqual(results, [
-                        {
-                            ruleId: null,
-                            severity: 2,
-                            message: "'AAAAA' is not a valid configuration for a global (use 'readonly', 'writable', or 'off')",
-                            line: 1,
-                            column: 1,
-                            endLine: 1,
-                            endColumn: 39,
-                            nodeType: null
-                        },
-                        {
-                            ruleId: "no-undef",
-                            messageId: "undef",
-                            severity: 2,
-                            message: "'foo' is not defined.",
-                            line: 2,
-                            column: 1,
-                            endLine: 2,
-                            endColumn: 4,
-                            nodeType: "Identifier"
-                        }
-                    ]);
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
             });
 
             describe("/*exported*/ Comments", () => {
@@ -9363,28 +8957,6 @@ describe("Linter with FlatConfigArray", () => {
                         const config = { rules: { quotes: [2, "double"] } };
                         const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
                         const codeB = "function foo() { return '1'; }";
-                        let messages = linter.verify(codeA, config, filename, false);
-                        let suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-
-                        messages = linter.verify(codeB, config, filename, false);
-                        suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-
-                    it("rules should not change initial config", () => {
-                        const config = {
-                            languageOptions: {
-                                sourceType: "script"
-                            },
-                            rules: { "no-unused-vars": [2, { vars: "all" }] }
-                        };
-                        const codeA = "/*ec0lint no-unused-vars: [0, {\"vars\": \"local\"}]*/ var a = 44;";
-                        const codeB = "var b = 55;";
                         let messages = linter.verify(codeA, config, filename, false);
                         let suppressedMessages = linter.getSuppressedMessages();
 
@@ -9834,24 +9406,6 @@ describe("Linter with FlatConfigArray", () => {
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
-
-                it("should report no violation", () => {
-                    const code = [
-                        "var foo1; // ec0lint-disable-line no-unused-vars",
-                        "var foo2; // ec0lint-disable-line no-unused-vars",
-                        "var foo3; // ec0lint-disable-line no-unused-vars",
-                        "var foo4; // ec0lint-disable-line no-unused-vars",
-                        "var foo5; // ec0lint-disable-line no-unused-vars"
-                    ].join("\n");
-                    const config = { rules: { "no-unused-vars": 2 } };
-
-                    const messages = linter.verify(code, config, filename);
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    assert.strictEqual(messages.length, 0);
-                    assert.strictEqual(suppressedMessages.length, 5);
-                });
-
             });
 
             describe("descriptions in directive comments", () => {
@@ -9881,38 +9435,6 @@ describe("Linter with FlatConfigArray", () => {
                     // Use only `aaa`.
                     assert.strictEqual(aaa.callCount, 1);
                     assert.strictEqual(bbb.callCount, 0);
-
-                    assert.strictEqual(suppressedMessages.length, 0);
-                });
-
-                it("should ignore the part preceded by '--' in '/*exported*/'.", () => {
-                    const messages = linter.verify(`
-                    /*exported aaa -- bbb */
-                    var aaa = {}
-                    var bbb = {}
-                `, {
-                        languageOptions: {
-                            sourceType: "script"
-                        },
-                        rules: { "no-unused-vars": "error" }
-                    });
-                    const suppressedMessages = linter.getSuppressedMessages();
-
-                    // Don't include `aaa`
-                    assert.deepStrictEqual(
-                        messages,
-                        [{
-                            column: 25,
-                            endColumn: 28,
-                            endLine: 4,
-                            line: 4,
-                            message: "'bbb' is assigned a value but never used.",
-                            messageId: "unusedVar",
-                            nodeType: "Identifier",
-                            ruleId: "no-unused-vars",
-                            severity: 2
-                        }]
-                    );
 
                     assert.strictEqual(suppressedMessages.length, 0);
                 });
@@ -11335,22 +10857,6 @@ describe("Linter with FlatConfigArray", () => {
                 messages: [],
                 output: "var a;"
             });
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("does not include suggestions in autofix results", () => {
-            const fixResult = linter.verifyAndFix("var foo = /\\#/", {
-                rules: {
-                    semi: 2,
-                    "no-useless-escape": 2
-                }
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(fixResult.output, "var foo = /\\#/;");
-            assert.strictEqual(fixResult.fixed, true);
-            assert.strictEqual(fixResult.messages[0].suggestions.length > 0, true);
 
             assert.strictEqual(suppressedMessages.length, 0);
         });

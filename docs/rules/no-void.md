@@ -98,11 +98,6 @@ void someFunction();
 
 If you intentionally use the `void` operator then you can disable this rule.
 
-## Related Rules
-
-* [no-undef-init](no-undef-init.md)
-* [no-undefined](no-undefined.md)
-
 ## Further Reading
 
 * [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void)

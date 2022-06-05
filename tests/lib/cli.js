@@ -301,17 +301,6 @@ describe("cli", () => {
         });
     });
 
-    describe("when executing a file with a lint error", () => {
-        it("should exit with error", async () => {
-            const filePath = getFixturePath("undef.js");
-            const code = `--no-ignore --rule no-undef:2 ${filePath}`;
-
-            const exit = await cli.execute(code);
-
-            assert.strictEqual(exit, 1);
-        });
-    });
-
     describe("when using --fix-type without --fix or --fix-dry-run", () => {
         it("should exit with error", async () => {
             const filePath = getFixturePath("passing.js");
@@ -611,32 +600,6 @@ describe("cli", () => {
         });
     });
 
-    describe("when the quiet option is enabled", () => {
-
-        it("should only print error", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--no-ignore --quiet  -f compact --rule 'quotes: [2, double]' --rule 'no-unused-vars: 1' ${filePath}`;
-
-            await cli.execute(cliArgs);
-
-            sinon.assert.calledOnce(log.info);
-
-            const formattedOutput = log.info.firstCall.args[0];
-
-            assert.include(formattedOutput, "Error");
-            assert.notInclude(formattedOutput, "Warning");
-        });
-
-        it("should print nothing if there are no errors", async () => {
-            const filePath = getFixturePath("single-quoted.js");
-            const cliArgs = `--quiet  -f compact --rule 'quotes: [1, double]' --rule 'no-unused-vars: 1' ${filePath}`;
-
-            await cli.execute(cliArgs);
-
-            sinon.assert.notCalled(log.info);
-        });
-    });
-
     describe("when supplied with report output file path", () => {
         afterEach(() => {
             sh.rm("-rf", "tests/output");
@@ -780,13 +743,6 @@ describe("cli", () => {
             const exitCode = await cli.execute(`--no-ignore --exit-on-fatal-error ${filePath}`);
 
             assert.strictEqual(exitCode, 0);
-        });
-
-        it("should exit with exit code 1 if no fatal errors are found, but rule violations are found", async () => {
-            const filePath = getFixturePath("exit-on-fatal-error", "no-fatal-error-rule-violation.js");
-            const exitCode = await cli.execute(`--no-ignore --exit-on-fatal-error ${filePath}`);
-
-            assert.strictEqual(exitCode, 1);
         });
 
         it("should exit with exit code 2 if fatal error is found", async () => {

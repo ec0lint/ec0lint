@@ -3,7 +3,6 @@
     "browser": true
   },
   "rules": {
-    "lighter-http": 0,
-    "no-undef": 2
+    "lighter-http": 0
   }
 }

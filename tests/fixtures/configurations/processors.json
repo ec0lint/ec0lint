@@ -4,7 +4,7 @@
         "example"
     ],
     "rules": {
-        "no-unused-vars": 2,
+        "lighter-http": 2,
         "example/example-rule": 1
     }
 }

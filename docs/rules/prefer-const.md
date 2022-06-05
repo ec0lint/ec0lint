@@ -179,10 +179,6 @@ a = a + 1;
 
 ### ignoreReadBeforeAssign
 
-This is an option to avoid conflicting with `no-use-before-define` rule (without `"nofunc"` option).
-If `true` is specified, this rule will ignore variables that are read between the declaration and the first assignment.
-Default is `false`.
-
 Examples of **correct** code for the `{"ignoreReadBeforeAssign": true}` option:
 
 ```js
@@ -219,4 +215,3 @@ If you don't want to be notified about variables that are never reassigned after
 ## Related Rules
 
 * [no-var](no-var.md)
-* [no-use-before-define](no-use-before-define.md)
