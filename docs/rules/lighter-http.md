@@ -8,7 +8,7 @@ Importing large sets of packages, which are doing exactly the same work as fetch
 
 By using this rule in your project, you can reduce the carbon footprint even up to **0.21 g per website view** after removing a redundant library.  
 
-By multiplying the library size by the end-user traffic (0.81 kWh / 1000 Mb) and by the energy emissions (442 g/kWh), the carbon footprint of the heaviest library – *superagent* (0.58 MB) – sums up to 0.21g. For *axios* (0.44 MB) the carbon footprint amounts to 0.16 g, for *needle* (0.26 MB) - 0.09 g, for *got* (0.24 MB) - 0.08 g, for *request* (0.2 MB) - 0.07 g, for *make-fetch-happen* (0.06 MB) - 0.02 g, and for *simple-get* (0.01 MB) - 0.003 g.  
+By multiplying the library size by the end-user traffic (0.81 kWh / 1024 Mb) and by the energy emissions (442 g/kWh), the carbon footprint of the heaviest library – *superagent* (0.58 MB) – sums up to 0.21g. For *axios* (0.44 MB) the carbon footprint amounts to 0.16 g, for *needle* (0.26 MB) - 0.09 g, for *got* (0.24 MB) - 0.08 g, for *request* (0.2 MB) - 0.07 g, for *make-fetch-happen* (0.06 MB) - 0.02 g, and for *simple-get* (0.01 MB) - 0.003 g.  
 
 The library sizes were checked at www.npmjs.com/package. 
 
