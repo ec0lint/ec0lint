@@ -12,7 +12,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "no-with": "error",
         "require-yield": "error",
         "use-isnan": "error",
         "valid-typeof": "error"

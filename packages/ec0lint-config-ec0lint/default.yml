@@ -3,7 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    no-whitespace-before-property: "error"
     object-curly-newline: ["error", { "consistent": true, "multiline": true }]
     object-curly-spacing: ["error", "always"]
     object-property-newline: ["error", { "allowAllPropertiesOnSameLine": true }]
