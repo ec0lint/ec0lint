@@ -287,6 +287,3 @@ foo({bar: 'baz'}, [1, 2]);
 
 You can turn this rule off if you are not concerned with the consistency of spacing between parentheses.
 
-## Related Rules
-
-* [object-curly-spacing](object-curly-spacing.md)

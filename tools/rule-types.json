@@ -1,13 +1,5 @@
 {
     "lighter-http": "problem",
-    "object-curly-newline": "layout",
-    "object-curly-spacing": "layout",
-    "object-property-newline": "layout",
-    "object-shorthand": "suggestion",
-    "one-var": "suggestion",
-    "one-var-declaration-per-line": "suggestion",
-    "operator-assignment": "suggestion",
-    "operator-linebreak": "layout",
     "padded-blocks": "layout",
     "prefer-arrow-callback": "suggestion",
     "prefer-const": "suggestion",

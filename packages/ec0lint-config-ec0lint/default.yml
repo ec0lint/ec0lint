@@ -3,13 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    object-curly-newline: ["error", { "consistent": true, "multiline": true }]
-    object-curly-spacing: ["error", "always"]
-    object-property-newline: ["error", { "allowAllPropertiesOnSameLine": true }]
-    object-shorthand: "error"
-    one-var-declaration-per-line: "error"
-    operator-assignment: "error"
-    operator-linebreak: "error"
     prefer-arrow-callback: "error"
     prefer-const: "error"
     prefer-exponentiation-operator: "error"

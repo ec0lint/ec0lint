@@ -1,8 +1,5 @@
 {
     "rules": {
-        "space-in-brackets": [
-            "object-curly-spacing"
-        ],
         "space-unary-word-ops": [
             "space-unary-ops"
         ],
