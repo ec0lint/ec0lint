@@ -300,10 +300,5 @@ describe("ConfigRule", () => {
 
             assert.sameMembers(actualRules, expectedRules);
         });
-
-        it("should create arrays of configs for rules", () => {
-            assert.isArray(rulesConfig.quotes);
-            assert.include(rulesConfig.quotes, 2);
-        });
     });
 });

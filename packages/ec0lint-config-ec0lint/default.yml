@@ -3,8 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    quotes: ["error", "double", {avoidEscape: true}]
-    quote-props: ["error", "as-needed"]
     radix: "error"
     require-unicode-regexp: "error"
     rest-spread-spacing: "error"

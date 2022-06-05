@@ -1656,41 +1656,6 @@ describe("Linter", () => {
 
             assert.strictEqual(suppressedMessages.length, 0);
         });
-
-        it("rules should not change initial config", () => {
-            const config = { rules: { quotes: [2, "double"] } };
-            const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
-            const codeB = "function foo() { return '1'; }";
-            let messages = linter.verify(codeA, config, filename, false);
-            let suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-
-            messages = linter.verify(codeB, config, filename, false);
-            suppressedMessages = linter.getSuppressedMessages();
-            assert.strictEqual(messages.length, 1);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("rules should not change initial config", () => {
-            const config = { rules: { quotes: [2, "double"] } };
-            const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
-            const codeB = "function foo() { return '1'; }";
-
-            let messages = linter.verify(codeA, config, filename, false);
-            let suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-
-            messages = linter.verify(codeB, config, filename, false);
-            suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
     });
 
     describe("when evaluating code with invalid comments to enable rules", () => {
@@ -8930,45 +8895,6 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages.length, 1);
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
-
-                    it("rules should not change initial config", () => {
-                        const config = {
-                            languageOptions: {
-                                sourceType: "script"
-                            },
-                            rules: { quotes: [2, "double"] }
-                        };
-                        const codeA = "/*ec0lint quotes: 0*/ function bar() { return '2'; }";
-                        const codeB = "function foo() { return '1'; }";
-                        let messages = linter.verify(codeA, config, filename, false);
-                        let suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-
-                        messages = linter.verify(codeB, config, filename, false);
-                        suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-
-                    it("rules should not change initial config", () => {
-                        const config = { rules: { quotes: [2, "double"] } };
-                        const codeA = "/*ec0lint quotes: [0, \"single\"]*/ function bar() { return '2'; }";
-                        const codeB = "function foo() { return '1'; }";
-                        let messages = linter.verify(codeA, config, filename, false);
-                        let suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-
-                        messages = linter.verify(codeB, config, filename, false);
-                        suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
                 });
 
                 describe("when evaluating code with invalid comments to enable rules", () => {
@@ -9237,42 +9163,6 @@ describe("Linter with FlatConfigArray", () => {
                         suppressedMessages = linter.getSuppressedMessages();
 
                         assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-                });
-
-                describe("when evaluating code with comments to enable configurable rule", () => {
-                    const code = "/*ec0lint quotes:[2, \"double\"]*/ let foo = require('axios');";
-
-                    it("should report a violation", () => {
-                        const config = { rules: { quotes: [2, "single"] } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "quotes");
-                        assert.strictEqual(messages[0].message, "Strings must use doublequote.");
-                        assert.include(messages[0].nodeType, "Literal");
-
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
-                });
-
-                describe("when evaluating code with comments to enable configurable rule using string severity", () => {
-                    const code = "/*ec0lint quotes:[\"error\", \"double\"]*/ let foo = require('axios');";
-
-                    it("should report a violation", () => {
-                        const config = { rules: { quotes: [2, "single"] } };
-
-                        const messages = linter.verify(code, config, filename);
-                        const suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(messages[0].ruleId, "quotes");
-                        assert.strictEqual(messages[0].message, "Strings must use doublequote.");
-                        assert.include(messages[0].nodeType, "Literal");
-
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
                 });

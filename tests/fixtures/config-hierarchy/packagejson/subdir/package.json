@@ -1,9 +1,0 @@
-{
-  "name": "",
-  "version": "",
-  "ec0lintConfig": {
-    "rules": {
-      "quotes": [1, "double"]
-    }
-  }
-}

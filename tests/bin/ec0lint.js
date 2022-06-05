@@ -186,24 +186,6 @@ describe("bin/ec0lint.js", () => {
         });
     });
 
-    describe("handling crashes", () => {
-        it("prints the error message pointing to line of code", () => {
-            const invalidConfig = path.join(__dirname, "../fixtures/bin/.ec0lintrc.yml");
-            const child = runESLint(["--no-ignore", invalidConfig]);
-            const exitCodeAssertion = assertExitCode(child, 2);
-            const outputAssertion = getOutput(child).then(output => {
-                console.log(output);
-                assert.strictEqual(output.stdout, "");
-                assert.match(
-                    output.stderr,
-                    /: bad indentation of a mapping entry \(\d+:\d+\)/u // a part of the error message from `js-yaml` dependency
-                );
-            });
-
-            return Promise.all([exitCodeAssertion, outputAssertion]);
-        });
-    });
-
     afterEach(() => {
 
         // Clean up all the processes after every test.

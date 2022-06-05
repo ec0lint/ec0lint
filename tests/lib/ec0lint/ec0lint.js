@@ -238,24 +238,6 @@ describe("ec0lint", () => {
     describe("lintText()", () => {
         let eslint;
 
-        it("should report one message when using specific config file", async () => {
-            eslint = new ESLint({
-                overrideConfigFile: "fixtures/configurations/quotes-error.json",
-                useEc0lintrc: false,
-                cwd: getFixturePath("..")
-            });
-            const results = await eslint.lintText("var foo = 'bar';");
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[0].output, void 0);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].usedDeprecatedRules.length, 0);
-        });
-
         it("should report the filename when passed in", async () => {
             eslint = new ESLint({
                 ignore: false,
@@ -610,19 +592,6 @@ describe("ec0lint", () => {
         /** @type {InstanceType<import("../../../lib/eslint").ESLint>} */
         let eslint;
 
-        it("should use correct parser when custom parser is specified", async () => {
-            eslint = new ESLint({
-                cwd: originalDir,
-                ignore: false
-            });
-            const filePath = path.resolve(__dirname, "../../fixtures/configurations/parser/custom.js");
-            const results = await eslint.lintFiles([filePath]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].message, "Parsing error: Boom!");
-        });
-
         it("should report zero messages when given a config file and a valid file", async () => {
             eslint = new ESLint({
                 cwd: originalDir,
@@ -699,24 +668,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages.length, 0);
         });
 
-        it("should fall back to defaults when extensions is set to an empty array", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath("configurations"),
-                overrideConfigFile: getFixturePath("configurations", "quotes-error.json"),
-                extensions: []
-            });
-            const results = await eslint.lintFiles([getFixturePath("single-quoted.js")]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[0].severity, 2);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-        });
-
         it("should report zero messages when given a directory with a .js and a .js2 file", async () => {
             eslint = new ESLint({
                 extensions: [".js", ".js2"],
@@ -785,24 +736,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages[0].message, expectedMsg);
         });
 
-        it("should report on globs with explicit inclusion of dotfiles, even though ignored by default", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath("cli-engine"),
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "single"]
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["hidden/.hiddenfolder/*.js"]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-        });
-
         it("should not check default ignored files without --no-ignore flag", async () => {
             eslint = new ESLint({
                 cwd: getFixturePath("cli-engine")
@@ -825,94 +758,6 @@ describe("ec0lint", () => {
             }, /All files matched by 'node_modules' are ignored\./u);
         });
 
-        it("should not check .hidden files if they are passed explicitly without --no-ignore flag", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath(".."),
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "single"]
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["fixtures/files/.bar.js"]);
-            const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].errorCount, 0);
-            assert.strictEqual(results[0].warningCount, 1);
-            assert.strictEqual(results[0].fatalErrorCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].message, expectedMsg);
-        });
-
-        // https://github.com/eslint/eslint/issues/12873
-        it("should not check files within a .hidden folder if they are passed explicitly without the --no-ignore flag", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath("cli-engine"),
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "single"]
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["hidden/.hiddenfolder/double-quotes.js"]);
-            const expectedMsg = "File ignored by default.  Use a negated ignore pattern (like \"--ignore-pattern '!<relative/path/to/filename>'\") to override.";
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].errorCount, 0);
-            assert.strictEqual(results[0].warningCount, 1);
-            assert.strictEqual(results[0].fatalErrorCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].message, expectedMsg);
-        });
-
-        it("should check .hidden files if they are passed explicitly with --no-ignore flag", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath(".."),
-                ignore: false,
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "single"]
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["fixtures/files/.bar.js"]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-        });
-
-        it("should check .hidden files if they are unignored with an --ignore-pattern", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath("cli-engine"),
-                ignore: true,
-                useEc0lintrc: false,
-                overrideConfig: {
-                    ignorePatterns: "!.hidden*",
-                    rules: {
-                        quotes: [2, "single"]
-                    }
-                }
-            });
-            const results = await eslint.lintFiles(["hidden/"]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-        });
-
         it("should report zero messages when given a pattern with a .js and a .js2 file", async () => {
             eslint = new ESLint({
                 extensions: [".js", ".js2"],
@@ -924,23 +769,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results.length, 2);
             assert.strictEqual(results[0].messages.length, 0);
             assert.strictEqual(results[1].messages.length, 0);
-        });
-
-        it("should return one error message when given a config with rules with options and severity level set to error", async () => {
-            eslint = new ESLint({
-                cwd: getFixturePath("configurations"),
-                overrideConfigFile: getFixturePath("configurations", "quotes-error.json")
-            });
-            const results = await eslint.lintFiles([getFixturePath("single-quoted.js")]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-            assert.strictEqual(results[0].messages[0].severity, 2);
-            assert.strictEqual(results[0].errorCount, 1);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 1);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
         });
 
         it("should return 3 messages when given a config file and a directory of 3 valid files", async () => {
@@ -1063,44 +891,6 @@ describe("ec0lint", () => {
         it("should throw an error when all given files are ignored even with a `./` prefix", async () => {
             eslint = new ESLint({
                 ignorePath: getFixturePath(".ec0lintignore")
-            });
-
-            await assert.rejects(async () => {
-                await eslint.lintFiles(["./tests/fixtures/cli-engine/"]);
-            }, /All files matched by '\.\/tests\/fixtures\/cli-engine\/' are ignored\./u);
-        });
-
-        // https://github.com/eslint/eslint/issues/3788
-        it("should ignore one-level down node_modules when ignore file has 'node_modules/' in it", async () => {
-            eslint = new ESLint({
-                ignorePath: getFixturePath("cli-engine", "nested_node_modules", ".ec0lintignore"),
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "double"]
-                    }
-                },
-                cwd: getFixturePath("cli-engine", "nested_node_modules")
-            });
-            const results = await eslint.lintFiles(["."]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].errorCount, 0);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-        });
-
-        // https://github.com/eslint/eslint/issues/3812
-        it("should ignore all files and throw an error when tests/fixtures/ is in ignore file", async () => {
-            eslint = new ESLint({
-                ignorePath: getFixturePath("cli-engine/.ec0lintignore2"),
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        quotes: [2, "double"]
-                    }
-                }
             });
 
             await assert.rejects(async () => {
@@ -1263,38 +1053,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages.length, 0);
         });
 
-        it("should return zero messages and ignore .ec0lintrc files when executing with no-ec0lintrc flag", async () => {
-            eslint = new ESLint({
-                ignore: false,
-                useEc0lintrc: false,
-                overrideConfig: {
-                    env: { node: true }
-                }
-            });
-            const filePath = fs.realpathSync(getFixturePath("ec0lintrc", "quotes.js"));
-            const results = await eslint.lintFiles([filePath]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, filePath);
-            assert.strictEqual(results[0].messages.length, 0);
-        });
-
-        it("should return zero messages and ignore package.json files when executing with no-ec0lintrc flag", async () => {
-            eslint = new ESLint({
-                ignore: false,
-                useEc0lintrc: false,
-                overrideConfig: {
-                    env: { node: true }
-                }
-            });
-            const filePath = fs.realpathSync(getFixturePath("packagejson", "quotes.js"));
-            const results = await eslint.lintFiles([filePath]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, filePath);
-            assert.strictEqual(results[0].messages.length, 0);
-        });
-
         it("should not warn when deprecated rules are not configured", async () => {
             eslint = new ESLint({
                 cwd: originalDir,
@@ -1309,196 +1067,6 @@ describe("ec0lint", () => {
         });
 
         // These tests have to do with https://github.com/eslint/eslint/issues/963
-
-        describe("configuration hierarchy", () => {
-
-            // Default configuration - blank
-            it("should return zero messages when executing with no .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // No default configuration rules - conf/environments.js (/*ec0lint-env node*/)
-            it("should return zero messages when executing with no .ec0lintrc in the Node.js environment", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    useEc0lintrc: false
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes-node.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Project configuration - first level .ec0lintrc
-            it("should return zero messages when executing with .ec0lintrc in the Node.js environment", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/process-exit.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Project configuration - first level .ec0lintrc
-            it("should return zero messages when executing with .ec0lintrc in the Node.js environment", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/process-exit.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Project configuration - first level .ec0lintrc
-            it("should return one message when executing with .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 2);
-            });
-
-            // Project configuration - first level package.json
-            it("should return one message when executing with package.json", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 1);
-            });
-
-            // Project configuration - second level package.json
-            it("should return zero messages when executing with local package.json that overrides parent package.json", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Project configuration - third level package.json
-            it("should return one message when executing with local package.json that overrides parent and grandparent package.json", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/subdir/subsubdir/subsubsubdir/wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 2);
-            });
-
-            // Project configuration - .ec0lintrc overrides package.json in same directory
-            it("should return one message when executing with .ec0lintrc that overrides a package.json in the same directory", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, "..")
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/packagejson/wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 2);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return two messages when executing with config file that adds to local .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/add-conf.yaml`
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 2);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 2);
-                assert.strictEqual(results[0].messages[1].ruleId, "semi");
-                assert.strictEqual(results[0].messages[1].severity, 1);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return no messages when executing with config file that overrides local .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Command line configuration - --config with first level .ec0lintrc
-            it("should return no messages when executing with config file that overrides local .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    overrideConfigFile: `${fixtureDir}/config-hierarchy/broken/override-conf.yaml`
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 0);
-            });
-
-            // Command line configuration - --rule with --config and first level .ec0lintrc
-            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    overrideConfigFile: getFixturePath("config-hierarchy/broken/override-conf.yaml"),
-                    overrideConfig: {
-                        rules: {
-                            quotes: [1, "double"]
-                        }
-                    }
-                });
-                const results = await eslint.lintFiles([fs.realpathSync(`${fixtureDir}/config-hierarchy/broken/console-wrong-quotes.js`)]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 1);
-            });
-
-            // Command line configuration - --rule with --config and first level .ec0lintrc
-            it("should return one message when executing with command line rule and config file that overrides local .ec0lintrc", async () => {
-                eslint = new ESLint({
-                    cwd: path.join(fixtureDir, ".."),
-                    overrideConfigFile: getFixturePath("/config-hierarchy/broken/override-conf.yaml"),
-                    overrideConfig: {
-                        rules: {
-                            quotes: [1, "double"]
-                        }
-                    }
-                });
-                const results = await eslint.lintFiles([getFixturePath("config-hierarchy/broken/console-wrong-quotes.js")]);
-
-                assert.strictEqual(results.length, 1);
-                assert.strictEqual(results[0].messages.length, 1);
-                assert.strictEqual(results[0].messages[0].ruleId, "quotes");
-                assert.strictEqual(results[0].messages[0].severity, 1);
-            });
-        });
 
         describe("plugins", () => {
             it("should return two messages when executing with config file that specifies a plugin", async () => {
@@ -2254,20 +1822,6 @@ describe("ec0lint", () => {
     });
 
     describe("calculateConfigForFile", () => {
-        it("should return the info from Config#getConfig when called", async () => {
-            const options = {
-                overrideConfigFile: getFixturePath("configurations", "quotes-error.json")
-            };
-            const engine = new ESLint(options);
-            const filePath = getFixturePath("single-quoted.js");
-            const actualConfig = await engine.calculateConfigForFile(filePath);
-            const expectedConfig = new CascadingConfigArrayFactory({ specificConfigPath: options.overrideConfigFile })
-                .getConfigArrayForFile(filePath)
-                .extractConfig(filePath)
-                .toCompatibleObjectAsConfigFileContent();
-
-            assert.deepStrictEqual(actualConfig, expectedConfig);
-        });
 
         it("should return the config for a file that doesn't exist", async () => {
             const engine = new ESLint();
@@ -2907,20 +2461,6 @@ describe("ec0lint", () => {
     });
 
     describe("getErrorResults()", () => {
-        it("should not mutate passed report parameter", async () => {
-            process.chdir(originalDir);
-            const engine = new ESLint({
-                overrideConfig: {
-                    rules: { quotes: [1, "double"] }
-                }
-            });
-            const results = await engine.lintText("var foo = 'bar';");
-            const reportResultsLength = results[0].messages.length;
-
-            ESLint.getErrorResults(results);
-
-            assert.strictEqual(results[0].messages.length, reportResultsLength);
-        });
 
         it("should return 0 error or warning messages even when the file has warnings", async () => {
             const engine = new ESLint({
@@ -2941,21 +2481,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].fatalErrorCount, 0);
             assert.strictEqual(results[0].fixableErrorCount, 0);
             assert.strictEqual(results[0].fixableWarningCount, 0);
-        });
-
-        it("should return source code of file in the `source` property", async () => {
-            process.chdir(originalDir);
-            const engine = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: { quotes: [2, "double"] }
-                }
-            });
-            const results = await engine.lintText("var foo = 'bar';");
-            const errorResults = ESLint.getErrorResults(results);
-
-            assert.strictEqual(errorResults[0].messages.length, 1);
-            assert.strictEqual(errorResults[0].source, "var foo = 'bar';");
         });
     });
 
@@ -3000,24 +2525,6 @@ describe("ec0lint", () => {
             const rulesMeta = engine.getRulesMetaForResults(results);
 
             assert.strictEqual(rulesMeta.semi, coreRules.get("semi").meta);
-        });
-
-        it("should return multiple rule meta when there are multiple linting errors", async () => {
-            const engine = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        semi: 2,
-                        quotes: [2, "double"]
-                    }
-                }
-            });
-
-            const results = await engine.lintText("'a'");
-            const rulesMeta = engine.getRulesMetaForResults(results);
-
-            assert.strictEqual(rulesMeta.semi, coreRules.get("semi").meta);
-            assert.strictEqual(rulesMeta.quotes, coreRules.get("quotes").meta);
         });
     });
 

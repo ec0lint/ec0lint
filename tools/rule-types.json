@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "quote-props": "suggestion",
-    "quotes": "layout",
     "radix": "suggestion",
     "require-atomic-updates": "problem",
     "require-await": "suggestion",

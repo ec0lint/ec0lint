@@ -1,10 +1,10 @@
 {
     "broken": {
-        ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    quotes: [2, \"double\"]\r\n",
+        ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    ",
         "add-conf.yaml": "rules:\r\n    semi: [1, \"never\"]\r\n",
         "console-wrong-quotes-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
         "console-wrong-quotes.js": "console.log('bar');\r\n",
-        "override-conf.yaml": "rules:\r\n    quotes: 0\r\n",
+        "override-conf.yaml": "rules:\r\n    ",
         "override-env-conf.yaml": "extends: \"ec0lint:recommended\"\nenv:\n    node: true\nrules:\n  ",
         "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {}\r\n}\r\n",
         "plugins": {
@@ -17,10 +17,10 @@
         },
         "process-exit.js": "process.exit(0);\r\n",
         "subbroken": {
-            ".ec0lintrc": "rules:\r\n   quotes: [2, \"single\"]\r\n",
+            ".ec0lintrc": "rules:\r\n   ",
             "console-wrong-quotes.js": "console.log('bar');\r\n",
             "subsubbroken": {
-                ".ec0lintrc": "rules:\r\n   quotes: [1, \"double\"]\r\n",
+                ".ec0lintrc": "rules:\r\n   ",
                 "console-wrong-quotes.js": "console.log('bar');\r\n"
             }
         },
@@ -48,20 +48,20 @@
         }
     },
     "overrides": {
-        ".ec0lintrc": "{\n    \"rules\": {\n        \"quotes\": [2, \"double\"],\n        \"semi\": [1, \"never\"]\n    },\n    \"overrides\": [\n        {\n            \"files\": \"foo.js\",\n            \"rules\": {\n                \"quotes\": [2, \"single\"]\n            }\n        },\n        {\n            \"files\": \"bar.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"**/*one.js\",\n            \"rules\": {\n  }\n        },\n        {\n            \"files\": \"two/child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n",
+        ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [1, \"never\"]\n    },\n    \"overrides\": [\n        {\n            \"files\": \"foo.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"bar.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"**/*one.js\",\n            \"rules\": {\n  }\n        },\n        {\n            \"files\": \"two/child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n",
         "two": {
             ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"never\"]\n    },\n    \"overrides\": [\n        {\n            \"files\": \"child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n"
         }
     },
     "packagejson": {
-        ".ec0lintrc": "rules:\r\n    quotes: [2, \"double\"]\r\n",
-        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
+        ".ec0lintrc": "rules:\r\n    ",
+        "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      }\r\n  }\r\n}\r\n",
         "subdir": {
-            "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [1, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
+            "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      }\r\n  }\r\n}\r\n",
             "subsubdir": {
-                "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"single\"]\r\n    }\r\n  }\r\n}\r\n",
+                "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      }\r\n  }\r\n}\r\n",
                 "subsubsubdir": {
-                    "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      \"quotes\": [2, \"double\"]\r\n    }\r\n  }\r\n}\r\n",
+                    "package.json": "{\r\n  \"name\": \"\",\r\n  \"version\": \"\",\r\n  \"ec0lintConfig\": {\r\n    \"rules\": {\r\n      }\r\n  }\r\n}\r\n",
                     "wrong-quotes.js": "var str = 'quotes';\r\n"
                 },
                 "wrong-quotes.js": "var str = 'quotes';\r\n"
@@ -94,7 +94,7 @@
     },
     "root-true": {
         "parent": {
-            ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"always\"],\n        \"quotes\": [2, \"single\"]\n    },\n    \"extends\": [\n        \"ec0lint-config-test\"\n    ]\n}\n",
+            ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"always\"],\n        },\n    \"extends\": [\n        \"ec0lint-config-test\"\n    ]\n}\n",
             "root": {
                 ".ec0lintrc": "{\n    \"root\": true,\n    \"rules\": {\n        \"semi\": [2, \"never\"]\n    }\n}\n",
                 "wrong-semi.js": "var str = 'quotes'\n"
@@ -103,7 +103,7 @@
     },
     "shared": {
         "a": {
-            ".ec0lintrc": "{\r\n  \"extends\": \"example\",\r\n  \"rules\": {\r\n    \"quotes\": [ 2, \"single\" ]\r\n  }\r\n}\r\n",
+            ".ec0lintrc": "{\r\n  \"extends\": \"example\",\r\n  \"rules\": {\r\n    }\r\n}\r\n",
             "index.js": ""
         },
         "b": {
@@ -111,5 +111,5 @@
             "index.js": ""
         }
     },
-    "quotes-error.json": "{\r\n  \"rules\": {\n\"quotes\": [2, \"double\"]\n    }\n}\r\n"
+    "quotes-error.json": "{\r\n  \"rules\": {}\n}\r\n"
 }

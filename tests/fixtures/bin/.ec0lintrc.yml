@@ -2,4 +2,4 @@
 rules:
   semi: error
 yoda: error
-  quotes: error
+
