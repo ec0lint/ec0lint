@@ -1,6 +1,5 @@
 {
     "lighter-http": "problem",
-    "nonblock-statement-body-position": "layout",
     "object-curly-newline": "layout",
     "object-curly-spacing": "layout",
     "object-property-newline": "layout",
