@@ -3,17 +3,6 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    semi: "error"
-    semi-spacing: ["error", {before: false, after: true}]
-    semi-style: "error"
-    space-before-blocks: "error"
-    space-in-parens: "error"
-    space-infix-ops: "error"
-    space-unary-ops: ["error", {words: true, nonwords: false}]
-    spaced-comment: ["error", "always", { exceptions: ["-"]}]
-    strict: ["error", "global"]
-    switch-colon-spacing: "error"
-    symbol-description: "error"
     template-curly-spacing: ["error", "never"]
     template-tag-spacing: "error"
     unicode-bom: "error"

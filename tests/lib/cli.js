@@ -139,18 +139,6 @@ describe("cli", () => {
         });
     });
 
-    describe("when given a config file and a directory of files", () => {
-        it("should load and execute without error", async () => {
-            const configPath = getFixturePath("configurations", "semi-error.json");
-            const filePath = getFixturePath("formatters");
-            const code = `--config ${configPath} ${filePath}`;
-
-            const exitStatus = await cli.execute(code);
-
-            assert.strictEqual(exitStatus, 0);
-        });
-    });
-
     describe("when given a config with environment set to browser", () => {
         it("should execute without any errors", async () => {
             const configPath = getFixturePath("configurations", "env-browser.json");
@@ -286,23 +274,6 @@ describe("cli", () => {
             const exit = await cli.execute(`--no-ignore ${filePath}`);
 
             assert.strictEqual(exit, 1);
-        });
-    });
-
-    describe("when calling execute more than once", () => {
-        it("should not print the results from previous execution", async () => {
-            const filePath = getFixturePath("missing-semicolon.js");
-            const passingPath = getFixturePath("passing.js");
-
-            await cli.execute(`--no-ignore --rule semi:2 ${filePath}`);
-
-            assert.isTrue(log.info.called, "Log should have been called.");
-
-            log.info.resetHistory();
-
-            await cli.execute(`--no-ignore --rule semi:2 ${passingPath}`);
-            assert.isTrue(log.info.notCalled);
-
         });
     });
 

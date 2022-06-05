@@ -1,7 +1,6 @@
 {
     "broken": {
         ".ec0lintrc": "env: \r\n    node: true\r\nrules:\r\n    ",
-        "add-conf.yaml": "rules:\r\n    semi: [1, \"never\"]\r\n",
         "console-wrong-quotes-node.js": "\r\n/*ec0lint-env node*/\r\n\r\nconsole.log('bar');\r\n",
         "console-wrong-quotes.js": "console.log('bar');\r\n",
         "override-conf.yaml": "rules:\r\n    ",
@@ -34,7 +33,6 @@
         }
     },
     "fileexts": {
-        ".ec0lintrc.js": "module.exports = {\n    rules: {\n        semi: [2, \"always\"]\n    },\n    root: true\n};\n",
         "subdir": {
             "subsubdir": {
                 ".ec0lintrc.json": "{\n    \"env\": {\n        \"browser\": true\n    }\n}\n"
@@ -48,9 +46,9 @@
         }
     },
     "overrides": {
-        ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [1, \"never\"]\n    },\n    \"overrides\": [\n        {\n            \"files\": \"foo.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"bar.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"**/*one.js\",\n            \"rules\": {\n  }\n        },\n        {\n            \"files\": \"two/child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n",
+        ".ec0lintrc": "{\n    \"overrides\": [\n        {\n            \"files\": \"foo.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"bar.js\",\n            \"rules\": {\n                }\n        },\n        {\n            \"files\": \"**/*one.js\",\n            \"rules\": {\n  }\n        },\n        {\n            \"files\": \"two/child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n",
         "two": {
-            ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"never\"]\n    },\n    \"overrides\": [\n        {\n            \"files\": \"child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n"
+            ".ec0lintrc": "{\n    \"overrides\": [\n        {\n            \"files\": \"child-two.js\",\n            \"rules\": {\n                }\n        }\n    ]\n}\n"
         }
     },
     "packagejson": {
@@ -94,9 +92,9 @@
     },
     "root-true": {
         "parent": {
-            ".ec0lintrc": "{\n    \"rules\": {\n        \"semi\": [2, \"always\"],\n        },\n    \"extends\": [\n        \"ec0lint-config-test\"\n    ]\n}\n",
+            ".ec0lintrc": "{\"extends\": [\n        \"ec0lint-config-test\"\n    ]\n}\n",
             "root": {
-                ".ec0lintrc": "{\n    \"root\": true,\n    \"rules\": {\n        \"semi\": [2, \"never\"]\n    }\n}\n",
+                ".ec0lintrc": "{\n    \"root\": true,\n",
                 "wrong-semi.js": "var str = 'quotes'\n"
             }
         }

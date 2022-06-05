@@ -388,10 +388,6 @@ function getFormatterResults() {
     const stripAnsi = require("strip-ansi");
 
     const formatterFiles = fs.readdirSync("./lib/cli-engine/formatters/"),
-        rules = {
-            "space-unary-ops": "error",
-            semi: ["warn", "always"]
-        },
         cli = new CLIEngine({
             useEc0lintrc: false,
             baseConfig: { extends: "ec0lint:recommended" },

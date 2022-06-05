@@ -148,17 +148,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 0);
         });
 
-        it("should return source code of file in `source` property when errors are present", () => {
-            engine = new CLIEngine({
-                useEc0lintrc: false,
-                rules: { semi: 2 }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar'");
-
-            assert.strictEqual(report.results[0].source, "var foo = 'bar'");
-        });
-
         // @scope for @scope/ec0lint-plugin
         describe("(plugin shorthand)", () => {
             const Module = require("module");
@@ -408,58 +397,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[1].suppressedMessages.length, 0);
         });
 
-        it("should return 3 messages when given a config file and a directory of 3 valid files", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                configFile: getFixturePath("configurations", "semi-error.json")
-            });
-
-            const fixturePath = getFixturePath("formatters");
-            const report = engine.executeOnFiles([fixturePath]);
-
-            assert.strictEqual(report.errorCount, 0);
-            assert.strictEqual(report.warningCount, 0);
-            assert.strictEqual(report.fixableErrorCount, 0);
-            assert.strictEqual(report.fixableWarningCount, 0);
-            assert.strictEqual(report.results.length, 5);
-            assert.strictEqual(path.relative(fixturePath, report.results[0].filePath), "async.js");
-            assert.strictEqual(report.results[0].errorCount, 0);
-            assert.strictEqual(report.results[0].warningCount, 0);
-            assert.strictEqual(report.results[0].fixableErrorCount, 0);
-            assert.strictEqual(report.results[0].fixableWarningCount, 0);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[1].filePath), "broken.js");
-            assert.strictEqual(report.results[1].errorCount, 0);
-            assert.strictEqual(report.results[1].warningCount, 0);
-            assert.strictEqual(report.results[1].fixableErrorCount, 0);
-            assert.strictEqual(report.results[1].fixableWarningCount, 0);
-            assert.strictEqual(report.results[1].messages.length, 0);
-            assert.strictEqual(report.results[1].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[2].filePath), "cwd.js");
-            assert.strictEqual(report.results[2].errorCount, 0);
-            assert.strictEqual(report.results[2].warningCount, 0);
-            assert.strictEqual(report.results[2].fixableErrorCount, 0);
-            assert.strictEqual(report.results[2].fixableWarningCount, 0);
-            assert.strictEqual(report.results[2].messages.length, 0);
-            assert.strictEqual(report.results[2].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[3].filePath), "simple.js");
-            assert.strictEqual(report.results[3].errorCount, 0);
-            assert.strictEqual(report.results[3].warningCount, 0);
-            assert.strictEqual(report.results[3].fixableErrorCount, 0);
-            assert.strictEqual(report.results[3].fixableWarningCount, 0);
-            assert.strictEqual(report.results[3].messages.length, 0);
-            assert.strictEqual(report.results[3].suppressedMessages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, report.results[4].filePath), path.join("test", "simple.js"));
-            assert.strictEqual(report.results[4].errorCount, 0);
-            assert.strictEqual(report.results[4].warningCount, 0);
-            assert.strictEqual(report.results[4].fixableErrorCount, 0);
-            assert.strictEqual(report.results[4].fixableWarningCount, 0);
-            assert.strictEqual(report.results[4].messages.length, 0);
-            assert.strictEqual(report.results[4].suppressedMessages.length, 0);
-        });
-
         it("should process when file is given by not specifying extensions", () => {
 
             engine = new CLIEngine({
@@ -500,36 +437,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results.length, 1);
             assert.strictEqual(report.results[0].messages.length, 0);
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should not return results from previous call when calling more than once", () => {
-
-            engine = new CLIEngine({
-                cwd: path.join(fixtureDir, ".."),
-                ignore: false,
-                rules: {
-                    semi: 2
-                }
-            });
-
-            const failFilePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-            const passFilePath = fs.realpathSync(getFixturePath("passing.js"));
-
-            let report = engine.executeOnFiles([failFilePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, failFilePath);
-            assert.strictEqual(report.results[0].messages.length, 1);
-            assert.strictEqual(report.results[0].messages[0].ruleId, "semi");
-            assert.strictEqual(report.results[0].messages[0].severity, 2);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-
-            report = engine.executeOnFiles([passFilePath]);
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, passFilePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-
         });
 
         it("should throw an error when given a directory with all ec0lint excluded files in the directory", () => {
@@ -713,23 +620,6 @@ describe("CLIEngine", () => {
             assert.strictEqual(report.results[0].suppressedMessages.length, 0);
         });
 
-        it("should return zero messages when executing without useEc0lintrc flag", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                useEc0lintrc: false
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
         it("should return zero messages when executing without useEc0lintrc flag in Node.js environment", () => {
 
             engine = new CLIEngine({
@@ -739,24 +629,6 @@ describe("CLIEngine", () => {
             });
 
             const filePath = fs.realpathSync(getFixturePath("process-exit.js"));
-
-            const report = engine.executeOnFiles([filePath]);
-
-            assert.strictEqual(report.results.length, 1);
-            assert.strictEqual(report.results[0].filePath, filePath);
-            assert.strictEqual(report.results[0].messages.length, 0);
-            assert.strictEqual(report.results[0].suppressedMessages.length, 0);
-        });
-
-        it("should return zero messages when executing with base-config flag set to false", () => {
-
-            engine = new CLIEngine({
-                ignore: false,
-                baseConfig: false,
-                useEc0lintrc: false
-            });
-
-            const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
 
             const report = engine.executeOnFiles([filePath]);
 
@@ -1000,84 +872,6 @@ describe("CLIEngine", () => {
                             return problem;
                         });
                     }
-                });
-
-
-                it("should run in autofix mode when using a processor that supports autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 0);
-                    assert.strictEqual(report.results[0].output, "<script>foo;</script>");
-                });
-
-                it("should not run in autofix mode when using a processor that does not support autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false,
-                        fix: true
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": HTML_PROCESSOR
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 1);
-                    assert.isFalse(Object.prototype.hasOwnProperty.call(report.results[0], "output"));
-                });
-
-                it("should not run in autofix mode when `fix: true` is not provided, even if the processor supports autofixing", () => {
-                    engine = new CLIEngine({
-                        useEc0lintrc: false,
-                        plugins: ["test-processor"],
-                        rules: {
-                            semi: 2
-                        },
-                        extensions: ["js", "txt"],
-                        ignore: false
-                    }, {
-                        preloadedPlugins: {
-                            "test-processor": {
-                                processors: {
-                                    ".html": Object.assign({ supportsAutofix: true }, HTML_PROCESSOR)
-                                }
-                            }
-                        }
-                    });
-
-                    const report = engine.executeOnText("<script>foo</script>", "foo.html");
-
-                    assert.strictEqual(report.results[0].messages.length, 1);
-                    assert.isFalse(Object.prototype.hasOwnProperty.call(report.results[0], "output"));
                 });
             });
         });

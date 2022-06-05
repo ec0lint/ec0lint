@@ -299,37 +299,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results.length, 0);
         });
 
-        it("should return a message and fixed text when in fix mode", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                fix: true,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                },
-                ignore: false,
-                cwd: getFixturePath()
-            });
-            const options = { filePath: "passing.js" };
-            const results = await eslint.lintText("var bar = foo", options);
-
-            assert.deepStrictEqual(results, [
-                {
-                    filePath: getFixturePath("passing.js"),
-                    messages: [],
-                    suppressedMessages: [],
-                    errorCount: 0,
-                    warningCount: 0,
-                    fatalErrorCount: 0,
-                    fixableErrorCount: 0,
-                    fixableWarningCount: 0,
-                    output: "var bar = foo;",
-                    usedDeprecatedRules: []
-                }
-            ]);
-        });
-
         it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
             eslint = new ESLint({
                 useEc0lintrc: false,
@@ -434,78 +403,6 @@ describe("ec0lint", () => {
                     fixableErrorCount: 0,
                     fixableWarningCount: 0,
                     source: "var bar =",
-                    usedDeprecatedRules: []
-                }
-            ]);
-        });
-
-        it("should return source code of file in `source` property when errors are present", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: { semi: 2 }
-                }
-            });
-            const results = await eslint.lintText("var foo = 'bar'");
-
-            assert.strictEqual(results[0].source, "var foo = 'bar'");
-        });
-
-        it("should return source code of file in `source` property when warnings are present", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: { semi: 1 }
-                }
-            });
-            const results = await eslint.lintText("var foo = 'bar'");
-
-            assert.strictEqual(results[0].source, "var foo = 'bar'");
-        });
-
-
-        it("should not return a `source` property when no errors or warnings are present", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: { semi: 2 }
-                }
-            });
-            const results = await eslint.lintText("var foo = 'bar';");
-
-            assert.strictEqual(results[0].messages.length, 0);
-            assert.strictEqual(results[0].source, void 0);
-        });
-
-        it("should return a `source` property when a parsing error has occurred", async () => {
-            eslint = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: { semi: 2 }
-                }
-            });
-            const results = await eslint.lintText("var bar = foothis is a syntax error.\n return bar;");
-
-            assert.deepStrictEqual(results, [
-                {
-                    filePath: "<text>",
-                    messages: [
-                        {
-                            ruleId: null,
-                            fatal: true,
-                            severity: 2,
-                            message: "Parsing error: Unexpected token is",
-                            line: 1,
-                            column: 19
-                        }
-                    ],
-                    suppressedMessages: [],
-                    errorCount: 1,
-                    warningCount: 0,
-                    fatalErrorCount: 1,
-                    fixableErrorCount: 0,
-                    fixableWarningCount: 0,
-                    source: "var bar = foothis is a syntax error.\n return bar;",
                     usedDeprecatedRules: []
                 }
             ]);
@@ -771,47 +668,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[1].messages.length, 0);
         });
 
-        it("should return 3 messages when given a config file and a directory of 3 valid files", async () => {
-            eslint = new ESLint({
-                cwd: path.join(fixtureDir, ".."),
-                overrideConfigFile: getFixturePath("configurations", "semi-error.json")
-            });
-            const fixturePath = getFixturePath("formatters");
-            const results = await eslint.lintFiles([fixturePath]);
-
-            assert.strictEqual(results.length, 5);
-            assert.strictEqual(path.relative(fixturePath, results[0].filePath), "async.js");
-            assert.strictEqual(results[0].errorCount, 0);
-            assert.strictEqual(results[0].warningCount, 0);
-            assert.strictEqual(results[0].fixableErrorCount, 0);
-            assert.strictEqual(results[0].fixableWarningCount, 0);
-            assert.strictEqual(results[0].messages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, results[1].filePath), "broken.js");
-            assert.strictEqual(results[1].errorCount, 0);
-            assert.strictEqual(results[1].warningCount, 0);
-            assert.strictEqual(results[1].fixableErrorCount, 0);
-            assert.strictEqual(results[1].fixableWarningCount, 0);
-            assert.strictEqual(results[1].messages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, results[2].filePath), "cwd.js");
-            assert.strictEqual(results[2].errorCount, 0);
-            assert.strictEqual(results[2].warningCount, 0);
-            assert.strictEqual(results[2].fixableErrorCount, 0);
-            assert.strictEqual(results[2].fixableWarningCount, 0);
-            assert.strictEqual(results[2].messages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, results[3].filePath), "simple.js");
-            assert.strictEqual(results[3].errorCount, 0);
-            assert.strictEqual(results[3].warningCount, 0);
-            assert.strictEqual(results[3].fixableErrorCount, 0);
-            assert.strictEqual(results[3].fixableWarningCount, 0);
-            assert.strictEqual(results[3].messages.length, 0);
-            assert.strictEqual(path.relative(fixturePath, results[4].filePath), path.join("test", "simple.js"));
-            assert.strictEqual(results[4].errorCount, 0);
-            assert.strictEqual(results[4].warningCount, 0);
-            assert.strictEqual(results[4].fixableErrorCount, 0);
-            assert.strictEqual(results[4].fixableWarningCount, 0);
-            assert.strictEqual(results[4].messages.length, 0);
-        });
-
         it("should process when file is given by not specifying extensions", async () => {
             eslint = new ESLint({
                 ignore: false,
@@ -842,33 +698,6 @@ describe("ec0lint", () => {
             const results = await eslint.lintFiles([fs.realpathSync(getFixturePath("globals-node.js"))]);
 
             assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].messages.length, 0);
-        });
-
-        it("should not return results from previous call when calling more than once", async () => {
-            eslint = new ESLint({
-                cwd: path.join(fixtureDir, ".."),
-                ignore: false,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                }
-            });
-            const failFilePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-            const passFilePath = fs.realpathSync(getFixturePath("passing.js"));
-
-            let results = await eslint.lintFiles([failFilePath]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, failFilePath);
-            assert.strictEqual(results[0].messages.length, 1);
-            assert.strictEqual(results[0].messages[0].ruleId, "semi");
-            assert.strictEqual(results[0].messages[0].severity, 2);
-
-            results = await eslint.lintFiles([passFilePath]);
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, passFilePath);
             assert.strictEqual(results[0].messages.length, 0);
         });
 
@@ -1022,19 +851,6 @@ describe("ec0lint", () => {
             assert.strictEqual(results[0].messages[0].severity, 2);
             assert.strictEqual(results[0].messages[1].ruleId, "no-strings");
             assert.strictEqual(results[0].messages[1].severity, 2);
-        });
-
-        it("should return zero messages when executing without useEc0lintrc flag", async () => {
-            eslint = new ESLint({
-                ignore: false,
-                useEc0lintrc: false
-            });
-            const filePath = fs.realpathSync(getFixturePath("missing-semicolon.js"));
-            const results = await eslint.lintFiles([filePath]);
-
-            assert.strictEqual(results.length, 1);
-            assert.strictEqual(results[0].filePath, filePath);
-            assert.strictEqual(results[0].messages.length, 0);
         });
 
         it("should return zero messages when executing without useEc0lintrc flag in Node.js environment", async () => {
@@ -2481,38 +2297,6 @@ describe("ec0lint", () => {
 
             assert.strictEqual(Object.keys(rulesMeta).length, 0);
         });
-
-        it("should return one rule meta when there is a linting error", async () => {
-            const engine = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                }
-            });
-
-            const results = await engine.lintText("a");
-            const rulesMeta = engine.getRulesMetaForResults(results);
-
-            assert.strictEqual(rulesMeta.semi, coreRules.get("semi").meta);
-        });
-
-        it("should return one rule meta when there is a suppressed linting error", async () => {
-            const engine = new ESLint({
-                useEc0lintrc: false,
-                overrideConfig: {
-                    rules: {
-                        semi: 2
-                    }
-                }
-            });
-
-            const results = await engine.lintText("a // ec0lint-disable-line semi");
-            const rulesMeta = engine.getRulesMetaForResults(results);
-
-            assert.strictEqual(rulesMeta.semi, coreRules.get("semi").meta);
-        });
     });
 
     describe("outputFixes()", () => {
@@ -3603,47 +3387,6 @@ describe("ec0lint", () => {
                     path.join(root, "foo/test.txt"),
                     path.join(root, "test.js")
                 ]);
-            });
-        });
-    });
-
-    describe("loading rules", () => {
-        it("should not load unused core rules", done => {
-            let calledDone = false;
-
-            const cwd = getFixturePath("lazy-loading-rules");
-            const pattern = "foo.js";
-            const usedRules = ["semi"];
-
-            const forkedProcess = childProcess.fork(
-                path.join(__dirname, "../../_utils/test-lazy-loading-rules.js"),
-                [cwd, pattern, String(usedRules)]
-            );
-
-            // this is an error message
-            forkedProcess.on("message", ({ message, stack }) => {
-                if (calledDone) {
-                    return;
-                }
-                calledDone = true;
-
-                const error = new Error(message);
-
-                error.stack = stack;
-                done(error);
-            });
-
-            forkedProcess.on("exit", exitCode => {
-                if (calledDone) {
-                    return;
-                }
-                calledDone = true;
-
-                if (exitCode === 0) {
-                    done();
-                } else {
-                    done(new Error("Forked process exited with a non-zero exit code"));
-                }
             });
         });
     });

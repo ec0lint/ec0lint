@@ -1055,81 +1055,6 @@ describe("Linter", () => {
     describe("when passing in configuration values for rules", () => {
         const code = "var answer = 6 * 7";
 
-        it("should be configurable by only setting the integer value", () => {
-            const rule = "semi",
-                config = { rules: {} };
-
-            config.rules[rule] = 1;
-
-            const messages = linter.verify(code, config, filename, true);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, rule);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should be configurable by only setting the string value", () => {
-            const rule = "semi",
-                config = { rules: {} };
-
-            config.rules[rule] = "warn";
-
-            const messages = linter.verify(code, config, filename, true);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].severity, 1);
-            assert.strictEqual(messages[0].ruleId, rule);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should be configurable by passing in values as an array", () => {
-            const rule = "semi",
-                config = { rules: {} };
-
-            config.rules[rule] = [1];
-
-            const messages = linter.verify(code, config, filename, true);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].ruleId, rule);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should be configurable by passing in string value as an array", () => {
-            const rule = "semi",
-                config = { rules: {} };
-
-            config.rules[rule] = ["warn"];
-
-            const messages = linter.verify(code, config, filename, true);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(messages[0].severity, 1);
-            assert.strictEqual(messages[0].ruleId, rule);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("should not be configurable by setting other value", () => {
-            const rule = "semi",
-                config = { rules: {} };
-
-            config.rules[rule] = "1";
-
-            const messages = linter.verify(code, config, filename, true);
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("should process empty config", () => {
             const config = {};
             const messages = linter.verify(code, config, filename, true);
@@ -1638,26 +1563,6 @@ describe("Linter", () => {
         });
     });
 
-    describe("when evaluating code with comments to enable rules", () => {
-
-        it("rules should not change initial config", () => {
-            const config = { rules: { strict: 2 } };
-            const codeA = "/*ec0lint strict: 0*/ function bar() { return 2; }";
-            const codeB = "function foo() { return 1; }";
-            let messages = linter.verify(codeA, config, filename, false);
-            let suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-
-            messages = linter.verify(codeB, config, filename, false);
-            suppressedMessages = linter.getSuppressedMessages();
-            assert.strictEqual(messages.length, 1);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-    });
-
     describe("when evaluating code with invalid comments to enable rules", () => {
         it("should report a violation when the config violates a rule's schema", () => {
             const messages = linter.verify("/* ec0lint lighter-http: [error, {nonExistentPropertyName: true}]*/", {});
@@ -1808,24 +1713,6 @@ describe("Linter", () => {
             assert.strictEqual(suppressedMessages[0].message, "foo");
             assert.strictEqual(suppressedMessages[0].suppressions.length, 1);
             assert.strictEqual(suppressedMessages[0].suppressions[0].justification, "");
-        });
-
-        it("rules should not change initial config", () => {
-            const config = { rules: { "test-plugin/test-rule": 2 } };
-            const codeA = "/*ec0lint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
-            const codeB = "var a = \"trigger violation\";";
-
-            let messages = linter.verify(codeA, config, filename, false);
-            let suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 0);
-            assert.strictEqual(suppressedMessages.length, 0);
-
-            messages = linter.verify(codeB, config, filename, false);
-            suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.length, 1);
-            assert.strictEqual(suppressedMessages.length, 0);
         });
     });
 
@@ -4532,40 +4419,6 @@ describe("Linter", () => {
     });
 
     describe("verifyAndFix", () => {
-        it("Fixes the code", () => {
-            const messages = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { filename: "test.js" });
-
-            assert.strictEqual(messages.output, "var a;", "Fixes were applied correctly");
-            assert.isTrue(messages.fixed);
-        });
-
-        it("does not require a third argument", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            });
-
-            assert.deepStrictEqual(fixResult, {
-                fixed: true,
-                messages: [],
-                output: "var a;"
-            });
-        });
-
-        it("does not apply autofixes when fix argument is `false`", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { fix: false });
-
-            assert.strictEqual(fixResult.fixed, false);
-        });
 
         it("stops fixing after 10 passes", () => {
 
@@ -6130,79 +5983,6 @@ describe("Linter with FlatConfigArray", () => {
 
         describe("rules", () => {
             const code = "var answer = 6 * 7";
-
-            it("should be configurable by only setting the integer value", () => {
-                const rule = "semi",
-                    config = { rules: {} };
-
-                config.rules[rule] = 1;
-
-                const messages = linter.verify(code, config, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, rule);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should be configurable by only setting the string value", () => {
-                const rule = "semi",
-                    config = { rules: {} };
-
-                config.rules[rule] = "warn";
-
-                const messages = linter.verify(code, config, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].ruleId, rule);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should be configurable by passing in values as an array", () => {
-                const rule = "semi",
-                    config = { rules: {} };
-
-                config.rules[rule] = [1];
-
-                const messages = linter.verify(code, config, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].ruleId, rule);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should be configurable by passing in string value as an array", () => {
-                const rule = "semi",
-                    config = { rules: {} };
-
-                config.rules[rule] = ["warn"];
-
-                const messages = linter.verify(code, config, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1);
-                assert.strictEqual(messages[0].severity, 1);
-                assert.strictEqual(messages[0].ruleId, rule);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("should not be configurable by setting other value", () => {
-                const rule = "semi",
-                    config = { rules: {} };
-
-                config.rules[rule] = "1";
-
-                assert.throws(() => {
-                    linter.verify(code, config, filename, true);
-                }, /Key "rules": Key "semi"/u);
-            });
 
             it("should process empty config", () => {
                 const config = {};
@@ -8221,64 +8001,6 @@ describe("Linter with FlatConfigArray", () => {
 
         });
 
-        describe("Rule Severity", () => {
-
-            it("rule should run as warning when set to 1 with a config array", () => {
-                const ruleId = "semi",
-                    configs = createFlatConfigArray({
-                        files: ["**/*.js"],
-                        rules: {
-                            [ruleId]: 1
-                        }
-                    });
-
-                configs.normalizeSync();
-                const messages = linter.verify("foo", configs, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1, "Message length is wrong");
-                assert.strictEqual(messages[0].ruleId, ruleId);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("rule should run as warning when set to 1 with a plain array", () => {
-                const ruleId = "semi",
-                    configs = [{
-                        files: ["**/*.js"],
-                        rules: {
-                            [ruleId]: 1
-                        }
-                    }];
-
-                const messages = linter.verify("foo", configs, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1, "Message length is wrong");
-                assert.strictEqual(messages[0].ruleId, ruleId);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-
-            it("rule should run as warning when set to 1 with an object", () => {
-                const ruleId = "semi",
-                    config = {
-                        files: ["**/*.js"],
-                        rules: {
-                            [ruleId]: 1
-                        }
-                    };
-
-                const messages = linter.verify("foo", config, filename, true);
-                const suppressedMessages = linter.getSuppressedMessages();
-
-                assert.strictEqual(messages.length, 1, "Message length is wrong");
-                assert.strictEqual(messages[0].ruleId, ruleId);
-
-                assert.strictEqual(suppressedMessages.length, 0);
-            });
-        });
-
         describe("Code with a hashbang comment", () => {
             const code = "#!bin/program\n\nvar foo;;";
 
@@ -8873,28 +8595,6 @@ describe("Linter with FlatConfigArray", () => {
 
                         assert.strictEqual(suppressedMessages.length, 0);
                     });
-
-                    it("rules should not change initial config", () => {
-                        const config = {
-                            languageOptions: {
-                                sourceType: "script"
-                            },
-                            rules: { strict: 2 }
-                        };
-                        const codeA = "/*ec0lint strict: 0*/ function bar() { return 2; }";
-                        const codeB = "function foo() { return 1; }";
-                        let messages = linter.verify(codeA, config, filename, false);
-                        let suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-
-                        messages = linter.verify(codeB, config, filename, false);
-                        suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
-                    });
                 });
 
                 describe("when evaluating code with invalid comments to enable rules", () => {
@@ -9147,23 +8847,6 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(suppressedMessages.length, 1);
                         assert.strictEqual(suppressedMessages[0].message, "foo");
                         assert.deepStrictEqual(suppressedMessages[0].suppressions, [{ kind: "directive", justification: "" }]);
-                    });
-
-                    it("rules should not change initial config", () => {
-                        const config = { ...baseConfig, rules: { "test-plugin/test-rule": 2 } };
-                        const codeA = "/*ec0lint test-plugin/test-rule: 0*/ var a = \"trigger violation\";";
-                        const codeB = "var a = \"trigger violation\";";
-                        let messages = linter.verify(codeA, config, filename, false);
-                        let suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 0);
-                        assert.strictEqual(suppressedMessages.length, 0);
-
-                        messages = linter.verify(codeB, config, filename, false);
-                        suppressedMessages = linter.getSuppressedMessages();
-
-                        assert.strictEqual(messages.length, 1);
-                        assert.strictEqual(suppressedMessages.length, 0);
                     });
                 });
 
@@ -10720,49 +10403,6 @@ describe("Linter with FlatConfigArray", () => {
     });
 
     describe("verifyAndFix()", () => {
-        it("Fixes the code", () => {
-            const messages = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { filename: "test.js" });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(messages.output, "var a;", "Fixes were applied correctly");
-            assert.isTrue(messages.fixed);
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("does not require a third argument", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.deepStrictEqual(fixResult, {
-                fixed: true,
-                messages: [],
-                output: "var a;"
-            });
-
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
-        it("does not apply autofixes when fix argument is `false`", () => {
-            const fixResult = linter.verifyAndFix("var a", {
-                rules: {
-                    semi: 2
-                }
-            }, { fix: false });
-            const suppressedMessages = linter.getSuppressedMessages();
-
-            assert.strictEqual(fixResult.fixed, false);
-            assert.strictEqual(suppressedMessages.length, 0);
-        });
-
         it("stops fixing after 10 passes", () => {
 
             const config = {

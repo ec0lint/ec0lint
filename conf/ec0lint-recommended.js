@@ -6,8 +6,6 @@
 
 "use strict";
 
-/* ec0lint sort-keys: ["error", "asc"] -- Long, so make more readable */
-
 /** @type {import("../lib/shared/types").ConfigData} */
 module.exports = {
     rules: {
