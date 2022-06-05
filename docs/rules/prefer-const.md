@@ -211,7 +211,3 @@ function initialize() {
 ## When Not To Use It
 
 If you don't want to be notified about variables that are never reassigned after initial assignment, you can safely disable this rule.
-
-## Related Rules
-
-* [no-var](no-var.md)

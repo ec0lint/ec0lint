@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "no-var": "suggestion",
-    "no-void": "suggestion",
     "no-warning-comments": "suggestion",
     "no-whitespace-before-property": "layout",
     "no-with": "suggestion",

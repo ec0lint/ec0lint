@@ -2735,24 +2735,6 @@ describe("CLIEngine", () => {
             assert.lengthOf(report.results[0].messages, reportResultsLength);
         });
 
-        it("should report no suppressed error messages when looking for errors only", () => {
-            process.chdir(originalDir);
-            const engine = new CLIEngine({
-                rules: {
-                    quotes: [1, "double"],
-                    "no-var": 2
-                }
-            });
-
-            const report = engine.executeOnText("var foo = 'bar'; // ec0lint-disable-line quotes -- justification\n");
-            const errorResults = CLIEngine.getErrorResults(report.results);
-
-            assert.lengthOf(report.results[0].messages, 1);
-            assert.lengthOf(report.results[0].suppressedMessages, 1);
-            assert.lengthOf(errorResults[0].messages, 1);
-            assert.lengthOf(errorResults[0].suppressedMessages, 0);
-        });
-
         it("should return 0 error or warning messages even when the file has warnings", () => {
             const engine = new CLIEngine({
                 ignorePath: path.join(fixtureDir, ".ec0lintignore"),
