@@ -10,6 +10,5 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "valid-typeof": "error"
     }
 };

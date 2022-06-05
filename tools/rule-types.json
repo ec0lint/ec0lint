@@ -1,8 +1,5 @@
 {
     "lighter-http": "problem",
-    "valid-jsdoc": "suggestion",
-    "valid-typeof": "problem",
-    "vars-on-top": "suggestion",
     "wrap-iife": "layout",
     "wrap-regex": "layout",
     "yield-star-spacing": "layout",
