@@ -3,6 +3,5 @@ extends:
     - "ec0lint:recommended"
 
 rules:
-    wrap-iife: "error"
     yield-star-spacing: "error"
     yoda: ["error", "never", { exceptRange: true }]

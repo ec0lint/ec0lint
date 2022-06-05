@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "wrap-iife": "layout",
-    "wrap-regex": "layout",
     "yield-star-spacing": "layout",
     "yoda": "suggestion"
 }
