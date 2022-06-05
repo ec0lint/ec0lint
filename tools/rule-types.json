@@ -1,7 +1,5 @@
 {
     "lighter-http": "problem",
-    "unicode-bom": "layout",
-    "use-isnan": "problem",
     "valid-jsdoc": "suggestion",
     "valid-typeof": "problem",
     "vars-on-top": "suggestion",

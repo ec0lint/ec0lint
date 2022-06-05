@@ -10,7 +10,6 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
-        "use-isnan": "error",
         "valid-typeof": "error"
     }
 };
