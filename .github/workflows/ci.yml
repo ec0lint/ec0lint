@@ -42,6 +42,8 @@ jobs:
         node-version: ${{ matrix.node }}
     - name: Install Packages
       run: npm install
+    - name: Clear
+      run: npm cache verify
     - name: Test
       run: node Makefile mocha
     - name: Fuzz Test

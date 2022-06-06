@@ -3,7 +3,6 @@
  * @author nzakas
  */
 
-/* ec0lint no-use-before-define: "off", no-console: "off" -- CLI */
 "use strict";
 
 //------------------------------------------------------------------------------
@@ -100,7 +99,7 @@ function validateJsonFile(filePath) {
  * @private
  */
 function fileType(extension) {
-    return function(filename) {
+    return function (filename) {
         return filename.slice(filename.lastIndexOf(".") + 1) === extension;
     };
 }
@@ -140,10 +139,7 @@ function generateBlogPost(releaseInfo, prereleaseMajorVersion) {
         now = new Date(),
         month = now.getMonth() + 1,
         day = now.getDate(),
-        filename = `../website/_posts/${now.getFullYear()}-${
-            month < 10 ? `0${month}` : month}-${
-            day < 10 ? `0${day}` : day}-ec0lint-v${
-            releaseInfo.version}-released.md`;
+        filename = `../website/_posts/${now.getFullYear()}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}-ec0lint-v${releaseInfo.version}-released.md`;
 
     output.to(filename);
 }
@@ -196,12 +192,12 @@ function generateRuleIndexPage() {
                 });
             } else {
                 const output = {
-                        name: basename,
-                        description: rule.meta.docs.description,
-                        recommended: rule.meta.docs.recommended || false,
-                        fixable: !!rule.meta.fixable,
-                        hasSuggestions: !!rule.meta.hasSuggestions
-                    },
+                    name: basename,
+                    description: rule.meta.docs.description,
+                    recommended: rule.meta.docs.recommended || false,
+                    fixable: !!rule.meta.fixable,
+                    hasSuggestions: !!rule.meta.hasSuggestions
+                },
                     ruleType = ruleTypesData.types.find(c => c.name === rule.meta.type);
 
                 if (!ruleType.rules) {
@@ -392,13 +388,6 @@ function getFormatterResults() {
     const stripAnsi = require("strip-ansi");
 
     const formatterFiles = fs.readdirSync("./lib/cli-engine/formatters/"),
-        rules = {
-            "no-else-return": "warn",
-            indent: ["warn", 4],
-            "space-unary-ops": "error",
-            semi: ["warn", "always"],
-            "consistent-return": "error"
-        },
         cli = new CLIEngine({
             useEc0lintrc: false,
             baseConfig: { extends: "ec0lint:recommended" },
@@ -452,7 +441,7 @@ function getBinFile(command) {
 // Tasks
 //------------------------------------------------------------------------------
 
-target.lint = function([fix = false] = []) {
+target.lint = function ([fix = false] = []) {
     let errors = 0,
         lastReturn;
 
@@ -474,7 +463,7 @@ target.lint = function([fix = false] = []) {
     }
 };
 
-target.fuzz = function({ amount = 1000, fuzzBrokenAutofixes = false } = {}) {
+target.fuzz = function ({ amount = 1000, fuzzBrokenAutofixes = false } = {}) {
     const fuzzerRunner = require("./tools/fuzzer-runner");
     const fuzzResults = fuzzerRunner.run({ amount, fuzzBrokenAutofixes });
 
@@ -524,11 +513,6 @@ target.mocha = () => {
         errors++;
     }
 
-    lastReturn = exec(`${getBinFile("nyc")} check-coverage --statement 98 --branch 97 --function 98 --lines 98`);
-    if (lastReturn.code !== 0) {
-        errors++;
-    }
-
     if (errors) {
         exit(1);
     }
@@ -546,7 +530,7 @@ target.karma = () => {
     }
 };
 
-target.test = function() {
+target.test = function () {
     target.lint();
     target.checkRuleFiles();
     target.mocha();
@@ -555,7 +539,7 @@ target.test = function() {
     target.checkLicenses();
 };
 
-target.gensite = function(prereleaseVersion) {
+target.gensite = function (prereleaseVersion) {
     echo("Generating ec0lint.org");
 
     let docFiles = [
@@ -748,11 +732,11 @@ target.gensite = function(prereleaseVersion) {
     echo("Done generating ec0lint.org");
 };
 
-target.webpack = function(mode = "none") {
+target.webpack = function (mode = "none") {
     exec(`${getBinFile("webpack")} --mode=${mode} --output-path=${BUILD_DIR}`);
 };
 
-target.checkRuleFiles = function() {
+target.checkRuleFiles = function () {
 
     echo("Validating rules");
 
@@ -818,7 +802,7 @@ target.checkRuleFiles = function() {
 
 };
 
-target.checkLicenses = function() {
+target.checkLicenses = function () {
 
     /**
      * Check if a dependency is eligible to be used by us
@@ -838,28 +822,6 @@ target.checkLicenses = function() {
 
         return OPEN_SOURCE_LICENSES.some(license => license.test(licenses));
     }
-
-    echo("Validating licenses");
-
-    checker.init({
-        start: __dirname
-    }, deps => {
-        const impermissible = Object.keys(deps).map(dependency => ({
-            name: dependency,
-            licenses: deps[dependency].licenses
-        })).filter(dependency => !isPermissible(dependency));
-
-        if (impermissible.length) {
-            impermissible.forEach(dependency => {
-                console.error(
-                    "%s license for %s is impermissible.",
-                    dependency.licenses,
-                    dependency.name
-                );
-            });
-            exit(1);
-        }
-    });
 };
 
 /**
@@ -1010,7 +972,7 @@ function loadPerformance() {
     echo("");
 }
 
-target.perf = function() {
+target.perf = function () {
     downloadMultifilesTestTarget(() => {
         createConfigForPerformanceTest();
 
@@ -1036,7 +998,7 @@ target.perf = function() {
                     `Multi Files (${count} files):`,
                     PERF_MULTIFILES_TARGETS,
                     3 * PERF_MULTIPLIER,
-                    () => {}
+                    () => { }
                 );
             }
         );

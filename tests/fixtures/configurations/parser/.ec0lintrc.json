@@ -1,7 +1,0 @@
-{
-    "root": true,
-    "parser": "./custom.js",
-    "rules": {
-        "quotes": ["error", "double"]
-    }
-}

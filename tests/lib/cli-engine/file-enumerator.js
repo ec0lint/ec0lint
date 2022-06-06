@@ -27,160 +27,6 @@ const { FileEnumerator } = require("../../../lib/cli-engine/file-enumerator");
 
 describe("FileEnumerator", () => {
     describe("'iterateFiles(patterns)' method should iterate files and configs.", () => {
-        describe("with three directories ('lib', 'lib/nested', 'test') that contains 'one.js' and 'two.js'", () => {
-            const root = path.join(os.tmpdir(), "ec0lint/file-enumerator");
-            const files = {
-                "lib/nested/one.js": "",
-                "lib/nested/two.js": "",
-                "lib/nested/parser.js": "",
-                "lib/nested/.ec0lintrc.yml": "parser: './parser'",
-                "lib/one.js": "",
-                "lib/two.js": "",
-                "test/one.js": "",
-                "test/two.js": "",
-                "test/.ec0lintrc.yml": "env: { mocha: true }",
-                ".ec0lintignore": "/lib/nested/parser.js",
-                ".ec0lintrc.json": JSON.stringify({
-                    rules: {
-                        "no-undef": "error",
-                        "no-unused-vars": "error"
-                    }
-                })
-            };
-            const { prepare, cleanup, getPath } = createCustomTeardown({ cwd: root, files });
-
-            /** @type {FileEnumerator} */
-            let enumerator;
-
-            beforeEach(async () => {
-                await prepare();
-                enumerator = new FileEnumerator({ cwd: getPath() });
-            });
-
-            afterEach(cleanup);
-
-            it("should ignore empty strings.", () => {
-                Array.from(enumerator.iterateFiles(["lib/*.js", ""])); // don't throw "file not found" error.
-            });
-
-            describe("if 'lib/*.js' was given,", () => {
-
-                /** @type {Array<{config:(typeof import('../../../lib/cli-engine')).ConfigArray, filePath:string, ignored:boolean}>} */
-                let list;
-
-                beforeEach(() => {
-                    list = [...enumerator.iterateFiles("lib/*.js")];
-                });
-
-                it("should list two files.", () => {
-                    assert.strictEqual(list.length, 2);
-                });
-
-                it("should list 'lib/one.js' and 'lib/two.js'.", () => {
-                    assert.deepStrictEqual(
-                        list.map(entry => entry.filePath),
-                        [
-                            path.join(root, "lib/one.js"),
-                            path.join(root, "lib/two.js")
-                        ]
-                    );
-                });
-
-                it("should use the config '.ec0lintrc.json' for both files.", () => {
-                    assert.strictEqual(list[0].config, list[1].config);
-                    assert.strictEqual(list[0].config.length, 3);
-                    assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
-                    assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".ec0lintignore"));
-                });
-            });
-
-            describe("if 'lib/**/*.js' was given,", () => {
-
-                /** @type {Array<{config:(typeof import('../../../lib/cli-engine')).ConfigArray, filePath:string, ignored:boolean}>} */
-                let list;
-
-                beforeEach(() => {
-                    list = [...enumerator.iterateFiles("lib/**/*.js")];
-                });
-
-                it("should list four files.", () => {
-                    assert.strictEqual(list.length, 4);
-                });
-
-                it("should list 'lib/nested/one.js', 'lib/nested/two.js', 'lib/one.js', 'lib/two.js'.", () => {
-                    assert.deepStrictEqual(
-                        list.map(entry => entry.filePath),
-                        [
-                            path.join(root, "lib/nested/one.js"),
-                            path.join(root, "lib/nested/two.js"),
-                            path.join(root, "lib/one.js"),
-                            path.join(root, "lib/two.js")
-                        ]
-                    );
-                });
-
-                it("should use the merged config of '.ec0lintrc.json' and 'lib/nested/.ec0lintrc.yml' for 'lib/nested/one.js' and 'lib/nested/two.js'.", () => {
-                    assert.strictEqual(list[0].config, list[1].config);
-                    assert.strictEqual(list[0].config.length, 4);
-                    assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
-                    assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, "lib/nested/.ec0lintrc.yml"));
-                    assert.strictEqual(list[0].config[3].filePath, path.join(root, ".ec0lintignore"));
-                });
-
-                it("should use the config '.ec0lintrc.json' for 'lib/one.js' and 'lib/two.js'.", () => {
-                    assert.strictEqual(list[2].config, list[3].config);
-                    assert.strictEqual(list[2].config.length, 3);
-                    assert.strictEqual(list[2].config[0].name, "DefaultIgnorePattern");
-                    assert.strictEqual(list[2].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[2].config[2].filePath, path.join(root, ".ec0lintignore"));
-                });
-            });
-
-            describe("if 'lib/*.js' and 'test/*.js' were given,", () => {
-
-                /** @type {Array<{config:(typeof import('../../../lib/cli-engine')).ConfigArray, filePath:string, ignored:boolean}>} */
-                let list;
-
-                beforeEach(() => {
-                    list = [...enumerator.iterateFiles(["lib/*.js", "test/*.js"])];
-                });
-
-                it("should list four files.", () => {
-                    assert.strictEqual(list.length, 4);
-                });
-
-                it("should list 'lib/one.js', 'lib/two.js', 'test/one.js', 'test/two.js'.", () => {
-                    assert.deepStrictEqual(
-                        list.map(entry => entry.filePath),
-                        [
-                            path.join(root, "lib/one.js"),
-                            path.join(root, "lib/two.js"),
-                            path.join(root, "test/one.js"),
-                            path.join(root, "test/two.js")
-                        ]
-                    );
-                });
-
-                it("should use the config '.ec0lintrc.json' for 'lib/one.js' and 'lib/two.js'.", () => {
-                    assert.strictEqual(list[0].config, list[1].config);
-                    assert.strictEqual(list[0].config.length, 3);
-                    assert.strictEqual(list[0].config[0].name, "DefaultIgnorePattern");
-                    assert.strictEqual(list[0].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[0].config[2].filePath, path.join(root, ".ec0lintignore"));
-                });
-
-                it("should use the merged config of '.ec0lintrc.json' and 'test/.ec0lintrc.yml' for 'test/one.js' and 'test/two.js'.", () => {
-                    assert.strictEqual(list[2].config, list[3].config);
-                    assert.strictEqual(list[2].config.length, 4);
-                    assert.strictEqual(list[2].config[0].name, "DefaultIgnorePattern");
-                    assert.strictEqual(list[2].config[1].filePath, path.join(root, ".ec0lintrc.json"));
-                    assert.strictEqual(list[2].config[2].filePath, path.join(root, "test/.ec0lintrc.yml"));
-                    assert.strictEqual(list[2].config[3].filePath, path.join(root, ".ec0lintignore"));
-                });
-            });
-        });
 
         // This group moved from 'tests/lib/util/glob-utils.js' when refactoring to keep the cumulated test cases.
         describe("with 'tests/fixtures/glob-utils' files", () => {
@@ -217,7 +63,7 @@ describe("FileEnumerator", () => {
                 );
             }
 
-            before(function() {
+            before(function () {
 
                 /*
                  * GitHub Actions Windows and macOS runners occasionally
@@ -544,7 +390,7 @@ describe("FileEnumerator", () => {
         });
     });
 
-// TODO
+    // TODO
     // describe("constructor default values when config extends ec0lint:recommended", () => {
     //     const root = path.join(os.tmpdir(), "ec0lint/file-enumerator");
     //     const files = {
