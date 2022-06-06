@@ -2303,724 +2303,724 @@ describe("CLIEngine", () => {
         });
     });
 
-    describe("with ignorePatterns config", () => {
-        const root = getFixturePath("cli-engine/ignore-patterns");
-
-        describe("ignorePatterns can add an ignore pattern ('foo.js').", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": {
-                        ignorePatterns: "foo.js"
-                    },
-                    "foo.js": "",
-                    "bar.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should not verify 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js"),
-                    path.join(root, "subdir/bar.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns can add ignore patterns ('foo.js', '/bar.js').", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": {
-                        ignorePatterns: ["foo.js", "/bar.js"]
-                    },
-                    "foo.js": "",
-                    "bar.js": "",
-                    "baz.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": "",
-                    "subdir/baz.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'true' for '/bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should not verify 'foo.js' and '/bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "baz.js"),
-                    path.join(root, "subdir/bar.js"),
-                    path.join(root, "subdir/baz.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns can unignore '/node_modules/foo'.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": {
-                        ignorePatterns: "!/node_modules/foo"
-                    },
-                    "node_modules/foo/index.js": "",
-                    "node_modules/foo/.dot.js": "",
-                    "node_modules/bar/index.js": "",
-                    "foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'false' for 'node_modules/foo/index.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("node_modules/foo/index.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'true' for 'node_modules/foo/.dot.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("node_modules/foo/.dot.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'true' for 'node_modules/bar/index.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("node_modules/bar/index.js"), true);
-            });
-
-            it("'executeOnFiles()' should verify 'node_modules/foo/index.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "foo.js"),
-                    path.join(root, "node_modules/foo/index.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns can unignore '.ec0lintrc.js'.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "!.ec0lintrc.js"
-                    })}`,
-                    "foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'false' for '.ec0lintrc.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored(".ec0lintrc.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify '.ec0lintrc.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, ".ec0lintrc.js"),
-                    path.join(root, "foo.js")
-                ]);
-            });
-        });
-
-        describe(".ec0lintignore can re-ignore files that are unignored by ignorePatterns.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "!.*"
-                    })}`,
-                    ".ec0lintignore": ".foo*",
-                    ".foo.js": "",
-                    ".bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for re-ignored '.foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored(".foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for unignored '.bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored(".bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should not verify re-ignored '.foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, ".bar.js"),
-                    path.join(root, ".ec0lintrc.js")
-                ]);
-            });
-        });
-
-        describe(".ec0lintignore can unignore files that are ignored by ignorePatterns.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "*.js"
-                    })}`,
-                    ".ec0lintignore": "!foo.js",
-                    "foo.js": "",
-                    "bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), true);
-            });
-
-            it("'executeOnFiles()' should verify unignored 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "foo.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in the config file in a child directory affects to only in the directory.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: "foo.js"
-                    }),
-                    "subdir/.ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: "bar.js"
-                    }),
-                    "foo.js": "",
-                    "bar.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": "",
-                    "subdir/subsubdir/foo.js": "",
-                    "subdir/subsubdir/bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/subsubdir/foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'true' for 'bar.js' in 'subdir'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/subsubdir/bar.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js' in the outside of 'subdir'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'bar.js' in the outside of 'subdir'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in the config file in a child directory can unignore the ignored files in the parent directory's config.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: "foo.js"
-                    }),
-                    "subdir/.ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: "!foo.js"
-                    }),
-                    "foo.js": "",
-                    "subdir/foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'foo.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "subdir/foo.js")
-                ]);
-            });
-        });
-
-        describe(".ec0lintignore can unignore files that are ignored by ignorePatterns in the config file in the child directory.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": {},
-                    "subdir/.ec0lintrc.json": {
-                        ignorePatterns: "*.js"
-                    },
-                    ".ec0lintignore": "!foo.js",
-                    "foo.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), false);
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
-            });
-
-            it("'executeOnFiles()' should verify unignored 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "foo.js"),
-                    path.join(root, "subdir/foo.js")
-                ]);
-            });
-        });
-
-        describe("if the config in a child directory has 'root:true', ignorePatterns in the config file in the parent directory should not be used.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": {
-                        ignorePatterns: "foo.js"
-                    },
-                    "subdir/.ec0lintrc.json": {
-                        root: true,
-                        ignorePatterns: "bar.js"
-                    },
-                    "foo.js": "",
-                    "bar.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
-            });
-
-            it("'executeOnFiles()' should verify 'bar.js' in the root directory and 'foo.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js"),
-                    path.join(root, "subdir/foo.js")
-                ]);
-            });
-        });
-
-        describe("even if the config in a child directory has 'root:true', .ec0lintignore should be used.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": JSON.stringify({}),
-                    "subdir/.ec0lintrc.json": JSON.stringify({
-                        root: true,
-                        ignorePatterns: "bar.js"
-                    }),
-                    ".ec0lintignore": "foo.js",
-                    "foo.js": "",
-                    "bar.js": "",
-                    "subdir/foo.js": "",
-                    "subdir/bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-            });
-
-            it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
-            });
-
-            it("'executeOnFiles()' should verify 'bar.js' in the root directory.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in the shareable config should be used.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "foo.js"
-                    })}`,
-                    ".ec0lintrc.json": JSON.stringify({
-                        extends: "one"
-                    }),
-                    "foo.js": "",
-                    "bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in the shareable config should be relative to the entry config file.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "/foo.js"
-                    })}`,
-                    ".ec0lintrc.json": JSON.stringify({
-                        extends: "one"
-                    }),
-                    "foo.js": "",
-                    "subdir/foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'subdir/foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'subdir/foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "subdir/foo.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in a config file can unignore the files which are ignored by ignorePatterns in the shareable config.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
-                        ignorePatterns: "*.js"
-                    })}`,
-                    ".ec0lintrc.json": JSON.stringify({
-                        extends: "one",
-                        ignorePatterns: "!bar.js"
-                    }),
-                    "foo.js": "",
-                    "bar.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), true);
-            });
-
-            it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-
-                assert.strictEqual(engine.isPathIgnored("bar.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'bar.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath() });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "bar.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in a config file should not be used if --no-ignore option was given.", () => {
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.json": JSON.stringify({
-                        ignorePatterns: "*.js"
-                    }),
-                    "foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("'isPathIgnored()' should return 'false' for 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath(), ignore: false });
-
-                assert.strictEqual(engine.isPathIgnored("foo.js"), false);
-            });
-
-            it("'executeOnFiles()' should verify 'foo.js'.", () => {
-                const engine = new CLIEngine({ cwd: getPath(), ignore: false });
-                const filePaths = engine.executeOnFiles("**/*.js")
-                    .results
-                    .map(r => r.filePath)
-                    .sort();
-
-                assert.deepStrictEqual(filePaths, [
-                    path.join(root, "foo.js")
-                ]);
-            });
-        });
-
-        describe("ignorePatterns in overrides section is not allowed.", () => {
-
-            const { prepare, cleanup, getPath } = createCustomTeardown({
-                cwd: root,
-                files: {
-                    ".ec0lintrc.js": `module.exports = ${JSON.stringify({
-                        overrides: [
-                            {
-                                files: "*.js",
-                                ignorePatterns: "foo.js"
-                            }
-                        ]
-                    })}`,
-                    "foo.js": ""
-                }
-            });
-
-            beforeEach(prepare);
-            afterEach(cleanup);
-
-            it("should throw a configuration error.", () => {
-                assert.throws(() => {
-                    const engine = new CLIEngine({ cwd: getPath() });
-
-                    engine.executeOnFiles("*.js");
-                }, "Unexpected top-level property \"overrides[0].ignorePatterns\"");
-            });
-        });
-
-    });
+    // describe("with ignorePatterns config", () => {
+    //     const root = getFixturePath("cli-engine/ignore-patterns");
+
+    //     describe("ignorePatterns can add an ignore pattern ('foo.js').", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": {
+    //                     ignorePatterns: "foo.js"
+    //                 },
+    //                 "foo.js": "",
+    //                 "bar.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should not verify 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js"),
+    //                 path.join(root, "subdir/bar.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns can add ignore patterns ('foo.js', '/bar.js').", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": {
+    //                     ignorePatterns: ["foo.js", "/bar.js"]
+    //                 },
+    //                 "foo.js": "",
+    //                 "bar.js": "",
+    //                 "baz.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": "",
+    //                 "subdir/baz.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for '/bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should not verify 'foo.js' and '/bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "baz.js"),
+    //                 path.join(root, "subdir/bar.js"),
+    //                 path.join(root, "subdir/baz.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns can unignore '/node_modules/foo'.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": {
+    //                     ignorePatterns: "!/node_modules/foo"
+    //                 },
+    //                 "node_modules/foo/index.js": "",
+    //                 "node_modules/foo/.dot.js": "",
+    //                 "node_modules/bar/index.js": "",
+    //                 "foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'false' for 'node_modules/foo/index.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("node_modules/foo/index.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for 'node_modules/foo/.dot.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("node_modules/foo/.dot.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for 'node_modules/bar/index.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("node_modules/bar/index.js"), true);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'node_modules/foo/index.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "foo.js"),
+    //                 path.join(root, "node_modules/foo/index.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns can unignore '.ec0lintrc.js'.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "!.ec0lintrc.js"
+    //                 })}`,
+    //                 "foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'false' for '.ec0lintrc.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored(".ec0lintrc.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify '.ec0lintrc.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, ".ec0lintrc.js"),
+    //                 path.join(root, "foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe(".ec0lintignore can re-ignore files that are unignored by ignorePatterns.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "!.*"
+    //                 })}`,
+    //                 ".ec0lintignore": ".foo*",
+    //                 ".foo.js": "",
+    //                 ".bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for re-ignored '.foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored(".foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for unignored '.bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored(".bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should not verify re-ignored '.foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, ".bar.js"),
+    //                 path.join(root, ".ec0lintrc.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe(".ec0lintignore can unignore files that are ignored by ignorePatterns.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "*.js"
+    //                 })}`,
+    //                 ".ec0lintignore": "!foo.js",
+    //                 "foo.js": "",
+    //                 "bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), true);
+    //         });
+
+    //         it("'executeOnFiles()' should verify unignored 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in the config file in a child directory affects to only in the directory.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     ignorePatterns: "foo.js"
+    //                 }),
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
+    //                     ignorePatterns: "bar.js"
+    //                 }),
+    //                 "foo.js": "",
+    //                 "bar.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": "",
+    //                 "subdir/subsubdir/foo.js": "",
+    //                 "subdir/subsubdir/bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/subsubdir/foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for 'bar.js' in 'subdir'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/subsubdir/bar.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js' in the outside of 'subdir'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'bar.js' in the outside of 'subdir'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in the config file in a child directory can unignore the ignored files in the parent directory's config.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     ignorePatterns: "foo.js"
+    //                 }),
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
+    //                     ignorePatterns: "!foo.js"
+    //                 }),
+    //                 "foo.js": "",
+    //                 "subdir/foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'foo.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "subdir/foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe(".ec0lintignore can unignore files that are ignored by ignorePatterns in the config file in the child directory.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": {},
+    //                 "subdir/.ec0lintrc.json": {
+    //                     ignorePatterns: "*.js"
+    //                 },
+    //                 ".ec0lintignore": "!foo.js",
+    //                 "foo.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), false);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
+    //         });
+
+    //         it("'executeOnFiles()' should verify unignored 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "foo.js"),
+    //                 path.join(root, "subdir/foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("if the config in a child directory has 'root:true', ignorePatterns in the config file in the parent directory should not be used.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": {
+    //                     ignorePatterns: "foo.js"
+    //                 },
+    //                 "subdir/.ec0lintrc.json": {
+    //                     root: true,
+    //                     ignorePatterns: "bar.js"
+    //                 },
+    //                 "foo.js": "",
+    //                 "bar.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'bar.js' in the root directory and 'foo.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js"),
+    //                 path.join(root, "subdir/foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("even if the config in a child directory has 'root:true', .ec0lintignore should be used.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": JSON.stringify({}),
+    //                 "subdir/.ec0lintrc.json": JSON.stringify({
+    //                     root: true,
+    //                     ignorePatterns: "bar.js"
+    //                 }),
+    //                 ".ec0lintignore": "foo.js",
+    //                 "foo.js": "",
+    //                 "bar.js": "",
+    //                 "subdir/foo.js": "",
+    //                 "subdir/bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/bar.js"), true);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'bar.js' in the root directory.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in the shareable config should be used.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "foo.js"
+    //                 })}`,
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     extends: "one"
+    //                 }),
+    //                 "foo.js": "",
+    //                 "bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in the shareable config should be relative to the entry config file.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "/foo.js"
+    //                 })}`,
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     extends: "one"
+    //                 }),
+    //                 "foo.js": "",
+    //                 "subdir/foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'subdir/foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("subdir/foo.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'subdir/foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "subdir/foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in a config file can unignore the files which are ignored by ignorePatterns in the shareable config.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 "node_modules/ec0lint-config-one/index.js": `module.exports = ${JSON.stringify({
+    //                     ignorePatterns: "*.js"
+    //                 })}`,
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     extends: "one",
+    //                     ignorePatterns: "!bar.js"
+    //                 }),
+    //                 "foo.js": "",
+    //                 "bar.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'true' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), true);
+    //         });
+
+    //         it("'isPathIgnored()' should return 'false' for 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+
+    //             assert.strictEqual(engine.isPathIgnored("bar.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'bar.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath() });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "bar.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in a config file should not be used if --no-ignore option was given.", () => {
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.json": JSON.stringify({
+    //                     ignorePatterns: "*.js"
+    //                 }),
+    //                 "foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("'isPathIgnored()' should return 'false' for 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath(), ignore: false });
+
+    //             assert.strictEqual(engine.isPathIgnored("foo.js"), false);
+    //         });
+
+    //         it("'executeOnFiles()' should verify 'foo.js'.", () => {
+    //             const engine = new CLIEngine({ cwd: getPath(), ignore: false });
+    //             const filePaths = engine.executeOnFiles("**/*.js")
+    //                 .results
+    //                 .map(r => r.filePath)
+    //                 .sort();
+
+    //             assert.deepStrictEqual(filePaths, [
+    //                 path.join(root, "foo.js")
+    //             ]);
+    //         });
+    //     });
+
+    //     describe("ignorePatterns in overrides section is not allowed.", () => {
+
+    //         const { prepare, cleanup, getPath } = createCustomTeardown({
+    //             cwd: root,
+    //             files: {
+    //                 ".ec0lintrc.js": `module.exports = ${JSON.stringify({
+    //                     overrides: [
+    //                         {
+    //                             files: "*.js",
+    //                             ignorePatterns: "foo.js"
+    //                         }
+    //                     ]
+    //                 })}`,
+    //                 "foo.js": ""
+    //             }
+    //         });
+
+    //         beforeEach(prepare);
+    //         afterEach(cleanup);
+
+    //         it("should throw a configuration error.", () => {
+    //             assert.throws(() => {
+    //                 const engine = new CLIEngine({ cwd: getPath() });
+
+    //                 engine.executeOnFiles("*.js");
+    //             }, "Unexpected top-level property \"overrides[0].ignorePatterns\"");
+    //         });
+    //     });
+
+    // });
 
     describe("'overrides[].files' adds lint targets", () => {
         const root = getFixturePath("cli-engine/additional-lint-targets");
