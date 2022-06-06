@@ -2,14 +2,13 @@
 
 # ec0lint
 
-[Website](TBD) |
-[Configuring](TBD) |
-[Rules](TBD)
+[Website](http://ec0lint.com) |
+[Configuring](https://eslint.org/docs/user-guide/configuring/) |
+[Rules](http://ec0lint.com/features)
 
 ec0lint is a static code analysis tool that provides users with hints on how to reduce the carbon footprint of their websites during the development process. Applying code changes suggested by ec0lint results in lower carbon emissions per visit, quicker loading and higher space efficiency. The tool is open-source and community-driven.
 
 ## Our goal
-
 
 Did you know that more than 250 000 websites are published every day?
 
