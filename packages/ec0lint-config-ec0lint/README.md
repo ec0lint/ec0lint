@@ -1,6 +1,6 @@
 # ec0lint configuration
 
-[Website](TBD) | [Configuring (from ESLint)](https://eslint.org/docs/user-guide/configuring) | [Rules](TBD)
+[Website](http://ec0lint.com) | [Configuring (from ESLint)](https://eslint.org/docs/user-guide/configuring) | [Rules](TBD)
 
 Contains the ec0lint configuration used for projects maintained by the ec0lint team.
 
