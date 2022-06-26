@@ -822,28 +822,6 @@ target.checkLicenses = function () {
 
         return OPEN_SOURCE_LICENSES.some(license => license.test(licenses));
     }
-
-    echo("Validating licenses");
-
-    checker.init({
-        start: __dirname
-    }, deps => {
-        const impermissible = Object.keys(deps).map(dependency => ({
-            name: dependency,
-            licenses: deps[dependency].licenses
-        })).filter(dependency => !isPermissible(dependency));
-
-        if (impermissible.length) {
-            impermissible.forEach(dependency => {
-                console.error(
-                    "%s license for %s is impermissible.",
-                    dependency.licenses,
-                    dependency.name
-                );
-            });
-            exit(1);
-        }
-    });
 };
 
 /**
