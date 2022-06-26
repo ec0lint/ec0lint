@@ -21,35 +21,35 @@ ruleTester.run("no-date-fns", rule, {
     invalid: [
         {
             code: "import dateFns from 'date-fns'",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "var dateFns = require('date-fns')",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "import * as dateFns from 'date-fns'",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "import _ from 'date-fns'",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "import format from 'date-fns.format'",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "var _ = require('date-fns')",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "var format = require('date-fns.format')",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         },
         {
             code: "import { format, formatDistance, formatRelative, subDays } from 'date-fns'",
-            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and node.js." }]
+            errors: [{ message: "You can replace date-fns by Intl.DateTimeFormat - it's perfectly supported by all modern browsers and Node.js. CO2 Reduction: 2.32 g" }]
         }
     ]
 });

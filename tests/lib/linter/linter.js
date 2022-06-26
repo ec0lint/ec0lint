@@ -8590,7 +8590,7 @@ describe("Linter with FlatConfigArray", () => {
 
                         assert.strictEqual(messages.length, 1);
                         assert.strictEqual(messages[0].ruleId, "lighter-http");
-                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[0].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8718,7 +8718,7 @@ describe("Linter with FlatConfigArray", () => {
 
                         assert.strictEqual(messages.length, 1);
                         assert.strictEqual(messages[0].ruleId, "lighter-http");
-                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[0].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8736,7 +8736,7 @@ describe("Linter with FlatConfigArray", () => {
 
                         assert.strictEqual(messages.length, 1);
                         assert.strictEqual(messages[0].ruleId, "lighter-http");
-                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[0].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[0].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8873,7 +8873,7 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages[0].column, 1);
 
                         assert.strictEqual(messages[1].ruleId, "lighter-http");
-                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8901,7 +8901,7 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages[0].column, 1);
 
                         assert.strictEqual(messages[1].ruleId, "lighter-http");
-                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8929,7 +8929,7 @@ describe("Linter with FlatConfigArray", () => {
                         assert.strictEqual(messages[0].column, 1);
 
                         assert.strictEqual(messages[1].ruleId, "lighter-http");
-                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).");
+                        assert.strictEqual(messages[1].message, "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g");
                         assert.include(messages[1].nodeType, "CallExpression");
 
                         assert.strictEqual(suppressedMessages.length, 0);
@@ -8961,7 +8961,7 @@ describe("Linter with FlatConfigArray", () => {
                             column: 11,
                             endLine: 1,
                             endColumn: 27,
-                            message: "Do not import axios. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).",
+                            message: "Do not import axios. Remove it from your app and use fetch instead (you can find examples on http://ec0lint.com/features). CO2 Reduction: up to 0.21 g",
                             messageId: "unexpected",
                             nodeType: "CallExpression"
                         },

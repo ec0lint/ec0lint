@@ -1,6 +1,6 @@
 {
   "name": "ec0lint-config-ec0lint",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "author": "Malwina Kubas @malwinq",
   "description": "Default ec0lint configuration for ec0lint projects",
   "scripts": {
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/ec0lint/ec0lint"
   },
-  "homepage": "TBD",
+  "homepage": "http://ec0lint.com",
   "bugs": "https://github.com/ec0lint/ec0lint/issues/",
   "keywords": [
     "ec0lint",
