@@ -1,1 +1,2 @@
 # avoid-lodash
+test
