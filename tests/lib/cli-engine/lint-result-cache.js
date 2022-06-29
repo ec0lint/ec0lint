@@ -31,8 +31,7 @@ describe("LintResultCache", () => {
         hashStub,
         sandbox,
         fakeConfig,
-        fakeErrorResults,
-        fakeErrorResultsAutofix;
+        fakeErrorResults;
 
     before(() => {
         sandbox = sinon.createSandbox();

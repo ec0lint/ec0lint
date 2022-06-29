@@ -45,21 +45,6 @@ function assertExitCode(exitingProcess, expectedExitCode) {
     });
 }
 
-/**
- * Returns a Promise for the stdout of a process.
- * @param {ChildProcess} runningProcess The child process
- * @returns {Promise<{stdout: string, stderr: string}>} A Promise that fulfills with all of the
- * stdout and stderr output produced by the process when it exits.
- */
-function getOutput(runningProcess) {
-    let stdout = "";
-    let stderr = "";
-
-    runningProcess.stdout.on("data", data => (stdout += data));
-    runningProcess.stderr.on("data", data => (stderr += data));
-    return awaitExit(runningProcess).then(() => ({ stdout, stderr }));
-}
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------

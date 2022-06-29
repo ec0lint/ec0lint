@@ -81,8 +81,6 @@ describe("ec0lint-fuzzer", function () {
 
     describe("when running in crash-and-autofix mode", () => {
         const INVALID_SYNTAX = "this is not valid javascript syntax";
-        let expectedSyntaxError;
-
         try {
             espree.parse(INVALID_SYNTAX);
         } catch (err) {

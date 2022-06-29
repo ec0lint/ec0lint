@@ -7,21 +7,10 @@
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-const sinon = require("sinon"),
-    EventEmitter = require("events"),
+const EventEmitter = require("events"),
     { RuleTester } = require("../../../lib/rule-tester"),
     assert = require("chai").assert,
-    nodeAssert = require("assert"),
     espree = require("espree");
-
-const NODE_ASSERT_STRICT_EQUAL_OPERATOR = (() => {
-    try {
-        nodeAssert.strictEqual(1, 2);
-    } catch (err) {
-        return err.operator;
-    }
-    throw new Error("unexpected successful assertion");
-})();
 
 /**
  * Do nothing.
@@ -75,23 +64,6 @@ describe("RuleTester", () => {
     });
 
     let ruleTester;
-
-    /**
-     * A helper function to verify Node.js core error messages.
-     * @param {string} actual The actual input
-     * @param {string} expected The expected input
-     * @returns {Function} Error callback to verify that the message is correct
-     *                     for the actual and expected input.
-     */
-    function assertErrorMatches(actual, expected) {
-        const err = new nodeAssert.AssertionError({
-            actual,
-            expected,
-            operator: NODE_ASSERT_STRICT_EQUAL_OPERATOR
-        });
-
-        return err.message;
-    }
 
     beforeEach(() => {
         RuleTester.resetDefaultConfig();
@@ -1539,25 +1511,6 @@ describe("RuleTester", () => {
         });
     });
 
-    /**
-     * Asserts that a particular value will be emitted from an EventEmitter.
-     * @param {EventEmitter} emitter The emitter that should emit a value
-     * @param {string} emitType The type of emission to listen for
-     * @param {any} expectedValue The value that should be emitted
-     * @returns {Promise<void>} A Promise that fulfills if the value is emitted, and rejects if something else is emitted.
-     * The Promise will be indefinitely pending if no value is emitted.
-     */
-    function assertEmitted(emitter, emitType, expectedValue) {
-        return new Promise((resolve, reject) => {
-            emitter.once(emitType, emittedValue => {
-                if (emittedValue === expectedValue) {
-                    resolve();
-                } else {
-                    reject(new Error(`Expected ${expectedValue} to be emitted but ${emittedValue} was emitted instead.`));
-                }
-            });
-        });
-    }
     // https://github.com/eslint/eslint/issues/11615
     it("should fail the case if autofix made a syntax error.", () => {
         assert.throw(() => {
