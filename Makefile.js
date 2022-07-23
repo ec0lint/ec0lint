@@ -74,7 +74,7 @@ const NODE = "node ", // intentional extra space
     PERF_MULTIFILES_TARGETS = `"${PERF_MULTIFILES_TARGET_DIR + path.sep}{lib,tests${path.sep}lib}${path.sep}**${path.sep}*.js"`,
 
     // Settings
-    MOCHA_TIMEOUT = parseInt(process.env.EC0LINT_MOCHA_TIMEOUT, 10) || 10000;
+    MOCHA_TIMEOUT = parseInt(process.env.EC0LINT_MOCHA_TIMEOUT, 10) || 50000;
 
 //------------------------------------------------------------------------------
 // Helpers
