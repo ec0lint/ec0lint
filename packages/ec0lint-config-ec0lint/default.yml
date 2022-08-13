@@ -4,6 +4,7 @@ extends:
 
 rules:
    lighter-http: "error"
+   no-ajax: "error"
    avoid-lodash: "error"
    no-date-fns: "error"
    no-moment-js: "error"
