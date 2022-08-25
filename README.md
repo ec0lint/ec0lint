@@ -10,7 +10,7 @@
 
 ec0lint is a static code analysis tool that provides users with hints on how to reduce the carbon footprint of their websites during the development process. Applying code changes suggested by ec0lint results in lower carbon emissions per visit, quicker loading and higher space efficiency. The tool is open-source and community-driven.
 
-## Our goal
+# Our goal
 
 Did you know that more than 250 000 websites are published every day?
 
@@ -20,7 +20,7 @@ ec0lint is a tool for frontend developers that mitigates the carbon footprint of
 
 The tool is customized and each rule applied during the analysis can be adjusted, or treated as hints rather than errors. This flexibility allows the developers to reach their goals without interruptions from ec0lint, at the same time drawing attention to possible improvements.
 
-## Get started 
+# Get started 
 
 Make sure you have Node installed 
 
@@ -45,7 +45,7 @@ Split your terminal and run:
 
 Let's build an eco-friendly website!
 
-## How to start contributing
+# How to start contributing
 
 If you wish to contribute, just write to us and start coding!
 
