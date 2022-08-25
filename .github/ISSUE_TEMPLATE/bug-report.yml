@@ -21,25 +21,11 @@ body:
         Operating System:
   validations:
     required: true
-- type: dropdown
-  attributes:
-    label: What parser are you using?
-    description: |
-      Please keep in mind that some problems are parser-specific.
-    options:
-      - "Default (Espree)"
-      - "@typescript-eslint/parser"
-      - "@babel/eslint-parser"
-      - "vue-eslint-parser"
-      - "@angular-eslint/template-parser"
-      - Other
-  validations:
-    required: true
 - type: textarea
   attributes:
     label: What did you do?
     description: |
-      Please include a *minimal* reproduction case. If possible, include a link to a reproduction of the problem in the [ESLint demo](https://eslint.org/demo). Otherwise, include source code, configuration file(s), and any other information about how you're using ESLint. You can use Markdown in this field.
+      Please include a *minimal* reproduction case. You can use Markdown in this field.
     value: |
       <details>
       <summary>Configuration</summary>
@@ -65,7 +51,7 @@ body:
   attributes:
     label: What actually happened?
     description: |
-      Please copy-paste the actual ESLint output. You can use Markdown in this field.
+      Please copy-paste the actual ec0lint output. You can use Markdown in this field.
   validations:
     required: true
 - type: checkboxes
