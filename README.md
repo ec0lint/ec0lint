@@ -49,7 +49,7 @@ Let's build an eco-friendly website!
 
 If you wish to contribute, just write to us and start coding!
 
-You can also look at our issues and search for a task for you.
+You can also look at our issues (https://github.com/ec0lint/ec0lint/issues) and search for a task for you.
 
 Thank you!
 
