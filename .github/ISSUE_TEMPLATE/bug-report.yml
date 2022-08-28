@@ -21,6 +21,18 @@ body:
         Operating System:
   validations:
     required: true
+- type: dropdown
+  attributes:
+    label: What parser are you using?
+    description: |
+      Please keep in mind that some problems are parser-specific.
+    options:
+      - "Default (Espree)"
+      - "@typescript-eslint/parser"
+      - "@babel/eslint-parser"
+      - Other
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: What did you do?
