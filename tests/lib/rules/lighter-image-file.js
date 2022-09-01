@@ -99,5 +99,3 @@ ruleTester.run("lighter-image-file", rule, {
         }
     ]
 });
-
-//npm run test:cli tests/lib/rules/lighter-image-file.js
