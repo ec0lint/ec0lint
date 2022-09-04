@@ -1509,7 +1509,7 @@ describe("ast-utils", () => {
         //         false
         //     );
         // });
-    });
+    // });
 
     describe("equalTokens", () => {
         it("should return true if tokens are equal", () => {
