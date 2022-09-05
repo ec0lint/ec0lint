@@ -15,14 +15,13 @@ ruleTester.run("lighter-image-file", rule, {
         "import {ReactComponent as foo} from './foo.gif'",
         "import {ReactComponent as foo} from './foo.jpg'",
         "import {ReactComponent as foo} from './foo.jpeg'",
-        "import {ReactComponent as foo} from './foo.jsvg'",
-        "import {ReactComponent as foo} from './foo.jpg'",
+        "import {ReactComponent as foo} from './foo.svg'",
+        "import {ReactComponent as foo} from './foo.webp'",
         "let Foo = require('../src/foo.gif')",
         "let Foo = require('../src/foo.jpg')",
         "let Foo = require('../src/foo.jpeg')",
         "let Foo = require('../src/foo.svg')",
-        "let Foo = require('../src/foo.webp')",
-        "src='https://reactjs.org/logo-og.png'"
+        "let Foo = require('../src/foo.webp')"
     ],
     invalid: [
         {
@@ -42,14 +41,6 @@ ruleTester.run("lighter-image-file", rule, {
             errors: [{ messageId: "rejected" }]
         },
         {
-            code: "import foo from './foo.tiff'",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
-            code: "import foo from './foo.psd'",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
             code: "import {ReactComponent as foo} from './foo.png'",
             errors: [{ messageId: "rejected" }]
         },
@@ -66,14 +57,6 @@ ruleTester.run("lighter-image-file", rule, {
             errors: [{ messageId: "rejected" }]
         },
         {
-            code: "import {ReactComponent as foo} from './foo.tiff'",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
-            code: "import {ReactComponent as foo} from './foo.psd'",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
             code: "let Foo = require('../src/foo.png')",
             errors: [{ messageId: "rejected" }]
         },
@@ -87,14 +70,6 @@ ruleTester.run("lighter-image-file", rule, {
         },
         {
             code: "let Foo = require('../src/foo.rgb')",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
-            code: "let Foo = require('../src/foo.tiff')",
-            errors: [{ messageId: "rejected" }]
-        },
-        {
-            code: "let Foo = require('../src/foo.psd')",
             errors: [{ messageId: "rejected" }]
         }
     ]
