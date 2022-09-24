@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/ec0lint.svg)](https://www.npmjs.com/package/ec0lint)
 [![Downloads](https://img.shields.io/npm/dm/ec0lint.svg)](https://www.npmjs.com/package/ec0lint)
 [![Build Status](https://github.com/ec0lint/ec0lint/workflows/CI/badge.svg)](https://github.com/ec0lint/ec0lint/actions)
+[![Open Collective Sponsors](https://img.shields.io/opencollective/sponsors/ec0lint)](https://opencollective.com/ec0lint)
 
 [Website](http://ec0lint.com) |
 [Configuring](https://eslint.org/docs/user-guide/configuring/) |
