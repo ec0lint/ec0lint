@@ -31,8 +31,8 @@ describe("LintResultCache", () => {
         hashStub,
         sandbox,
         fakeConfig,
-        fakeErrorResults,
-        fakeErrorResultsAutofix;
+        fakeErrorResultsAutofix,    // eslint-disable-line
+        fakeErrorResults;
 
     before(() => {
         sandbox = sinon.createSandbox();

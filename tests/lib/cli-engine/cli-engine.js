@@ -15,7 +15,6 @@ const assert = require("chai").assert,
     shell = require("shelljs"),
     fs = require("fs"),
     os = require("os"),
-    hash = require("../../../lib/cli-engine/hash"),
     {
         Legacy: {
             CascadingConfigArrayFactory
@@ -24,7 +23,6 @@ const assert = require("chai").assert,
     { createCustomTeardown } = require("../../_utils");
 
 const proxyquire = require("proxyquire").noCallThru().noPreserveCache();
-const fCache = require("file-entry-cache");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -849,29 +847,6 @@ describe("CLIEngine", () => {
 
                 afterEach(() => {
                     deleteCacheDir();
-                });
-            });
-        });
-
-        describe("processors", () => {
-
-            describe("autofixing with processors", () => {
-                const HTML_PROCESSOR = Object.freeze({
-                    preprocess(text) {
-                        return [text.replace(/^<script>/u, "").replace(/<\/script>$/u, "")];
-                    },
-                    postprocess(problemLists) {
-                        return problemLists[0].map(problem => {
-                            if (problem.fix) {
-                                const updatedFix = Object.assign({}, problem.fix, {
-                                    range: problem.fix.range.map(index => index + "<script>".length)
-                                });
-
-                                return Object.assign({}, problem, { fix: updatedFix });
-                            }
-                            return problem;
-                        });
-                    }
                 });
             });
         });

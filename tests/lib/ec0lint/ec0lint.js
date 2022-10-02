@@ -15,7 +15,6 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const escapeStringRegExp = require("escape-string-regexp");
-const fCache = require("file-entry-cache");
 const sinon = require("sinon");
 const proxyquire = require("proxyquire").noCallThru().noPreserveCache();
 const shell = require("shelljs");
@@ -24,10 +23,7 @@ const {
         CascadingConfigArrayFactory
     }
 } = require("@ec0lint/ec0lintrc");
-const hash = require("../../../lib/cli-engine/hash");
 const { createCustomTeardown } = require("../../_utils");
-const coreRules = require("../../../lib/rules");
-const childProcess = require("child_process");
 
 //------------------------------------------------------------------------------
 // Tests
