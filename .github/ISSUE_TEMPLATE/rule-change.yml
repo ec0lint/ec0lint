@@ -13,40 +13,14 @@ body:
     label: What rule do you want to change?
   validations:
     required: true
-- type: dropdown
+- type: input
   attributes:
     label: What change to do you want to make?
-    options:
-      - Generate more warnings
-      - Generate fewer warnings
-      - Implement autofix
-      - Implement suggestions
-  validations:
-    required: true
-- type: dropdown
-  attributes:
-    label: How do you think the change should be implemented?
-    options:
-      - A new option
-      - A new default behavior
-      - Other
   validations:
     required: true
 - type: textarea
   attributes:
-    label: Example code
-    description: Please provide some example code that this change will affect. This field will render as JavaScript.
-    render: js
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: What does the rule currently do for this code?
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: What will the rule do after it's changed?
+    label: What does the rule currently do?
   validations:
     required: true
 - type: checkboxes

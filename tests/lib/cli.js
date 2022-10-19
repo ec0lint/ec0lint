@@ -20,7 +20,6 @@ const assert = require("chai").assert,
     BuiltinRules = require("../../lib/rules"),
     path = require("path"),
     sinon = require("sinon"),
-    fs = require("fs"),
     os = require("os"),
     sh = require("shelljs");
 
