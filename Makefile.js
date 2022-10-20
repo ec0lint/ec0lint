@@ -507,6 +507,7 @@ target.mocha = () => {
         lastReturn;
 
     echo("Running unit tests");
+    process.env.state = 'TEST'
 
     lastReturn = exec(`${getBinFile("nyc")} -- ${MOCHA} --forbid-only -R progress -t ${MOCHA_TIMEOUT} -c ${TEST_FILES}`);
     if (lastReturn.code !== 0) {
@@ -516,6 +517,7 @@ target.mocha = () => {
     if (errors) {
         exit(1);
     }
+    process.env.state = 'DEV'
 };
 
 target.karma = () => {
