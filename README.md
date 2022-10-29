@@ -73,13 +73,13 @@ Let's build an eco-friendly website!
 * :hammer: Lazy loading (require-lazy-loading, ec0lint-style) 
 * :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html) 
 * :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-react) 
-* sunflower: Font source (no-hosted-online-fonts, ec0lint-style) 
+* :four_leaf_clover: Font source (no-hosted-online-fonts, ec0lint-style) 
 * :hammer: Light libraries – jQuery Animate Toggle (no-animate-toggle, ec0lint) 
 * :hammer: Light libraries – jQuery Animate (no-animate, ec0lint) 
 * :hammer: Light libraries – jQuery Attr (no-attr, ec0lint) 
-* sunflower: Video auto-play (require-auto-play, ec0lint-style) 
-* sunflower: Video auto-play (require-auto-play, ec0lint-plugin-react) 
-* sunflower: Video auto-play (require-auto-play, ec0lint) 
+* :four_leaf_clover: Video auto-play (require-auto-play, ec0lint-style) 
+* :four_leaf_clover: Video auto-play (require-auto-play, ec0lint-plugin-react) 
+* :four_leaf_clover: Video auto-play (require-auto-play, ec0lint) 
 
 :lock: v3.0.0 - March - IDE plugins + resources scanning  
 * VSCode plugin 
@@ -122,14 +122,14 @@ Legend:
 * :white_check_mark: released
 * :ballot_box_with_check: implemented, not yet released
 * :hammer: in progress
-* :sunflower: task to take
+* :four_leaf_clover: task to take
 * :lock: to do in future releases
 
 # How to start contributing
 
 If you wish to contribute, just write to us and start coding!
 
-You can look at tasks marked as :sunflower: or at our issues (https://github.com/ec0lint/ec0lint/issues) and search for a task for you.
+You can look at tasks marked as :four_leaf_clover: or at our issues (https://github.com/ec0lint/ec0lint/issues) and search for a task for you.
 
 Thank you!
 
