@@ -60,13 +60,13 @@ Let's build an eco-friendly website!
 - :white_check_mark: CO2 calculation (ec0lint)
 - :white_check_mark: CO2 calculation (ec0lint-style)
 - :white_check_mark: Plugin React (ec0lint-plugin-react)
-- :white_check_mark: Image format (lighter-image-files, ec0lint)
 - :white_check_mark: Light libraries - jQuery Ajax (no-ajax, ec0lint)
 - :white_check_mark: Light libraries - jQuery Ajax events (no-ajax-events, ec0lint)
 - :white_check_mark: Font-display (require-font-display, ec0lint-style)
 
 :hammer: v2.1.0 - December - 25 rule implementations, 15 unique rules
 
+- :hammer: Image format (lighter-image-files, ec0lint)
 - :hammer: Video format (lighter-video-files, ec0lint-plugin-react)
 - :hammer: Video format (lighter-video-files, ec0lint)
 - :hammer: Plugin HTML (ec0lint-plugin-html)
