@@ -1,7 +1,7 @@
 {
     "name": "ec0lint",
-    "version": "1.0.0",
-    "author": "Malwina Kubas @malwinq",
+    "version": "2.0.0",
+    "author": "ec0lint",
     "description": "Make your website greener!",
     "bin": {
         "ec0lint": "./bin/ec0lint.js"
