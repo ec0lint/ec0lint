@@ -1,3 +1,4 @@
+/* ec0lint-disable */
 'use strict';
 
 const rule = require('../../../lib/rules/no-ajax'),
