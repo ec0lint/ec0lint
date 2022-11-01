@@ -10,5 +10,10 @@
 module.exports = {
     rules: {
         "lighter-http": "error",
+        "avoid-lodash": "error",
+        "no-ajax-events": "error",
+        "no-ajax": "error",
+        "no-date-fns": "error",
+        "no-moment-js": "error",
     }
 };

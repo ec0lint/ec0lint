@@ -8,15 +8,15 @@
 [ ] Bug fix
 [ ] New rule
 [ ] Updates an existing rule
-[ ] Add autofix to a rule
-[ ] Add a CLI option
 [ ] Add something to the core
 [ ] Other, please explain:
 
 #### Checklist
 
 [ ] Update CHANGELOG.md
-[ ] (if rule) Docs added (/docs/rules/<rule_name>)
+[ ] Update task status in release plan (README)
+[ ] Docs added (/docs/rules/<rule_name>)
+[ ] Docs ready to be added to website (ec0lint.com)
 
 <!--
     To merge PR, at least 2 approvals of stale contributors are needed

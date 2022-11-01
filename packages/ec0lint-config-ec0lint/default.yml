@@ -10,5 +10,4 @@ rules:
    no-and-self: "error"
    no-ajax-events: "error"
    no-date-fns: "error"
-   no-moment-js: "error"
-
+   no-moment-js: "error" 

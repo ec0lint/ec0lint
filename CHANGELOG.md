@@ -1,3 +1,8 @@
+v2.0.0 - October 30, 2022
+* CO2 module - logs with CO2 saving information
+* new rule: no-ajax
+* new rule: no-ajax-events
+
 v1.0.0 - June 6, 2022
 
 * first release - MVP - 4 rules of replacement heavy libraries group 
