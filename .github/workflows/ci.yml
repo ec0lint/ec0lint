@@ -1,63 +1,61 @@
 name: CI
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  verify_files:
-    name: Verify Files
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-    - name: Install Packages
-      run: npm install
-    - name: Lint Files
-      run: node Makefile lint
-    - name: Check Rule Files
-      run: node Makefile checkRuleFiles
-    - name: Check Licenses
-      run: node Makefile checkLicenses
+    verify_files:
+        name: Verify Files
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: "16.x"
+            - name: Install Packages
+              run: npm install
+            - name: Lint Files
+              run: node Makefile lint
+            - name: Check Rule Files
+              run: node Makefile checkRuleFiles
 
-  test_on_node:
-    name: Test
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [17.x, 16.x, 14.x, 12.x, "12.22.0"]
-        include:
-        - os: windows-latest
-          node: "16.x"
-        - os: macOS-latest
-          node: "16.x"
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node }}
-    - name: Install Packages
-      run: npm install
-    - name: Test
-      run: node Makefile mocha
-    - name: Fuzz Test
-      run: node Makefile fuzz
+    test_on_node:
+        name: Test
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                node: [17.x, 16.x, 14.x, 12.x, "12.22.0"]
+                include:
+                    - os: windows-latest
+                      node: "16.x"
+                    - os: macOS-latest
+                      node: "16.x"
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node }}
+            - name: Install Packages
+              run: npm install
+            - name: Test
+              run: node Makefile mocha
+            - name: Fuzz Test
+              run: node Makefile fuzz
 
-  test_on_browser:
-    name: Browser Test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - name: Install Packages
-      run: npm install
-    - name: Test
-      run: node Makefile karma
-    - name: Fuzz Test
-      run: node Makefile fuzz
+    test_on_browser:
+        name: Browser Test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: "16"
+            - name: Install Packages
+              run: npm install
+            - name: Test
+              run: node Makefile karma
+            - name: Fuzz Test
+              run: node Makefile fuzz
