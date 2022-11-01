@@ -538,7 +538,6 @@ target.test = function () {
     target.mocha();
     target.karma();
     target.fuzz({ amount: 150, fuzzBrokenAutofixes: false });
-    target.checkLicenses();
 };
 
 target.gensite = function (prereleaseVersion) {
@@ -802,50 +801,6 @@ target.checkRuleFiles = function () {
         exit(1);
     }
 
-};
-
-target.checkLicenses = function () {
-
-    /**
-     * Check if a dependency is eligible to be used by us
-     * @param {Object} dependency dependency to check
-     * @returns {boolean} true if we have permission
-     * @private
-     */
-    function isPermissible(dependency) {
-        const licenses = dependency.licenses;
-
-        if (Array.isArray(licenses)) {
-            return licenses.some(license => isPermissible({
-                name: dependency.name,
-                licenses: license
-            }));
-        }
-
-        return OPEN_SOURCE_LICENSES.some(license => license.test(licenses));
-    }
-
-    echo("Validating licenses");
-
-    checker.init({
-        start: __dirname
-    }, deps => {
-        const impermissible = Object.keys(deps).map(dependency => ({
-            name: dependency,
-            licenses: deps[dependency].licenses
-        })).filter(dependency => !isPermissible(dependency));
-
-        if (impermissible.length) {
-            impermissible.forEach(dependency => {
-                console.error(
-                    "%s license for %s is impermissible.",
-                    dependency.licenses,
-                    dependency.name
-                );
-            });
-            exit(1);
-        }
-    });
 };
 
 /**
