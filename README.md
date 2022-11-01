@@ -66,7 +66,7 @@ Let's build an eco-friendly website!
 
 :hammer: v2.1.0 - December - 25 rule implementations, 15 unique rules
 
-- :hammer: Image format (lighter-image-files, ec0lint)
+- :ballot_box_with_check: Image format (lighter-image-files, ec0lint)
 - :hammer: Video format (lighter-video-files, ec0lint-plugin-react)
 - :hammer: Video format (lighter-video-files, ec0lint)
 - :hammer: Plugin HTML (ec0lint-plugin-html)
