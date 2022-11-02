@@ -74,6 +74,7 @@ Let's build an eco-friendly website!
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-react)
 - :four_leaf_clover: Font source (no-hosted-online-fonts, ec0lint-style)
+- :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
 - :hammer: Light libraries – jQuery Animate Toggle (no-animate-toggle, ec0lint)
 - :hammer: Light libraries – jQuery Animate (no-animate, ec0lint)
 - :hammer: Light libraries – jQuery Attr (no-attr, ec0lint)
