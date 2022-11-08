@@ -3,6 +3,8 @@
     "no-ajax": "problem",
     "avoid-lodash": "problem",
     "no-ajax-events": "problem",
+    "no-and-self": "problem",
+    "no-ajax-events": "problem",
     "no-date-fns": "problem",
     "lighter-image-file": "problem",
     "no-moment-js": "problem"
