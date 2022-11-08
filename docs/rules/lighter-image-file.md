@@ -1,6 +1,6 @@
 # lighter-image-file
 
-Encourages to use WebP and SVG format of image files in CSS code.
+Encourages to use WebP and SVG format of image files in React code.
 
 Image files inside web application should be in WebP and SVG format. These formats can crunch large images down into more manageable file sizes. They are on average much smaller than GIF, JPEG, PNG, even at extremely high resolutions. We can achieve up to 82% reduction of file size using SVG instead of JPG and up to 95% in case of PNG. For WebP format we get up to 60% reduction of file size in case of converting from JPG and up to 91% for PNG.
 
