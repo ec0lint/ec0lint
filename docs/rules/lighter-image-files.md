@@ -1,4 +1,4 @@
-# lighter-image-file
+# lighter-image-files
 
 Encourages to use WebP and SVG format of image files in React code.
 
