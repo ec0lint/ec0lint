@@ -5,7 +5,7 @@ const rule = require('../../../lib/rules/no-ajax'),
     { RuleTester } = require("../../../lib/rule-tester");
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2022, sourceType: "module" } });
 
-const ajaxError = "You can replace most of the jQuery methods, for more go to https://youmightnotneedjquery.com/"
+const ajaxError = "Most of the jQuery methods can be replaced by plain JS code, for more go to https://youmightnotneedjquery.com/"
 
 
 

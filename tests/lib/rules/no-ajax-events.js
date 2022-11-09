@@ -6,7 +6,7 @@ const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2022, sourceTy
 
 
 function getErrors(method) {
-    return ['You can replace most of the jQuery methods, for more go to https://youmightnotneedjquery.com/'];
+    return ['Most of the jQuery methods can be replaced by plain JS code, for more go to https://youmightnotneedjquery.com/'];
 }
 
 ruleTester.run('no-ajax-events', rule, {
