@@ -21,31 +21,31 @@ ruleTester.run("avoid-lodash", rule, {
     invalid: [
         {
             code: "import lodash from 'lodash'",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "var lodash = require('lodash')",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "import * as lodash from 'lodash'",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "import _ from 'lodash'",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "import find from 'lodash.find'",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "var _ = require('lodash')",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         },
         {
             code: "var find = require('lodash.find')",
-            errors: [{ message: "You can replace most of the lodash methods, for more go to https://youmightnotneed.com/lodash . CO2 Reduction: 0.5 g" }]
+            errors: [{ message: "Lodash methods can be replaced by plain JS code, for examples go to https://youmightnotneed.com/lodash. CO2 Reduction: 0.5 g" }]
         }
     ]
 });
