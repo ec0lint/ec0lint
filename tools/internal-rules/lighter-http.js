@@ -1,5 +1,5 @@
 /**
- * @fileoverview Rule to disallow importing axios
+ * @fileoverview Rule to disallow importing HTTP clients
  * @author Julia Ziębińska
  */
 
@@ -21,7 +21,7 @@ module.exports = {
         type: "problem",
 
         docs: {
-            description: "disallow importing axios",
+            description: "disallow importing HTTP clients",
             category: "Possible Errors",
             recommended: true,
             url: "https://eslint.org/docs/rules/lighter-http"
