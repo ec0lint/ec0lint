@@ -68,7 +68,7 @@ Let's build an eco-friendly website!
 
 - :ballot_box_with_check: Image format (lighter-image-files, ec0lint)
 - :hammer: Video format (lighter-video-files, ec0lint-plugin-react)
-- :hammer: Video format (lighter-video-files, ec0lint)
+- :ballot_box_with_check: Video format (lighter-video-files, ec0lint)
 - :hammer: Plugin HTML (ec0lint-plugin-html)
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-style)
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
