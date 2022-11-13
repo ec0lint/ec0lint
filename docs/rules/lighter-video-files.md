@@ -7,6 +7,7 @@ Video files inside web applications should be in WebM format. It is an open, roy
 ## CO<sub>2</sub> reduction
 
 The table below shows the comparison between file sizes and CO<sub>2</sub> emission for a short (23 s) exemplary video (in 1366 x 720 resolution).
+
 Link to the exemplary video: https://www.pexels.com/video/alpaca-closeup-5795043/
 
 ![alt text](https://github.com/martinabab/ec0lint/blob/main/docs/video_table.webp)
