@@ -10,10 +10,10 @@ jobs:
         name: Verify Files
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
-                  node-version: "16.x"
+                  node-version: "18.x"
             - name: Install Packages
               run: npm install
             - name: Lint Files
@@ -26,16 +26,16 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest]
-                node: [17.x, 16.x, 14.x, 12.x, "12.22.0"]
+                node: [18.x, 16.x, 14.x]
                 include:
                     - os: windows-latest
-                      node: "16.x"
+                      node: "18.x"
                     - os: macOS-latest
-                      node: "16.x"
+                      node: "18.x"
         runs-on: ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
             - name: Install Packages
@@ -49,10 +49,10 @@ jobs:
         name: Browser Test
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
-                  node-version: "16"
+                  node-version: "18"
             - name: Install Packages
               run: npm install
             - name: Test
