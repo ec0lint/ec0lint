@@ -6,5 +6,6 @@
     "no-and-self": "problem",
     "no-date-fns": "problem",
     "lighter-image-files": "problem",
+    "lighter-video-files": "problem",
     "no-moment-js": "problem"
 }
