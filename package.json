@@ -27,8 +27,8 @@
     },
     "lint-staged": {
         "*.js": [
-            "lint",
-            "fix"
+            "npm run lint",
+            "npm run fix"
         ]
     },
     "files": [

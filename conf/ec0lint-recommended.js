@@ -13,6 +13,7 @@ module.exports = {
         "avoid-lodash": "error",
         "no-ajax-events": "error",
         "no-ajax": "error",
+        "no-animate": "error",
         "no-date-fns": "error",
         "no-moment-js": "error",
     }
