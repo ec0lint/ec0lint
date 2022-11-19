@@ -8,7 +8,7 @@ rules:
    avoid-lodash: "error"
    no-ajax-events: "error"
    no-and-self: "error"
-   no-ajax-events: "error"
+   no-bind: "error"
    no-date-fns: "error"
    no-moment-js: "error"
    lighter-video-files: "error"
