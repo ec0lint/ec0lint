@@ -67,19 +67,13 @@ Let's build an eco-friendly website!
 :hammer: v2.1.0 - December - 25 rule implementations, 15 unique rules
 
 - :ballot_box_with_check: Image format (lighter-image-files, ec0lint)
-- :hammer: Video format (lighter-video-files, ec0lint-plugin-react)
-- :hammer: Video format (lighter-video-files, ec0lint)
+- :ballot_box_with_check: Video format (lighter-video-files, ec0lint)
 - :hammer: Plugin HTML (ec0lint-plugin-html)
-- :hammer: Lazy loading (require-lazy-loading, ec0lint-style)
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
-- :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-react)
 - :four_leaf_clover: Font source (no-hosted-online-fonts, ec0lint-style)
 - :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
-- :hammer: Light libraries – jQuery Animate Toggle (no-animate-toggle, ec0lint)
 - :hammer: Light libraries – jQuery Animate (no-animate, ec0lint)
 - :hammer: Light libraries – jQuery Attr (no-attr, ec0lint)
-- :four_leaf_clover: Video auto-play (require-auto-play, ec0lint-style)
-- :four_leaf_clover: Video auto-play (require-auto-play, ec0lint-plugin-react)
 - :four_leaf_clover: Video auto-play (require-auto-play, ec0lint)
 
 :lock: v3.0.0 - March - IDE plugins + resources scanning
