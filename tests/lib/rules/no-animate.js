@@ -3,8 +3,8 @@
 const rule = require( '../../../lib/rules/no-animate' );
  const  { RuleTester } = require("../../../lib/rule-tester");
 
-const error = 'Prefer CSS transitions or CSS scroll-behaviour to .animate';
-const errorNoScroll = 'Prefer CSS transitions to .animate';
+const error = 'animate can be replaced with CSS transitions.';
+
 
 const ruleTester = new RuleTester();
 ruleTester.run( 'no-animate', rule, {
@@ -38,7 +38,7 @@ ruleTester.run( 'no-animate', rule, {
 		{
 			code: '$div.animate()',
 			options: [ { allowScroll: true } ],
-			errors: [ errorNoScroll ]
+			errors: [ error ]
 		},
 		{
 			code: '$("div").first().animate()',
@@ -72,7 +72,7 @@ ruleTester.run( 'no-animate', rule, {
 		{
 			code: '$div.animate({scrollTop: 100, width: 300})',
 			options: [ { allowScroll: true } ],
-			errors: [ errorNoScroll ]
+			errors: [ error ]
 		}
 	]
 } );

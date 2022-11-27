@@ -71,7 +71,7 @@ Let's build an eco-friendly website!
 - :hammer: Plugin HTML (ec0lint-plugin-html)
 - :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
 - :four_leaf_clover: Font source (no-hosted-online-fonts, ec0lint-style)
-- :hammer: Light libraries – jQuery Animate (no-animate, ec0lint)
+- :white_check_mark: Light libraries – jQuery Animate (no-animate, ec0lint)
 - :hammer: Light libraries – jQuery Attr (no-attr, ec0lint)
 - :four_leaf_clover: Video auto-play (require-auto-play, ec0lint)
 
