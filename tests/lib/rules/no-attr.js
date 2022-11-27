@@ -3,7 +3,8 @@
 const rule = require( '../../../lib/rules/no-attr' );
 const { RuleTester } = require("../../../lib/rule-tester");
 
-const error = 'Prefer `Element#getAttribute`/`setAttribute`/`removeAttribute`';
+const error = 'attr and remove attr can be replaced with ' +
+                            'methods: `getAttribute` / `setAttribute` / `removeAttribute`'
 
 const ruleTester = new RuleTester();
 ruleTester.run( 'no-attr', rule, {
