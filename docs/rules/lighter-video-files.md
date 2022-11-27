@@ -10,7 +10,11 @@ The table below shows the comparison between file sizes and CO<sub>2</sub> emiss
 
 Link to the exemplary video: https://www.pexels.com/video/alpaca-closeup-5795043/
 
-![alt text](https://github.com/martinabab/ec0lint/blob/main/docs/video_table.webp)
+| File format | File size | CO<sub>2</sub> emission |
+| ------------|-----------|-------------------------|
+| WebM        | 2.6 MB    | 0.91 g                  |
+| MP4         | 5.9 MB    | 2.06 g                  |
+
 _Converting the exemplary video from MP4 to WebM format can reduce the carbon footprint by 1.15 g of CO<sub>2</sub> per website view._
 
 By multiplying the file size by the end-user traffic (0.81 kWh / GB) and by thy energy emissions (442 g / kWh), the carbon footprint of the exemplary video in MP4 sums up to 2.06 g. The same file in WebM format generates 0.91 g of CO<sub>2</sub>. So, by subtracting 0.91 g from 2.06 g, we get 1.15 g (__56% less CO<sub>2</sub>__).
@@ -18,7 +22,8 @@ By multiplying the file size by the end-user traffic (0.81 kWh / GB) and by thy 
 Exemplary video was downloaded from https://www.pexels.com/search/videos/ and converted to WebM online with https://www.veed.io/convert/video-converter.
 
 ## examples
-__The following patterns are considered problems:__
+
+The following patterns are considered problems:
 
 ```js
 import video from './video.ogg';
@@ -42,7 +47,7 @@ let Video = require('../src/video.m4r');
 let Video = require('../src/video.m4v');
 ```
 
-__The following patterns are _not_ considered problems:__
+The following patterns are _not_ considered problems:
 ```js
 import video from './video.webm';
 ```
