@@ -3,7 +3,8 @@
 const rule = require( '../../../lib/rules/no-bind' );
 const { RuleTester } = require("../../../lib/rule-tester");
 
-const error = 'Prefer `.on`/`.off` or `EventTarget#addEventListener`/`removeEventListener`';
+const error = 'bind and unbind methods can be replaced with ' +
+                            '`.on`/`.off` or `EventTarget#addEventListener`/`removeEventListener`'
 
 const ruleTester = new RuleTester();
 ruleTester.run( 'no-bind', rule, {

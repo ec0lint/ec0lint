@@ -74,7 +74,7 @@ Let's build an eco-friendly website!
 - :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
 - :hammer: Light libraries – jQuery Animate (no-animate, ec0lint)
 - :hammer: Light libraries – jQuery Attr (no-attr, ec0lint)
-- :hammer: Light libraries – jQuery Bind (no-bind, ec0lint)
+- :blue_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
 - :four_leaf_clover: Video auto-play (require-auto-play, ec0lint)
 
 :lock: v3.0.0 - March - IDE plugins + resources scanning
