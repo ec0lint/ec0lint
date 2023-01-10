@@ -64,30 +64,31 @@ Let's build an eco-friendly website!
 - :white_check_mark: Light libraries - jQuery Ajax events (no-ajax-events, ec0lint)
 - :white_check_mark: Font-display (require-font-display, ec0lint-style)
 
-:hammer: v2.1.0 - December - 25 rule implementations, 15 unique rules
+:hammer: v2.1.0 - January - 20 rule implementations, 15 unique rules
 
 - :ballot_box_with_check: Image format (lighter-image-files, ec0lint)
 - :ballot_box_with_check: Video format (lighter-video-files, ec0lint)
-- :hammer: Plugin HTML (ec0lint-plugin-html)
-- :hammer: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
-- :four_leaf_clover: Font source (no-hosted-online-fonts, ec0lint-style)
+- :ballot_box_with_check: Plugin HTML (ec0lint-plugin-html)
+- :ballot_box_with_check: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
+- :hammer: Font source (no-hosted-online-fonts, ec0lint-style)
 - :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
-- :hammer: Light libraries – jQuery Animate (no-animate, ec0lint)
-- :hammer: Light libraries – jQuery Attr (no-attr, ec0lint)
+- :ballot_box_with_check: Light libraries – jQuery Animate (no-animate, ec0lint)
+- :ballot_box_with_check: Light libraries – jQuery Attr (no-attr, ec0lint)
 - :blue_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
-- :four_leaf_clover: Video auto-play (require-auto-play, ec0lint)
+- :hammer: Video auto-play (require-auto-play, ec0lint)
 
 :lock: v3.0.0 - March - IDE plugins + resources scanning
 
-- VSCode plugin
-- IntelliJ plugin
-- Colors validation (background-color-validation, ec0lint-style)
-- Image size (image-size-validation, ec0lint)
-- Video size (video-size-validation, ec0lint)
-- Images number (image-number-validation, ec0lint)
-- Videos number (video-number-validation, ec0lint)
-- Light libraries – jQuery Box Model (no-box-model, ec0lint)
-- Light libraries – jQuery Browser (no-browser, ec0lint)
+- :four_leaf_clover: VSCode plugin
+- :four_leaf_clover: IntelliJ plugin
+- :hammer: Colors validation (background-color-validation, ec0lint-style)
+- :four_leaf_clover: Image size (image-size-validation, ec0lint)
+- :four_leaf_clover: Video size (video-size-validation, ec0lint)
+- :four_leaf_clover: Images number (image-number-validation, ec0lint)
+- :four_leaf_clover: Videos number (video-number-validation, ec0lint)
+- :four_leaf_clover: Light libraries – jQuery Bind (no-bind, ec0lint)
+- :four_leaf_clover: Light libraries – jQuery Box Model (no-box-model, ec0lint)
+- :four_leaf_clover: Light libraries – jQuery Browser (no-browser, ec0lint)
 
 :lock: v4.0.0 - June - TypeScript plugin
 
