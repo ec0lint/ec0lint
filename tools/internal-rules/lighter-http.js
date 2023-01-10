@@ -24,12 +24,13 @@ module.exports = {
             description: "disallow importing HTTP clients",
             category: "Possible Errors",
             recommended: true,
-            url: "https://eslint.org/docs/rules/lighter-http"
+            url: "https://ec0lint.com/features/lighter-http",
         },
         messages: {
-            unexpected: "Do not import {{ name }}. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com)."
+            unexpected:
+                "Do not import {{ name }}. Remove it from your app and use fetch instead(you can find examples on www.ec0lint.com).",
         },
-        schema: [] // no options,
+        schema: [], // no options,
     },
     create(context) {
         const options = {};
@@ -51,7 +52,6 @@ module.exports = {
          * @returns {string} Returns module name
          */
         function baseModule(name) {
-
             if (isScoped(name)) {
                 const [scope, pkg] = name.split("/");
 
@@ -68,12 +68,19 @@ module.exports = {
          * @returns {boolean} Returns true or false
          */
         function isHttpModule(name) {
-
             if (!name) {
                 return false;
             }
             const base = baseModule(name);
-            const result = ["axios", "got", "request", "make-fetch-happen", "superagent", "needle", "simple-get"].some(el => el === base);
+            const result = [
+                "axios",
+                "got",
+                "request",
+                "make-fetch-happen",
+                "superagent",
+                "needle",
+                "simple-get",
+            ].some((el) => el === base);
 
             return result;
         }
@@ -85,14 +92,20 @@ module.exports = {
          * @returns {void}
          */
         function reportIfMissing(node, name) {
-
             if (allowed.indexOf(name) === -1 && isHttpModule(name)) {
-                context.report({ node, messageId: "unexpected", data: { name } });
+                context.report({
+                    node,
+                    messageId: "unexpected",
+                    data: { name },
+                });
             }
         }
 
-        return moduleVisitor.default((source, node) => {
-            reportIfMissing(node, source.value);
-        }, { commonjs: true });
-    }
+        return moduleVisitor.default(
+            (source, node) => {
+                reportIfMissing(node, source.value);
+            },
+            { commonjs: true }
+        );
+    },
 };
