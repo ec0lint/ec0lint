@@ -10,4 +10,5 @@ rules:
    no-ajax-events: "error"
    no-date-fns: "error"
    no-moment-js: "error"
-   lighter-image-file: "error"
+   lighter-video-files: "error"
+   lighter-image-files: "error"

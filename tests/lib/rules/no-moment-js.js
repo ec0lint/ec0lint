@@ -21,23 +21,23 @@ ruleTester.run("no-moment-js", rule, {
     invalid: [
         {
             code: "import moment from 'moment'",
-            errors: [{ message: "You can replace Moment.js by using built-in native datetime format. CO2 Reduction: 1.51 g" }]
+            errors: [{ message: "Moment.js can be replaced by using the built-in native datetime format. CO2 Reduction: 1.51 g" }]
         },
         {
             code: "var moment = require('moment')",
-            errors: [{ message: "You can replace Moment.js by using built-in native datetime format. CO2 Reduction: 1.51 g" }]
+            errors: [{ message: "Moment.js can be replaced by using the built-in native datetime format. CO2 Reduction: 1.51 g" }]
         },
         {
             code: "import * as moment from 'moment'",
-            errors: [{ message: "You can replace Moment.js by using built-in native datetime format. CO2 Reduction: 1.51 g" }]
+            errors: [{ message: "Moment.js can be replaced by using the built-in native datetime format. CO2 Reduction: 1.51 g" }]
         },
         {
             code: "import _ from 'moment'",
-            errors: [{ message: "You can replace Moment.js by using built-in native datetime format. CO2 Reduction: 1.51 g" }]
+            errors: [{ message: "Moment.js can be replaced by using the built-in native datetime format. CO2 Reduction: 1.51 g" }]
         },
         {
             code: "var _ = require('moment')",
-            errors: [{ message: "You can replace Moment.js by using built-in native datetime format. CO2 Reduction: 1.51 g" }]
+            errors: [{ message: "Moment.js can be replaced by using the built-in native datetime format. CO2 Reduction: 1.51 g" }]
         }
     ]
 });

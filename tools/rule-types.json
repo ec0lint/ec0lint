@@ -4,6 +4,7 @@
     "avoid-lodash": "problem",
     "no-ajax-events": "problem",
     "no-date-fns": "problem",
-    "lighter-image-file": "problem",
+    "lighter-image-files": "problem",
+    "lighter-video-files": "problem",
     "no-moment-js": "problem"
 }
