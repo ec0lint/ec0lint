@@ -3,6 +3,7 @@
     "lighter-http": "problem",
     "no-ajax": "problem",
     "no-ajax-events": "problem",
+    "no-attr":"problem",
     "no-animate": "problem",
     "no-date-fns": "problem",
     "lighter-image-files": "problem",
