@@ -14,6 +14,7 @@ module.exports = {
         "no-ajax-events": "error",
         "no-ajax": "error",
         "no-attr":"error",
+        "no-animate": "error",
         "no-date-fns": "error",
         "no-moment-js": "error",
     }
