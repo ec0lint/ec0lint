@@ -8,6 +8,7 @@ rules:
    no-ajax: "error"
    no-ajax-events: "error"
    no-animate: "error"
+   no-bind: "error"
    no-date-fns: "error"
    no-moment-js: "error"
    lighter-video-files: "error"
