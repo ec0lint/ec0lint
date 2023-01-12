@@ -1,9 +1,10 @@
 {
+    "avoid-lodash": "problem",
     "lighter-http": "problem",
     "no-ajax": "problem",
-    "avoid-lodash": "problem",
     "no-ajax-events": "problem",
-    "no-and-self": "problem",
+    "no-attr":"problem",
+    "no-animate": "problem",
     "no-bind": "problem",
     "no-date-fns": "problem",
     "lighter-image-files": "problem",

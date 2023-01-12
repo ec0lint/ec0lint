@@ -44,10 +44,6 @@ const { cat, cd, cp, echo, exec, exit, find, mkdir, pwd, rm, test } = require("s
  */
 const PERF_MULTIPLIER = 13e6;
 
-const OPEN_SOURCE_LICENSES = [
-    /MIT/u, /BSD/u, /Apache/u, /ISC/u, /WTF/u, /Public Domain/u, /LGPL/u, /Python/u
-];
-
 //------------------------------------------------------------------------------
 // Data
 //------------------------------------------------------------------------------

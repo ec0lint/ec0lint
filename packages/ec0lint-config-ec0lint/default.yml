@@ -4,10 +4,10 @@ extends:
 
 rules:
    lighter-http: "error"
-   no-ajax: "error"
    avoid-lodash: "error"
+   no-ajax: "error"
    no-ajax-events: "error"
-   no-and-self: "error"
+   no-animate: "error"
    no-bind: "error"
    no-date-fns: "error"
    no-moment-js: "error"
