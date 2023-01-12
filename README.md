@@ -72,7 +72,6 @@ Let's build an eco-friendly website!
 - :ballot_box_with_check: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
 - :hammer: Font source (no-hosted-online-fonts, ec0lint-style)
 - :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
-- :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
 - :ballot_box_with_check: Light libraries – jQuery Animate (no-animate, ec0lint)
 - :ballot_box_with_check: Light libraries – jQuery Attr (no-attr, ec0lint)
 - :hammer: Video auto-play (require-auto-play, ec0lint)
