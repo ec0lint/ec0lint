@@ -11,5 +11,6 @@ rules:
    no-bind: "error"
    no-date-fns: "error"
    no-moment-js: "error"
+   no-autoplay: "error"
    lighter-video-files: "error"
    lighter-image-files: "error"
