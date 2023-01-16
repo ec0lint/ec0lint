@@ -1,4 +1,4 @@
-# no-animate
+# no-autoplay
 
 Disallows the `autoplay` property of YouTube videos embedded in your web application.
 We recommend deleting "autoplay=1" from the video's URL.
