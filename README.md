@@ -64,20 +64,20 @@ Let's build an eco-friendly website!
 - :white_check_mark: Light libraries - jQuery Ajax events (no-ajax-events, ec0lint)
 - :white_check_mark: Font-display (require-font-display, ec0lint-style)
 
-:hammer: v2.1.0 - January - 20 rule implementations, 15 unique rules
+:white_check_mark: v2.1.0 - January - 20 rule implementations, 15 unique rules
 
-- :ballot_box_with_check: Image format (lighter-image-files, ec0lint)
-- :ballot_box_with_check: Video format (lighter-video-files, ec0lint)
-- :ballot_box_with_check: Plugin HTML (ec0lint-plugin-html)
-- :ballot_box_with_check: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
-- :hammer: Font source (no-hosted-online-fonts, ec0lint-style)
-- :ballot_box_with_check: Light libraries - jQuery andSelf (no-and-self, ec0lint)
-- :ballot_box_with_check: Light libraries – jQuery Animate (no-animate, ec0lint)
-- :ballot_box_with_check: Light libraries – jQuery Attr (no-attr, ec0lint)
-- :blue_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
-- :hammer: Video auto-play (require-auto-play, ec0lint)
+- :white_check_mark: Image format (lighter-image-files, ec0lint)
+- :white_check_mark: Video format (lighter-video-files, ec0lint)
+- :white_check_mark: Plugin HTML (ec0lint-plugin-html)
+- :white_check_mark: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
+- :white_check_mark: Font source (no-hosted-online-fonts, ec0lint-style)
+- :white_check_mark: Light libraries - jQuery andSelf (no-and-self, ec0lint)
+- :white_check_mark: Light libraries – jQuery Animate (no-animate, ec0lint)
+- :white_check_mark: Light libraries – jQuery Attr (no-attr, ec0lint)
+- :white_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
+- :white_check_mark: Video auto-play (require-auto-play, ec0lint)
 
-:lock: v3.0.0 - March - IDE plugins + resources scanning
+:hammer: v3.0.0 - March - IDE plugins + resources scanning
 
 - :four_leaf_clover: VSCode plugin
 - :four_leaf_clover: IntelliJ plugin
@@ -89,6 +89,7 @@ Let's build an eco-friendly website!
 - :four_leaf_clover: Light libraries – jQuery Bind (no-bind, ec0lint)
 - :four_leaf_clover: Light libraries – jQuery Box Model (no-box-model, ec0lint)
 - :four_leaf_clover: Light libraries – jQuery Browser (no-browser, ec0lint)
+- :hammer: Automatic releases tool
 
 :lock: v4.0.0 - June - TypeScript plugin
 
