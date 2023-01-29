@@ -1,6 +1,6 @@
 {
     "name": "ec0lint",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "author": "ec0lint",
     "description": "Make your website greener!",
     "bin": {
@@ -43,7 +43,7 @@
     "homepage": "http://ec0lint.com",
     "bugs": "https://github.com/ec0lint/ec0lint/issues/",
     "dependencies": {
-        "@ec0lint/ec0lintrc": "^2.0.0",
+        "@ec0lint/ec0lintrc": "^2.1.0",
         "@humanwhocodes/config-array": "^0.9.2",
         "ajv": "^6.10.0",
         "chalk": "^4.0.0",
