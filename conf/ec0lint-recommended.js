@@ -9,12 +9,16 @@
 /** @type {import("../lib/shared/types").ConfigData} */
 module.exports = {
     rules: {
-        "lighter-http": "error",
         "avoid-lodash": "error",
+        "lighter-http": "error",
+        "lighter-image-files": "error",
+        "lighter-video-files": "error",
         "no-ajax-events": "error",
         "no-ajax": "error",
-        "no-attr":"error",
         "no-animate": "error",
+        "no-attr":"error",
+        "no-autoplay": "error",
+        "no-bind": "error",
         "no-date-fns": "error",
         "no-moment-js": "error",
     }
