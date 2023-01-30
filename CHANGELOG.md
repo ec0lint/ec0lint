@@ -1,3 +1,8 @@
+v2.1.0 - January 29, 2023
+* autoplay rule
+* html plugin
+* jQuery rules
+
 v2.0.0 - October 30, 2022
 * CO2 module - logs with CO2 saving information
 * new rule: no-ajax
