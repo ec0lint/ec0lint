@@ -61,8 +61,11 @@ Install React plugin (or use npm init):
 Add to your .ec0lintrc configuration file:
 `
  "extends": [
+ 
     "ec0lint:recommended",
+    
     "plugin:react/recommended"
+    
   ]
 `
 ## Run ec0lint
