@@ -36,7 +36,7 @@ Configure your project:
 
 `npm init @ec0lint/config`
 
-Create a .ec0lint-stylerc.json configuration file in the root of your project with the following content:
+Create a `.ec0lint-stylerc.json` configuration file in the root of your project with the following content:
 
 `{ "extends": "ec0lint-style-config-recommended" } `
 
@@ -48,7 +48,7 @@ Configure your project:
 
 `npm init @ec0lint/config`
 
-Create a .ec0lint-stylerc.json configuration file in the root of your project with the following content:
+Create a `.ec0lint-stylerc.json` configuration file in the root of your project with the following content:
 
 `{ "extends": "ec0lint-style-config-recommended-scss" } `
 
@@ -58,7 +58,7 @@ Install React plugin (or use npm init):
 
 `npm i ec0lint-plugin-react`
 
-Add to your .ec0lintrc configuration file:
+Add to your `.ec0lintrc.json` configuration file:
 ```
  "extends": [
     "ec0lint:recommended",
