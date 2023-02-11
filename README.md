@@ -59,15 +59,12 @@ Install React plugin (or use npm init):
 `npm i ec0lint-plugin-react`
 
 Add to your .ec0lintrc configuration file:
-`
+```
  "extends": [
- 
     "ec0lint:recommended",
-    
     "plugin:react/recommended"
-    
   ]
-`
+```
 ## Run ec0lint
 
 Split your terminal and run:
