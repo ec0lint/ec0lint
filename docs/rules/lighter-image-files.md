@@ -14,22 +14,22 @@ The table below shows comparison between file sizes and CO<sub>2</sub> emission 
 
 | File format | File size | CO<sub>2</sub> emission |
 | ------------|-----------|-------------------------|
-| SVG         | 126 kB    | 0.04 g                  |
-| WebP        | 200 kB    | 0.07 g                  |
-| AVIF        | 231 kB    | 0.08 g                  |
-| JPG         | 503 kB    | 0.18 g                  |
-| GIF         | 913 kB    | 0.33 g                  |
-| PNG         | 2111 kB   | 0.76 g                  |
-| TIFF        | 6329 kB   | 2.27 g                  |
-| PSD         | 12657 kB  | 4.53 g                  |
-| PS          | 12825 kB  | 5.59 g                  |
+| AVIF        | 87 KB     | 0.03 g                  |
+| SVG         | 126 KB    | 0.04 g                  |
+| WebP        | 156 KB    | 0.05 g                  |
+| JPG         | 249 KB    | 0.09 g                  |
+| GIF         | 913 KB    | 0.31 g                  |
+| PNG         | 2111 KB   | 0.72 g                  |
+| TIFF        | 6328 KB   | 2.16 g                  |
+| PSD         | 12698 KB  | 4.33 g                  |
+| PS          | 13312 KB  | 4.55 g                  |
 
 
-By multiplying the file size by the end-user traffic (0.81 kWh / 1000 Mb) and by the energy emissions (442 g/kWh), the carbon footprint of the exemplary PNG file (2.1 MB) – sums up to 0.76 g. The same image in SVG format (126 kB) generates 0.04g CO<sub>2</sub>. So, by subtracting 0.04 g from 0.76 g we get 0.72g of savings. (95% less CO<sub>2</sub>).
+By multiplying the file size by the end-user traffic (0.81 kWh / GB) and by the energy emissions (442 g / kWh), the carbon footprint of the exemplary PNG file (2.1 MB) – sums up to 0.76 g. The same image in SVG format (126 kB) generates 0.04g CO<sub>2</sub>. So, by subtracting 0.04 g from 0.76 g we get 0.72g of savings. (95% less CO<sub>2</sub>).
 
-For the same exemplary image in WebP (200 kB) the carbon footprint amounts to 0.07g. So, by subtracting 0.07 g from 0.76 g we get 0.69 g (91% less CO<sub>2</sub>).
+For the same exemplary image in WebP (156 kB) the carbon footprint amounts to 0.05g. So, by subtracting 0.05 g from 0.76 g we get 0.71 g (93% less CO<sub>2</sub>).
 
-Exemplary image was downloaded from https://wallpaperaccess.com/1800x1200-hd and converted to different formats using https://cloudconvert.com/
+Exemplary image was downloaded from https://wallpaperaccess.com/1800x1200-hd and converted to different formats using https://convertio.co and https://cloudconvert.com/
 
 ## examples
 
@@ -49,6 +49,9 @@ let Image = require('../src/image.rgb');
 ```
 
 The following patterns are _not_ considered problems:
+```js
+import image from './image.avif';
+```
 ```js
 import image from './image.svg';
 ```
