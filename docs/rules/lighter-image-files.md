@@ -10,7 +10,7 @@ Converting an exemplary image in 1800 x 1200 resolution from PNG to SVG format c
 
 The table below shows comparison between file sizes and CO<sub>2</sub> emission for exemplary image (displayed below) in 1800 x 1200 resolution for the most popular image formats.
 
-![alt text](https://github.com/ec0lint/ec0lint-style/blob/main/exemplary_image.webp)
+![alt text](https://raw.githubusercontent.com/ec0lint/ec0lint/lighter-image-files/docs/exemplary_image.webp)
 
 | File format | File size | CO<sub>2</sub> emission |
 | ------------|-----------|-------------------------|
