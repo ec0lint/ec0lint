@@ -2,7 +2,7 @@
 
 Encourages to use WebP and SVG format of image files in React code.
 
-Image files inside web application should be in WebP and SVG format. These formats can crunch large images down into more manageable file sizes. They are on average much smaller than GIF, JPEG, PNG, even at extremely high resolutions. We can achieve up to 75% reduction of file size using SVG instead of JPG and up to 94% in case of PNG. For WebP format we get up to 60% reduction of file size in case of converting from JPG and up to 91% for PNG.
+Image files inside web application should be in WebP and SVG format. These formats can crunch large images down into more manageable file sizes. They are on average much smaller than GIF, JPEG, PNG, even at extremely high resolutions. We can achieve up to 75% reduction of file size using SVG instead of JPG and up to 95% in case of PNG. For WebP format we get up to 60% reduction of file size in case of converting from JPG and up to 93% for PNG.
 
 # CO<sub>2</sub> reduction
 
@@ -20,6 +20,7 @@ The table below shows comparison between file sizes and CO<sub>2</sub> emission 
 | JPG         | 249 KB    | 0.09 g                  |
 | GIF         | 913 KB    | 0.31 g                  |
 | PNG         | 2111 KB   | 0.72 g                  |
+| PPM         | 6328 KB   | 2.16 g                  |
 | TIFF        | 6328 KB   | 2.16 g                  |
 | PSD         | 12698 KB  | 4.33 g                  |
 | PS          | 13312 KB  | 4.55 g                  |
@@ -34,7 +35,9 @@ Exemplary image was downloaded from https://wallpaperaccess.com/1800x1200-hd and
 ## examples
 
 The following patterns are considered problems:
-
+```js
+import image from './image.gif';
+```
 ```js
 import image from './image.png';
 ```
@@ -60,7 +63,4 @@ import {ReactComponent as image} from './image.webp';
 ```
 ```js
 let Image = require('../src/image.jpg');
-```
-```js
-import image from './image.gif';
 ```
