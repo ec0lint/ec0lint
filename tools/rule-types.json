@@ -7,6 +7,7 @@
     "no-animate": "problem",
     "no-bind": "problem",
     "no-browser": "problem",
+    "no-box-model": "problem",
     "no-date-fns": "problem",
     "no-autoplay": "problem",
     "lighter-image-files": "problem",
