@@ -133,8 +133,8 @@ Let's build an eco-friendly website!
 - :four_leaf_clover: Video size (video-size-validation, ec0lint)
 - :four_leaf_clover: Images number (image-number-validation, ec0lint)
 - :four_leaf_clover: Videos number (video-number-validation, ec0lint)
-- :four_leaf_clover: Light libraries – jQuery Bind (no-bind, ec0lint)
-- :four_leaf_clover: Light libraries – jQuery Box Model (no-box-model, ec0lint)
+- :white_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
+- :white_check_mark: Light libraries – jQuery Box Model (no-box-model, ec0lint)
 - :four_leaf_clover: Light libraries – jQuery Browser (no-browser, ec0lint)
 - :hammer: Automatic releases tool
 
