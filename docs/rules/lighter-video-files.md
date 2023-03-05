@@ -1,4 +1,4 @@
-# lighter-video-files
+# lighter-video-formats
 
 Encourages to use WebM video file format in React code.
 
