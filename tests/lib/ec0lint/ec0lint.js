@@ -1,5 +1,5 @@
 /**
- * @fileoverview Tests for the ESLint class.
+ * @fileoverview Tests for the Ec0lint class.
  * @author Kai Cataldo
  * @author Toru Nagashima
  */
@@ -42,8 +42,8 @@ describe("ec0lint", () => {
     const originalDir = process.cwd();
     const fixtureDir = path.resolve(fs.realpathSync(os.tmpdir()), "ec0lint/fixtures");
 
-    /** @type {import("../../../lib/eslint").ESLint} */
-    let ESLint;
+    /** @type {import("../../../lib/ec0lint").Ec0lint} */
+    let Ec0lint;
 
     /**
      * Returns the path inside of the fixture directory.
@@ -62,13 +62,13 @@ describe("ec0lint", () => {
     }
 
     /**
-     * Create the ESLint object by mocking some of the plugins
-     * @param {Object} options options for ESLint
-     * @returns {ESLint} engine object
+     * Create the Ec0lint object by mocking some of the plugins
+     * @param {Object} options options for Ec0lint
+     * @returns {Ec0lint} engine object
      * @private
      */
-    function eslintWithPlugins(options) {
-        return new ESLint({
+    function ec0lintWithPlugins(options) {
+        return new Ec0lint({
             ...options,
             plugins: {
                 [examplePluginName]: examplePlugin,
@@ -102,7 +102,7 @@ describe("ec0lint", () => {
     });
 
     beforeEach(() => {
-        ({ ESLint } = require("../../../lib/ec0lint/ec0lint"));
+        ({ Ec0lint } = require("../../../lib/ec0lint/ec0lint"));
     });
 
     after(() => {
@@ -113,7 +113,7 @@ describe("ec0lint", () => {
         it("the default value of 'options.cwd' should be the current working directory.", async () => {
             process.chdir(__dirname);
             try {
-                const engine = new ESLint();
+                const engine = new Ec0lint();
                 const results = await engine.lintFiles("ec0lint.js");
 
                 assert.strictEqual(path.dirname(results[0].filePath), __dirname);
@@ -124,7 +124,7 @@ describe("ec0lint", () => {
 
         it("should report one fatal message when given a path by --ignore-path that is not a file when ignore is true.", () => {
             assert.throws(() => {
-                new ESLint({ ignorePath: fixtureDir });
+                new Ec0lint({ ignorePath: fixtureDir });
             }, new RegExp(escapeStringRegExp(`Cannot read .ec0lintignore file: ${fixtureDir}\nError: EISDIR: illegal operation on a directory, read`), "u"));
         });
 
@@ -132,14 +132,14 @@ describe("ec0lint", () => {
         it("should not modify baseConfig when format is specified", () => {
             const customBaseConfig = { root: true };
 
-            new ESLint({ baseConfig: customBaseConfig });
+            new Ec0lint({ baseConfig: customBaseConfig });
 
             assert.deepStrictEqual(customBaseConfig, { root: true });
         });
 
         it("should throw readable messages if removed options are present", () => {
             assert.throws(
-                () => new ESLint({
+                () => new Ec0lint({
                     cacheFile: "",
                     configFile: "",
                     envs: [],
@@ -168,7 +168,7 @@ describe("ec0lint", () => {
 
         it("should throw readable messages if wrong type values are given to options", () => {
             assert.throws(
-                () => new ESLint({
+                () => new Ec0lint({
                     allowInlineConfig: "",
                     baseConfig: "",
                     cache: "",
@@ -216,7 +216,7 @@ describe("ec0lint", () => {
 
         it("should throw readable messages if 'plugins' option contains empty key", () => {
             assert.throws(
-                () => new ESLint({
+                () => new Ec0lint({
                     plugins: {
                         "ec0lint-plugin-foo": {},
                         "ec0lint-plugin-bar": {},
@@ -235,7 +235,7 @@ describe("ec0lint", () => {
         let eslint;
 
         it("should report the filename when passed in", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 cwd: getFixturePath()
             });
@@ -246,7 +246,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is true", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore"),
                 cwd: getFixturePath("..")
             });
@@ -267,7 +267,7 @@ describe("ec0lint", () => {
         });
 
         it("should not return a warning when given a filename by --stdin-filename in excluded files list if warnIgnored is false", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore"),
                 cwd: getFixturePath("..")
             });
@@ -284,7 +284,7 @@ describe("ec0lint", () => {
         });
 
         it("should suppress excluded file warnings by default", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore"),
                 cwd: getFixturePath("..")
             });
@@ -296,7 +296,7 @@ describe("ec0lint", () => {
         });
 
         it("should use ec0lint:recommended rules when ec0lint:recommended configuration is specified", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 useEc0lintrc: false,
                 overrideConfig: {
                     extends: ["ec0lint:recommended"]
@@ -313,7 +313,7 @@ describe("ec0lint", () => {
         describe("Fix Types", () => {
             it("should throw an error when an invalid fix type is specified", () => {
                 assert.throws(() => {
-                    eslint = new ESLint({
+                    eslint = new Ec0lint({
                         cwd: path.join(fixtureDir, ".."),
                         useEc0lintrc: false,
                         fix: true,
@@ -324,7 +324,7 @@ describe("ec0lint", () => {
         });
 
         it("should not delete code if there is a syntax error after trying to autofix.", async () => {
-            eslint = eslintWithPlugins({
+            eslint = ec0lintWithPlugins({
                 useEc0lintrc: false,
                 fix: true,
                 overrideConfig: {
@@ -365,7 +365,7 @@ describe("ec0lint", () => {
         });
 
         it("should not crash even if there are any syntax error since the first time.", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 useEc0lintrc: false,
                 fix: true,
                 overrideConfig: {
@@ -406,7 +406,7 @@ describe("ec0lint", () => {
 
         // https://github.com/eslint/eslint/issues/5547
         it("should respect default ignore rules, even with --no-ignore", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: getFixturePath(),
                 ignore: false
             });
@@ -436,7 +436,7 @@ describe("ec0lint", () => {
             });
 
             it("should resolve 'plugins:[\"@scope\"]' to 'node_modules/@scope/ec0lint-plugin'.", async () => {
-                eslint = new ESLint({ cwd: getFixturePath("plugin-shorthand/basic") });
+                eslint = new Ec0lint({ cwd: getFixturePath("plugin-shorthand/basic") });
                 const [result] = await eslint.lintText("var x = 0", { filePath: "index.js" });
 
                 assert.strictEqual(result.filePath, getFixturePath("plugin-shorthand/basic/index.js"));
@@ -445,7 +445,7 @@ describe("ec0lint", () => {
             });
 
             it("should resolve 'extends:[\"plugin:@scope/recommended\"]' to 'node_modules/@scope/ec0lint-plugin'.", async () => {
-                eslint = new ESLint({ cwd: getFixturePath("plugin-shorthand/extends") });
+                eslint = new Ec0lint({ cwd: getFixturePath("plugin-shorthand/extends") });
                 const [result] = await eslint.lintText("var x = 0", { filePath: "index.js" });
 
                 assert.strictEqual(result.filePath, getFixturePath("plugin-shorthand/extends/index.js"));
@@ -455,38 +455,38 @@ describe("ec0lint", () => {
         });
 
         it("should throw if non-string value is given to 'code' parameter", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintText(100), /'code' must be a string/u);
         });
 
         it("should throw if non-object value is given to 'options' parameter", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintText("var a = 0", "foo.js"), /'options' must be an object, null, or undefined/u);
         });
 
         it("should throw if 'options' argument contains unknown key", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintText("var a = 0", { filename: "foo.js" }), /'options' must not include the unknown option\(s\): filename/u);
         });
 
         it("should throw if non-string value is given to 'options.filePath' option", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintText("var a = 0", { filePath: "" }), /'options.filePath' must be a non-empty string or undefined/u);
         });
 
         it("should throw if non-boolean value is given to 'options.warnIgnored' option", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintText("var a = 0", { warnIgnored: "" }), /'options.warnIgnored' must be a boolean or undefined/u);
         });
     });
 
     describe("lintFiles()", () => {
 
-        /** @type {InstanceType<import("../../../lib/eslint").ESLint>} */
+        /** @type {InstanceType<import("../../../lib/eslint").Ec0lint>} */
         let eslint;
 
         it("should report zero messages when given a config file and a valid file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: originalDir,
                 overrideConfigFile: ".ec0lintrc.js"
             });
@@ -498,7 +498,7 @@ describe("ec0lint", () => {
         });
 
         it("should handle multiple patterns with overlapping files", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: originalDir,
                 overrideConfigFile: ".ec0lintrc.js"
             });
@@ -510,7 +510,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a config file and a valid file and espree as parser", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 overrideConfig: {
                     parser: "espree",
                     parserOptions: {
@@ -526,7 +526,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a config file and a valid file and esprima as parser", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 overrideConfig: {
                     parser: "esprima"
                 },
@@ -540,7 +540,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error when given a config file and a valid file and invalid parser", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 overrideConfig: {
                     parser: "test11"
                 },
@@ -551,7 +551,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a directory with a .js2 file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: path.join(fixtureDir, ".."),
                 extensions: [".js2"]
             });
@@ -562,7 +562,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a directory with a .js and a .js2 file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 extensions: [".js", ".js2"],
                 ignore: false,
                 cwd: getFixturePath("..")
@@ -575,7 +575,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a '**' pattern with a .js and a .js2 file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 extensions: [".js", ".js2"],
                 ignore: false,
                 cwd: path.join(fixtureDir, "..")
@@ -588,7 +588,7 @@ describe("ec0lint", () => {
         });
 
         it("should resolve globs when 'globInputPaths' option is true", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 extensions: [".js", ".js2"],
                 ignore: false,
                 cwd: getFixturePath("..")
@@ -601,7 +601,7 @@ describe("ec0lint", () => {
         });
 
         it("should not resolve globs when 'globInputPaths' option is false", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 extensions: [".js", ".js2"],
                 ignore: false,
                 cwd: getFixturePath(".."),
@@ -614,7 +614,7 @@ describe("ec0lint", () => {
         });
 
         it("should report on all files passed explicitly, even if ignored by default", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
             const results = await eslint.lintFiles(["node_modules/foo.js"]);
@@ -630,7 +630,7 @@ describe("ec0lint", () => {
         });
 
         it("should not check default ignored files without --no-ignore flag", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
 
@@ -641,7 +641,7 @@ describe("ec0lint", () => {
 
         // https://github.com/eslint/eslint/issues/5547
         it("should not check node_modules files even with --no-ignore flag", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: getFixturePath("cli-engine"),
                 ignore: false
             });
@@ -652,7 +652,7 @@ describe("ec0lint", () => {
         });
 
         it("should report zero messages when given a pattern with a .js and a .js2 file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 extensions: [".js", ".js2"],
                 ignore: false,
                 cwd: path.join(fixtureDir, "..")
@@ -665,7 +665,7 @@ describe("ec0lint", () => {
         });
 
         it("should process when file is given by not specifying extensions", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 cwd: path.join(fixtureDir, "..")
             });
@@ -676,7 +676,7 @@ describe("ec0lint", () => {
         });
 
         it("should return zero messages when given a config with environment set to browser", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: path.join(fixtureDir, ".."),
                 overrideConfigFile: getFixturePath("configurations", "env-browser.json")
             });
@@ -687,7 +687,7 @@ describe("ec0lint", () => {
         });
 
         it("should return zero messages when given a config with environment set to Node.js", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 cwd: path.join(fixtureDir, ".."),
                 overrideConfigFile: getFixturePath("configurations", "env-node.json")
             });
@@ -698,7 +698,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error when given a directory with all eslint excluded files in the directory", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore")
             });
 
@@ -714,7 +714,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error when all given files are ignored even with a `./` prefix", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore")
             });
 
@@ -724,7 +724,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error when all given files are ignored via ignore-pattern", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 overrideConfig: {
                     ignorePatterns: "tests/fixtures/single-quoted.js"
                 }
@@ -736,7 +736,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a warning when an explicitly given file is ignored", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore"),
                 cwd: getFixturePath()
             });
@@ -755,7 +755,7 @@ describe("ec0lint", () => {
         });
 
         it("should return zero messages when executing a file with a shebang", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false
             });
             const results = await eslint.lintFiles([getFixturePath("shebang.js")]);
@@ -765,7 +765,7 @@ describe("ec0lint", () => {
         });
 
         it("should give a warning when loading a custom rule that doesn't exist", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 rulePaths: [getFixturePath("rules", "dir1")],
                 overrideConfigFile: getFixturePath("rules", "missing-rule.json")
@@ -780,7 +780,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error when loading a bad custom rule", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 rulePaths: [getFixturePath("rules", "wrong")],
                 overrideConfigFile: getFixturePath("rules", "ec0lint.json")
@@ -793,7 +793,7 @@ describe("ec0lint", () => {
         });
 
         it("should return one message when a custom rule matches a file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 useEc0lintrc: false,
                 rulePaths: [getFixturePath("rules/")],
@@ -812,7 +812,7 @@ describe("ec0lint", () => {
         it("should load custom rule from the provided cwd", async () => {
             const cwd = path.resolve(getFixturePath("rules"));
 
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 cwd,
                 rulePaths: ["./"],
@@ -829,7 +829,7 @@ describe("ec0lint", () => {
         });
 
         it("should return messages when multiple custom rules match a file", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 rulePaths: [
                     getFixturePath("rules", "dir1"),
@@ -850,7 +850,7 @@ describe("ec0lint", () => {
         });
 
         it("should return zero messages when executing without useEc0lintrc flag in Node.js environment", async () => {
-            eslint = new ESLint({
+            eslint = new Ec0lint({
                 ignore: false,
                 useEc0lintrc: false,
                 overrideConfig: {
@@ -869,7 +869,7 @@ describe("ec0lint", () => {
 
         describe("plugins", () => {
             it("should return two messages when executing with config file that specifies a plugin", async () => {
-                eslint = eslintWithPlugins({
+                eslint = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: getFixturePath("configurations", "plugins-with-prefix.json"),
                     useEc0lintrc: false
@@ -882,7 +882,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with config file that specifies a plugin with namespace", async () => {
-                eslint = eslintWithPlugins({
+                eslint = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: getFixturePath("configurations", "plugins-with-prefix-and-namespace.json"),
                     useEc0lintrc: false
@@ -895,7 +895,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with config file that specifies a plugin without prefix", async () => {
-                eslint = eslintWithPlugins({
+                eslint = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: getFixturePath("configurations", "plugins-without-prefix.json"),
                     useEc0lintrc: false
@@ -908,7 +908,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with config file that specifies a plugin without prefix and with namespace", async () => {
-                eslint = eslintWithPlugins({
+                eslint = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     overrideConfigFile: getFixturePath("configurations", "plugins-without-prefix-with-namespace.json"),
                     useEc0lintrc: false
@@ -921,7 +921,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with cli option that specifies a plugin", async () => {
-                eslint = eslintWithPlugins({
+                eslint = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     overrideConfig: {
@@ -937,7 +937,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with cli option that specifies preloaded plugin", async () => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     overrideConfig: {
@@ -956,7 +956,7 @@ describe("ec0lint", () => {
             });
 
             it("should return two messages when executing with `baseConfig` that extends preloaded plugin config", async () => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     baseConfig: {
@@ -986,7 +986,7 @@ describe("ec0lint", () => {
             });
 
             it("should load plugins from the `loadPluginsRelativeTo` directory, if specified", async () => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     resolvePluginsRelativeTo: getFixturePath("plugins"),
                     baseConfig: {
                         plugins: ["with-rules"],
@@ -1069,7 +1069,7 @@ describe("ec0lint", () => {
 
         describe("Patterns which match no file should throw errors.", () => {
             beforeEach(() => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: getFixturePath("cli-engine"),
                     useEc0lintrc: false
                 });
@@ -1108,7 +1108,7 @@ describe("ec0lint", () => {
 
         describe("overrides", () => {
             beforeEach(() => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: getFixturePath("cli-engine/overrides-with-dot"),
                     ignore: false
                 });
@@ -1144,7 +1144,7 @@ describe("ec0lint", () => {
             });
 
             beforeEach(() => {
-                eslint = new ESLint({ cwd: getPath() });
+                eslint = new Ec0lint({ cwd: getPath() });
                 return prepare();
             });
 
@@ -1191,7 +1191,7 @@ describe("ec0lint", () => {
             });
 
             beforeEach(() => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: getPath(),
                     fix: true,
                     fixTypes: ["problem"]
@@ -1215,7 +1215,7 @@ describe("ec0lint", () => {
             const cwd = getFixturePath("module-not-found");
 
             beforeEach(() => {
-                eslint = new ESLint({ cwd });
+                eslint = new Ec0lint({ cwd });
             });
 
             it("should throw an error with a message template when 'extends' property has a non-existence JavaScript config.", async () => {
@@ -1335,7 +1335,7 @@ describe("ec0lint", () => {
 
 
             it("should use the configured rules which are defined by '--rulesdir' option.", async () => {
-                eslint = new ESLint({
+                eslint = new Ec0lint({
                     cwd: getPath(),
                     rulePaths: ["internal-rules"]
                 });
@@ -1374,7 +1374,7 @@ describe("ec0lint", () => {
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
 
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
                 const results = await eslint.lintFiles(["[ab].js"]);
                 const filenames = results.map(r => path.basename(r.filePath));
 
@@ -1394,7 +1394,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
                 const results = await eslint.lintFiles(["[ab].js"]);
                 const filenames = results.map(r => path.basename(r.filePath));
 
@@ -1424,7 +1424,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 const results = await eslint.lintFiles(["test.js"]);
                 const messages = results[0].messages;
@@ -1445,7 +1445,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 const results = await eslint.lintFiles(["test.js"]);
                 const messages = results[0].messages;
@@ -1478,7 +1478,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 const results = await eslint.lintFiles(["test.js"]);
                 const messages = results[0].messages;
@@ -1501,7 +1501,7 @@ describe("ec0lint", () => {
                     await teardown.prepare();
                     cleanup = teardown.cleanup;
 
-                    eslint = new ESLint({
+                    eslint = new Ec0lint({
                         cwd: teardown.getPath(),
                         reportUnusedDisableDirectives: "off"
                     });
@@ -1524,7 +1524,7 @@ describe("ec0lint", () => {
                     await teardown.prepare();
                     cleanup = teardown.cleanup;
 
-                    eslint = new ESLint({
+                    eslint = new Ec0lint({
                         cwd: teardown.getPath(),
                         reportUnusedDisableDirectives: "error"
                     });
@@ -1570,7 +1570,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 // Don't throw "failed to load config file" error.
                 await eslint.lintFiles(".");
@@ -1588,7 +1588,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 // Don't throw "file not found" error.
                 await eslint.lintFiles(".");
@@ -1606,7 +1606,7 @@ describe("ec0lint", () => {
 
                 await teardown.prepare();
                 cleanup = teardown.cleanup;
-                eslint = new ESLint({ cwd: teardown.getPath() });
+                eslint = new Ec0lint({ cwd: teardown.getPath() });
 
                 // Don't throw "file not found" error.
                 await eslint.lintFiles("subdir");
@@ -1614,7 +1614,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if non-boolean value is given to 'options.warnIgnored' option", async () => {
-            eslint = new ESLint();
+            eslint = new Ec0lint();
             await assert.rejects(() => eslint.lintFiles(777), /'patterns' must be a non-empty string or an array of non-empty strings/u);
             await assert.rejects(() => eslint.lintFiles([null]), /'patterns' must be a non-empty string or an array of non-empty strings/u);
         });
@@ -1623,7 +1623,7 @@ describe("ec0lint", () => {
     describe("calculateConfigForFile", () => {
 
         it("should return the config for a file that doesn't exist", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const filePath = getFixturePath("does_not_exist.js");
             const existingSiblingFilePath = getFixturePath("single-quoted.js");
             const actualConfig = await engine.calculateConfigForFile(filePath);
@@ -1633,7 +1633,7 @@ describe("ec0lint", () => {
         });
 
         it("should return the config for a virtual file that is a child of an existing file", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const parentFileName = "single-quoted.js";
             const filePath = getFixturePath(parentFileName, "virtual.js"); // single-quoted.js/virtual.js
             const parentFilePath = getFixturePath(parentFileName);
@@ -1647,7 +1647,7 @@ describe("ec0lint", () => {
             const options = {
                 cwd: getFixturePath("config-hierarchy", "root-true", "parent", "root", "subdir")
             };
-            const engine = new ESLint(options);
+            const engine = new Ec0lint(options);
             const filePath = getFixturePath("config-hierarchy", "root-true", "parent", "root", ".ec0lintrc");
             const actualConfig = await engine.calculateConfigForFile("./.ec0lintrc");
             const expectedConfig = new CascadingConfigArrayFactory(options)
@@ -1659,7 +1659,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw an error if a directory path was given.", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
 
             try {
                 await engine.calculateConfigForFile(".");
@@ -1671,7 +1671,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if non-string value is given to 'filePath' parameter", async () => {
-            const eslint = new ESLint();
+            const eslint = new Ec0lint();
 
             await assert.rejects(() => eslint.calculateConfigForFile(null), /'filePath' must be a non-empty string/u);
         });
@@ -1687,7 +1687,7 @@ describe("ec0lint", () => {
                     }
                 }
             };
-            const engine = new ESLint(options);
+            const engine = new Ec0lint(options);
             const filePath = getFixturePath("single-quoted.js");
 
             await assert.rejects(
@@ -1699,7 +1699,7 @@ describe("ec0lint", () => {
 
     describe("isPathIgnored", () => {
         it("should check if the given path is ignored", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 ignorePath: getFixturePath(".ec0lintignore2"),
                 cwd: getFixturePath()
             });
@@ -1709,7 +1709,7 @@ describe("ec0lint", () => {
         });
 
         it("should return false if ignoring is disabled", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 ignore: false,
                 ignorePath: getFixturePath(".ec0lintignore2"),
                 cwd: getFixturePath()
@@ -1720,7 +1720,7 @@ describe("ec0lint", () => {
 
         // https://github.com/eslint/eslint/issues/5547
         it("should return true for default ignores even if ignoring is disabled", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 ignore: false,
                 cwd: getFixturePath("cli-engine")
             });
@@ -1731,7 +1731,7 @@ describe("ec0lint", () => {
         describe("about the default ignore patterns", () => {
             it("should always apply defaultPatterns if ignore option is true", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "node_modules/package/file.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/node_modules/package/file.js")));
@@ -1739,7 +1739,7 @@ describe("ec0lint", () => {
 
             it("should still apply defaultPatterns if ignore option is is false", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ ignore: false, cwd });
+                const engine = new Ec0lint({ ignore: false, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "node_modules/package/file.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/node_modules/package/file.js")));
@@ -1747,7 +1747,7 @@ describe("ec0lint", () => {
 
             it("should allow subfolders of defaultPatterns to be unignored by ignorePattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({
+                const engine = new Ec0lint({
                     cwd,
                     overrideConfig: {
                         ignorePatterns: "!/node_modules/package"
@@ -1759,14 +1759,14 @@ describe("ec0lint", () => {
 
             it("should allow subfolders of defaultPatterns to be unignored by ignorePath", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd, ignorePath: getFixturePath("ignored-paths", ".ec0lintignoreWithUnignoredDefaults") });
+                const engine = new Ec0lint({ cwd, ignorePath: getFixturePath("ignored-paths", ".ec0lintignoreWithUnignoredDefaults") });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "node_modules", "package", "file.js")));
             });
 
             it("should ignore dotfiles", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", ".foo")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo/.bar")));
@@ -1774,7 +1774,7 @@ describe("ec0lint", () => {
 
             it("should ignore directories beginning with a dot", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", ".foo/bar")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo/.bar/baz")));
@@ -1782,7 +1782,7 @@ describe("ec0lint", () => {
 
             it("should still ignore dotfiles when ignore option disabled", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ ignore: false, cwd });
+                const engine = new Ec0lint({ ignore: false, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", ".foo")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo/.bar")));
@@ -1790,7 +1790,7 @@ describe("ec0lint", () => {
 
             it("should still ignore directories beginning with a dot when ignore option disabled", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ ignore: false, cwd });
+                const engine = new Ec0lint({ ignore: false, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", ".foo/bar")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo/.bar/baz")));
@@ -1798,14 +1798,14 @@ describe("ec0lint", () => {
 
             it("should not ignore absolute paths containing '..'", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(!await engine.isPathIgnored(`${getFixturePath("ignored-paths", "foo")}/../unignored.js`));
             });
 
             it("should ignore /node_modules/ relative to .ec0lintignore when loaded", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ ignorePath: getFixturePath("ignored-paths", ".ec0lintignore"), cwd });
+                const engine = new Ec0lint({ ignorePath: getFixturePath("ignored-paths", ".ec0lintignore"), cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "node_modules", "existing.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo", "node_modules", "existing.js")));
@@ -1813,7 +1813,7 @@ describe("ec0lint", () => {
 
             it("should ignore /node_modules/ relative to cwd without an .ec0lintignore", async () => {
                 const cwd = getFixturePath("ignored-paths", "no-ignore-file");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "no-ignore-file", "node_modules", "existing.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "no-ignore-file", "foo", "node_modules", "existing.js")));
@@ -1823,7 +1823,7 @@ describe("ec0lint", () => {
         describe("with no .ec0lintignore file", () => {
             it("should not travel to parent directories to find .ec0lintignore when it's missing and cwd is provided", async () => {
                 const cwd = getFixturePath("ignored-paths", "configurations");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 // a .ec0lintignore in parent directories includes `*.js`, but don't load it.
                 assert(!await engine.isPathIgnored("foo.js"));
@@ -1833,7 +1833,7 @@ describe("ec0lint", () => {
             it("should return false for files outside of the cwd (with no ignore file provided)", async () => {
 
                 // Default ignore patterns should not inadvertently ignore files in parent directories
-                const engine = new ESLint({ cwd: getFixturePath("ignored-paths", "no-ignore-file") });
+                const engine = new Ec0lint({ cwd: getFixturePath("ignored-paths", "no-ignore-file") });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
             });
@@ -1842,7 +1842,7 @@ describe("ec0lint", () => {
         describe("with .ec0lintignore file or package.json file", () => {
             it("should load .ec0lintignore from cwd when explicitly passed", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 // `${cwd}/.ec0lintignore` includes `sampleignorepattern`.
                 assert(await engine.isPathIgnored("sampleignorepattern"));
@@ -1850,7 +1850,7 @@ describe("ec0lint", () => {
 
             it("should use package.json's ec0lintIgnore files if no specified .ec0lintignore file", async () => {
                 const cwd = getFixturePath("ignored-paths", "package-json-ignore");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 assert(await engine.isPathIgnored("hello.js"));
                 assert(await engine.isPathIgnored("world.js"));
@@ -1861,7 +1861,7 @@ describe("ec0lint", () => {
 
                 assert.throws(() => {
                     try {
-                        new ESLint({ cwd });
+                        new Ec0lint({ cwd });
                     } catch (error) {
                         assert.strictEqual(error.messageTemplate, "failed-to-read-json");
                         throw error;
@@ -1871,7 +1871,7 @@ describe("ec0lint", () => {
 
             it("should not use package.json's ec0lintIgnore files if specified .ec0lintignore file", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ cwd });
+                const engine = new Ec0lint({ cwd });
 
                 /*
                  * package.json includes `hello.js` and `world.js`.
@@ -1886,7 +1886,7 @@ describe("ec0lint", () => {
                 const cwd = getFixturePath("ignored-paths", "bad-package-json-ignore");
 
                 assert.throws(() => {
-                    new ESLint({ cwd });
+                    new Ec0lint({ cwd });
                 }, /Package\.json ec0lintIgnore property requires an array of paths/u);
             });
         });
@@ -1894,7 +1894,7 @@ describe("ec0lint", () => {
         describe("with --ignore-pattern option", () => {
             it("should accept a string for options.ignorePattern", async () => {
                 const cwd = getFixturePath("ignored-paths", "ignore-pattern");
-                const engine = new ESLint({
+                const engine = new Ec0lint({
                     overrideConfig: {
                         ignorePatterns: "ignore-me.txt"
                     },
@@ -1905,7 +1905,7 @@ describe("ec0lint", () => {
             });
 
             it("should accept an array for options.ignorePattern", async () => {
-                const engine = new ESLint({
+                const engine = new Ec0lint({
                     overrideConfig: {
                         ignorePatterns: ["a", "b"]
                     },
@@ -1919,7 +1919,7 @@ describe("ec0lint", () => {
 
             it("should return true for files which match an ignorePattern even if they do not exist on the filesystem", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({
+                const engine = new Ec0lint({
                     overrideConfig: {
                         ignorePatterns: "not-a-file"
                     },
@@ -1931,49 +1931,49 @@ describe("ec0lint", () => {
 
             it("should return true for file matching an ignore pattern exactly", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "undef.js" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "undef.js" }, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
             });
 
             it("should return false for file matching an invalid ignore pattern with leading './'", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "./undef.js" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "./undef.js" }, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
             });
 
             it("should return false for file in subfolder of cwd matching an ignore pattern with leading '/'", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "/undef.js" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "/undef.js" }, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "subdir", "undef.js")));
             });
 
             it("should return true for file matching a child of an ignore pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "ignore-pattern" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "ignore-pattern" }, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "ignore-pattern", "ignore-me.txt")));
             });
 
             it("should return true for file matching a grandchild of an ignore pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "ignore-pattern" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "ignore-pattern" }, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "ignore-pattern", "subdir", "ignore-me.txt")));
             });
 
             it("should return false for file not matching any ignore pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "failing.js" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "failing.js" }, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "unignored.js")));
             });
 
             it("two globstar '**' ignore pattern should ignore files in nested directories", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({ overrideConfig: { ignorePatterns: "**/*.js" }, cwd });
+                const engine = new Ec0lint({ overrideConfig: { ignorePatterns: "**/*.js" }, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "foo/bar.js")));
@@ -1988,7 +1988,7 @@ describe("ec0lint", () => {
             it("initialization with ignorePath should work when cwd is a parent directory", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "custom-name", "ignore-file");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("custom-name/foo.js"));
             });
@@ -1996,7 +1996,7 @@ describe("ec0lint", () => {
             it("initialization with ignorePath should work when the file is in the cwd", async () => {
                 const cwd = getFixturePath("ignored-paths", "custom-name");
                 const ignorePath = getFixturePath("ignored-paths", "custom-name", "ignore-file");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("foo.js"));
             });
@@ -2004,7 +2004,7 @@ describe("ec0lint", () => {
             it("initialization with ignorePath should work when cwd is a subdirectory", async () => {
                 const cwd = getFixturePath("ignored-paths", "custom-name", "subdirectory");
                 const ignorePath = getFixturePath("ignored-paths", "custom-name", "ignore-file");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("../custom-name/foo.js"));
             });
@@ -2014,14 +2014,14 @@ describe("ec0lint", () => {
                 const ignorePath = getFixturePath("ignored-paths", "not-a-directory", ".foobaz");
 
                 assert.throws(() => {
-                    new ESLint({ ignorePath, cwd });
+                    new Ec0lint({ ignorePath, cwd });
                 }, /Cannot read \.ec0lintignore file/u);
             });
 
             it("should return false for files outside of ignorePath's directory", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "custom-name", "ignore-file");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
             });
@@ -2029,7 +2029,7 @@ describe("ec0lint", () => {
             it("should resolve relative paths from CWD", async () => {
                 const cwd = getFixturePath("ignored-paths", "subdir");
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreForDifferentCwd");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/undef.js")));
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
@@ -2038,7 +2038,7 @@ describe("ec0lint", () => {
             it("should resolve relative paths from CWD when it's in a child directory", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "subdir/.ec0lintignoreInChildDir");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "subdir/undef.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "undef.js")));
@@ -2051,7 +2051,7 @@ describe("ec0lint", () => {
             it("should resolve relative paths from CWD when it contains negated globs", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "subdir/.ec0lintignoreInChildDir");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("subdir/blah.txt"));
                 assert(await engine.isPathIgnored("blah.txt"));
@@ -2064,7 +2064,7 @@ describe("ec0lint", () => {
             it("should resolve default ignore patterns from the CWD even when the ignorePath is in a subdirectory", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "subdir/.ec0lintignoreInChildDir");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("node_modules/blah.js"));
             });
@@ -2072,7 +2072,7 @@ describe("ec0lint", () => {
             it("should resolve default ignore patterns from the CWD even when the ignorePath is in a parent directory", async () => {
                 const cwd = getFixturePath("ignored-paths", "subdir");
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreForDifferentCwd");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored("node_modules/blah.js"));
             });
@@ -2083,7 +2083,7 @@ describe("ec0lint", () => {
                 assert(ignoreFileContent.includes("\r"), "crlf/.ec0lintignore should contains CR.");
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", "crlf/.ec0lintignore");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "crlf/hide1/a.js")));
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "crlf/hide2/a.js")));
@@ -2093,7 +2093,7 @@ describe("ec0lint", () => {
             it("should not include comments in ignore rules", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreWithComments");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(!await engine.isPathIgnored("# should be ignored"));
                 assert(await engine.isPathIgnored("this_one_not"));
@@ -2102,7 +2102,7 @@ describe("ec0lint", () => {
             it("should ignore a non-negated pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreWithNegation");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(await engine.isPathIgnored(getFixturePath("ignored-paths", "negation", "ignore.js")));
             });
@@ -2110,7 +2110,7 @@ describe("ec0lint", () => {
             it("should not ignore a negated pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
                 const ignorePath = getFixturePath("ignored-paths", ".ec0lintignoreWithNegation");
-                const engine = new ESLint({ ignorePath, cwd });
+                const engine = new Ec0lint({ ignorePath, cwd });
 
                 assert(!await engine.isPathIgnored(getFixturePath("ignored-paths", "negation", "unignore.js")));
             });
@@ -2119,7 +2119,7 @@ describe("ec0lint", () => {
         describe("with --ignore-path option and --ignore-pattern option", () => {
             it("should return false for ignored file when unignored with ignore pattern", async () => {
                 const cwd = getFixturePath("ignored-paths");
-                const engine = new ESLint({
+                const engine = new Ec0lint({
                     ignorePath: getFixturePath("ignored-paths", ".ec0lintignore"),
                     overrideConfig: {
                         ignorePatterns: "!sampleignorepattern"
@@ -2132,7 +2132,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if non-string value is given to 'filePath' parameter", async () => {
-            const eslint = new ESLint();
+            const eslint = new Ec0lint();
 
             await assert.rejects(() => eslint.isPathIgnored(null), /'filePath' must be a non-empty string/u);
         });
@@ -2140,7 +2140,7 @@ describe("ec0lint", () => {
 
     describe("loadFormatter()", () => {
         it("should return a formatter object when a bundled formatter is requested", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const formatter = await engine.loadFormatter("compact");
 
             assert.strictEqual(typeof formatter, "object");
@@ -2148,7 +2148,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when no argument is passed", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const formatter = await engine.loadFormatter();
 
             assert.strictEqual(typeof formatter, "object");
@@ -2156,7 +2156,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a custom formatter is requested", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const formatter = await engine.loadFormatter(getFixturePath("formatters", "simple.js"));
 
             assert.strictEqual(typeof formatter, "object");
@@ -2164,7 +2164,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a custom formatter is requested, also if the path has backslashes", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 cwd: path.join(fixtureDir, "..")
             });
             const formatter = await engine.loadFormatter(".\\fixtures\\formatters\\simple.js");
@@ -2174,7 +2174,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a formatter prefixed with ec0lint-formatter is requested", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
             const formatter = await engine.loadFormatter("bar");
@@ -2184,7 +2184,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a formatter is requested, also when the ec0lint-formatter prefix is included in the format argument", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
             const formatter = await engine.loadFormatter("ec0lint-formatter-bar");
@@ -2194,7 +2194,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a formatter is requested within a scoped npm package", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
             const formatter = await engine.loadFormatter("@somenamespace/foo");
@@ -2204,7 +2204,7 @@ describe("ec0lint", () => {
         });
 
         it("should return a formatter object when a formatter is requested within a scoped npm package, also when the ec0lint-formatter prefix is included in the format argument", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 cwd: getFixturePath("cli-engine")
             });
             const formatter = await engine.loadFormatter("@somenamespace/ec0lint-formatter-foo");
@@ -2214,7 +2214,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if a custom formatter doesn't exist", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const formatterPath = getFixturePath("formatters", "doesntexist.js");
             const fullFormatterPath = path.resolve(formatterPath);
 
@@ -2224,7 +2224,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if a built-in formatter doesn't exist", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const fullFormatterPath = path.resolve(__dirname, "../../../lib/cli-engine/formatters/special");
 
             await assert.rejects(async () => {
@@ -2233,7 +2233,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if the required formatter exists but has an error", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
             const formatterPath = getFixturePath("formatters", "broken.js");
 
             await assert.rejects(async () => {
@@ -2242,7 +2242,7 @@ describe("ec0lint", () => {
         });
 
         it("should throw if a non-string formatter name is passed", async () => {
-            const engine = new ESLint();
+            const engine = new Ec0lint();
 
             await assert.rejects(async () => {
                 await engine.loadFormatter(5);
@@ -2251,7 +2251,7 @@ describe("ec0lint", () => {
 
         it("should pass cwd to the `cwd` property of the second argument.", async () => {
             const cwd = getFixturePath();
-            const engine = new ESLint({ cwd });
+            const engine = new Ec0lint({ cwd });
             const formatterPath = getFixturePath("formatters", "cwd.js");
             const formatter = await engine.loadFormatter(formatterPath);
 
@@ -2262,7 +2262,7 @@ describe("ec0lint", () => {
     describe("getErrorResults()", () => {
 
         it("should return 0 error or warning messages even when the file has warnings", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 ignorePath: path.join(fixtureDir, ".ec0lintignore"),
                 cwd: path.join(fixtureDir, "..")
             });
@@ -2271,7 +2271,7 @@ describe("ec0lint", () => {
                 warnIgnored: true
             };
             const results = await engine.lintText("var bar = foo;", options);
-            const errorReport = ESLint.getErrorResults(results);
+            const errorReport = Ec0lint.getErrorResults(results);
 
             assert.strictEqual(errorReport.length, 0);
             assert.strictEqual(results.length, 1);
@@ -2285,7 +2285,7 @@ describe("ec0lint", () => {
 
     describe("getRulesMetaForResults()", () => {
         it("should return empty object when there are no linting errors", async () => {
-            const engine = new ESLint({
+            const engine = new Ec0lint({
                 useEc0lintrc: false
             });
 
@@ -2305,7 +2305,7 @@ describe("ec0lint", () => {
                 writeFile: sinon.spy(callLastArgument)
             };
             const spy = fakeFS.writeFile;
-            const { ESLint: localESLint } = proxyquire("../../../lib/ec0lint/ec0lint", {
+            const { Ec0lint: localEc0lint } = proxyquire("../../../lib/ec0lint/ec0lint", {
                 fs: fakeFS
             });
 
@@ -2320,7 +2320,7 @@ describe("ec0lint", () => {
                 }
             ];
 
-            await localESLint.outputFixes(results);
+            await localEc0lint.outputFixes(results);
 
             assert.strictEqual(spy.callCount, 2);
             assert(spy.firstCall.calledWithExactly(path.resolve("foo.js"), "bar", sinon.match.func), "First call was incorrect.");
@@ -2332,7 +2332,7 @@ describe("ec0lint", () => {
                 writeFile: sinon.spy(callLastArgument)
             };
             const spy = fakeFS.writeFile;
-            const { ESLint: localESLint } = proxyquire("../../../lib/ec0lint/ec0lint", {
+            const { Ec0lint: localEc0lint } = proxyquire("../../../lib/ec0lint/ec0lint", {
                 fs: fakeFS
             });
             const results = [
@@ -2349,7 +2349,7 @@ describe("ec0lint", () => {
                 }
             ];
 
-            await localESLint.outputFixes(results);
+            await localEc0lint.outputFixes(results);
 
             assert.strictEqual(spy.callCount, 2);
             assert(spy.firstCall.calledWithExactly(path.resolve("foo.js"), "bar", sinon.match.func), "First call was incorrect.");
@@ -2357,14 +2357,14 @@ describe("ec0lint", () => {
         });
 
         it("should throw if non object array is given to 'results' parameter", async () => {
-            await assert.rejects(() => ESLint.outputFixes(null), /'results' must be an array/u);
-            await assert.rejects(() => ESLint.outputFixes([null]), /'results' must include only objects/u);
+            await assert.rejects(() => Ec0lint.outputFixes(null), /'results' must be an array/u);
+            await assert.rejects(() => Ec0lint.outputFixes([null]), /'results' must include only objects/u);
         });
     });
 
     describe("when evaluating code when reportUnusedDisableDirectives is enabled", () => {
         it("should report problems for unused ec0lint-disable directives", async () => {
-            const eslint = new ESLint({ useEc0lintrc: false, reportUnusedDisableDirectives: "error" });
+            const eslint = new Ec0lint({ useEc0lintrc: false, reportUnusedDisableDirectives: "error" });
 
             assert.deepStrictEqual(
                 await eslint.lintText("/* ec0lint-disable */"),
@@ -2401,7 +2401,7 @@ describe("ec0lint", () => {
 
     describe("when retreiving version number", () => {
         it("should return current version number", () => {
-            const eslintCLI = require("../../../lib/ec0lint").ESLint;
+            const eslintCLI = require("../../../lib/ec0lint").Ec0lint;
             const version = eslintCLI.version;
 
             assert.strictEqual(typeof version, "string");
@@ -2413,7 +2413,7 @@ describe("ec0lint", () => {
         describe("plugins", () => {
             it("Loading plugin in one instance doesn't mutate to another instance", async () => {
                 const filePath = getFixturePath("single-quoted.js");
-                const engine1 = eslintWithPlugins({
+                const engine1 = ec0lintWithPlugins({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     overrideConfig: {
@@ -2421,7 +2421,7 @@ describe("ec0lint", () => {
                         rules: { "example/example-rule": 1 }
                     }
                 });
-                const engine2 = new ESLint({
+                const engine2 = new Ec0lint({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false
                 });
@@ -2437,12 +2437,12 @@ describe("ec0lint", () => {
         describe("rules", () => {
             it("Loading rules in one instance doesn't mutate to another instance", async () => {
                 const filePath = getFixturePath("single-quoted.js");
-                const engine1 = new ESLint({
+                const engine1 = new Ec0lint({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false,
                     overrideConfig: { rules: { "example/example-rule": 1 } }
                 });
-                const engine2 = new ESLint({
+                const engine2 = new Ec0lint({
                     cwd: path.join(fixtureDir, ".."),
                     useEc0lintrc: false
                 });
@@ -2477,21 +2477,21 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), false);
             });
 
             it("'lintFiles()' should not verify 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2523,21 +2523,21 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'true' for '/bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), false);
             });
 
             it("'lintFiles()' should not verify 'foo.js' and '/bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2569,25 +2569,25 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'false' for 'node_modules/foo/index.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("node_modules/foo/index.js"), false);
             });
 
             it("'isPathIgnored()' should return 'true' for 'node_modules/foo/.dot.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("node_modules/foo/.dot.js"), true);
             });
 
             it("'isPathIgnored()' should return 'true' for 'node_modules/bar/index.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("node_modules/bar/index.js"), true);
             });
 
             it("'lintFiles()' should verify 'node_modules/foo/index.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2615,13 +2615,13 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'false' for '.ec0lintrc.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored(".ec0lintrc.js"), false);
             });
 
             it("'lintFiles()' should verify '.ec0lintrc.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2650,19 +2650,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for re-ignored '.foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored(".foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for unignored '.bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored(".bar.js"), false);
             });
 
             it("'lintFiles()' should not verify re-ignored '.foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2691,19 +2691,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), false);
             });
 
             it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), true);
             });
 
             it("'lintFiles()' should verify unignored 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2738,7 +2738,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), true);
@@ -2746,20 +2746,20 @@ describe("ec0lint", () => {
             });
 
             it("'isPathIgnored()' should return 'true' for 'bar.js' in 'subdir'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/subsubdir/bar.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js' in the outside of 'subdir'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
             });
 
             it("'lintFiles()' should verify 'bar.js' in the outside of 'subdir'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2789,19 +2789,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), false);
             });
 
             it("'lintFiles()' should verify 'foo.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2831,20 +2831,20 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'false' for unignored 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), false);
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), false);
             });
 
             it("'isPathIgnored()' should return 'true' for ignored 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), true);
             });
 
             it("'lintFiles()' should verify unignored 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2878,31 +2878,31 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js' in the root directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
             });
 
             it("'isPathIgnored()' should return 'false' for 'foo.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), false);
             });
 
             it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), true);
             });
 
             it("'lintFiles()' should verify 'bar.js' in the root directory and 'foo.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2935,26 +2935,26 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js' in the root directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
             });
 
             it("'isPathIgnored()' should return 'true' for 'bar.js' in the child directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/bar.js"), true);
             });
 
             it("'lintFiles()' should verify 'bar.js' in the root directory.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -2984,19 +2984,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
             });
 
             it("'lintFiles()' should verify 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -3027,19 +3027,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'subdir/foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("subdir/foo.js"), false);
             });
 
             it("'lintFiles()' should verify 'subdir/foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -3070,19 +3070,19 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'true' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), true);
             });
 
             it("'isPathIgnored()' should return 'false' for 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
 
                 assert.strictEqual(await engine.isPathIgnored("bar.js"), false);
             });
 
             it("'lintFiles()' should verify 'bar.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -3109,13 +3109,13 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'isPathIgnored()' should return 'false' for 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath(), ignore: false });
+                const engine = new Ec0lint({ cwd: getPath(), ignore: false });
 
                 assert.strictEqual(await engine.isPathIgnored("foo.js"), false);
             });
 
             it("'lintFiles()' should verify 'foo.js'.", async () => {
-                const engine = new ESLint({ cwd: getPath(), ignore: false });
+                const engine = new Ec0lint({ cwd: getPath(), ignore: false });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -3148,7 +3148,7 @@ describe("ec0lint", () => {
 
             it("should throw a configuration error.", async () => {
                 await assert.rejects(async () => {
-                    const engine = new ESLint({ cwd: getPath() });
+                    const engine = new Ec0lint({ cwd: getPath() });
 
                     await engine.lintFiles("*.js");
                 }, /Unexpected top-level property "overrides\[0\]\.ignorePatterns"/u);
@@ -3189,7 +3189,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'lintFiles()' with a directory path should contain 'foo/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("."))
                     .map(r => r.filePath)
                     .sort();
@@ -3203,7 +3203,7 @@ describe("ec0lint", () => {
             });
 
             it("'lintFiles()' with a glob pattern '*.js' should not contain 'foo/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("**/*.js"))
                     .map(r => r.filePath)
                     .sort();
@@ -3242,7 +3242,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'lintFiles()' with a directory path should contain 'foo/test.txt' and 'foo/nested/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("."))
                     .map(r => r.filePath)
                     .sort();
@@ -3283,7 +3283,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'lintFiles()' with a directory path should NOT contain 'foo/test.txt' and 'foo/nested/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("."))
                     .map(r => r.filePath)
                     .sort();
@@ -3325,7 +3325,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'lintFiles()' with a directory path should contain 'foo/test.txt' and 'foo/nested/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("."))
                     .map(r => r.filePath)
                     .sort();
@@ -3371,7 +3371,7 @@ describe("ec0lint", () => {
             afterEach(cleanup);
 
             it("'lintFiles()' with a directory path should contain 'foo/test.txt' and 'foo/nested/test.txt'.", async () => {
-                const engine = new ESLint({ cwd: getPath() });
+                const engine = new Ec0lint({ cwd: getPath() });
                 const filePaths = (await engine.lintFiles("."))
                     .map(r => r.filePath)
                     .sort();
