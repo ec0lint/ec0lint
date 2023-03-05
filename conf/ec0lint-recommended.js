@@ -11,8 +11,8 @@ module.exports = {
     rules: {
         "avoid-lodash": "error",
         "lighter-http": "error",
-        "lighter-image-files": "error",
-        "lighter-video-files": "error",
+        "lighter-image-formats": "error",
+        "lighter-video-formats": "error",
         "no-ajax-events": "error",
         "no-ajax": "error",
         "no-animate": "error",

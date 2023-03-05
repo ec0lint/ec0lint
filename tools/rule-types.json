@@ -8,7 +8,7 @@
     "no-bind": "problem",
     "no-date-fns": "problem",
     "no-autoplay": "problem",
-    "lighter-image-files": "problem",
-    "lighter-video-files": "problem",
+    "lighter-image-formats": "problem",
+    "lighter-video-formats": "problem",
     "no-moment-js": "problem"
 }
