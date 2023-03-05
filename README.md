@@ -91,7 +91,7 @@ Let's build an eco-friendly website!
 
 - :white_check_mark: Lighter HTTP (lighter-http, ec0lint)
 - :white_check_mark: Font format (no-ttf-font-files, ec0lint-style)
-- :white_check_mark: Image format validation (lighter-image-files, ec0lint-style)
+- :white_check_mark: Image format validation (lighter-image-formats, ec0lint-style)
 - :white_check_mark: Light libraries - lodash (avoid-lodash, ec0lint)
 - :white_check_mark: Light libraries - date-fns (no-date-fns, ec0lint)
 - :white_check_mark: Light libraries - moment.js (no-moment-js, ec0lint)
@@ -107,8 +107,8 @@ Let's build an eco-friendly website!
 
 :white_check_mark: v2.1.0 - January - 20 rule implementations, 15 unique rules
 
-- :white_check_mark: Image format (lighter-image-files, ec0lint)
-- :white_check_mark: Video format (lighter-video-files, ec0lint)
+- :white_check_mark: Image format (lighter-image-formats, ec0lint)
+- :white_check_mark: Video format (lighter-video-formats, ec0lint)
 - :white_check_mark: Plugin HTML (ec0lint-plugin-html)
 - :white_check_mark: Lazy loading (require-lazy-loading, ec0lint-plugin-html)
 - :white_check_mark: Font source (no-hosted-online-fonts, ec0lint-style)
@@ -139,7 +139,7 @@ Let's build an eco-friendly website!
 - Light libraries - moment.js (no-moment-js, ec0lint-plugin-typescript)
 - Light libraries - jQuery Ajax (no-ajax, ec0lint-plugin-typescript)
 - Light libraries - jQuery Ajax events (no-ajax-events ec0lint-plugin-typescript)
-- Video format (lighter-video-files, ec0lint-plugin-typescript)
+- Video format (lighter-video-formats, ec0lint-plugin-typescript)
 - Lazy loading (require-lazy-loading, ec0lint-plugin-typescript)
 - Video auto-play (require-auto-play, ec0lint-plugin-typescript)
 

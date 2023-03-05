@@ -1,11 +1,11 @@
 "use strict";
 
-const rule = require("../../../lib/rules/lighter-video-files"),
+const rule = require("../../../lib/rules/lighter-video-formats"),
     { RuleTester } = require("../../../lib/rule-tester");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2022, sourceType: "module" } });
 
-ruleTester.run("lighter-video-files", rule, {
+ruleTester.run("lighter-video-formats", rule, {
     valid: [
         "import video from './video.webm'",
         "import {ReactComponent as video} from './video.webm'",

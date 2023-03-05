@@ -1,11 +1,11 @@
 "use strict";
 
-const rule = require("../../../lib/rules/lighter-image-files"),
+const rule = require("../../../lib/rules/lighter-image-formats"),
     { RuleTester } = require("../../../lib/rule-tester");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2022, sourceType: "module" } });
 
-ruleTester.run("lighter-image-files", rule, {
+ruleTester.run("lighter-image-formats", rule, {
     valid: [
         "import foo from './foo.gif'",
         "import foo from './foo.jpg'",
