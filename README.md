@@ -52,6 +52,18 @@ Create a `.ec0lint-stylerc.json` configuration file in the root of your project 
 
 `{ "extends": "ec0lint-style-config-recommended-scss" } `
 
+## (c) If your code contains PostCSS / Tailwind
+
+`npm i ec0lint ec0lint-style ec0lint-style-config-postcss`
+
+Configure your project:
+
+`npm init @ec0lint/config`
+
+Create a `.ec0lint-stylerc.json` configuration file in the root of your project with the following content:
+
+`{ "extends": "ec0lint-style-config-postcss" } `
+
 ## If you use React
 
 Install React plugin (or use npm init):
@@ -71,25 +83,7 @@ Split your terminal and run:
 
 `npx ec0lint-style "**/*.scss" npx ec0lint .`
 
-(c) If your code contains PostCSS / Tailwind
-
-`npm i ec0lint ec0lint-style ec0lint-style-config-postcss`
-
-Configure your project:
-
-`npm init @ec0lint/config`
-
-Create a .ec0lint-stylerc.json configuration file in the root of your project with the following content:
-
-`{ "extends": "ec0lint-style-config-postcss" } `
-
-Split your terminal and run:
-
-`npx ec0lint-style "**/*.html" npx ec0lint .`
-
 Let's build an eco-friendly website!
-
-
 
 # Release plan
 
@@ -124,19 +118,17 @@ Let's build an eco-friendly website!
 - :white_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
 - :white_check_mark: Video auto-play (require-auto-play, ec0lint)
 
-:hammer: v3.0.0 - March - IDE plugins + resources scanning
+:hammer: v3.0.0 - April - IDE plugins + resources scanning
 
-- :four_leaf_clover: VSCode plugin
-- :four_leaf_clover: IntelliJ plugin
+- :ballot_box_with_check: VSCode plugin ec0lint
+- :hammer: VSCode plugin ec0lint-style
+- :hammer: IntelliJ plugin ec0lint
+- :hammer: IntelliJ plugin ec0lint-style
 - :hammer: Colors validation (background-color-validation, ec0lint-style)
-- :four_leaf_clover: Image size (image-size-validation, ec0lint)
-- :four_leaf_clover: Video size (video-size-validation, ec0lint)
-- :four_leaf_clover: Images number (image-number-validation, ec0lint)
-- :four_leaf_clover: Videos number (video-number-validation, ec0lint)
-- :white_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
-- :white_check_mark: Light libraries – jQuery Box Model (no-box-model, ec0lint)
-- :four_leaf_clover: Light libraries – jQuery Browser (no-browser, ec0lint)
-- :hammer: Automatic releases tool
+- :hammer: Image size (image-size-validation, ec0lint)
+- :hammer: Video size (video-size-validation, ec0lint)
+- :ballot_box_with_check: Light libraries – jQuery Box Model (no-box-model, ec0lint)
+- :hammer: Light libraries – jQuery Browser (no-browser, ec0lint)
 
 :lock: v4.0.0 - June - TypeScript plugin
 
