@@ -4,7 +4,7 @@ Disallows to use _lodash_.
 
 It’s a great library, but in most cases can be replaced by plain javascript.
 
-By using this rule in your project, you can reduce the carbon footprint even up to **0.5 g per website view** after removing the redundant library. By multiplying the library size by the end-user traffic (0.81 kWh / 1000 MB) and by the energy emissions (442 g/kWh), the carbon footprint of a library can be calculated.
+By using this rule in your project, you can reduce the carbon footprint even up to **0.5 g per website view** after removing the redundant library. By multiplying the library size by the end-user traffic (0.81 kWh / 1024 MB) and by the energy emissions (442 g/kWh), the carbon footprint of a library can be calculated.
 
 | Name    | Size   | CO2 reduction |
 | ------- | ------ | ------------- |

@@ -26,6 +26,8 @@ The tool is customized and each rule applied during the analysis can be adjusted
 
 Make sure you have Node installed
 
+## (a) If your code contains CSS files
+
 Download ec0lint:
 
 `npm i ec0lint ec0lint-style ec0lint-style-config-recommended`
@@ -34,15 +36,60 @@ Configure your project:
 
 `npm init @ec0lint/config`
 
-Create a .ec0lint-stylerc.json configuration file in the root of your project with the following content:
+Create a `.ec0lint-stylerc.json` configuration file in the root of your project with the following content:
 
 `{ "extends": "ec0lint-style-config-recommended" } `
 
+## (b) If your code contains LESS, SASS/SCSS files
+
+`npm i ec0lint ec0lint-style ec0lint-style-config-recommended-scss`
+
+Configure your project:
+
+`npm init @ec0lint/config`
+
+Create a `.ec0lint-stylerc.json` configuration file in the root of your project with the following content:
+
+`{ "extends": "ec0lint-style-config-recommended-scss" } `
+
+## If you use React
+
+Install React plugin (or use npm init):
+
+`npm i ec0lint-plugin-react`
+
+Add to your `.ec0lintrc.json` configuration file:
+```
+ "extends": [
+    "ec0lint:recommended",
+    "plugin:react/recommended"
+  ]
+```
+## Run ec0lint
+
 Split your terminal and run:
 
-`npx ec0lint-style "**/*.css" npx ec0lint .`
+`npx ec0lint-style "**/*.scss" npx ec0lint .`
+
+(c) If your code contains PostCSS / Tailwind
+
+`npm i ec0lint ec0lint-style ec0lint-style-config-postcss`
+
+Configure your project:
+
+`npm init @ec0lint/config`
+
+Create a .ec0lint-stylerc.json configuration file in the root of your project with the following content:
+
+`{ "extends": "ec0lint-style-config-postcss" } `
+
+Split your terminal and run:
+
+`npx ec0lint-style "**/*.html" npx ec0lint .`
 
 Let's build an eco-friendly website!
+
+
 
 # Release plan
 
@@ -86,8 +133,8 @@ Let's build an eco-friendly website!
 - :four_leaf_clover: Video size (video-size-validation, ec0lint)
 - :four_leaf_clover: Images number (image-number-validation, ec0lint)
 - :four_leaf_clover: Videos number (video-number-validation, ec0lint)
-- :four_leaf_clover: Light libraries – jQuery Bind (no-bind, ec0lint)
-- :four_leaf_clover: Light libraries – jQuery Box Model (no-box-model, ec0lint)
+- :white_check_mark: Light libraries – jQuery Bind (no-bind, ec0lint)
+- :white_check_mark: Light libraries – jQuery Box Model (no-box-model, ec0lint)
 - :four_leaf_clover: Light libraries – jQuery Browser (no-browser, ec0lint)
 - :hammer: Automatic releases tool
 
