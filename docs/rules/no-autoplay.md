@@ -11,7 +11,7 @@ Autoplay property significantly increases the bandwidth needed to display a webs
 
 By deleting the `autoplay=1` part of the YouTube video URL, the video is not downloaded when entering the website. Carbon emissions can be reduced by 99% if a user does not click on the video.
 A sample YouTube video – Baby Shark which lasts only 2 minutes, in the resolution of 720p (HD), has the file size of 14.7 MB.  
-To calculate the carbon footprint of a YouTube video file, we multiply the size of the video (14.7 MB) by the end-user traffic (0.81 kWh/1 GB) and by the energy emissions (442 g/kWh), which sums up to 5.14 g of CO2.
+To calculate the carbon footprint of a YouTube video file, we multiply the size of the video (14.7 MB) by the end-user traffic (0.81 kWh/ 1024 MB) and by the energy emissions (442 g/kWh), which sums up to 5.14 g of CO2.
 
 ## Rule details
 

@@ -25,7 +25,7 @@ The table below shows comparison between file sizes and CO<sub>2</sub> emission 
 | PS          | 12825 kB  | 5.59 g                  |
 
 
-By multiplying the file size by the end-user traffic (0.81 kWh / 1000 Mb) and by the energy emissions (442 g/kWh), the carbon footprint of the exemplary PNG file (2.1 MB) – sums up to 0.76 g. The same image in SVG format (126 kB) generates 0.04g CO<sub>2</sub>. So, by subtracting 0.04 g from 0.76 g we get 0.72g of savings. (95% less CO<sub>2</sub>).
+By multiplying the file size by the end-user traffic (0.81 kWh / 1024 MB) and by the energy emissions (442 g/kWh), the carbon footprint of the exemplary PNG file (2.1 MB) – sums up to 0.76 g. The same image in SVG format (126 kB) generates 0.04g CO<sub>2</sub>. So, by subtracting 0.04 g from 0.76 g we get 0.72g of savings. (95% less CO<sub>2</sub>).
 
 For the same exemplary image in WebP (200 kB) the carbon footprint amounts to 0.07g. So, by subtracting 0.07 g from 0.76 g we get 0.69 g (91% less CO<sub>2</sub>).
 
