@@ -19,6 +19,7 @@ module.exports = {
         "no-attr":"error",
         "no-autoplay": "error",
         "no-bind": "error",
+        "no-box-model": "error",
         "no-date-fns": "error",
         "no-moment-js": "error",
     }
