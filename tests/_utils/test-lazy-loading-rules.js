@@ -56,10 +56,10 @@ addHook(
  * Everything related to loading any ESLint modules should be in this IIFE
  */
 (async () => {
-    const { ESLint } = require("../..");
-    const eslint = new ESLint({ cwd });
+    const { Ec0lint } = require("../..");
+    const ec0lint = new Ec0lint({ cwd });
 
-    await eslint.lintFiles([pattern]);
+    await ec0lint.lintFiles([pattern]);
 })().catch(({ message, stack }) => {
     process.send({ message, stack });
     process.exit(1);

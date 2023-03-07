@@ -16,7 +16,7 @@
 
 const assert = require("chai").assert,
     stdAssert = require("assert"),
-    { ESLint } = require("../../lib/ec0lint"),
+    { Ec0lint } = require("../../lib/ec0lint"),
     BuiltinRules = require("../../lib/rules"),
     path = require("path"),
     sinon = require("sinon"),
@@ -53,14 +53,14 @@ describe("cli", () => {
     async function verifyESLintOpts(cmd, opts) {
 
         // create a fake ESLint class to test with
-        const fakeESLint = sinon.mock().withExactArgs(sinon.match(opts));
+        const fakeEc0lint = sinon.mock().withExactArgs(sinon.match(opts));
 
-        Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-        sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-        sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: sinon.spy() });
+        Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+        sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([]);
+        sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: sinon.spy() });
 
         const localCLI = proxyquire("../../lib/cli", {
-            "./ec0lint": { ESLint: fakeESLint },
+            "./ec0lint": { Ec0lint: fakeEc0lint },
             "./shared/logging": log
         });
 
@@ -618,10 +618,10 @@ describe("cli", () => {
         it("should pass allowInlineConfig:false to ESLint when --no-inline-config is used", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ allowInlineConfig: false }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ allowInlineConfig: false }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([{
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([{
                 filePath: "./foo.js",
                 output: "bar",
                 messages: [
@@ -633,11 +633,11 @@ describe("cli", () => {
                 errorCount: 1,
                 warningCount: 0
             }]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.stub();
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -647,15 +647,15 @@ describe("cli", () => {
         it("should not error and allowInlineConfig should be true by default", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ allowInlineConfig: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ allowInlineConfig: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.stub();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([]);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -677,15 +677,15 @@ describe("cli", () => {
         it("should pass fix:true to ESLint when executing on files", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().once();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([]);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.mock().once();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -712,15 +712,15 @@ describe("cli", () => {
             }];
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns(report);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -746,16 +746,16 @@ describe("cli", () => {
             }];
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.getErrorResults = sinon.stub().returns([]);
-            fakeESLint.outputFixes = sinon.mock().withExactArgs(report);
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns(report);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.getErrorResults = sinon.stub().returns([]);
+            fakeEc0lint.outputFixes = sinon.mock().withExactArgs(report);
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -768,10 +768,10 @@ describe("cli", () => {
         it("should not call ESLint and return 2 when executing on text", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().never();
+            const fakeEc0lint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -792,15 +792,15 @@ describe("cli", () => {
         it("should pass fix:true to ESLint when executing on files", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([]);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -818,15 +818,15 @@ describe("cli", () => {
             };
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match(expectedESLintOptions));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match(expectedESLintOptions));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns([]);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.stub();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns([]);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.stub();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -851,15 +851,15 @@ describe("cli", () => {
             }];
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns(report);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -885,16 +885,16 @@ describe("cli", () => {
             }];
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: sinon.match.func }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintFiles").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.getErrorResults = sinon.stub().returns([]);
-            fakeESLint.outputFixes = sinon.mock().never();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintFiles").returns(report);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.getErrorResults = sinon.stub().returns([]);
+            fakeEc0lint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -920,15 +920,15 @@ describe("cli", () => {
             }];
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
+            const fakeEc0lint = sinon.mock().withExactArgs(sinon.match({ fix: true }));
 
-            Object.defineProperties(fakeESLint.prototype, Object.getOwnPropertyDescriptors(ESLint.prototype));
-            sinon.stub(fakeESLint.prototype, "lintText").returns(report);
-            sinon.stub(fakeESLint.prototype, "loadFormatter").returns({ format: () => "done" });
-            fakeESLint.outputFixes = sinon.mock().never();
+            Object.defineProperties(fakeEc0lint.prototype, Object.getOwnPropertyDescriptors(Ec0lint.prototype));
+            sinon.stub(fakeEc0lint.prototype, "lintText").returns(report);
+            sinon.stub(fakeEc0lint.prototype, "loadFormatter").returns({ format: () => "done" });
+            fakeEc0lint.outputFixes = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 
@@ -940,10 +940,10 @@ describe("cli", () => {
         it("should not call ESLint and return 2 when used with --fix", async () => {
 
             // create a fake ESLint class to test with
-            const fakeESLint = sinon.mock().never();
+            const fakeEc0lint = sinon.mock().never();
 
             localCLI = proxyquire("../../lib/cli", {
-                "./ec0lint": { ESLint: fakeESLint },
+                "./ec0lint": { Ec0lint: fakeEc0lint },
                 "./shared/logging": log
             });
 

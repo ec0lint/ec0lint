@@ -125,10 +125,10 @@ Let's build an eco-friendly website!
 - :hammer: IntelliJ plugin ec0lint
 - :hammer: IntelliJ plugin ec0lint-style
 - :hammer: Colors validation (background-color-validation, ec0lint-style)
-- :hammer: Image size (image-size-validation, ec0lint)
-- :hammer: Video size (video-size-validation, ec0lint)
+- :hammer: Image size (image-size-validation, ec0lint-style)
+- :hammer: Video size (video-size-validation, ec0lint-style)
 - :ballot_box_with_check: Light libraries – jQuery Box Model (no-box-model, ec0lint)
-- :hammer: Light libraries – jQuery Browser (no-browser, ec0lint)
+- :ballot_box_with_check: Light libraries – jQuery Browser (no-browser, ec0lint)
 
 :lock: v4.0.0 - June - TypeScript plugin
 
