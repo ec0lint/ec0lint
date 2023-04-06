@@ -129,11 +129,6 @@
         "webpack-cli": "^4.5.0",
         "yorkie": "^2.0.0"
     },
-    "browser": {
-        "fs": false,
-        "os": false,
-        "path": false
-    },
     "keywords": [
         "ast",
         "lint",
@@ -144,5 +139,8 @@
     "license": "MIT",
     "engines": {
         "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    },
+    "browser": {
+      "fs": false
     }
 }
