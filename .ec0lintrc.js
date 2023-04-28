@@ -2,25 +2,21 @@
 
 module.exports = {
     root: true,
-    plugins: [
-        "internal-rules"
-    ],
-    extends: [
-        "ec0lint:recommended"
-    ],
+    plugins: ["internal-rules"],
+    extends: ["ec0lint:recommended"],
     parserOptions: {
-        ecmaVersion: 2021
+        ecmaVersion: 2021,
     },
     rules: {
-        "internal-rules/lighter-http": "error"
+        "internal-rules/lighter-http": "error",
     },
     overrides: [
         {
             files: ["lib/rules/*", "tools/internal-rules/*"],
             excludedFiles: ["index.js"],
             rules: {
-                "internal-rules/no-invalid-meta": "error"
-            }
-        }
-    ]
+                "internal-rules/no-invalid-meta": "error",
+            },
+        },
+    ],
 };

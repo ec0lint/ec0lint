@@ -13,6 +13,7 @@ module.exports = {
         "lighter-http": "error",
         "lighter-image-formats": "error",
         "lighter-video-formats": "error",
+        "lighter-video": "error",
         "no-ajax-events": "error",
         "no-ajax": "error",
         "no-animate": "error",

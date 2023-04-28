@@ -18,6 +18,6 @@ ruleTester.run( 'no-autoplay', rule, {
     {
 			code: 'src="https://www.youtube.com/embed/jlkjsldkjsflk?mute=1&autoplay=1"',
 			errors: [{ messageId: "error" }]
-		}
+		},
   ]
 });

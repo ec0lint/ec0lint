@@ -12,5 +12,6 @@
     "no-autoplay": "problem",
     "lighter-image-formats": "problem",
     "lighter-video-formats": "problem",
+    "lighter-video": "problem",
     "no-moment-js": "problem"
 }

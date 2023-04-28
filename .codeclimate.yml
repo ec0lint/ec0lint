@@ -1,9 +1,9 @@
 languages:
-  JavaScript: true
+    JavaScript: true
 
 exclude_paths:
-  - tests/**
+    - tests/**
 
 engines:
-  ec0lint:
-    enabled: true
+    ec0lint:
+        enabled: true
