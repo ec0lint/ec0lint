@@ -66,6 +66,7 @@
         "glob-parent": "^6.0.1",
         "globals": "^13.6.0",
         "ignore": "^5.2.0",
+        "image-size": "^1.0.2",
         "import-fresh": "^3.0.0",
         "imurmurhash": "^0.1.4",
         "is-glob": "^4.0.0",
@@ -138,5 +139,8 @@
     "license": "MIT",
     "engines": {
         "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    },
+    "browser": {
+      "fs": false
     }
 }

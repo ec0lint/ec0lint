@@ -49,5 +49,6 @@ module.exports = {
     resolve: {
         mainFields: ["browser", "main", "module"]
     },
-    stats: "errors-only"
+    stats: "errors-only",
+    target: "node"
 };
